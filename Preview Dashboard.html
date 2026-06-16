@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="id" class="">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Preview — Dashboard (Current UI)</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            :root {
+                --bg: #ffffff;
+                --fg: #1a1a2e;
+                --border: #e8e8ef;
+                --muted-fg: #8888a0;
+                --primary: #3c5f53;
+                --primary-10: rgba(60, 95, 83, 0.1);
+                --secondary: #f0f0f5;
+                --secondary-fg: #1a1a2e;
+                --overlay: #ffffff;
+                --navbar: #fcfcfd;
+                --danger: #e74c4c;
+                --success: #2ecc71;
+                --warning: #f0a030;
+                --info: #3498db;
+                --danger-50: #fef2f2;
+                --danger-200: #fecaca;
+                --danger-700: #b91c1c;
+                --warning-50: #fffbeb;
+                --warning-200: #fde68a;
+                --warning-700: #b45309;
+                --info-50: #eff6ff;
+                --info-200: #bfdbfe;
+                --info-700: #1d4ed8;
+                --success-10: rgba(46, 204, 113, 0.1);
+                --slate-50: #f8fafc;
+                --slate-100: #f1f5f9;
+                --slate-300: #cbd5e1;
+                --slate-400: #94a3b8;
+                --slate-500: #64748b;
+                --slate-600: #475569;
+                --slate-700: #334155;
+                --slate-800: #1e293b;
+                --slate-900: #0f172a;
+                --radius: 12px;
+                font-family: "Figtree", "Inter", system-ui, sans-serif;
+            }
+            body {
+                background: var(--bg);
+                color: var(--fg);
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            .flex {
+                display: flex;
+            }
+            .h-screen {
+                height: 100vh;
+            }
+            .overflow-hidden {
+                overflow: hidden;
+            }
+            .shrink-0 {
+                flex-shrink: 0;
+            }
+            .min-w-0 {
+                min-width: 0;
+            }
+            .flex-1 {
+                flex: 1 1 0%;
+            }
+            .flex-col {
+                flex-direction: column;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .justify-center {
+                justify-content: center;
+            }
+            .justify-between {
+                justify-content: space-between;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 256px;
+                border-right: 1px solid var(--border);
+                background: var(--navbar);
+                display: none;
+                flex-direction: column;
+            }
+            @media (min-width: 768px) {
+                .sidebar {
+                    display: flex;
+                }
+            }
+            .sidebar-header {
+                height: 64px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 1px solid var(--border);
+            }
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                text-decoration: none;
+                color: inherit;
+                padding: 0 16px;
+            }
+            .sidebar-logo-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 6px;
+                background: linear-gradient(135deg, #3c5f53, #2d4a40);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 14px;
+                color: #fff;
+            }
+            .sidebar-logo-text {
+                font-weight: 700;
+                font-size: 18px;
+                color: var(--fg);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .sidebar-nav {
+                flex: 1;
+                overflow-y: auto;
+                padding: 12px;
+            }
+            .sidebar-section {
+                margin-bottom: 16px;
+            }
+            .sidebar-section-title {
+                padding: 0 12px;
+                margin-bottom: 4px;
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--muted-fg);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .sidebar-items {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 8px 12px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--muted-fg);
+                text-decoration: none;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar-item:hover {
+                background: var(--secondary);
+                color: var(--secondary-fg);
+            }
+            .sidebar-item svg {
+                color: var(--muted-fg);
+            }
+            .sidebar-item:hover svg {
+                color: var(--secondary-fg);
+            }
+            .sidebar-item.active {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            .sidebar-item.active svg {
+                color: var(--primary);
+            }
+            .sidebar-item span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .sidebar-footer {
+                border-top: 1px solid var(--border);
+                padding: 16px;
+                text-align: center;
+                font-size: 10px;
+                color: var(--muted-fg);
+            }
+
+            /* Top Navbar */
+            .topbar {
+                height: 64px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border);
+                background: var(--navbar);
+                padding: 0 16px;
+                position: sticky;
+                top: 0;
+                z-index: 20;
+            }
+            .topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            .topbar-right {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .page-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--fg);
+            }
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--fg);
+            }
+            .mobile-menu-btn:hover {
+                background: var(--secondary);
+            }
+            @media (min-width: 768px) {
+                .mobile-menu-btn {
+                    display: none;
+                }
+            }
+
+            /* Shift indicator */
+            .shift-badge {
+                display: none;
+                align-items: center;
+                gap: 6px;
+                background: var(--success-10);
+                color: var(--success);
+                padding: 4px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 500;
+            }
+            @media (min-width: 640px) {
+                .shift-badge {
+                    display: flex;
+                }
+            }
+            .shift-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: var(--success);
+                animation: pulse 2s ease-in-out infinite;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            /* Notification bell */
+            .bell-btn {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+            }
+            .bell-btn:hover {
+                background: var(--secondary);
+            }
+            .bell-badge {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                width: 16px;
+                height: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: var(--danger);
+                color: #fff;
+                font-size: 10px;
+                font-weight: 700;
+            }
+
+            /* Avatar */
+            .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #3c5f53, #2d4a40);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            /* Main content */
+            .main-content {
+                flex: 1;
+                overflow-y: auto;
+                background: var(--bg);
+            }
+            .content-inner {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 16px;
+            }
+            @media (min-width: 768px) {
+                .content-inner {
+                    padding: 24px;
+                }
+            }
+            @media (min-width: 1024px) {
+                .content-inner {
+                    padding: 32px;
+                }
+            }
+
+            .welcome-title {
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                margin-bottom: 24px;
+            }
+
+            /* Security alerts */
+            .security-section {
+                margin-bottom: 24px;
+            }
+            .security-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+            .security-header svg {
+                color: var(--slate-500);
+            }
+            .security-header h3 {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--slate-700);
+            }
+            .alert-card {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 16px;
+                border-radius: var(--radius);
+                border: 1px solid;
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            .alert-card svg {
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            .alert-title {
+                font-weight: 500;
+            }
+            .alert-msg {
+                margin-top: 2px;
+                opacity: 0.8;
+            }
+            .alert-high {
+                background: var(--danger-50);
+                border-color: var(--danger-200);
+                color: var(--danger-700);
+            }
+            .alert-medium {
+                background: var(--warning-50);
+                border-color: var(--warning-200);
+                color: var(--warning-700);
+            }
+            .alert-low {
+                background: var(--info-50);
+                border-color: var(--info-200);
+                color: var(--info-700);
+            }
+
+            /* Stat Cards Grid */
+            .stats-grid {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: 1fr;
+            }
+            @media (min-width: 768px) {
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (min-width: 1024px) {
+                .stats-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .stat-card {
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                background: var(--overlay);
+                padding: 24px;
+            }
+            .stat-label {
+                font-size: 14px;
+                color: var(--muted-fg);
+            }
+            .stat-value {
+                margin-top: 4px;
+                font-size: 24px;
+                font-weight: 700;
+            }
+
+            /* Icon helpers */
+            .icon-18 {
+                width: 18px;
+                height: 18px;
+            }
+            .icon-20 {
+                width: 20px;
+                height: 20px;
+            }
+            .icon-22 {
+                width: 22px;
+                height: 22px;
+            }
+            .icon-5 {
+                width: 20px;
+                height: 20px;
+            }
+            svg.icon-5 {
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex h-screen overflow-hidden">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <a href="#" class="sidebar-logo">
+                        <div class="sidebar-logo-icon">K</div>
+                        <span class="sidebar-logo-text">KASIR</span>
+                    </a>
+                </div>
+                <nav class="sidebar-nav">
+                    <!-- Overview -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Overview</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item active">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 3h7v7H3V3z" />
+                                    <path d="M14 3h7v7h-7V3z" />
+                                    <path d="M14 14h7v7h-7v-7z" />
+                                    <path d="M3 14h7v7H3v-7z" />
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Master Data -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Master Data</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+                                    /></svg
+                                ><span>Kategori</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V12" />
+                                    <path d="M3.3 7 12 12l8.7-5" /></svg
+                                ><span>Produk</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg
+                                ><span>Pelanggan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M5 18H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4l2 3h9a1 1 0 0 1 1 1"
+                                    />
+                                    <circle cx="7" cy="19" r="2" />
+                                    <circle cx="17" cy="19" r="2" />
+                                    <path d="M17 17H7" /></svg
+                                ><span>Supplier</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Sales -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Sales</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" /></svg
+                                ><span>Transaksi</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" /></svg
+                                ><span>Transaksi Pending</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M15 15 9 9m6 0-6 6" />
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg
+                                ><span>Retur Penjualan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                    /></svg
+                                ><span>Piutang</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" /></svg
+                                ><span>Aging & Pengingat</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Inventory</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                    />
+                                    <path
+                                        d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"
+                                    />
+                                    <path d="M12 11v6" />
+                                    <path d="M9 14h6" /></svg
+                                ><span>Stock Opname</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="m18 15-6-6-6 6" /></svg
+                                ><span>Mutasi Stok</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Procurement -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Procurement</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                    />
+                                    <path
+                                        d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"
+                                    />
+                                    <path d="M9 13h6" />
+                                    <path d="M12 10v6" /></svg
+                                ><span>Purchase Order</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21 12v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                    <path d="M12 15V3" /></svg
+                                ><span>Penerimaan Barang</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M15 15 9 9m6 0-6 6" />
+                                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg
+                                ><span>Retur Supplier</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                    /></svg
+                                ><span>Hutang Supplier</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- CRM & Pricing -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">CRM &amp; Pricing</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M12 2 9 9H2l7 5-3 8 6-5 6 5-3-8 7-5h-7Z" /></svg
+                                ><span>Member</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M7 16h.01M11 16h.01M15 12h.01M19 8h.01" />
+                                    <path d="M7 12c1.5 0 2.5-1 4-3s2.5-3 4-3" />
+                                    <path d="M15 16c1.5 0 2.5-1 4-3" /></svg
+                                ><span>Promo Harga</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M2 9a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v2a2 2 0 0 1 0 4v2a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-2a2 2 0 0 1 0-4V9Z"
+                                    />
+                                    <path d="M7 9v6" />
+                                    <path d="M12 9v6" />
+                                    <path d="M17 9v6" /></svg
+                                ><span>Voucher Customer</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg
+                                ><span>Segment Customer</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 11v3a9 9 0 0 0 18 0v-3" />
+                                    <path d="M21 8v3a9 9 0 0 1-18 0V8" />
+                                    <path d="M21 8a9 9 0 0 0-18 0" />
+                                    <path d="M12 2v9" /></svg
+                                ><span>Campaign CRM</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M6 8a6 6 0 0 1 12 0c0 7 4 9 4 9H2s4-2 4-9" />
+                                    <path d="M11 22h2" /></svg
+                                ><span>Reminder CRM</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Reports -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Reports</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" /></svg
+                                ><span>Laporan Penjualan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                                    <path d="M22 12A10 10 0 0 0 12 2v10Z" /></svg
+                                ><span>Laporan Keuntungan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M7 16h.01M11 16h.01M15 12h.01M19 8h.01" />
+                                    <path d="M7 12c1.5 0 2.5-1 4-3s2.5-3 4-3" />
+                                    <path d="M15 16c1.5 0 2.5-1 4-3" /></svg
+                                ><span>Advanced Insights</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Operations & Control -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Operations &amp; Control</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" /></svg
+                                ><span>Shift Kasir</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" /></svg
+                                ><span>Audit Log</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- User Management -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">User Management</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg
+                                ><span>Hak Akses</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 8v8M8 12h8" /></svg
+                                ><span>Akses Group</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg
+                                ><span>Data Pengguna</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Pengaturan -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Pengaturan</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <rect x="2" y="5" width="20" height="14" rx="2" />
+                                    <path d="M2 10h20" /></svg
+                                ><span>Payment Gateway</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 9 12 2l9 7v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"
+                                    /></svg
+                                ><span>Profil Toko</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                    /></svg
+                                ><span>Loyalty</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M7 16h.01M11 16h.01M15 12h.01M19 8h.01" />
+                                    <path d="M7 12c1.5 0 2.5-1 4-3s2.5-3 4-3" />
+                                    <path d="M15 16c1.5 0 2.5-1 4-3" /></svg
+                                ><span>Target Penjualan</span></a
+                            >
+                        </div>
+                    </div>
+                </nav>
+                <div class="sidebar-footer">Point of Sales v2.0</div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="flex flex-1 min-w-0 flex-col overflow-hidden">
+                <!-- Top Navbar -->
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <button class="mobile-menu-btn" aria-label="Toggle sidebar">
+                            <svg
+                                class="icon-20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                            >
+                                <path d="M3 6h18M3 12h18M3 18h18" />
+                            </svg>
+                        </button>
+                        <h1 class="page-title">Dashboard</h1>
+                    </div>
+
+                    <div class="topbar-right">
+                        <!-- Active Shift -->
+                        <div class="shift-badge">
+                            <span class="shift-dot"></span>
+                            Shift #12
+                        </div>
+
+                        <!-- Notification Bell -->
+                        <button class="bell-btn" aria-label="Notifikasi">
+                            <svg
+                                class="icon-20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                            >
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 4 9 4 9H2s4-2 4-9" />
+                                <path d="M11 22h2" />
+                            </svg>
+                            <span class="bell-badge">3</span>
+                        </button>
+
+                        <!-- User Avatar -->
+                        <div class="avatar">AK</div>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="content-inner">
+                        <!-- Welcome -->
+                        <h1 class="welcome-title">Selamat datang kembali, Admin Kasir!</h1>
+
+                        <!-- Security Alerts -->
+                        <div class="security-section">
+                            <div class="security-header">
+                                <svg
+                                    class="icon-18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                                <h3>Security Alerts</h3>
+                            </div>
+
+                            <div class="alert-card alert-high">
+                                <svg
+                                    class="icon-18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                >
+                                    <path
+                                        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                                    />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                                </svg>
+                                <div>
+                                    <p class="alert-title">Multiple Failed Login Attempts</p>
+                                    <p class="alert-msg">
+                                        Admin IP 192.168.1.100 — 5 failed attempts in the last 10
+                                        minutes
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="alert-card alert-medium">
+                                <svg
+                                    class="icon-18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                >
+                                    <path
+                                        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                                    />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                                </svg>
+                                <div>
+                                    <p class="alert-title">Unusual Login Location</p>
+                                    <p class="alert-msg">
+                                        User "staff01" logged in from a new device — Jakarta,
+                                        Indonesia
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="alert-card alert-low">
+                                <svg
+                                    class="icon-18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                >
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4" />
+                                    <path d="M12 8h.01" />
+                                </svg>
+                                <div>
+                                    <p class="alert-title">Password Expiry Notice</p>
+                                    <p class="alert-msg">
+                                        3 users have passwords expiring within 7 days
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <p class="stat-label">Today's Sales</p>
+                                <p class="stat-value">Rp 0</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Transactions</p>
+                                <p class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Products</p>
+                                <p class="stat-value">0</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="stat-label">Customers</p>
+                                <p class="stat-value">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

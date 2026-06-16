@@ -58,7 +58,13 @@
                     "fix": "safe",
                     "options": {
                         "attributes": ["classList"],
-                        "functions": ["twMerge", "twJoin", "tv", "composeRenderProps", "composeTailwindRenderProps"]
+                        "functions": [
+                            "twMerge",
+                            "twJoin",
+                            "tv",
+                            "composeRenderProps",
+                            "composeTailwindRenderProps"
+                        ]
                     }
                 }
             }

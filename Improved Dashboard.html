@@ -1,0 +1,2006 @@
+<!doctype html>
+<html lang="id" class="">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard — Improved UX Preview</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            :root {
+                --bg: #f2f0ed;
+                --bg-card: #ffffff;
+                --fg: #1a1a2e;
+                --border: #e8e8ef;
+                --border-card: #e8e8ef;
+                --muted-fg: #8888a0;
+                --primary: #3c5f53;
+                --primary-hover: #2d4a40;
+                --primary-50: #f0f5f2;
+                --primary-100: #e0ebe4;
+                --primary-10: rgba(60, 95, 83, 0.1);
+                --primary-5: rgba(60, 95, 83, 0.05);
+                --secondary: #f0f0f5;
+                --secondary-fg: #1a1a2e;
+                --overlay: #ffffff;
+                --navbar: #fcfcfd;
+                --danger: #e74c4c;
+                --success: #2ecc71;
+                --warning: #f0a030;
+                --info: #3498db;
+                --danger-50: #fef2f2;
+                --danger-100: #fee2e2;
+                --danger-200: #fecaca;
+                --danger-500: #ef4444;
+                --danger-700: #b91c1c;
+                --warning-50: #fffbeb;
+                --warning-100: #fef3c7;
+                --warning-200: #fde68a;
+                --warning-500: #f59e0b;
+                --warning-700: #b45309;
+                --info-50: #eff6ff;
+                --info-200: #bfdbfe;
+                --info-700: #1d4ed8;
+                --success-50: #f0fdf4;
+                --success-100: #dcfce7;
+                --success-500: #22c55e;
+                --success-10: rgba(46, 204, 113, 0.1);
+                --slate-50: #f8fafc;
+                --slate-100: #f1f5f9;
+                --slate-200: #e2e8f0;
+                --slate-300: #cbd5e1;
+                --slate-400: #94a3b8;
+                --slate-500: #64748b;
+                --slate-600: #475569;
+                --slate-700: #334155;
+                --slate-800: #1e293b;
+                --slate-900: #0f172a;
+                --radius-sm: 8px;
+                --radius: 12px;
+                --radius-lg: 16px;
+                --radius-xl: 20px;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+                --shadow-lg:
+                    0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+                font-family: "Figtree", "Inter", system-ui, sans-serif;
+                transition:
+                    background 0.2s,
+                    color 0.2s,
+                    border-color 0.2s;
+            }
+            .dark {
+                --bg: #14141f;
+                --bg-card: #1c1c2e;
+                --fg: #e8e8f0;
+                --border: #2a2a3e;
+                --border-card: #2a2a3e;
+                --muted-fg: #8888a0;
+                --primary: #3c5f53;
+                --primary-hover: #4d7a6a;
+                --primary-50: rgba(60, 95, 83, 0.12);
+                --primary-100: rgba(60, 95, 83, 0.2);
+                --primary-10: rgba(60, 95, 83, 0.15);
+                --primary-5: rgba(60, 95, 83, 0.08);
+                --secondary: #25253a;
+                --secondary-fg: #e8e8f0;
+                --overlay: #1c1c2e;
+                --navbar: #181828;
+                --danger-50: rgba(231, 76, 76, 0.12);
+                --danger-100: rgba(231, 76, 76, 0.2);
+                --danger-200: rgba(231, 76, 76, 0.3);
+                --danger-500: #ef4444;
+                --danger-700: #f87171;
+                --warning-50: rgba(240, 160, 48, 0.12);
+                --warning-100: rgba(240, 160, 48, 0.2);
+                --warning-500: #f59e0b;
+                --warning-700: #fbbf24;
+                --info-50: rgba(52, 152, 219, 0.12);
+                --info-700: #60a5fa;
+                --success-50: rgba(46, 204, 113, 0.12);
+                --success-100: rgba(46, 204, 113, 0.2);
+                --success-500: #22c55e;
+                --success-10: rgba(46, 204, 113, 0.12);
+                --slate-50: rgba(248, 250, 252, 0.05);
+                --slate-100: rgba(241, 245, 249, 0.08);
+                --slate-200: rgba(226, 232, 240, 0.1);
+                --slate-300: #475569;
+                --slate-400: #64748b;
+                --slate-500: #8899b0;
+                --slate-600: #a0b0c8;
+                --slate-700: #c0d0e0;
+                --slate-800: #d8e0e8;
+                --slate-900: #f0f4f8;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.25);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            }
+            body {
+                background: var(--bg);
+                color: var(--fg);
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+            .flex {
+                display: flex;
+            }
+            .h-screen {
+                height: 100vh;
+            }
+            .overflow-hidden {
+                overflow: hidden;
+            }
+            .shrink-0 {
+                flex-shrink: 0;
+            }
+            .min-w-0 {
+                min-width: 0;
+            }
+            .flex-1 {
+                flex: 1 1 0%;
+            }
+            .flex-col {
+                flex-direction: column;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .justify-center {
+                justify-content: center;
+            }
+            .justify-between {
+                justify-content: space-between;
+            }
+            .gap-1 {
+                gap: 4px;
+            }
+            .gap-2 {
+                gap: 8px;
+            }
+            .gap-3 {
+                gap: 12px;
+            }
+            .gap-4 {
+                gap: 16px;
+            }
+            .gap-6 {
+                gap: 24px;
+            }
+            .text-xs {
+                font-size: 12px;
+            }
+            .text-sm {
+                font-size: 14px;
+            }
+            .text-base {
+                font-size: 16px;
+            }
+            .text-lg {
+                font-size: 18px;
+            }
+            .text-xl {
+                font-size: 20px;
+            }
+            .text-2xl {
+                font-size: 24px;
+            }
+            .text-3xl {
+                font-size: 30px;
+            }
+            .font-medium {
+                font-weight: 500;
+            }
+            .font-semibold {
+                font-weight: 600;
+            }
+            .font-bold {
+                font-weight: 700;
+            }
+            .truncate {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .text-muted-fg {
+                color: var(--muted-fg);
+            }
+            .text-primary {
+                color: var(--primary);
+            }
+            .text-success {
+                color: var(--success-500);
+            }
+            .text-danger {
+                color: var(--danger-500);
+            }
+            .text-warning {
+                color: var(--warning-500);
+            }
+            .rounded-lg {
+                border-radius: var(--radius);
+            }
+            .rounded-xl {
+                border-radius: var(--radius-lg);
+            }
+            .rounded-2xl {
+                border-radius: var(--radius-xl);
+            }
+            .mt-1 {
+                margin-top: 4px;
+            }
+            .mt-2 {
+                margin-top: 8px;
+            }
+            .mb-1 {
+                margin-bottom: 4px;
+            }
+            .mb-2 {
+                margin-bottom: 8px;
+            }
+            .mb-4 {
+                margin-bottom: 16px;
+            }
+            .mb-6 {
+                margin-bottom: 24px;
+            }
+            .p-4 {
+                padding: 16px;
+            }
+            .p-6 {
+                padding: 24px;
+            }
+            .px-3 {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .px-4 {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .py-2 {
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            .py-3 {
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .space-y-2 > * + * {
+                margin-top: 8px;
+            }
+            .space-y-3 > * + * {
+                margin-top: 12px;
+            }
+            .space-y-4 > * + * {
+                margin-top: 16px;
+            }
+            .grid {
+                display: grid;
+            }
+            .grid-cols-1 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .col-span-2 {
+                grid-column: span 2;
+            }
+            .col-span-3 {
+                grid-column: span 3;
+            }
+
+            /* Sidebar */
+            .sidebar {
+                width: 260px;
+                border-right: 1px solid var(--border);
+                background: var(--navbar);
+                display: none;
+                flex-direction: column;
+                z-index: 30;
+            }
+            @media (min-width: 768px) {
+                .sidebar {
+                    display: flex;
+                }
+            }
+            .sidebar-header {
+                height: 64px;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid var(--border);
+                padding: 0 20px;
+            }
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .sidebar-logo-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                background: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 15px;
+                color: #fff;
+            }
+            .sidebar-logo-text {
+                font-weight: 700;
+                font-size: 18px;
+                color: var(--fg);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .sidebar-nav {
+                flex: 1;
+                overflow-y: auto;
+                padding: 16px 12px;
+            }
+            .sidebar-nav::-webkit-scrollbar {
+                width: 4px;
+            }
+            .sidebar-nav::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            .sidebar-section {
+                margin-bottom: 20px;
+            }
+            .sidebar-section-title {
+                padding: 0 12px;
+                margin-bottom: 6px;
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--muted-fg);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+            .sidebar-items {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 9px 12px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .sidebar-item:hover {
+                background: var(--primary-5);
+                color: var(--fg);
+            }
+            .sidebar-item:hover svg {
+                color: var(--fg);
+            }
+            .sidebar-item.active {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            .sidebar-item.active svg {
+                color: var(--primary);
+            }
+            .sidebar-item span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .sidebar-footer {
+                border-top: 1px solid var(--border);
+                padding: 16px;
+                text-align: center;
+                font-size: 10px;
+                color: var(--muted-fg);
+            }
+
+            /* Top Navbar */
+            .topbar {
+                height: 64px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border);
+                background: var(--navbar);
+                padding: 0 20px;
+                position: sticky;
+                top: 0;
+                z-index: 20;
+            }
+            .topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            .topbar-right {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .page-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: var(--fg);
+            }
+            .icon-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .icon-btn:hover {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            @media (min-width: 768px) {
+                .mobile-menu-btn {
+                    display: none;
+                }
+            }
+            .shift-badge {
+                display: none;
+                align-items: center;
+                gap: 6px;
+                background: var(--success-50);
+                color: var(--success-500);
+                padding: 5px 14px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            @media (min-width: 640px) {
+                .shift-badge {
+                    display: flex;
+                }
+            }
+            .shift-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: var(--success-500);
+                animation: pulse 2s ease-in-out infinite;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+            .bell-btn {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .bell-btn:hover {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            .bell-badge {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                width: 17px;
+                height: 17px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: var(--danger-500);
+                color: #fff;
+                font-size: 10px;
+                font-weight: 700;
+                line-height: 1;
+            }
+            .avatar-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                padding: 4px 8px 4px 4px;
+                border-radius: 999px;
+                transition: all 0.15s;
+            }
+            .avatar-btn:hover {
+                background: var(--primary-5);
+            }
+            .avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .avatar-name {
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--fg);
+                display: none;
+            }
+            @media (min-width: 640px) {
+                .avatar-name {
+                    display: block;
+                }
+            }
+
+            /* Main Content */
+            .main-content {
+                flex: 1;
+                overflow-y: auto;
+                background: var(--bg);
+            }
+            .main-content::-webkit-scrollbar {
+                width: 6px;
+            }
+            .main-content::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            .content-inner {
+                max-width: 1360px;
+                margin: 0 auto;
+                padding: 24px 20px 40px;
+            }
+            @media (min-width: 1024px) {
+                .content-inner {
+                    padding: 32px 32px 48px;
+                }
+            }
+
+            /* Welcome Section */
+            .welcome-section {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-bottom: 28px;
+            }
+            .welcome-text h1 {
+                font-size: 26px;
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                color: var(--fg);
+            }
+            .welcome-text p {
+                margin-top: 4px;
+                color: var(--muted-fg);
+                font-size: 15px;
+            }
+            .date-badge {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--bg-card);
+                padding: 8px 16px;
+                border-radius: 999px;
+                border: 1px solid var(--border-card);
+                color: var(--muted-fg);
+                font-size: 13px;
+                font-weight: 500;
+                box-shadow: var(--shadow-sm);
+            }
+
+            /* Stats Cards */
+            .stats-grid {
+                display: grid;
+                gap: 16px;
+                grid-template-columns: 1fr;
+                margin-bottom: 24px;
+            }
+            @media (min-width: 640px) {
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (min-width: 1024px) {
+                .stats-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .stat-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius-lg);
+                padding: 20px 24px;
+                box-shadow: var(--shadow-sm);
+                transition: all 0.2s;
+                position: relative;
+                overflow: hidden;
+            }
+            .stat-card:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-1px);
+            }
+            .stat-card .stat-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+            }
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .stat-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+            .stat-trend {
+                font-size: 12px;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-weight: 600;
+            }
+            .stat-trend.up {
+                background: var(--success-50);
+                color: var(--success-500);
+            }
+            .stat-trend.down {
+                background: var(--danger-50);
+                color: var(--danger-500);
+            }
+            .stat-label {
+                font-size: 13px;
+                color: var(--muted-fg);
+                font-weight: 500;
+            }
+            .stat-value {
+                font-size: 28px;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+            }
+            .stat-sub {
+                font-size: 12px;
+                color: var(--muted-fg);
+                margin-top: 4px;
+            }
+
+            /* Dashboard Grid */
+            .dashboard-grid {
+                display: grid;
+                gap: 20px;
+                grid-template-columns: 1fr;
+                margin-bottom: 20px;
+            }
+            @media (min-width: 1024px) {
+                .dashboard-grid {
+                    grid-template-columns: 1fr 380px;
+                }
+            }
+
+            /* Widget Card */
+            .widget {
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-sm);
+            }
+            .widget-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 24px 0;
+            }
+            .widget-header h3 {
+                font-size: 16px;
+                font-weight: 600;
+            }
+            .widget-body {
+                padding: 16px 24px 24px;
+            }
+
+            /* Chart */
+            .chart-area {
+                padding: 4px 0;
+            }
+            .chart-bars {
+                display: flex;
+                align-items: flex-end;
+                gap: 8px;
+                height: 180px;
+                padding-top: 16px;
+            }
+            .chart-bar-group {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+            }
+            .chart-bar {
+                width: 100%;
+                max-width: 40px;
+                border-radius: 4px 4px 0 0;
+                min-height: 8px;
+                transition: height 0.4s ease;
+                position: relative;
+                cursor: pointer;
+            }
+            .chart-bar:hover {
+                opacity: 0.8;
+            }
+            .chart-bar-label {
+                font-size: 11px;
+                color: var(--muted-fg);
+                font-weight: 500;
+            }
+            .chart-legend {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-top: 12px;
+                font-size: 12px;
+                color: var(--muted-fg);
+            }
+            .chart-legend-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 2px;
+                display: inline-block;
+                margin-right: 4px;
+            }
+
+            /* Transaction List */
+            .tx-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .tx-item:last-child {
+                border-bottom: none;
+            }
+            .tx-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .tx-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .tx-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+            .tx-info {
+            }
+            .tx-info .tx-name {
+                font-weight: 600;
+                font-size: 14px;
+            }
+            .tx-info .tx-desc {
+                font-size: 12px;
+                color: var(--muted-fg);
+                margin-top: 1px;
+            }
+            .tx-amount {
+                font-weight: 700;
+                font-size: 14px;
+                text-align: right;
+            }
+            .tx-amount .tx-time {
+                font-weight: 400;
+                font-size: 11px;
+                color: var(--muted-fg);
+                display: block;
+            }
+
+            /* Product List */
+            .product-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .product-item:last-child {
+                border-bottom: none;
+            }
+            .product-thumb {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius);
+                background: var(--primary-5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 16px;
+            }
+            .product-info {
+                flex: 1;
+            }
+            .product-info .p-name {
+                font-weight: 600;
+                font-size: 14px;
+            }
+            .product-info .p-meta {
+                font-size: 12px;
+                color: var(--muted-fg);
+                margin-top: 1px;
+            }
+            .product-stat {
+                text-align: right;
+            }
+            .product-stat .p-value {
+                font-weight: 700;
+                font-size: 14px;
+            }
+            .product-stat .p-sub {
+                font-size: 11px;
+                color: var(--muted-fg);
+            }
+
+            /* Status Badges */
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 10px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .badge-success {
+                background: var(--success-50);
+                color: var(--success-500);
+            }
+            .badge-warning {
+                background: var(--warning-50);
+                color: var(--warning-500);
+            }
+            .badge-danger {
+                background: var(--danger-50);
+                color: var(--danger-500);
+            }
+
+            /* Action Buttons */
+            .quick-actions {
+                display: grid;
+                gap: 12px;
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 24px;
+            }
+            @media (min-width: 640px) {
+                .quick-actions {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .quick-action {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 18px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-sm);
+                font-weight: 600;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+            .quick-action:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-1px);
+                border-color: var(--primary);
+            }
+            .quick-action svg {
+                width: 22px;
+                height: 22px;
+                flex-shrink: 0;
+            }
+            .quick-action .qa-label {
+                line-height: 1.3;
+            }
+
+            /* Section Title */
+            .section-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            /* View All Link */
+            .view-all {
+                font-size: 13px;
+                color: var(--primary);
+                font-weight: 500;
+                cursor: pointer;
+                transition: opacity 0.15s;
+            }
+            .view-all:hover {
+                opacity: 0.7;
+            }
+
+            /* SVG Icons */
+            .icon-5 {
+                width: 20px;
+                height: 20px;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+            .icon-5sm {
+                width: 18px;
+                height: 18px;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            /* Theme toggle */
+            .theme-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+                font-size: 18px;
+            }
+            .theme-toggle:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex h-screen overflow-hidden">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <a href="#" class="sidebar-logo">
+                        <div class="sidebar-logo-icon">K</div>
+                        <span class="sidebar-logo-text">KASIR</span>
+                    </a>
+                </div>
+                <nav class="sidebar-nav">
+                    <!-- Overview -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Overview</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item active">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <rect x="3" y="3" width="7" height="7" />
+                                    <rect x="14" y="3" width="7" height="7" />
+                                    <rect x="14" y="14" width="7" height="7" />
+                                    <rect x="3" y="14" width="7" height="7" />
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Master Data -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Master Data</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+                                    /></svg
+                                ><span>Kategori</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V12" />
+                                    <path d="M3.3 7 12 12l8.7-5" /></svg
+                                ><span>Produk</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg
+                                ><span>Pelanggan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg
+                                ><span>Supplier</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Sales -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Sales</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" /></svg
+                                ><span>Transaksi</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" /></svg
+                                ><span>Transaksi Pending</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="m15 9-6 6" />
+                                    <path d="M9 9h6v6" /></svg
+                                ><span>Retur Penjualan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                    /></svg
+                                ><span>Piutang</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Inventory -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Inventory</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                    />
+                                    <path
+                                        d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"
+                                    />
+                                    <path d="M12 11v6" />
+                                    <path d="M9 14h6" /></svg
+                                ><span>Stock Opname</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="m18 15-6-6-6 6" /></svg
+                                ><span>Mutasi Stok</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Procurement -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Procurement</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                    />
+                                    <path d="M12 11v6" />
+                                    <path d="M9 14h6" /></svg
+                                ><span>Purchase Order</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21 12v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                    <path d="M12 15V3" /></svg
+                                ><span>Penerimaan Barang</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="m15 9-6 6" />
+                                    <path d="M9 9h6v6" /></svg
+                                ><span>Retur Supplier</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- CRM & Pricing -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">CRM &amp; Pricing</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M12 2 9 9H2l7 5-3 8 6-5 6 5-3-8 7-5h-7Z" /></svg
+                                ><span>Member</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M7 16h.01M11 16h.01M15 12h.01M19 8h.01" /></svg
+                                ><span>Promo Harga</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M2 9a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v2a2 2 0 0 1 0 4v2a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-2a2 2 0 0 1 0-4Z"
+                                    />
+                                    <path d="M7 9v6" />
+                                    <path d="M12 9v6" />
+                                    <path d="M17 9v6" /></svg
+                                ><span>Voucher</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" /></svg
+                                ><span>Segment</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Reports -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Reports</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" /></svg
+                                ><span>Laporan Penjualan</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                                    <path d="M22 12A10 10 0 0 0 12 2v10Z" /></svg
+                                ><span>Laba & Rugi</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Operations -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Operasional</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" /></svg
+                                ><span>Shift Kasir</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" /></svg
+                                ><span>Audit Log</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Users -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">User Management</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg
+                                ><span>Hak Akses</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M15 9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path d="M6 20a6 6 0 0 1 12 0" /></svg
+                                ><span>Pengguna</span></a
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Settings -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Pengaturan</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <rect x="2" y="5" width="20" height="14" rx="2" />
+                                    <path d="M2 10h20" /></svg
+                                ><span>Pembayaran</span></a
+                            >
+                            <a href="#" class="sidebar-item"
+                                ><svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 9 12 2l9 7v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"
+                                    /></svg
+                                ><span>Profil Toko</span></a
+                            >
+                        </div>
+                    </div>
+                </nav>
+                <div class="sidebar-footer">Point of Sales v2.0</div>
+            </aside>
+
+            <!-- Main-->
+            <div class="flex flex-1 min-w-0 flex-col">
+                <!-- Topbar -->
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <button class="icon-btn mobile-menu-btn">
+                            <svg class="icon-5" viewBox="0 0 24 24">
+                                <path d="M3 6h18M3 12h18M3 18h18" />
+                            </svg>
+                        </button>
+                        <h1 class="page-title">Dashboard</h1>
+                    </div>
+                    <div class="topbar-right">
+                        <div class="shift-badge">
+                            <span class="shift-dot"></span>
+                            Shift #12 &bull; Rp 1.250.000
+                        </div>
+                        <button class="bell-btn">
+                            <svg class="icon-5" viewBox="0 0 24 24">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 4 9 4 9H2s4-2 4-9" />
+                                <path d="M11 22h2" />
+                            </svg>
+                            <span class="bell-badge">3</span>
+                        </button>
+                        <button
+                            class="theme-toggle"
+                            onclick="document.documentElement.classList.toggle('dark')"
+                            title="Toggle dark mode"
+                            id="themeBtn"
+                        >
+                            🌙
+                        </button>
+                        <button class="avatar-btn">
+                            <div class="avatar">AK</div>
+                            <span class="avatar-name">Admin Kasir</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Content -->
+                <main class="main-content">
+                    <div class="content-inner">
+                        <!-- Welcome -->
+                        <div class="welcome-section">
+                            <div class="welcome-text">
+                                <h1>Selamat datang kembali, Admin Kasir 👋</h1>
+                                <p>Berikut ringkasan bisnis Anda hari ini.</p>
+                            </div>
+                            <div class="date-badge">
+                                <svg class="icon-5sm" viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M3 10h18" />
+                                    <path d="M16 2v4" />
+                                    <path d="M8 2v4" />
+                                </svg>
+                                <span id="currentDate"></span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                                <span class="qa-label">Transaksi Baru</span>
+                            </div>
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V12" />
+                                    <path d="M3.3 7 12 12l8.7-5" />
+                                </svg>
+                                <span class="qa-label">Cek Stok</span>
+                            </div>
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" />
+                                </svg>
+                                <span class="qa-label">Laporan</span>
+                            </div>
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+                                </svg>
+                                <span class="qa-label">Buka Shift</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: var(--primary-10); color: var(--primary)"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path
+                                                d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+12.5%</span>
+                                </div>
+                                <p class="stat-label">Today's Sales</p>
+                                <p class="stat-value">Rp 2.850.000</p>
+                                <p class="stat-sub">vs. Rp 2.530.000 kemarin</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: rgba(52, 152, 219, 0.1); color: #3498db"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path
+                                                d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                            />
+                                            <path d="M3 6h18" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+8.3%</span>
+                                </div>
+                                <p class="stat-label">Transactions</p>
+                                <p class="stat-value">24</p>
+                                <p class="stat-sub">12 pending, 12 completed</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="
+                                            background: var(--success-50);
+                                            color: var(--success-500);
+                                        "
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path
+                                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                            />
+                                            <path d="M12 22V12" />
+                                            <path d="M3.3 7 12 12l8.7-5" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend down">-3</span>
+                                </div>
+                                <p class="stat-label">Products</p>
+                                <p class="stat-value">847</p>
+                                <p class="stat-sub">12 hampir habis ⚠️</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: rgba(160, 120, 200, 0.1); color: #a078c8"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+5</span>
+                                </div>
+                                <p class="stat-label">Customers</p>
+                                <p class="stat-value">342</p>
+                                <p class="stat-sub">18 pelanggan baru bulan ini</p>
+                            </div>
+                        </div>
+
+                        <!-- Dashboard Grid: Chart + Right Sidebar -->
+                        <div class="dashboard-grid">
+                            <!-- Left: Chart & Recent Transactions -->
+                            <div class="space-y-5">
+                                <!-- Revenue Chart Widget -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>Revenue 7 Hari Terakhir</h3>
+                                        <span class="stat-trend up">+15.2%</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="chart-area">
+                                            <div
+                                                style="
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    margin-bottom: 4px;
+                                                "
+                                            >
+                                                <span class="text-sm font-semibold">Rp 23.4M</span>
+                                                <span class="text-xs text-muted-fg"
+                                                    >Total minggu ini</span
+                                                >
+                                            </div>
+                                            <div class="chart-bars">
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 120px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Sen</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 90px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Sel</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 140px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Rab</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 110px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Kam</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 160px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Jum</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 130px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Sab</span>
+                                                </div>
+                                                <div class="chart-bar-group">
+                                                    <div
+                                                        class="chart-bar"
+                                                        style="
+                                                            height: 95px;
+                                                            background: linear-gradient(
+                                                                180deg,
+                                                                var(--primary),
+                                                                #4d7a6a
+                                                            );
+                                                        "
+                                                    ></div>
+                                                    <span class="chart-bar-label">Min</span>
+                                                </div>
+                                            </div>
+                                            <div class="chart-legend">
+                                                <span
+                                                    ><span
+                                                        class="chart-legend-dot"
+                                                        style="background: var(--primary)"
+                                                    ></span
+                                                    >Revenue</span
+                                                >
+                                                <span class="text-muted-fg"
+                                                    >Minggu sebelumnya: Rp 20.3M</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Transactions -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>Transaksi Terbaru</h3>
+                                        <span class="view-all">Lihat Semua →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240601</p>
+                                                    <p class="tx-desc">Budi Santoso • 5 items</p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 245.000
+                                                <span class="tx-time">10 menit lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240600</p>
+                                                    <p class="tx-desc">Siti Rahma • 3 items</p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 128.500
+                                                <span class="tx-time">25 menit lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--warning-50);
+                                                        color: var(--warning-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <circle cx="12" cy="12" r="10" />
+                                                        <path d="M12 6v6l4 2" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240599</p>
+                                                    <p class="tx-desc">
+                                                        Ahmad Hidayat • 2 items (pending)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 89.000
+                                                <span class="tx-time">1 jam lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240598</p>
+                                                    <p class="tx-desc">Dewi Lestari • 8 items</p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 432.000
+                                                <span class="tx-time">1.5 jam lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240597</p>
+                                                    <p class="tx-desc">Rudi Hermawan • 1 item</p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 55.000
+                                                <span class="tx-time">2 jam lalu</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Low Stock & Top Products -->
+                            <div class="space-y-5">
+                                <!-- Notifications / Low Stock -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>⚠️ Stok Hampir Habis</h3>
+                                        <span class="view-all">Atur →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="space-y-1">
+                                            <div class="product-item">
+                                                <div class="product-thumb">🥤</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Teh Botol Sosro</p>
+                                                    <p class="p-meta">Kategori: Minuman</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--danger-500)"
+                                                    >
+                                                        3
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🍜</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Indomie Goreng</p>
+                                                    <p class="p-meta">Kategori: Makanan</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--danger-500)"
+                                                    >
+                                                        5
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🧴</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Sabun Lifebuoy</p>
+                                                    <p class="p-meta">Kategori: Household</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--warning-500)"
+                                                    >
+                                                        8
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">💧</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Air Mineral 600ml</p>
+                                                    <p class="p-meta">Kategori: Minuman</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--warning-500)"
+                                                    >
+                                                        10
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Top Products -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>🏆 Produk Terlaris</h3>
+                                        <span class="view-all">Detail →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="space-y-1">
+                                            <div class="product-item">
+                                                <div class="product-thumb">☕</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Kopi Kapal Api</p>
+                                                    <p class="p-meta">Terjual 48 unit hari ini</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 960.000</p>
+                                                    <p class="p-sub">revenue</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🥤</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Teh Botol Sosro</p>
+                                                    <p class="p-meta">Terjual 36 unit hari ini</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 180.000</p>
+                                                    <p class="p-sub">revenue</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🍚</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Beras 5kg</p>
+                                                    <p class="p-meta">Terjual 12 unit hari ini</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 840.000</p>
+                                                    <p class="p-sub">revenue</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🧂</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Minyak Goreng 2L</p>
+                                                    <p class="p-meta">Terjual 10 unit hari ini</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 350.000</p>
+                                                    <p class="p-sub">revenue</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script>
+            // Set current date
+            const now = new Date();
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const months = [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember",
+            ];
+            document.getElementById("currentDate").textContent =
+                days[now.getDay()] +
+                ", " +
+                now.getDate() +
+                " " +
+                months[now.getMonth()] +
+                " " +
+                now.getFullYear();
+
+            // Theme toggle
+            const themeBtn = document.getElementById("themeBtn");
+            themeBtn.addEventListener("click", function () {
+                const isDark = document.documentElement.classList.toggle("dark");
+                this.textContent = isDark ? "☀️" : "🌙";
+            });
+        </script>
+    </body>
+</html>

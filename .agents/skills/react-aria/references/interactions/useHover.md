@@ -4,45 +4,46 @@ Handles pointer hover interactions for an element. Normalizes behavior
 across browsers and platforms, and ignores emulated mouse events on touch devices.
 
 ```tsx
-import React from 'react';
-import {useHover} from 'react-aria/useHover';
+import React from "react";
+import { useHover } from "react-aria/useHover";
 
 function Example() {
-  let [events, setEvents] = React.useState<string[]>([]);
-  let {hoverProps, isHovered} = useHover({
-    onHoverStart: e => setEvents(
-      events => [...events, `hover start with ${e.pointerType}`]
-    ),
-    onHoverEnd: e => setEvents(
-      events => [...events, `hover end with ${e.pointerType}`]
-    )
-  });
+    let [events, setEvents] = React.useState<string[]>([]);
+    let { hoverProps, isHovered } = useHover({
+        onHoverStart: (e) =>
+            setEvents((events) => [...events, `hover start with ${e.pointerType}`]),
+        onHoverEnd: (e) => setEvents((events) => [...events, `hover end with ${e.pointerType}`]),
+    });
 
-  return (
-    <>
-      <div
-        {...hoverProps}
-        style={{
-          background: isHovered ? 'darkgreen' : 'green',
-          color: 'white',
-          display: 'inline-block',
-          padding: '8px 12px',
-          borderRadius: 8,
-          cursor: 'pointer'
-        }}
-        role="button"
-        tabIndex={0}>
-        Hover me!
-      </div>
-      <ul
-        style={{
-          maxHeight: '200px',
-          overflow: 'auto'
-        }}>
-        {events.map((e, i) => <li key={i}>{e}</li>)}
-      </ul>
-    </>
-  );
+    return (
+        <>
+            <div
+                {...hoverProps}
+                style={{
+                    background: isHovered ? "darkgreen" : "green",
+                    color: "white",
+                    display: "inline-block",
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    cursor: "pointer",
+                }}
+                role="button"
+                tabIndex={0}
+            >
+                Hover me!
+            </div>
+            <ul
+                style={{
+                    maxHeight: "200px",
+                    overflow: "auto",
+                }}
+            >
+                {events.map((e, i) => (
+                    <li key={i}>{e}</li>
+                ))}
+            </ul>
+        </>
+    );
 }
 ```
 
@@ -66,18 +67,18 @@ function Example() {
 
 ### HoverProps
 
-| Name | Type | Description |
-|------|------|-------------|
-| `isDisabled` | `boolean | undefined` | Whether the hover events should be disabled. |
-| `onHoverStart` | `((e: HoverEvent) => void) | undefined` | Handler that is called when a hover interaction starts. |
-| `onHoverEnd` | `((e: HoverEvent) => void) | undefined` | Handler that is called when a hover interaction ends. |
-| `onHoverChange` | `((isHovering: boolean) => void) | undefined` | Handler that is called when the hover state changes. |
+| Name            | Type                             | Description |
+| --------------- | -------------------------------- | ----------- | ------------------------------------------------------- |
+| `isDisabled`    | `boolean                         | undefined`  | Whether the hover events should be disabled.            |
+| `onHoverStart`  | `((e: HoverEvent) => void)       | undefined`  | Handler that is called when a hover interaction starts. |
+| `onHoverEnd`    | `((e: HoverEvent) => void)       | undefined`  | Handler that is called when a hover interaction ends.   |
+| `onHoverChange` | `((isHovering: boolean) => void) | undefined`  | Handler that is called when the hover state changes.    |
 
 ### HoverResult
 
-| Name | Type | Description |
-|------|------|-------------|
+| Name            | Type                              | Description                            |
+| --------------- | --------------------------------- | -------------------------------------- |
 | `hoverProps` \* | `DOMAttributes<FocusableElement>` | Props to spread on the target element. |
-| `isHovered` \* | `boolean` | — |
+| `isHovered` \*  | `boolean`                         | —                                      |
 
 ### HoverEvent

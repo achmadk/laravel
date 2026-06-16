@@ -1,0 +1,1850 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <!--
+  ═══════════════════════════════════════════════════
+  TAX AUDITOR DASHBOARD · Hi-Fi Prototype
+  ═══════════════════════════════════════════════════
+
+  DESIGN ASSUMPTIONS:
+  — This is a prototype of what the Tax Auditor Dashboard would look like
+    if built as an Inertia+React page inside the existing app.
+  — All data shown is mock/sample data for demonstration.
+  — The "Tax Auditor" is a read-only role focused on verifying tax compliance
+    (PPN/PPh) across transactions.
+  — PPN = Pajak Pertambahan Nilai (VAT 11% in Indonesia, since 2022).
+  — PPh = Pajak Penghasilan (Income Tax: Articles 22, 23, 4(2), 21).
+  — Period selector controls which month's data is displayed.
+  — Flagged/anomalous transactions are the auditor's primary work queue.
+  — Design tokens match the existing app: primary #3c5f53 (sage),
+    accent cyan, Figtree font, rounded-xl cards, same spacing rhythm.
+
+  4 QUESTIONS ANSWERED:
+  1. Hero = data (KPIs, trends, anomalies — all tax-specific)
+  2. 1m notebook distance, internal tool
+  3. Temperature = calm, professional, authoritative (sage green)
+  4. Capacity = densely packed but organized — 5 KPI bar + 4 content widgets + anomaly list + transaction table
+
+  PLACEHOLDER NOTE:
+  — Chart areas use CSS art (bars) since this is a static prototype.
+  — In production, these would be Recharts/D3 widgets.
+  — All Rp amounts and numbers are sample data.
+-->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tax Auditor Dashboard · Prototype</title>
+        <!-- Figtree: matching existing app -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+        />
+        <!-- JetBrains Mono for tabular numbers -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Tabler Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"
+        />
+
+        <style>
+            /* ════════════════════════════════════════════
+       Design tokens — matching existing app's app.css
+       ════════════════════════════════════════════ */
+            :root {
+                --font-sans:
+                    "Figtree", "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+                --font-mono:
+                    "JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular", monospace;
+
+                /* Light theme */
+                --bg: oklch(0.97 0.002 285);
+                --bg-card: oklch(1 0 0);
+                --fg: oklch(0.21 0.006 285.885);
+                --border: oklch(0.911 0.006 286.286);
+                --muted: oklch(0.967 0.001 286.375);
+                --muted-fg: oklch(0.552 0.016 285.938);
+                --overlay: oklch(1 0 0);
+
+                /* Brand colors */
+                --primary: #3c5f53;
+                --primary-50: oklch(0.97 0.007 160);
+                --primary-100: oklch(0.94 0.01 160);
+                --primary-200: oklch(0.88 0.02 160);
+                --primary-300: oklch(0.8 0.03 160);
+                --primary-400: oklch(0.68 0.04 160);
+                --primary-500: oklch(0.54 0.05 160);
+                --primary-600: oklch(0.44 0.06 165);
+                --primary-700: oklch(0.38 0.06 165);
+                --primary-800: oklch(0.32 0.05 165);
+                --primary-900: oklch(0.27 0.04 165);
+                --primary-950: oklch(0.2 0.03 165);
+
+                /* Accent (Cyan) */
+                --accent-50: oklch(0.97 0.02 190);
+                --accent-100: oklch(0.93 0.04 190);
+                --accent-200: oklch(0.88 0.08 190);
+                --accent-300: oklch(0.82 0.12 190);
+                --accent-400: oklch(0.74 0.18 190);
+                --accent-500: oklch(0.64 0.22 195);
+                --accent-600: oklch(0.56 0.24 195);
+
+                /* Semantic */
+                --success-50: oklch(0.97 0.02 155);
+                --success-100: oklch(0.93 0.04 155);
+                --success-500: oklch(0.59 0.2 160);
+                --success-600: oklch(0.51 0.2 160);
+                --success-700: oklch(0.43 0.18 160);
+                --warning-50: oklch(0.98 0.02 90);
+                --warning-100: oklch(0.95 0.04 90);
+                --warning-400: oklch(0.78 0.16 80);
+                --warning-500: oklch(0.7 0.18 75);
+                --warning-600: oklch(0.62 0.18 70);
+                --danger-50: oklch(0.97 0.02 10);
+                --danger-100: oklch(0.94 0.04 10);
+                --danger-500: oklch(0.66 0.24 5);
+                --danger-600: oklch(0.58 0.26 5);
+                --info-50: oklch(0.96 0.02 240);
+                --info-100: oklch(0.92 0.04 240);
+                --info-500: oklch(0.56 0.23 240);
+                --chart-bg: oklch(0.92 0.005 286);
+
+                /* Border radii */
+                --radius-xs: 0.375rem;
+                --radius-sm: 0.5rem;
+                --radius: 0.75rem;
+                --radius-lg: 1rem;
+                --radius-xl: 1.25rem;
+            }
+
+            /* Dark theme — matching existing app */
+            .dark {
+                --bg: oklch(0.181 0.005 285.823);
+                --bg-card: oklch(0.21 0.006 285.885);
+                --fg: oklch(0.985 0 0);
+                --border: oklch(0.342 0.017 285.786);
+                --muted: oklch(0.21 0.006 285.885);
+                --muted-fg: oklch(0.705 0.015 286.067);
+                --overlay: oklch(0.16 0.005 285.823);
+
+                --primary-50: oklch(0.2 0.03 165);
+                --primary-100: oklch(0.24 0.04 165);
+                --primary-200: oklch(0.28 0.04 165);
+                --primary-300: oklch(0.32 0.05 165);
+                --primary-400: oklch(0.38 0.06 165);
+                --primary-500: oklch(0.44 0.06 165);
+                --primary-600: oklch(0.5 0.05 165);
+                --primary-700: oklch(0.6 0.04 160);
+
+                --success-50: oklch(0.2 0.08 160);
+                --success-100: oklch(0.24 0.1 160);
+                --success-500: oklch(0.5 0.18 160);
+                --success-600: oklch(0.58 0.18 155);
+                --success-700: oklch(0.66 0.16 155);
+                --warning-50: oklch(0.26 0.08 50);
+                --warning-100: oklch(0.3 0.1 55);
+                --warning-400: oklch(0.64 0.16 75);
+                --warning-500: oklch(0.58 0.18 70);
+                --danger-50: oklch(0.24 0.1 5);
+                --danger-100: oklch(0.28 0.12 5);
+                --danger-500: oklch(0.56 0.2 5);
+                --danger-600: oklch(0.62 0.18 10);
+                --info-50: oklch(0.2 0.08 240);
+                --info-100: oklch(0.24 0.1 240);
+                --info-500: oklch(0.5 0.18 240);
+                --chart-bg: oklch(0.24 0.008 286);
+            }
+
+            /* ════════════════════════════════════════════
+       Base styles
+       ════════════════════════════════════════════ */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: var(--font-sans);
+                background: var(--bg);
+                color: var(--fg);
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            /* ════════════════════════════════════════════
+       Layout
+       ════════════════════════════════════════════ */
+            .app-shell {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 24px 32px 48px;
+            }
+
+            /* ════════════════════════════════════════════
+       Header
+       ════════════════════════════════════════════ */
+            .page-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 16px;
+                margin-bottom: 28px;
+            }
+
+            .page-header-left {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+
+            .role-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 4px 12px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                background: var(--warning-100);
+                color: var(--warning-600);
+                border: 1px solid var(--warning-400);
+            }
+            .dark .role-badge {
+                background: var(--warning-50);
+                color: var(--warning-400);
+            }
+
+            .role-badge i {
+                font-size: 14px;
+            }
+
+            .page-title {
+                font-size: 1.625rem;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: var(--fg);
+            }
+
+            .page-header-right {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            /* Period selector */
+            .period-group {
+                display: flex;
+                align-items: center;
+                gap: 0;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                overflow: hidden;
+                background: var(--bg-card);
+            }
+
+            .period-btn {
+                padding: 8px 16px;
+                font-family: var(--font-sans);
+                font-size: 0.8125rem;
+                font-weight: 500;
+                border: none;
+                background: transparent;
+                color: var(--muted-fg);
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+            .period-btn:hover {
+                background: var(--muted);
+                color: var(--fg);
+            }
+            .period-btn.active {
+                background: var(--primary);
+                color: white;
+            }
+            .period-btn + .period-btn {
+                border-left: 1px solid var(--border);
+            }
+
+            /* Month/year selector */
+            .month-selector {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 14px;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                background: var(--bg-card);
+                font-family: var(--font-sans);
+                font-size: 0.8125rem;
+                font-weight: 500;
+                color: var(--fg);
+                cursor: pointer;
+                transition: border-color 0.15s;
+            }
+            .month-selector:hover {
+                border-color: var(--primary-400);
+            }
+            .month-selector i {
+                font-size: 16px;
+                color: var(--muted-fg);
+            }
+
+            /* Action buttons */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 16px;
+                border-radius: var(--radius);
+                font-family: var(--font-sans);
+                font-size: 0.8125rem;
+                font-weight: 600;
+                border: 1px solid var(--border);
+                cursor: pointer;
+                transition: all 0.15s;
+                background: var(--bg-card);
+                color: var(--fg);
+            }
+            .btn:hover {
+                background: var(--muted);
+            }
+            .btn-primary {
+                background: var(--primary);
+                color: white;
+                border-color: var(--primary);
+            }
+            .btn-primary:hover {
+                background: var(--primary-600);
+            }
+            .btn i {
+                font-size: 16px;
+            }
+
+            /* ════════════════════════════════════════════
+       KPI Bar
+       ════════════════════════════════════════════ */
+            .kpi-bar {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .kpi-card {
+                padding: 18px 20px;
+                border-radius: var(--radius);
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                transition: box-shadow 0.2s;
+            }
+            .kpi-card:hover {
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            }
+
+            .kpi-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+
+            .kpi-label {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--muted-fg);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .kpi-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: var(--radius-sm);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+            }
+            .kpi-icon.primary {
+                background: var(--primary-50);
+                color: var(--primary-600);
+            }
+            .kpi-icon.success {
+                background: var(--success-50);
+                color: var(--success-600);
+            }
+            .kpi-icon.warning {
+                background: var(--warning-50);
+                color: var(--warning-500);
+            }
+            .kpi-icon.danger {
+                background: var(--danger-50);
+                color: var(--danger-600);
+            }
+            .kpi-icon.info {
+                background: var(--info-50);
+                color: var(--info-500);
+            }
+
+            .dark .kpi-icon.primary {
+                background: var(--primary-100);
+            }
+            .dark .kpi-icon.success {
+                background: var(--success-100);
+            }
+            .dark .kpi-icon.warning {
+                background: var(--warning-100);
+            }
+            .dark .kpi-icon.danger {
+                background: var(--danger-100);
+            }
+            .dark .kpi-icon.info {
+                background: var(--info-100);
+            }
+
+            .kpi-value {
+                font-family: var(--font-mono);
+                font-size: 1.375rem;
+                font-weight: 700;
+                color: var(--fg);
+                line-height: 1.2;
+            }
+
+            .kpi-change {
+                display: inline-flex;
+                align-items: center;
+                gap: 3px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-top: 6px;
+            }
+            .kpi-change.up {
+                color: var(--success-600);
+            }
+            .kpi-change.down {
+                color: var(--danger-500);
+            }
+            .kpi-change.neutral {
+                color: var(--muted-fg);
+            }
+            .kpi-change i {
+                font-size: 12px;
+            }
+
+            /* ════════════════════════════════════════════
+       Dashboard Grid
+       ════════════════════════════════════════════ */
+            .grid-2col {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+
+            .grid-3col {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+
+            .grid-full {
+                margin-bottom: 16px;
+            }
+
+            /* Card component — matching existing app's card style */
+            .card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                overflow: hidden;
+            }
+
+            .card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 20px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .card-title {
+                font-size: 0.9375rem;
+                font-weight: 600;
+                color: var(--fg);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .card-title i {
+                font-size: 18px;
+                color: var(--muted-fg);
+            }
+
+            .card-badge {
+                font-size: 0.6875rem;
+                font-weight: 600;
+                padding: 2px 10px;
+                border-radius: 999px;
+            }
+            .card-badge.count {
+                background: var(--primary-50);
+                color: var(--primary-600);
+            }
+            .dark .card-badge.count {
+                background: var(--primary-100);
+                color: var(--primary-400);
+            }
+            .card-badge.danger {
+                background: var(--danger-50);
+                color: var(--danger-600);
+            }
+            .dark .card-badge.danger {
+                background: var(--danger-100);
+                color: var(--danger-400);
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .card-footer {
+                padding: 12px 20px;
+                border-top: 1px solid var(--border);
+                font-size: 0.8125rem;
+                color: var(--muted-fg);
+                display: flex;
+                justify-content: center;
+            }
+            .card-footer a {
+                color: var(--primary-600);
+                text-decoration: none;
+                font-weight: 500;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+            }
+            .card-footer a:hover {
+                text-decoration: underline;
+            }
+
+            /* ════════════════════════════════════════════
+       Tab navigation inside cards
+       ════════════════════════════════════════════ */
+            .tab-bar {
+                display: flex;
+                gap: 0;
+                padding: 0 20px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .tab-item {
+                padding: 12px 16px;
+                font-size: 0.8125rem;
+                font-weight: 500;
+                color: var(--muted-fg);
+                border-bottom: 2px solid transparent;
+                cursor: pointer;
+                transition: all 0.15s;
+                background: none;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                font-family: var(--font-sans);
+            }
+            .tab-item:hover {
+                color: var(--fg);
+            }
+            .tab-item.active {
+                color: var(--primary-600);
+                border-bottom-color: var(--primary-600);
+            }
+
+            /* ════════════════════════════════════════════
+       Gauge (PPN Compliance)
+       ════════════════════════════════════════════ */
+            .gauge-container {
+                display: flex;
+                align-items: center;
+                gap: 28px;
+            }
+
+            .gauge-ring {
+                position: relative;
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+            }
+
+            .gauge-ring svg {
+                width: 100%;
+                height: 100%;
+                transform: rotate(-90deg);
+            }
+
+            .gauge-ring .bg-circle {
+                fill: none;
+                stroke: var(--chart-bg);
+                stroke-width: 8;
+            }
+            .gauge-ring .progress-circle {
+                fill: none;
+                stroke: var(--primary-500);
+                stroke-width: 8;
+                stroke-linecap: round;
+                transition: stroke-dashoffset 0.8s ease;
+            }
+
+            .gauge-label {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .gauge-pct {
+                font-family: var(--font-mono);
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--fg);
+            }
+            .gauge-sub {
+                font-size: 0.6875rem;
+                color: var(--muted-fg);
+                margin-top: 2px;
+            }
+
+            .gauge-details {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .gauge-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 6px 0;
+            }
+            .gauge-row + .gauge-row {
+                border-top: 1px solid var(--border);
+            }
+
+            .gauge-row-label {
+                font-size: 0.8125rem;
+                color: var(--muted-fg);
+            }
+            .gauge-row-value {
+                font-family: var(--font-mono);
+                font-size: 0.8125rem;
+                font-weight: 600;
+            }
+
+            /* ════════════════════════════════════════════
+       Bar chart (CSS-based — placeholder)
+       ════════════════════════════════════════════ */
+            .simple-chart {
+                display: flex;
+                align-items: flex-end;
+                gap: 8px;
+                height: 100px;
+                padding-top: 8px;
+            }
+
+            .chart-bar-wrapper {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                height: 100%;
+                justify-content: flex-end;
+            }
+
+            .chart-bar {
+                width: 100%;
+                max-width: 32px;
+                border-radius: 3px 3px 0 0;
+                transition: height 0.6s ease;
+                min-height: 4px;
+            }
+            .chart-bar.primary {
+                background: var(--primary-500);
+            }
+            .chart-bar.accent {
+                background: var(--accent-400);
+            }
+            .chart-bar.warning {
+                background: var(--warning-400);
+            }
+            .chart-bar.success {
+                background: var(--success-500);
+            }
+            .chart-bar.muted {
+                background: var(--muted);
+            }
+
+            .chart-label {
+                font-size: 0.625rem;
+                color: var(--muted-fg);
+                font-weight: 500;
+                text-align: center;
+            }
+
+            /* ════════════════════════════════════════════
+       Table
+       ════════════════════════════════════════════ */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.8125rem;
+            }
+
+            .data-table thead th {
+                text-align: left;
+                padding: 10px 12px;
+                font-weight: 600;
+                font-size: 0.6875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                color: var(--muted-fg);
+                border-bottom: 1px solid var(--border);
+                white-space: nowrap;
+            }
+
+            .data-table tbody td {
+                padding: 10px 12px;
+                border-bottom: 1px solid var(--border);
+                vertical-align: middle;
+            }
+
+            .data-table tbody tr:hover {
+                background: var(--muted);
+            }
+            .data-table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            .amount {
+                font-family: var(--font-mono);
+                font-weight: 600;
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .flag-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-size: 0.6875rem;
+                font-weight: 600;
+            }
+            .flag-badge.warning {
+                background: var(--warning-50);
+                color: var(--warning-600);
+                border: 1px solid var(--warning-400);
+            }
+            .flag-badge.danger {
+                background: var(--danger-50);
+                color: var(--danger-600);
+                border: 1px solid var(--danger-500);
+            }
+            .flag-badge.success {
+                background: var(--success-50);
+                color: var(--success-600);
+                border: 1px solid var(--success-500);
+            }
+            .dark .flag-badge.warning {
+                background: var(--warning-50);
+            }
+            .dark .flag-badge.danger {
+                background: var(--danger-50);
+            }
+            .dark .flag-badge.success {
+                background: var(--success-50);
+            }
+
+            .flag-badge i {
+                font-size: 10px;
+            }
+
+            /* ════════════════════════════════════════════
+       Anomaly items
+       ════════════════════════════════════════════ */
+            .anomaly-list {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .anomaly-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 12px 0;
+            }
+            .anomaly-item + .anomaly-item {
+                border-top: 1px solid var(--border);
+            }
+
+            .anomaly-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: var(--radius-sm);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+            .anomaly-icon.high {
+                background: var(--danger-50);
+                color: var(--danger-600);
+            }
+            .anomaly-icon.medium {
+                background: var(--warning-50);
+                color: var(--warning-500);
+            }
+            .anomaly-icon.low {
+                background: var(--info-50);
+                color: var(--info-500);
+            }
+
+            .anomaly-content {
+                flex: 1;
+                min-width: 0;
+            }
+            .anomaly-title {
+                font-size: 0.8125rem;
+                font-weight: 600;
+            }
+            .anomaly-desc {
+                font-size: 0.75rem;
+                color: var(--muted-fg);
+                margin-top: 2px;
+            }
+            .anomaly-meta {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 4px;
+                font-size: 0.6875rem;
+                color: var(--muted-fg);
+            }
+            .anomaly-meta .divider {
+                width: 3px;
+                height: 3px;
+                border-radius: 50%;
+                background: var(--border);
+            }
+            .anomaly-action {
+                flex-shrink: 0;
+                margin-top: 4px;
+            }
+            .anomaly-action button {
+                padding: 4px 10px;
+                font-size: 0.75rem;
+                font-weight: 500;
+                border: 1px solid var(--border);
+                border-radius: var(--radius-xs);
+                background: transparent;
+                color: var(--muted-fg);
+                cursor: pointer;
+                transition: all 0.15s;
+                font-family: var(--font-sans);
+            }
+            .anomaly-action button:hover {
+                background: var(--muted);
+                color: var(--fg);
+            }
+
+            /* ════════════════════════════════════════════
+       Category breakdown (progress bars)
+       ════════════════════════════════════════════ */
+            .category-list {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .category-row {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .category-row-top {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8125rem;
+            }
+
+            .category-name {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 500;
+            }
+            .category-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+            }
+            .category-amount {
+                font-family: var(--font-mono);
+                font-weight: 600;
+                font-size: 0.75rem;
+            }
+
+            .category-bar-bg {
+                width: 100%;
+                height: 6px;
+                border-radius: 999px;
+                background: var(--chart-bg);
+                overflow: hidden;
+            }
+            .category-bar-fill {
+                height: 100%;
+                border-radius: 999px;
+                transition: width 0.6s ease;
+            }
+
+            /* ════════════════════════════════════════════
+       Summary stat rows (inside cards)
+       ════════════════════════════════════════════ */
+            .summary-stats {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .summary-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 0;
+            }
+            .summary-row + .summary-row {
+                border-top: 1px solid var(--border);
+            }
+
+            .summary-label {
+                font-size: 0.8125rem;
+                color: var(--muted-fg);
+            }
+            .summary-value {
+                font-family: var(--font-mono);
+                font-size: 0.875rem;
+                font-weight: 600;
+            }
+
+            /* ════════════════════════════════════════════
+       Status indicators
+       ════════════════════════════════════════════ */
+            .status-dot {
+                display: inline-block;
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+            }
+            .status-dot.compliant {
+                background: var(--success-500);
+            }
+            .status-dot.partial {
+                background: var(--warning-400);
+            }
+            .status-dot.flagged {
+                background: var(--danger-500);
+            }
+
+            /* ════════════════════════════════════════════
+       Responsive
+       ════════════════════════════════════════════ */
+            @media (max-width: 1024px) {
+                .kpi-bar {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .grid-2col {
+                    grid-template-columns: 1fr;
+                }
+                .grid-3col {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            @media (max-width: 640px) {
+                .app-shell {
+                    padding: 16px;
+                }
+                .kpi-bar {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .page-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .page-header-right {
+                    width: 100%;
+                    flex-wrap: wrap;
+                }
+            }
+
+            /* ════════════════════════════════════════════
+       Dark mode toggle
+       ════════════════════════════════════════════ */
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                color: var(--muted-fg);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 18px;
+                transition: all 0.15s;
+            }
+            .theme-toggle:hover {
+                color: var(--fg);
+                border-color: var(--primary-400);
+            }
+
+            /* ════════════════════════════════════════════
+       Scrollbar (matching app)
+       ════════════════════════════════════════════ */
+            ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 999px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--muted-fg);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app-shell">
+            <!-- ════════════════════════════════════════
+       HEADER
+       ════════════════════════════════════════ -->
+            <header class="page-header">
+                <div class="page-header-left">
+                    <div>
+                        <h1 class="page-title">Tax Auditor Dashboard</h1>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px">
+                            <span class="role-badge">
+                                <i class="ti ti-shield-check"></i>
+                                Tax Auditor
+                            </span>
+                            <span style="font-size: 0.75rem; color: var(--muted-fg)"
+                                >Periode pajak: Maret 2026</span
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page-header-right">
+                    <div class="period-group">
+                        <button class="period-btn active">Bulan Ini</button>
+                        <button class="period-btn">Bulan Lalu</button>
+                        <button class="period-btn">Kuartal</button>
+                        <button class="period-btn">Tahun</button>
+                    </div>
+
+                    <div class="month-selector" title="Ubah periode">
+                        <i class="ti ti-calendar"></i>
+                        Mar 2026
+                    </div>
+
+                    <button class="btn" title="Filter">
+                        <i class="ti ti-filter"></i>
+                        Filter
+                    </button>
+
+                    <button class="btn btn-primary">
+                        <i class="ti ti-file-spreadsheet"></i>
+                        Export
+                    </button>
+
+                    <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+                        <i class="ti ti-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ════════════════════════════════════════
+       KPI BAR
+       ════════════════════════════════════════ -->
+            <div class="kpi-bar">
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-label">Total Revenue</span>
+                        <span class="kpi-icon primary"><i class="ti ti-report-money"></i></span>
+                    </div>
+                    <div class="kpi-value">Rp 847,5jt</div>
+                    <span class="kpi-change up"
+                        ><i class="ti ti-trending-up"></i> +12,3% vs bln lalu</span
+                    >
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-label">PPN 11% Collected</span>
+                        <span class="kpi-icon success"><i class="ti ti-receipt-tax"></i></span>
+                    </div>
+                    <div class="kpi-value">Rp 93,2jt</div>
+                    <span class="kpi-change up"
+                        ><i class="ti ti-trending-up"></i> +8,7% vs bln lalu</span
+                    >
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-label">PPh Articles</span>
+                        <span class="kpi-icon info"><i class="ti ti-file-invoice"></i></span>
+                    </div>
+                    <div class="kpi-value">Rp 18,4jt</div>
+                    <span class="kpi-change neutral"
+                        ><i class="ti ti-minus"></i> Stabil vs bln lalu</span
+                    >
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-label">Non-Taxable Revenue</span>
+                        <span class="kpi-icon warning"><i class="ti ti-circle-off"></i></span>
+                    </div>
+                    <div class="kpi-value">Rp 42,1jt</div>
+                    <span class="kpi-change down"
+                        ><i class="ti ti-trending-down"></i> -3,2% vs bln lalu</span
+                    >
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-top">
+                        <span class="kpi-label">Flagged Items</span>
+                        <span class="kpi-icon danger"><i class="ti ti-alert-triangle"></i></span>
+                    </div>
+                    <div class="kpi-value">12</div>
+                    <span class="kpi-change up" style="color: var(--danger-500)"
+                        ><i class="ti ti-trending-up"></i> +4 dari bln lalu</span
+                    >
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+       GRID ROW 1: PPN Compliance + Tax Category Breakdown
+       ════════════════════════════════════════ -->
+            <div class="grid-2col">
+                <!-- PPN Compliance Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-receipt-tax"></i> PPN Compliance</span
+                        >
+                        <span class="card-badge count">Masa: Mar 2026</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="gauge-container">
+                            <!-- Ring gauge -->
+                            <div class="gauge-ring">
+                                <svg viewBox="0 0 120 120">
+                                    <circle class="bg-circle" cx="60" cy="60" r="50" />
+                                    <circle
+                                        class="progress-circle"
+                                        cx="60"
+                                        cy="60"
+                                        r="50"
+                                        stroke-dasharray="314.159"
+                                        stroke-dashoffset="62.832"
+                                        style="stroke: var(--primary-500)"
+                                    />
+                                </svg>
+                                <div class="gauge-label">
+                                    <span class="gauge-pct">80%</span>
+                                    <span class="gauge-sub">Compliance</span>
+                                </div>
+                            </div>
+
+                            <div class="gauge-details">
+                                <div class="gauge-row">
+                                    <span class="gauge-row-label">Total PPN Terutang</span>
+                                    <span class="gauge-row-value" style="color: var(--fg)"
+                                        >Rp 93,2jt</span
+                                    >
+                                </div>
+                                <div class="gauge-row">
+                                    <span class="gauge-row-label">PPN Disetorkan</span>
+                                    <span class="gauge-row-value" style="color: var(--success-600)"
+                                        >Rp 87,5jt</span
+                                    >
+                                </div>
+                                <div class="gauge-row">
+                                    <span class="gauge-row-label">PPN Belum Setor</span>
+                                    <span class="gauge-row-value" style="color: var(--warning-500)"
+                                        >Rp 5,7jt</span
+                                    >
+                                </div>
+                                <div class="gauge-row">
+                                    <span class="gauge-row-label">Selisih (Koreksi)</span>
+                                    <span class="gauge-row-value" style="color: var(--danger-500)"
+                                        >Rp 1,2jt</span
+                                    >
+                                </div>
+                                <div class="gauge-row">
+                                    <span class="gauge-row-label">Faktur Pajak</span>
+                                    <span class="gauge-row-value">246 diterbitkan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#">Lihat rincian PPN <i class="ti ti-chevron-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Tax Category Breakdown -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-category"></i> Tax by Category</span
+                        >
+                        <span class="card-badge count">Mar 2026</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="category-list">
+                            <div class="category-row">
+                                <div class="category-row-top">
+                                    <span class="category-name">
+                                        <span
+                                            class="category-dot"
+                                            style="background: var(--primary-500)"
+                                        ></span>
+                                        Makanan & Minuman
+                                    </span>
+                                    <span class="category-amount">Rp 42,8jt</span>
+                                </div>
+                                <div class="category-bar-bg">
+                                    <div
+                                        class="category-bar-fill"
+                                        style="width: 46%; background: var(--primary-500)"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="category-row">
+                                <div class="category-row-top">
+                                    <span class="category-name">
+                                        <span
+                                            class="category-dot"
+                                            style="background: var(--accent-400)"
+                                        ></span>
+                                        Elektronik
+                                    </span>
+                                    <span class="category-amount">Rp 21,3jt</span>
+                                </div>
+                                <div class="category-bar-bg">
+                                    <div
+                                        class="category-bar-fill"
+                                        style="width: 23%; background: var(--accent-400)"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="category-row">
+                                <div class="category-row-top">
+                                    <span class="category-name">
+                                        <span
+                                            class="category-dot"
+                                            style="background: var(--warning-400)"
+                                        ></span>
+                                        Fashion & Aksesoris
+                                    </span>
+                                    <span class="category-amount">Rp 12,7jt</span>
+                                </div>
+                                <div class="category-bar-bg">
+                                    <div
+                                        class="category-bar-fill"
+                                        style="width: 14%; background: var(--warning-400)"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="category-row">
+                                <div class="category-row-top">
+                                    <span class="category-name">
+                                        <span
+                                            class="category-dot"
+                                            style="background: var(--success-500)"
+                                        ></span>
+                                        Kesehatan & Kecantikan
+                                    </span>
+                                    <span class="category-amount">Rp 9,1jt</span>
+                                </div>
+                                <div class="category-bar-bg">
+                                    <div
+                                        class="category-bar-fill"
+                                        style="width: 10%; background: var(--success-500)"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="category-row">
+                                <div class="category-row-top">
+                                    <span class="category-name">
+                                        <span
+                                            class="category-dot"
+                                            style="background: var(--muted-fg)"
+                                        ></span>
+                                        Lainnya
+                                    </span>
+                                    <span class="category-amount">Rp 7,3jt</span>
+                                </div>
+                                <div class="category-bar-bg">
+                                    <div
+                                        class="category-bar-fill"
+                                        style="width: 7%; background: var(--muted-fg)"
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+       GRID ROW 2: PPh Summary + Monthly Trend + Non-Taxable
+       ════════════════════════════════════════ -->
+            <div class="grid-3col">
+                <!-- PPh Summary -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-file-invoice"></i> PPh Summary</span
+                        >
+                        <span class="card-badge count">Mar 2026</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="summary-stats">
+                            <div class="summary-row">
+                                <span class="summary-label">PPh 22 (Import/APBN)</span>
+                                <span class="summary-value">Rp 2,8jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">PPh 23 (Jasa/Sewa)</span>
+                                <span class="summary-value">Rp 4,2jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">PPh 4(2) (Final)</span>
+                                <span class="summary-value">Rp 8,6jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">PPh 21 (Karyawan)</span>
+                                <span class="summary-value">Rp 2,8jt</span>
+                            </div>
+                            <div
+                                class="summary-row"
+                                style="
+                                    border-top: 2px solid var(--border);
+                                    padding-top: 10px;
+                                    margin-top: 2px;
+                                "
+                            >
+                                <span class="summary-label" style="font-weight: 600"
+                                    >Total PPh</span
+                                >
+                                <span
+                                    class="summary-value"
+                                    style="font-size: 1rem; color: var(--primary-600)"
+                                    >Rp 18,4jt</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Trend (bar chart) -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-trending-up"></i> Monthly Tax Trend</span
+                        >
+                        <span class="card-badge count">6 bulan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="simple-chart">
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 45px"></div>
+                                <span class="chart-label">Okt</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 52px"></div>
+                                <span class="chart-label">Nov</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 38px"></div>
+                                <span class="chart-label">Des</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 62px"></div>
+                                <span class="chart-label">Jan</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 70px"></div>
+                                <span class="chart-label">Feb</span>
+                            </div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar primary" style="height: 85px"></div>
+                                <span class="chart-label">Mar</span>
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                margin-top: 8px;
+                                font-size: 0.6875rem;
+                                color: var(--muted-fg);
+                            "
+                        >
+                            <span>Total PPN: ▲ 12% dari periode sebelumnya</span>
+                            <span>Puncak: Mar (Rp 93,2jt)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Taxable & Exceptions -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-circle-off"></i> Non-Taxable Revenue</span
+                        >
+                        <span class="card-badge count">Mar 2026</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="summary-stats">
+                            <div class="summary-row">
+                                <span class="summary-label">Non-PPN (Pasal 4A)</span>
+                                <span class="summary-value">Rp 28,4jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Diskon & Promo</span>
+                                <span class="summary-value">Rp 8,7jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Retur Penjualan</span>
+                                <span class="summary-value">Rp 3,2jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Pembulatan</span>
+                                <span class="summary-value">Rp 1,8jt</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Non-Taxable Ratio</span>
+                                <span class="summary-value" style="color: var(--warning-500)"
+                                    >4,9%</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#"
+                            >Review transaksi non-pajak <i class="ti ti-chevron-right"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+       GRID ROW 3: Flagged Transactions
+       ════════════════════════════════════════ -->
+            <div class="grid-full">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-alert-triangle"></i> Flagged Transactions</span
+                        >
+                        <span class="card-badge danger">12 perlu review</span>
+                    </div>
+                    <div class="card-body" style="padding: 0">
+                        <div class="anomaly-list">
+                            <div class="anomaly-item" style="padding: 16px 20px">
+                                <div class="anomaly-icon high">
+                                    <i class="ti ti-alert-circle"></i>
+                                </div>
+                                <div class="anomaly-content">
+                                    <div class="anomaly-title">
+                                        Transaksi tanpa PPN · INV-20260304-089
+                                    </div>
+                                    <div class="anomaly-desc">
+                                        Produk "MacBook Pro M4" senilai Rp 28.999.000 tidak
+                                        dikenakan PPN. Kategori barang elektronik seharusnya
+                                        dikenakan PPN 11%.
+                                    </div>
+                                    <div class="anomaly-meta">
+                                        <span>Rp 28.999.000</span>
+                                        <span class="divider"></span>
+                                        <span>4 Mar 2026</span>
+                                        <span class="divider"></span>
+                                        <span>Kasir: Adi S.</span>
+                                    </div>
+                                </div>
+                                <div class="anomaly-action">
+                                    <button>Review</button>
+                                </div>
+                            </div>
+
+                            <div class="anomaly-item" style="padding: 16px 20px">
+                                <div class="anomaly-icon high">
+                                    <i class="ti ti-alert-circle"></i>
+                                </div>
+                                <div class="anomaly-content">
+                                    <div class="anomaly-title">
+                                        Nilai tidak wajar · INV-20260312-156
+                                    </div>
+                                    <div class="anomaly-desc">
+                                        Transaksi dengan diskon 78% (Rp 45.000.000 → Rp 9.900.000).
+                                        Diskon >30% memicu audit threshold. Periksa kewajaran harga
+                                        jual.
+                                    </div>
+                                    <div class="anomaly-meta">
+                                        <span>Rp 45.000.000</span>
+                                        <span class="divider"></span>
+                                        <span>12 Mar 2026</span>
+                                        <span class="divider"></span>
+                                        <span>Kasir: Siti R.</span>
+                                    </div>
+                                </div>
+                                <div class="anomaly-action">
+                                    <button>Review</button>
+                                </div>
+                            </div>
+
+                            <div class="anomaly-item" style="padding: 16px 20px">
+                                <div class="anomaly-icon medium">
+                                    <i class="ti ti-alert-triangle"></i>
+                                </div>
+                                <div class="anomaly-content">
+                                    <div class="anomaly-title">
+                                        Faktur Pajak tidak cocok · INV-20260318-221
+                                    </div>
+                                    <div class="anomaly-desc">
+                                        Nilai PPN di faktur pajak (Rp 890.000) tidak sesuai dengan
+                                        perhitungan 11% dari grand total (seharusnya Rp 935.000).
+                                        Selisih Rp 45.000.
+                                    </div>
+                                    <div class="anomaly-meta">
+                                        <span>Rp 8.500.000</span>
+                                        <span class="divider"></span>
+                                        <span>18 Mar 2026</span>
+                                        <span class="divider"></span>
+                                        <span>Kasir: Budi H.</span>
+                                    </div>
+                                </div>
+                                <div class="anomaly-action">
+                                    <button>Review</button>
+                                </div>
+                            </div>
+
+                            <div class="anomaly-item" style="padding: 16px 20px">
+                                <div class="anomaly-icon low">
+                                    <i class="ti ti-info-circle"></i>
+                                </div>
+                                <div class="anomaly-content">
+                                    <div class="anomaly-title">
+                                        Customer non-PKP melebihi batas · INV-20260322-267
+                                    </div>
+                                    <div class="anomaly-desc">
+                                        Customer "Toko Maju Jaya" (non-PKP) telah melakukan
+                                        transaksi >Rp 4,8M dalam 12 bulan terakhir. Perlu
+                                        dikonfirmasi status PKP.
+                                    </div>
+                                    <div class="anomaly-meta">
+                                        <span>Total: Rp 4,8M</span>
+                                        <span class="divider"></span>
+                                        <span>22 Mar 2026</span>
+                                        <span class="divider"></span>
+                                        <span>Customer: Toko Maju Jaya</span>
+                                    </div>
+                                </div>
+                                <div class="anomaly-action">
+                                    <button>Review</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#"
+                            >Lihat semua 12 flagged transaction <i class="ti ti-chevron-right"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+       GRID ROW 4: Recent Transactions Table
+       ════════════════════════════════════════ -->
+            <div class="grid-full">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"
+                            ><i class="ti ti-report-search"></i> Recent Transactions with Tax
+                            Breakdown</span
+                        >
+                        <span class="card-badge count">25 transaksi hari ini</span>
+                    </div>
+                    <div class="tab-bar">
+                        <button class="tab-item active">Semua</button>
+                        <button class="tab-item">Perlu Review</button>
+                        <button class="tab-item">PPN Bermasalah</button>
+                        <button class="tab-item">PPh Terutang</button>
+                    </div>
+                    <div style="overflow-x: auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice</th>
+                                    <th>Tanggal</th>
+                                    <th>Customer</th>
+                                    <th>Kasir</th>
+                                    <th style="text-align: right">Grand Total</th>
+                                    <th style="text-align: right">DPP</th>
+                                    <th style="text-align: right">PPN 11%</th>
+                                    <th style="text-align: right">PPh</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 600">INV-20260325-312</td>
+                                    <td>25 Mar 2026</td>
+                                    <td>Walk-in Customer</td>
+                                    <td>Adi S.</td>
+                                    <td class="amount">Rp 12.450.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 11.216.216
+                                    </td>
+                                    <td class="amount" style="color: var(--primary-600)">
+                                        Rp 1.233.784
+                                    </td>
+                                    <td class="amount" style="color: var(--muted-fg)">-</td>
+                                    <td>
+                                        <span class="flag-badge success"
+                                            ><i class="ti ti-check"></i> Compliant</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600">INV-20260325-311</td>
+                                    <td>25 Mar 2026</td>
+                                    <td>PT Sukses Abadi</td>
+                                    <td>Siti R.</td>
+                                    <td class="amount">Rp 45.800.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 41.261.261
+                                    </td>
+                                    <td class="amount" style="color: var(--primary-600)">
+                                        Rp 4.538.739
+                                    </td>
+                                    <td class="amount" style="color: var(--info-500)">
+                                        Rp 458.000
+                                    </td>
+                                    <td>
+                                        <span class="flag-badge success"
+                                            ><i class="ti ti-check"></i> Compliant</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                                <tr style="background: var(--warning-50)">
+                                    <td style="font-weight: 600">INV-20260325-310</td>
+                                    <td>25 Mar 2026</td>
+                                    <td>Toko Berkah Jaya</td>
+                                    <td>Budi H.</td>
+                                    <td class="amount">Rp 8.500.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 7.657.658
+                                    </td>
+                                    <td class="amount" style="color: var(--danger-500)">Rp 0</td>
+                                    <td class="amount" style="color: var(--muted-fg)">-</td>
+                                    <td>
+                                        <span class="flag-badge warning"
+                                            ><i class="ti ti-alert-triangle"></i> No PPN</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600">INV-20260325-309</td>
+                                    <td>25 Mar 2026</td>
+                                    <td>Walk-in Customer</td>
+                                    <td>Adi S.</td>
+                                    <td class="amount">Rp 2.350.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 2.117.117
+                                    </td>
+                                    <td class="amount" style="color: var(--primary-600)">
+                                        Rp 232.883
+                                    </td>
+                                    <td class="amount" style="color: var(--muted-fg)">-</td>
+                                    <td>
+                                        <span class="flag-badge success"
+                                            ><i class="ti ti-check"></i> Compliant</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 600">INV-20260325-308</td>
+                                    <td>25 Mar 2026</td>
+                                    <td>CV Karya Mandiri</td>
+                                    <td>Siti R.</td>
+                                    <td class="amount">Rp 98.750.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 88.963.964
+                                    </td>
+                                    <td class="amount" style="color: var(--primary-600)">
+                                        Rp 9.786.036
+                                    </td>
+                                    <td class="amount" style="color: var(--info-500)">
+                                        Rp 987.500
+                                    </td>
+                                    <td>
+                                        <span class="flag-badge success"
+                                            ><i class="ti ti-check"></i> Compliant</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                                <tr style="background: var(--danger-50)">
+                                    <td style="font-weight: 600">INV-20260324-298</td>
+                                    <td>24 Mar 2026</td>
+                                    <td>Walk-in Customer</td>
+                                    <td>Budi H.</td>
+                                    <td class="amount">Rp 28.999.000</td>
+                                    <td class="amount" style="color: var(--muted-fg)">
+                                        Rp 28.999.000
+                                    </td>
+                                    <td class="amount" style="color: var(--danger-500)">Rp 0</td>
+                                    <td class="amount" style="color: var(--muted-fg)">-</td>
+                                    <td>
+                                        <span class="flag-badge danger"
+                                            ><i class="ti ti-x"></i> Flagged</span
+                                        >
+                                    </td>
+                                    <td style="text-align: center">
+                                        <i
+                                            class="ti ti-chevron-right"
+                                            style="color: var(--muted-fg); cursor: pointer"
+                                        ></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#"
+                            >Lihat semua transaksi dengan rincian pajak
+                            <i class="ti ti-chevron-right"></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+       FOOTER / STATUS BAR
+       ════════════════════════════════════════ -->
+            <div
+                style="
+                    margin-top: 24px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 0.75rem;
+                    color: var(--muted-fg);
+                    border-top: 1px solid var(--border);
+                    padding-top: 16px;
+                "
+            >
+                <div style="display: flex; align-items: center; gap: 16px">
+                    <span
+                        ><i class="ti ti-refresh" style="margin-right: 4px"></i> Data diperbarui: 25
+                        Mar 2026 14:32 WIB</span
+                    >
+                    <span
+                        ><i class="ti ti-database" style="margin-right: 4px"></i> 2.847 transaksi
+                        diproses</span
+                    >
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px">
+                    <span class="status-dot compliant"></span> Compliant
+                    <span class="status-dot partial" style="margin-left: 4px"></span> Partial
+                    <span class="status-dot flagged" style="margin-left: 4px"></span> Flagged
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════
+     Dark mode toggle script
+     ════════════════════════════════════════ -->
+        <script>
+            const themeToggle = document.getElementById("themeToggle");
+            const themeIcon = document.getElementById("themeIcon");
+            let isDark = false;
+
+            themeToggle.addEventListener("click", () => {
+                isDark = !isDark;
+                document.documentElement.classList.toggle("dark", isDark);
+                themeIcon.className = isDark ? "ti ti-sun" : "ti ti-moon";
+            });
+
+            // Detect system preference
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.documentElement.classList.add("dark");
+                isDark = true;
+                themeIcon.className = "ti ti-sun";
+            }
+        </script>
+    </body>
+</html>

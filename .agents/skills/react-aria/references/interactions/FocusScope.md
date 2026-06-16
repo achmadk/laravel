@@ -31,26 +31,26 @@ button unmounts the focus scope, which restores focus back to the button.
 For a full example of building a modal dialog, see [useDialog](Modal/useDialog.md).
 
 ```tsx
-'use client';
-import React from 'react';
-import {FocusScope} from '@react-aria/focus';
+"use client";
+import React from "react";
+import { FocusScope } from "@react-aria/focus";
 
 function Example() {
-  let [isOpen, setOpen] = React.useState(false);
-  return (
-    <>
-      <button onClick={() => setOpen(true)}>Open</button>
-      {isOpen &&
-        <FocusScope contain restoreFocus autoFocus>
-          <label htmlFor="first-input">First Input</label>
-          <input id="first-input" />
-          <label htmlFor="second-input">Second Input</label>
-          <input id="second-input" />
-          <button onClick={() => setOpen(false)}>Close</button>
-        </FocusScope>
-      }
-    </>
-  );
+    let [isOpen, setOpen] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setOpen(true)}>Open</button>
+            {isOpen && (
+                <FocusScope contain restoreFocus autoFocus>
+                    <label htmlFor="first-input">First Input</label>
+                    <input id="first-input" />
+                    <label htmlFor="second-input">Second Input</label>
+                    <input id="second-input" />
+                    <button onClick={() => setOpen(false)}>Close</button>
+                </FocusScope>
+            )}
+        </>
+    );
 }
 ```
 
@@ -62,58 +62,51 @@ right arrow keys to move focus to the previous and next buttons. The `wrap` opti
 used to make focus wrap around when it reaches the first or last button.
 
 ```tsx
-'use client';
-import {FocusScope} from '@react-aria/focus';
-import {useFocusManager} from '@react-aria/focus';
+"use client";
+import { FocusScope } from "@react-aria/focus";
+import { useFocusManager } from "@react-aria/focus";
 
 function Toolbar(props) {
-  return (
-    <div role="toolbar">
-      <FocusScope>
-        {props.children}
-      </FocusScope>
-    </div>
-  );
+    return (
+        <div role="toolbar">
+            <FocusScope>{props.children}</FocusScope>
+        </div>
+    );
 }
 
 function ToolbarButton(props) {
-  let focusManager = useFocusManager();
-  let onKeyDown = (e) => {
-    switch (e.key) {
-      case 'ArrowRight':
-        focusManager?.focusNext({wrap: true});
-        break;
-      case 'ArrowLeft':
-        focusManager?.focusPrevious({wrap: true});
-        break;
-    }
-  };
+    let focusManager = useFocusManager();
+    let onKeyDown = (e) => {
+        switch (e.key) {
+            case "ArrowRight":
+                focusManager?.focusNext({ wrap: true });
+                break;
+            case "ArrowLeft":
+                focusManager?.focusPrevious({ wrap: true });
+                break;
+        }
+    };
 
-  return (
-    <button
-      onKeyDown={onKeyDown}>
-      {props.children}
-    </button>
-  );
+    return <button onKeyDown={onKeyDown}>{props.children}</button>;
 }
 
 <Toolbar>
-  <ToolbarButton>Cut</ToolbarButton>
-  <ToolbarButton>Copy</ToolbarButton>
-  <ToolbarButton>Paste</ToolbarButton>
-</Toolbar>
+    <ToolbarButton>Cut</ToolbarButton>
+    <ToolbarButton>Copy</ToolbarButton>
+    <ToolbarButton>Paste</ToolbarButton>
+</Toolbar>;
 ```
 
 ## API
 
 ### FocusScope
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `autoFocus` | `boolean | undefined` | — | Whether to auto focus the first focusable element in the focus scope on mount. |
-| `children` | `React.ReactNode` | — | The contents of the focus scope. |
-| `contain` | `boolean | undefined` | — | Whether to contain focus inside the scope, so users cannot move focus outside, for example in a modal dialog. |
-| `restoreFocus` | `boolean | undefined` | — | Whether to restore focus back to the element that was focused when the focus scope mounted, after the focus scope unmounts. |
+| Name           | Type              | Default    | Description                      |
+| -------------- | ----------------- | ---------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `autoFocus`    | `boolean          | undefined` | —                                | Whether to auto focus the first focusable element in the focus scope on mount.                                              |
+| `children`     | `React.ReactNode` | —          | The contents of the focus scope. |
+| `contain`      | `boolean          | undefined` | —                                | Whether to contain focus inside the scope, so users cannot move focus outside, for example in a modal dialog.               |
+| `restoreFocus` | `boolean          | undefined` | —                                | Whether to restore focus back to the element that was focused when the focus scope mounted, after the focus scope unmounts. |
 
 ### FocusManager Interface
 

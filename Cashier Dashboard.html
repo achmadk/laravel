@@ -1,0 +1,2333 @@
+<!doctype html>
+<html lang="id" class="">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard Kasir — Cashier View</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            :root {
+                --bg: #f2f0ed;
+                --bg-card: #ffffff;
+                --fg: #1a1a2e;
+                --border: #e8e8ef;
+                --border-card: #e8e8ef;
+                --muted-fg: #8888a0;
+                --primary: #3c5f53;
+                --primary-hover: #2d4a40;
+                --primary-50: #f0f5f2;
+                --primary-100: #e0ebe4;
+                --primary-10: rgba(60, 95, 83, 0.1);
+                --primary-5: rgba(60, 95, 83, 0.05);
+                --secondary: #f0f0f5;
+                --secondary-fg: #1a1a2e;
+                --overlay: #ffffff;
+                --navbar: #fcfcfd;
+                --danger: #e74c4c;
+                --success: #2ecc71;
+                --warning: #f0a030;
+                --info: #3498db;
+                --danger-50: #fef2f2;
+                --danger-100: #fee2e2;
+                --danger-200: #fecaca;
+                --danger-500: #ef4444;
+                --danger-700: #b91c1c;
+                --warning-50: #fffbeb;
+                --warning-100: #fef3c7;
+                --warning-500: #f59e0b;
+                --warning-700: #b45309;
+                --info-50: #eff6ff;
+                --info-200: #bfdbfe;
+                --info-700: #1d4ed8;
+                --success-50: #f0fdf4;
+                --success-100: #dcfce7;
+                --success-500: #22c55e;
+                --success-10: rgba(46, 204, 113, 0.1);
+                --slate-50: #f8fafc;
+                --slate-100: #f1f5f9;
+                --slate-200: #e2e8f0;
+                --slate-300: #cbd5e1;
+                --slate-400: #94a3b8;
+                --slate-500: #64748b;
+                --slate-600: #475569;
+                --slate-700: #334155;
+                --slate-800: #1e293b;
+                --slate-900: #0f172a;
+                --radius-sm: 8px;
+                --radius: 12px;
+                --radius-lg: 16px;
+                --radius-xl: 20px;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+                --shadow-lg:
+                    0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+                font-family: "Figtree", "Inter", system-ui, sans-serif;
+                transition:
+                    background 0.2s,
+                    color 0.2s,
+                    border-color 0.2s;
+            }
+            .dark {
+                --bg: #14141f;
+                --bg-card: #1c1c2e;
+                --fg: #e8e8f0;
+                --border: #2a2a3e;
+                --border-card: #2a2a3e;
+                --muted-fg: #8888a0;
+                --primary: #3c5f53;
+                --primary-hover: #4d7a6a;
+                --primary-50: rgba(60, 95, 83, 0.12);
+                --primary-100: rgba(60, 95, 83, 0.2);
+                --primary-10: rgba(60, 95, 83, 0.15);
+                --primary-5: rgba(60, 95, 83, 0.08);
+                --secondary: #25253a;
+                --secondary-fg: #e8e8f0;
+                --overlay: #1c1c2e;
+                --navbar: #181828;
+                --danger-50: rgba(231, 76, 76, 0.12);
+                --danger-100: rgba(231, 76, 76, 0.2);
+                --danger-500: #ef4444;
+                --danger-700: #f87171;
+                --warning-50: rgba(240, 160, 48, 0.12);
+                --warning-500: #f59e0b;
+                --warning-700: #fbbf24;
+                --info-50: rgba(52, 152, 219, 0.12);
+                --info-700: #60a5fa;
+                --success-50: rgba(46, 204, 113, 0.12);
+                --success-500: #22c55e;
+                --slate-50: rgba(248, 250, 252, 0.05);
+                --slate-100: rgba(241, 245, 249, 0.08);
+                --slate-200: rgba(226, 232, 240, 0.1);
+                --slate-300: #475569;
+                --slate-400: #64748b;
+                --slate-500: #8899b0;
+                --slate-600: #a0b0c8;
+                --slate-700: #c0d0e0;
+                --slate-800: #d8e0e8;
+                --slate-900: #f0f4f8;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
+                --shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.25);
+                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            }
+            body {
+                background: var(--bg);
+                color: var(--fg);
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+            .flex {
+                display: flex;
+            }
+            .h-screen {
+                height: 100vh;
+            }
+            .overflow-hidden {
+                overflow: hidden;
+            }
+            .shrink-0 {
+                flex-shrink: 0;
+            }
+            .min-w-0 {
+                min-width: 0;
+            }
+            .flex-1 {
+                flex: 1 1 0%;
+            }
+            .flex-col {
+                flex-direction: column;
+            }
+            .items-center {
+                align-items: center;
+            }
+            .justify-center {
+                justify-content: center;
+            }
+            .justify-between {
+                justify-content: space-between;
+            }
+            .gap-1 {
+                gap: 4px;
+            }
+            .gap-2 {
+                gap: 8px;
+            }
+            .gap-3 {
+                gap: 12px;
+            }
+            .gap-4 {
+                gap: 16px;
+            }
+            .gap-5 {
+                gap: 20px;
+            }
+            .gap-6 {
+                gap: 24px;
+            }
+            .text-xs {
+                font-size: 12px;
+            }
+            .text-sm {
+                font-size: 14px;
+            }
+            .text-base {
+                font-size: 16px;
+            }
+            .text-lg {
+                font-size: 18px;
+            }
+            .text-xl {
+                font-size: 20px;
+            }
+            .text-2xl {
+                font-size: 24px;
+            }
+            .text-3xl {
+                font-size: 30px;
+            }
+            .font-medium {
+                font-weight: 500;
+            }
+            .font-semibold {
+                font-weight: 600;
+            }
+            .font-bold {
+                font-weight: 700;
+            }
+            .truncate {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .text-muted-fg {
+                color: var(--muted-fg);
+            }
+            .text-primary {
+                color: var(--primary);
+            }
+            .text-success {
+                color: var(--success-500);
+            }
+            .text-danger {
+                color: var(--danger-500);
+            }
+            .text-warning {
+                color: var(--warning-500);
+            }
+            .rounded-lg {
+                border-radius: var(--radius);
+            }
+            .rounded-xl {
+                border-radius: var(--radius-lg);
+            }
+            .rounded-2xl {
+                border-radius: var(--radius-xl);
+            }
+            .mt-1 {
+                margin-top: 4px;
+            }
+            .mt-2 {
+                margin-top: 8px;
+            }
+            .mb-1 {
+                margin-bottom: 4px;
+            }
+            .mb-2 {
+                margin-bottom: 8px;
+            }
+            .mb-4 {
+                margin-bottom: 16px;
+            }
+            .mb-6 {
+                margin-bottom: 24px;
+            }
+            .p-4 {
+                padding: 16px;
+            }
+            .p-6 {
+                padding: 24px;
+            }
+            .px-3 {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .px-4 {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .py-2 {
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            .py-3 {
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .space-y-2 > * + * {
+                margin-top: 8px;
+            }
+            .space-y-3 > * + * {
+                margin-top: 12px;
+            }
+            .space-y-4 > * + * {
+                margin-top: 16px;
+            }
+            .space-y-5 > * + * {
+                margin-top: 20px;
+            }
+            .grid {
+                display: grid;
+            }
+            .grid-cols-1 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+            .grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .col-span-2 {
+                grid-column: span 2;
+            }
+            .col-span-3 {
+                grid-column: span 3;
+            }
+
+            /* ─── Sidebar ─── */
+            .sidebar {
+                width: 240px;
+                border-right: 1px solid var(--border);
+                background: var(--navbar);
+                display: none;
+                flex-direction: column;
+                z-index: 30;
+            }
+            @media (min-width: 768px) {
+                .sidebar {
+                    display: flex;
+                }
+            }
+            .sidebar-header {
+                height: 60px;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid var(--border);
+                padding: 0 18px;
+            }
+            .sidebar-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .sidebar-logo-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                background: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 14px;
+                color: #fff;
+            }
+            .sidebar-logo-text {
+                font-weight: 700;
+                font-size: 16px;
+                color: var(--fg);
+            }
+            .sidebar-nav {
+                flex: 1;
+                overflow-y: auto;
+                padding: 12px 10px;
+            }
+            .sidebar-nav::-webkit-scrollbar {
+                width: 4px;
+            }
+            .sidebar-nav::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            .sidebar-section {
+                margin-bottom: 16px;
+            }
+            .sidebar-section-title {
+                padding: 0 12px;
+                margin-bottom: 4px;
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--muted-fg);
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+            }
+            .sidebar-items {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .sidebar-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 12px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .sidebar-item:hover {
+                background: var(--primary-5);
+                color: var(--fg);
+            }
+            .sidebar-item:hover svg {
+                color: var(--fg);
+            }
+            .sidebar-item.active {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            .sidebar-item.active svg {
+                color: var(--primary);
+            }
+            .sidebar-item span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Role badge inside sidebar */
+            .sidebar-role {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                margin: 0 12px 12px;
+                padding: 6px 10px;
+                border-radius: 6px;
+                background: var(--primary-5);
+                color: var(--primary);
+                font-size: 11px;
+                font-weight: 600;
+            }
+            .sidebar-role svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            /* ─── Topbar ─── */
+            .topbar {
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-bottom: 1px solid var(--border);
+                background: var(--navbar);
+                padding: 0 18px;
+                position: sticky;
+                top: 0;
+                z-index: 20;
+            }
+            .topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+            }
+            .topbar-right {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .page-title {
+                font-size: 15px;
+                font-weight: 600;
+                color: var(--fg);
+            }
+            .icon-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 34px;
+                height: 34px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .icon-btn:hover {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            @media (min-width: 768px) {
+                .mobile-menu-btn {
+                    display: none;
+                }
+            }
+
+            /* ─── Shift Badge ─── */
+            .shift-badge {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--success-50);
+                color: var(--success-500);
+                padding: 5px 14px 5px 12px;
+                border-radius: 999px;
+                font-size: 12px;
+                font-weight: 600;
+                border: 1px solid var(--success-10);
+            }
+            .shift-badge.closed {
+                background: var(--danger-50);
+                color: var(--danger-500);
+                border-color: rgba(239, 68, 68, 0.1);
+            }
+            .shift-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--success-500);
+                animation: pulse 2s ease-in-out infinite;
+            }
+            .shift-badge.closed .shift-dot {
+                background: var(--danger-500);
+                animation: none;
+            }
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.4;
+                }
+            }
+
+            /* ─── Shift Timer ─── */
+            .shift-timer {
+                font-size: 12px;
+                color: var(--muted-fg);
+                font-weight: 500;
+            }
+
+            .bell-btn {
+                position: relative;
+                width: 34px;
+                height: 34px;
+                border: none;
+                background: transparent;
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+            }
+            .bell-btn:hover {
+                background: var(--primary-10);
+                color: var(--primary);
+            }
+            .bell-badge {
+                position: absolute;
+                top: -2px;
+                right: -2px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: var(--danger-500);
+                color: #fff;
+                font-size: 9px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .avatar-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                padding: 3px 8px 3px 4px;
+                border-radius: 999px;
+                transition: all 0.15s;
+            }
+            .avatar-btn:hover {
+                background: var(--primary-5);
+            }
+            .avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-size: 11px;
+                font-weight: 600;
+            }
+            .avatar-name {
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--fg);
+                display: none;
+            }
+            @media (min-width: 640px) {
+                .avatar-name {
+                    display: block;
+                }
+            }
+
+            /* ─── Main ─── */
+            .main-content {
+                flex: 1;
+                overflow-y: auto;
+                background: var(--bg);
+            }
+            .main-content::-webkit-scrollbar {
+                width: 6px;
+            }
+            .main-content::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            .content-inner {
+                max-width: 1320px;
+                margin: 0 auto;
+                padding: 20px 18px 32px;
+            }
+            @media (min-width: 1024px) {
+                .content-inner {
+                    padding: 24px 28px 40px;
+                }
+            }
+
+            /* ─── Welcome ─── */
+            .welcome-section {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 22px;
+            }
+            .welcome-text h1 {
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: var(--fg);
+            }
+            .welcome-text p {
+                margin-top: 2px;
+                color: var(--muted-fg);
+                font-size: 14px;
+            }
+            .welcome-text .shift-info {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 6px;
+                font-size: 12px;
+                color: var(--muted-fg);
+            }
+            .welcome-text .shift-info strong {
+                color: var(--fg);
+                font-weight: 600;
+            }
+            .date-badge {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: var(--bg-card);
+                padding: 6px 14px;
+                border-radius: 999px;
+                border: 1px solid var(--border-card);
+                color: var(--muted-fg);
+                font-size: 12px;
+                font-weight: 500;
+                box-shadow: var(--shadow-sm);
+            }
+
+            /* ─── Stats ─── */
+            .stats-grid {
+                display: grid;
+                gap: 14px;
+                grid-template-columns: 1fr;
+                margin-bottom: 22px;
+            }
+            @media (min-width: 640px) {
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+            @media (min-width: 1024px) {
+                .stats-grid {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .stat-card {
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius-lg);
+                padding: 18px 20px;
+                box-shadow: var(--shadow-sm);
+                transition: all 0.2s;
+                position: relative;
+                overflow: hidden;
+            }
+            .stat-card:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-1px);
+            }
+            .stat-card .stat-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .stat-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+            .stat-trend {
+                font-size: 11px;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-weight: 600;
+            }
+            .stat-trend.up {
+                background: var(--success-50);
+                color: var(--success-500);
+            }
+            .stat-trend.down {
+                background: var(--danger-50);
+                color: var(--danger-500);
+            }
+            .stat-trend.neutral {
+                background: var(--primary-5);
+                color: var(--muted-fg);
+            }
+            .stat-label {
+                font-size: 12px;
+                color: var(--muted-fg);
+                font-weight: 500;
+            }
+            .stat-value {
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+            }
+            .stat-sub {
+                font-size: 11px;
+                color: var(--muted-fg);
+                margin-top: 3px;
+            }
+
+            /* ─── Dashboard Grid ─── */
+            .dashboard-grid {
+                display: grid;
+                gap: 18px;
+                grid-template-columns: 1fr;
+                margin-bottom: 18px;
+            }
+            @media (min-width: 1024px) {
+                .dashboard-grid {
+                    grid-template-columns: 1fr 360px;
+                }
+            }
+
+            /* ─── Widget ─── */
+            .widget {
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-sm);
+            }
+            .widget-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 20px 0;
+            }
+            .widget-header h3 {
+                font-size: 15px;
+                font-weight: 600;
+            }
+            .widget-body {
+                padding: 14px 20px 20px;
+            }
+
+            /* ─── Barcode / Quick Entry ─── */
+            .barcode-area {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: var(--primary-5);
+                border: 1px dashed var(--primary);
+                border-radius: var(--radius);
+                padding: 12px 16px;
+                margin-bottom: 16px;
+            }
+            .barcode-area svg {
+                width: 24px;
+                height: 24px;
+                color: var(--primary);
+                flex-shrink: 0;
+            }
+            .barcode-input {
+                flex: 1;
+                border: none;
+                background: transparent;
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--fg);
+                outline: none;
+                font-family: inherit;
+            }
+            .barcode-input::placeholder {
+                color: var(--muted-fg);
+                font-weight: 400;
+            }
+            .barcode-btn {
+                padding: 7px 18px;
+                background: var(--primary);
+                color: #fff;
+                border: none;
+                border-radius: var(--radius-sm);
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.15s;
+                white-space: nowrap;
+                font-family: inherit;
+            }
+            .barcode-btn:hover {
+                background: var(--primary-hover);
+            }
+            .barcode-hint {
+                font-size: 11px;
+                color: var(--muted-fg);
+                margin-top: 4px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .barcode-hint kbd {
+                background: var(--primary-10);
+                padding: 1px 6px;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 600;
+                color: var(--primary);
+            }
+
+            /* ─── Transaction Items (cart-like) ─── */
+            .cart-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .cart-item:last-child {
+                border-bottom: none;
+            }
+            .cart-thumb {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius-sm);
+                background: var(--primary-5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 15px;
+            }
+            .cart-info {
+                flex: 1;
+                min-width: 0;
+            }
+            .cart-info .ci-name {
+                font-weight: 600;
+                font-size: 13px;
+            }
+            .cart-info .ci-meta {
+                font-size: 11px;
+                color: var(--muted-fg);
+            }
+            .cart-qty {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .cart-qty button {
+                width: 24px;
+                height: 24px;
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 6px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                color: var(--fg);
+                transition: all 0.1s;
+            }
+            .cart-qty button:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+            .cart-qty span {
+                font-size: 13px;
+                font-weight: 600;
+                min-width: 16px;
+                text-align: center;
+            }
+            .cart-price {
+                font-weight: 700;
+                font-size: 13px;
+                text-align: right;
+                white-space: nowrap;
+            }
+
+            .cart-summary {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 12px;
+                margin-top: 4px;
+                border-top: 2px solid var(--border);
+            }
+            .cart-summary .cs-label {
+                font-size: 12px;
+                color: var(--muted-fg);
+            }
+            .cart-summary .cs-value {
+                font-size: 20px;
+                font-weight: 700;
+            }
+            .pay-btn {
+                width: 100%;
+                margin-top: 12px;
+                padding: 12px;
+                background: var(--primary);
+                color: #fff;
+                border: none;
+                border-radius: var(--radius);
+                font-size: 15px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.15s;
+                font-family: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            .pay-btn:hover {
+                background: var(--primary-hover);
+            }
+            .pay-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            /* ─── Transaction List ─── */
+            .tx-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .tx-item:last-child {
+                border-bottom: none;
+            }
+            .tx-left {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-width: 0;
+            }
+            .tx-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: var(--radius);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .tx-icon svg {
+                width: 16px;
+                height: 16px;
+            }
+            .tx-info {
+                min-width: 0;
+            }
+            .tx-info .tx-name {
+                font-weight: 600;
+                font-size: 13px;
+            }
+            .tx-info .tx-desc {
+                font-size: 11px;
+                color: var(--muted-fg);
+                margin-top: 1px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .tx-amount {
+                font-weight: 700;
+                font-size: 13px;
+                text-align: right;
+                white-space: nowrap;
+            }
+            .tx-amount .tx-time {
+                font-weight: 400;
+                font-size: 10px;
+                color: var(--muted-fg);
+                display: block;
+            }
+
+            /* ─── Products (low stock / top) ─── */
+            .product-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .product-item:last-child {
+                border-bottom: none;
+            }
+            .product-thumb {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius);
+                background: var(--primary-5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 15px;
+            }
+            .product-info {
+                flex: 1;
+                min-width: 0;
+            }
+            .product-info .p-name {
+                font-weight: 600;
+                font-size: 13px;
+            }
+            .product-info .p-meta {
+                font-size: 11px;
+                color: var(--muted-fg);
+                margin-top: 1px;
+            }
+            .product-stat {
+                text-align: right;
+            }
+            .product-stat .p-value {
+                font-weight: 700;
+                font-size: 13px;
+            }
+            .product-stat .p-sub {
+                font-size: 10px;
+                color: var(--muted-fg);
+            }
+
+            /* ─── Status Badges ─── */
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 2px 8px;
+                border-radius: 999px;
+                font-size: 11px;
+                font-weight: 600;
+            }
+            .badge-success {
+                background: var(--success-50);
+                color: var(--success-500);
+            }
+            .badge-warning {
+                background: var(--warning-50);
+                color: var(--warning-500);
+            }
+            .badge-danger {
+                background: var(--danger-50);
+                color: var(--danger-500);
+            }
+            .badge-info {
+                background: var(--info-50);
+                color: var(--info-700);
+            }
+
+            /* ─── Quick Actions ─── */
+            .quick-actions {
+                display: grid;
+                gap: 10px;
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 22px;
+            }
+            @media (min-width: 640px) {
+                .quick-actions {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+            }
+            .quick-action {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 16px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-card);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-sm);
+                font-weight: 600;
+                font-size: 13px;
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+            .quick-action:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-1px);
+                border-color: var(--primary);
+            }
+            .quick-action svg {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
+            .quick-action .qa-label {
+                line-height: 1.3;
+            }
+            .quick-action .qa-sub {
+                font-size: 11px;
+                font-weight: 400;
+                color: var(--muted-fg);
+            }
+
+            /* ─── Shift Info Card ─── */
+            .shift-info-card {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 14px 18px;
+                background: var(--success-50);
+                border: 1px solid var(--success-10);
+                border-radius: var(--radius);
+                margin-bottom: 18px;
+            }
+            .shift-info-card.closed {
+                background: var(--danger-50);
+                border-color: rgba(239, 68, 68, 0.1);
+            }
+            .shift-info-card .sic-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--radius);
+                background: var(--success-10);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .shift-info-card.closed .sic-icon {
+                background: rgba(239, 68, 68, 0.1);
+            }
+            .shift-info-card .sic-icon svg {
+                width: 20px;
+                height: 20px;
+                color: var(--success-500);
+            }
+            .shift-info-card.closed .sic-icon svg {
+                color: var(--danger-500);
+            }
+            .sic-details {
+                flex: 1;
+            }
+            .sic-details .sic-title {
+                font-weight: 700;
+                font-size: 15px;
+            }
+            .sic-details .sic-meta {
+                font-size: 12px;
+                color: var(--muted-fg);
+                margin-top: 2px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px 14px;
+            }
+            .sic-action {
+                padding: 7px 16px;
+                border-radius: var(--radius-sm);
+                border: none;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                font-family: inherit;
+                transition: all 0.15s;
+                white-space: nowrap;
+            }
+            .sic-action.primary {
+                background: var(--success-500);
+                color: #fff;
+            }
+            .sic-action.primary:hover {
+                background: #27ae60;
+            }
+            .sic-action.danger {
+                background: var(--danger-500);
+                color: #fff;
+            }
+            .sic-action.danger:hover {
+                background: #c0392b;
+            }
+
+            /* ─── Section Title ─── */
+            .section-title {
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 14px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .section-title .badge {
+                font-size: 10px;
+                padding: 1px 7px;
+            }
+
+            .view-all {
+                font-size: 12px;
+                color: var(--primary);
+                font-weight: 500;
+                cursor: pointer;
+                transition: opacity 0.15s;
+            }
+            .view-all:hover {
+                opacity: 0.7;
+            }
+
+            /* ─── Icons ─── */
+            .icon-5 {
+                width: 20px;
+                height: 20px;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+            .icon-5sm {
+                width: 17px;
+                height: 17px;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            /* ─── Theme toggle ─── */
+            .theme-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 34px;
+                height: 34px;
+                border: 1px solid var(--border);
+                background: var(--bg-card);
+                border-radius: 8px;
+                cursor: pointer;
+                color: var(--muted-fg);
+                transition: all 0.15s;
+                font-size: 16px;
+            }
+            .theme-toggle:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+            }
+
+            /* ─── Empty State ─── */
+            .empty-state {
+                text-align: center;
+                padding: 24px 16px;
+                color: var(--muted-fg);
+            }
+            .empty-state svg {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 8px;
+                opacity: 0.4;
+            }
+            .empty-state p {
+                font-size: 13px;
+            }
+
+            /* ─── Responsive ─── */
+            @media (max-width: 640px) {
+                .shift-info-card {
+                    flex-direction: column;
+                    text-align: center;
+                }
+                .shift-info-card .sic-action {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex h-screen overflow-hidden">
+            <!-- ═══ SIDEBAR (Cashier Simplified) ═══ -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <a href="#" class="sidebar-logo">
+                        <div class="sidebar-logo-icon">K</div>
+                        <span class="sidebar-logo-text">KASIR</span>
+                    </a>
+                </div>
+
+                <!-- Role indicator -->
+                <div class="sidebar-role">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M20 21a8 8 0 1 0-16 0" />
+                    </svg>
+                    <span>Kasir — Shift #12</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <!-- Main -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Utama</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item active">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <rect x="3" y="3" width="7" height="7" />
+                                    <rect x="14" y="3" width="7" height="7" />
+                                    <rect x="14" y="14" width="7" height="7" />
+                                    <rect x="3" y="14" width="7" height="7" />
+                                </svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                                <span>POS Transaksi</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Customers -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Pelanggan</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                                <span>Cari Pelanggan</span>
+                            </a>
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M12 2 9 9H2l7 5-3 8 6-5 6 5-3-8 7-5h-7Z" />
+                                </svg>
+                                <span>Daftar Member</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Shift -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Shift Saya</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                                <span>Riwayat Shift</span>
+                            </a>
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path d="M18 20V10" />
+                                    <path d="M12 20V4" />
+                                    <path d="M6 20v-6" />
+                                </svg>
+                                <span>Laporan Saya</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Stok -->
+                    <div class="sidebar-section">
+                        <p class="sidebar-section-title">Referensi</p>
+                        <div class="sidebar-items">
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V12" />
+                                    <path d="M3.3 7 12 12l8.7-5" />
+                                </svg>
+                                <span>Cek Stok Produk</span>
+                            </a>
+                            <a href="#" class="sidebar-item">
+                                <svg class="icon-5" viewBox="0 0 24 24">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                                    />
+                                    <path
+                                        d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"
+                                    />
+                                </svg>
+                                <span>Daftar Harga</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ═══ MAIN ═══ -->
+            <div class="flex flex-1 min-w-0 flex-col">
+                <!-- Topbar -->
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <button class="icon-btn mobile-menu-btn">
+                            <svg class="icon-5" viewBox="0 0 24 24">
+                                <path d="M3 6h18M3 12h18M3 18h18" />
+                            </svg>
+                        </button>
+                        <h1 class="page-title">Dashboard Kasir</h1>
+                    </div>
+                    <div class="topbar-right">
+                        <!-- Live shift timer -->
+                        <span class="shift-timer" id="shiftTimer">⏱ 04:32:15</span>
+                        <div class="shift-badge" id="shiftBadge">
+                            <span class="shift-dot"></span>
+                            Shift #12 &bull; Aktif
+                        </div>
+                        <button class="bell-btn">
+                            <svg class="icon-5" viewBox="0 0 24 24">
+                                <path d="M6 8a6 6 0 0 1 12 0c0 7 4 9 4 9H2s4-2 4-9" />
+                                <path d="M11 22h2" />
+                            </svg>
+                            <span class="bell-badge">2</span>
+                        </button>
+                        <button
+                            class="theme-toggle"
+                            onclick="document.documentElement.classList.toggle('dark')"
+                            title="Toggle dark mode"
+                            id="themeBtn"
+                        >
+                            🌙
+                        </button>
+                        <button class="avatar-btn">
+                            <div class="avatar">RA</div>
+                            <span class="avatar-name">Rina Amelia</span>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- Content -->
+                <main class="main-content">
+                    <div class="content-inner">
+                        <!-- ── Welcome ── -->
+                        <div class="welcome-section">
+                            <div class="welcome-text">
+                                <h1>Halo, Rina 👋</h1>
+                                <p>Shift #12 kamu sedang berjalan. Berikut aktivitas hari ini.</p>
+                                <div class="shift-info">
+                                    <span>🕐 Buka: <strong>07:30 WIB</strong></span>
+                                    <span>•</span>
+                                    <span>💰 Kas Awal: <strong>Rp 500.000</strong></span>
+                                    <span>•</span>
+                                    <span>🏪 Gerai: <strong>KASIR Pusat</strong></span>
+                                </div>
+                            </div>
+                            <div class="date-badge">
+                                <svg class="icon-5sm" viewBox="0 0 24 24">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <path d="M3 10h18" />
+                                    <path d="M16 2v4" />
+                                    <path d="M8 2v4" />
+                                </svg>
+                                <span id="currentDate"></span>
+                            </div>
+                        </div>
+
+                        <!-- ── Quick Actions ── -->
+                        <div class="quick-actions">
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                    <path d="M3 6h18" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                                <div>
+                                    <div class="qa-label">Transaksi Baru</div>
+                                    <div class="qa-sub">F1</div>
+                                </div>
+                            </div>
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                </svg>
+                                <div>
+                                    <div class="qa-label">Cari Pelanggan</div>
+                                    <div class="qa-sub">F2</div>
+                                </div>
+                            </div>
+                            <div class="quick-action">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--primary)"
+                                    stroke-width="1.5"
+                                >
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V12" />
+                                    <path d="M3.3 7 12 12l8.7-5" />
+                                </svg>
+                                <div>
+                                    <div class="qa-label">Cek Stok</div>
+                                    <div class="qa-sub">F3</div>
+                                </div>
+                            </div>
+                            <div class="quick-action" onclick="toggleShift()">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--danger-500)"
+                                    stroke-width="1.5"
+                                >
+                                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+                                </svg>
+                                <div>
+                                    <div class="qa-label" style="color: var(--danger-500)">
+                                        Tutup Shift
+                                    </div>
+                                    <div class="qa-sub">F4</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── Active Shift Banner ── -->
+                        <div class="shift-info-card" id="shiftBanner">
+                            <div class="sic-icon">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.5"
+                                >
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                </svg>
+                            </div>
+                            <div class="sic-details">
+                                <div class="sic-title">Shift #12 — Sedang Berjalan</div>
+                                <div class="sic-meta">
+                                    <span>Dibuka: 07:30 WIB</span>
+                                    <span
+                                        >Durasi:
+                                        <strong id="shiftDuration">4 jam 32 menit</strong></span
+                                    >
+                                    <span>Total Transaksi: <strong>18</strong></span>
+                                    <span>Total Penjualan: <strong>Rp 2.345.000</strong></span>
+                                </div>
+                            </div>
+                            <button class="sic-action danger" onclick="toggleShift()">
+                                Tutup Shift
+                            </button>
+                        </div>
+
+                        <!-- ── Stat Cards (Cashier-Focused) ── -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: var(--primary-10); color: var(--primary)"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path
+                                                d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+18.2%</span>
+                                </div>
+                                <p class="stat-label">Penjualan Shift Ini</p>
+                                <p class="stat-value">Rp 2.345.000</p>
+                                <p class="stat-sub">Target: Rp 3.000.000 (78%)</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: rgba(52, 152, 219, 0.1); color: #3498db"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path
+                                                d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                            />
+                                            <path d="M3 6h18" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+5</span>
+                                </div>
+                                <p class="stat-label">Transaksi Diproses</p>
+                                <p class="stat-value">18</p>
+                                <p class="stat-sub">Rata-rata Rp 130.278 / transaksi</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="
+                                            background: var(--success-50);
+                                            color: var(--success-500);
+                                        "
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend up">+3</span>
+                                </div>
+                                <p class="stat-label">Pelanggan Dilayani</p>
+                                <p class="stat-value">15</p>
+                                <p class="stat-sub">3 member, 12 non-member</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-top">
+                                    <div
+                                        class="stat-icon"
+                                        style="background: rgba(160, 120, 200, 0.1); color: #a078c8"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                        >
+                                            <path d="M12 2 9 9H2l7 5-3 8 6-5 6 5-3-8 7-5h-7Z" />
+                                        </svg>
+                                    </div>
+                                    <span class="stat-trend neutral">—</span>
+                                </div>
+                                <p class="stat-label">Rating Pelayanan</p>
+                                <p class="stat-value">★ 4.8</p>
+                                <p class="stat-sub">Dari 12 ulasan hari ini</p>
+                            </div>
+                        </div>
+
+                        <!-- ── Dashboard Grid ── -->
+                        <div class="dashboard-grid">
+                            <!-- LEFT: Barcode Entry + Recent Transactions -->
+                            <div class="space-y-5">
+                                <!-- Barcode / Quick Entry -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>🛒 Entry Transaksi Cepat</h3>
+                                        <span class="view-all">Buka POS →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="barcode-area">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.5"
+                                            >
+                                                <path d="M2 5V3a1 1 0 0 1 1-1h2" />
+                                                <path d="M22 5V3a1 1 0 0 0-1-1h-2" />
+                                                <path d="M2 19v2a1 1 0 0 0 1 1h2" />
+                                                <path d="M22 19v2a1 1 0 0 1-1 1h-2" />
+                                                <path d="M7 5v2" />
+                                                <path d="M12 5v2" />
+                                                <path d="M17 5v2" />
+                                                <path d="M7 17v2" />
+                                                <path d="M12 17v2" />
+                                                <path d="M17 17v2" />
+                                                <path d="M7 10v4" />
+                                                <path d="M12 10v4" />
+                                                <path d="M17 10v4" />
+                                            </svg>
+                                            <input
+                                                class="barcode-input"
+                                                type="text"
+                                                placeholder="Scan barcode atau cari produk..."
+                                                autofocus
+                                            />
+                                            <button class="barcode-btn">Cari</button>
+                                        </div>
+                                        <div class="barcode-hint">
+                                            <span>📷 Scan barcode dengan scanner</span>
+                                            <span
+                                                ><kbd>Ctrl</kbd> + <kbd>K</kbd> fokus
+                                                pencarian</span
+                                            >
+                                        </div>
+
+                                        <!-- Cart items (simulated) -->
+                                        <div style="margin-top: 16px">
+                                            <div class="cart-item">
+                                                <div class="cart-thumb">🥤</div>
+                                                <div class="cart-info">
+                                                    <div class="ci-name">Teh Botol Sosro</div>
+                                                    <div class="ci-meta">Rp 5.000 × 2</div>
+                                                </div>
+                                                <div class="cart-qty">
+                                                    <button>−</button>
+                                                    <span>2</span>
+                                                    <button>+</button>
+                                                </div>
+                                                <div class="cart-price">Rp 10.000</div>
+                                            </div>
+                                            <div class="cart-item">
+                                                <div class="cart-thumb">🍜</div>
+                                                <div class="cart-info">
+                                                    <div class="ci-name">Indomie Goreng</div>
+                                                    <div class="ci-meta">Rp 3.500 × 3</div>
+                                                </div>
+                                                <div class="cart-qty">
+                                                    <button>−</button>
+                                                    <span>3</span>
+                                                    <button>+</button>
+                                                </div>
+                                                <div class="cart-price">Rp 10.500</div>
+                                            </div>
+                                            <div class="cart-item">
+                                                <div class="cart-thumb">🧴</div>
+                                                <div class="cart-info">
+                                                    <div class="ci-name">Sabun Lifebuoy</div>
+                                                    <div class="ci-meta">Rp 6.000 × 1</div>
+                                                </div>
+                                                <div class="cart-qty">
+                                                    <button>−</button>
+                                                    <span>1</span>
+                                                    <button>+</button>
+                                                </div>
+                                                <div class="cart-price">Rp 6.000</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="cart-summary">
+                                            <span class="cs-label">Total (6 item)</span>
+                                            <span class="cs-value" style="color: var(--primary)"
+                                                >Rp 26.500</span
+                                            >
+                                        </div>
+                                        <button class="pay-btn">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.5"
+                                            >
+                                                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                                                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                                                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+                                            </svg>
+                                            Bayar Rp 26.500
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Transactions (Cashier's Own) -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>Transaksi Terbaru Saya</h3>
+                                        <span class="view-all">Lihat Semua →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240608</p>
+                                                    <p class="tx-desc">
+                                                        Budi Santoso • 5 items • Tunai
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 245.000
+                                                <span class="tx-time">5 menit lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240607</p>
+                                                    <p class="tx-desc">
+                                                        Siti Rahma (Member) • 3 items • QRIS
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 128.500
+                                                <span class="tx-time">18 menit lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--info-50);
+                                                        color: var(--info-700);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <circle cx="12" cy="12" r="10" />
+                                                        <path d="M12 6v6l4 2" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240606</p>
+                                                    <p class="tx-desc">
+                                                        Ahmad Hidayat • 2 items • Debit (pending)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 89.000
+                                                <span class="tx-time">35 menit lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240605</p>
+                                                    <p class="tx-desc">
+                                                        Dewi Lestari (Member) • 8 items • Tunai
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 432.000
+                                                <span class="tx-time">1 jam lalu</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="tx-item">
+                                            <div class="tx-left">
+                                                <div
+                                                    class="tx-icon"
+                                                    style="
+                                                        background: var(--success-50);
+                                                        color: var(--success-500);
+                                                    "
+                                                >
+                                                    <svg
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        stroke-width="1.5"
+                                                    >
+                                                        <path
+                                                            d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"
+                                                        />
+                                                        <path d="M3 6h18" />
+                                                        <path d="M16 10a4 4 0 0 1-8 0" />
+                                                    </svg>
+                                                </div>
+                                                <div class="tx-info">
+                                                    <p class="tx-name">#INV-20240604</p>
+                                                    <p class="tx-desc">
+                                                        Rudi Hermawan • 1 item • QRIS
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="tx-amount">
+                                                Rp 55.000
+                                                <span class="tx-time">1.5 jam lalu</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RIGHT: Low Stock + Top Products + Payment Summary -->
+                            <div class="space-y-5">
+                                <!-- Low Stock -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>⚠️ Stok Hampir Habis</h3>
+                                        <span class="view-all">Info →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="space-y-1">
+                                            <div class="product-item">
+                                                <div class="product-thumb">🥤</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Teh Botol Sosro</p>
+                                                    <p class="p-meta">Minuman</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--danger-500)"
+                                                    >
+                                                        3
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🍜</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Indomie Goreng</p>
+                                                    <p class="p-meta">Makanan</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--danger-500)"
+                                                    >
+                                                        5
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🧴</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Sabun Lifebuoy</p>
+                                                    <p class="p-meta">Household</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--warning-500)"
+                                                    >
+                                                        8
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">💧</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Air Mineral 600ml</p>
+                                                    <p class="p-meta">Minuman</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p
+                                                        class="p-value"
+                                                        style="color: var(--warning-500)"
+                                                    >
+                                                        10
+                                                    </p>
+                                                    <p class="p-sub">tersisa</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Methods Summary -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>💳 Rincian Pembayaran</h3>
+                                        <span class="view-all">Hari ini</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="space-y-3">
+                                            <div>
+                                                <div
+                                                    style="
+                                                        display: flex;
+                                                        justify-content: space-between;
+                                                        font-size: 13px;
+                                                        margin-bottom: 4px;
+                                                    "
+                                                >
+                                                    <span>Tunai</span>
+                                                    <span class="font-semibold">Rp 1.420.000</span>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        height: 6px;
+                                                        background: var(--border);
+                                                        border-radius: 3px;
+                                                        overflow: hidden;
+                                                    "
+                                                >
+                                                    <div
+                                                        style="
+                                                            height: 100%;
+                                                            width: 61%;
+                                                            background: var(--primary);
+                                                            border-radius: 3px;
+                                                        "
+                                                    ></div>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        font-size: 11px;
+                                                        color: var(--muted-fg);
+                                                        margin-top: 2px;
+                                                    "
+                                                >
+                                                    61% · 11 transaksi
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    style="
+                                                        display: flex;
+                                                        justify-content: space-between;
+                                                        font-size: 13px;
+                                                        margin-bottom: 4px;
+                                                    "
+                                                >
+                                                    <span>QRIS</span>
+                                                    <span class="font-semibold">Rp 625.000</span>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        height: 6px;
+                                                        background: var(--border);
+                                                        border-radius: 3px;
+                                                        overflow: hidden;
+                                                    "
+                                                >
+                                                    <div
+                                                        style="
+                                                            height: 100%;
+                                                            width: 27%;
+                                                            background: var(--info);
+                                                            border-radius: 3px;
+                                                        "
+                                                    ></div>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        font-size: 11px;
+                                                        color: var(--muted-fg);
+                                                        margin-top: 2px;
+                                                    "
+                                                >
+                                                    27% · 5 transaksi
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div
+                                                    style="
+                                                        display: flex;
+                                                        justify-content: space-between;
+                                                        font-size: 13px;
+                                                        margin-bottom: 4px;
+                                                    "
+                                                >
+                                                    <span>Debit / Kartu</span>
+                                                    <span class="font-semibold">Rp 300.000</span>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        height: 6px;
+                                                        background: var(--border);
+                                                        border-radius: 3px;
+                                                        overflow: hidden;
+                                                    "
+                                                >
+                                                    <div
+                                                        style="
+                                                            height: 100%;
+                                                            width: 12%;
+                                                            background: var(--warning-500);
+                                                            border-radius: 3px;
+                                                        "
+                                                    ></div>
+                                                </div>
+                                                <div
+                                                    style="
+                                                        font-size: 11px;
+                                                        color: var(--muted-fg);
+                                                        margin-top: 2px;
+                                                    "
+                                                >
+                                                    12% · 2 transaksi
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            style="
+                                                margin-top: 14px;
+                                                padding-top: 12px;
+                                                border-top: 1px solid var(--border);
+                                                display: flex;
+                                                justify-content: space-between;
+                                            "
+                                        >
+                                            <span class="font-semibold">Total Terkumpul</span>
+                                            <span class="font-bold" style="font-size: 16px"
+                                                >Rp 2.345.000</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick shortcut: Top Products Today -->
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <h3>🏆 Produk Terlaris (Shift Ini)</h3>
+                                        <span class="view-all">Detail →</span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="space-y-1">
+                                            <div class="product-item">
+                                                <div class="product-thumb">☕</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Kopi Kapal Api</p>
+                                                    <p class="p-meta">24 unit terjual</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 480.000</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🥤</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Teh Botol Sosro</p>
+                                                    <p class="p-meta">18 unit terjual</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 90.000</p>
+                                                </div>
+                                            </div>
+                                            <div class="product-item">
+                                                <div class="product-thumb">🍚</div>
+                                                <div class="product-info">
+                                                    <p class="p-name">Beras 5kg</p>
+                                                    <p class="p-meta">6 unit terjual</p>
+                                                </div>
+                                                <div class="product-stat">
+                                                    <p class="p-value">Rp 420.000</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script>
+            // ─── Date ───
+            const now = new Date();
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const months = [
+                "Januari",
+                "Februari",
+                "Maret",
+                "April",
+                "Mei",
+                "Juni",
+                "Juli",
+                "Agustus",
+                "September",
+                "Oktober",
+                "November",
+                "Desember",
+            ];
+            document.getElementById("currentDate").textContent =
+                days[now.getDay()] +
+                ", " +
+                now.getDate() +
+                " " +
+                months[now.getMonth()] +
+                " " +
+                now.getFullYear();
+
+            // ─── Theme ───
+            const themeBtn = document.getElementById("themeBtn");
+            themeBtn.addEventListener("click", function () {
+                const isDark = document.documentElement.classList.toggle("dark");
+                this.textContent = isDark ? "☀️" : "🌙";
+            });
+
+            // ─── Shift Timer ───
+            let shiftSeconds = 4 * 3600 + 32 * 60 + 15; // 04:32:15
+            setInterval(() => {
+                shiftSeconds++;
+                const h = String(Math.floor(shiftSeconds / 3600)).padStart(2, "0");
+                const m = String(Math.floor((shiftSeconds % 3600) / 60)).padStart(2, "0");
+                const s = String(shiftSeconds % 60).padStart(2, "0");
+                document.getElementById("shiftTimer").textContent = `⏱ ${h}:${m}:${s}`;
+            }, 1000);
+
+            // ─── Toggle Shift (Demo) ───
+            let shiftOpen = true;
+            function toggleShift() {
+                shiftOpen = !shiftOpen;
+                const badge = document.getElementById("shiftBadge");
+                const banner = document.getElementById("shiftBanner");
+                const timer = document.getElementById("shiftTimer");
+
+                if (shiftOpen) {
+                    badge.classList.remove("closed");
+                    badge.innerHTML = '<span class="shift-dot"></span>Shift #12 &bull; Aktif';
+                    banner.classList.remove("closed");
+                    banner.querySelector(".sic-title").textContent = "Shift #12 — Sedang Berjalan";
+                    banner.querySelector(".sic-action").textContent = "Tutup Shift";
+                    banner.querySelector(".sic-action").className = "sic-action danger";
+                    timer.style.display = "";
+                } else {
+                    badge.classList.add("closed");
+                    badge.innerHTML = '<span class="shift-dot"></span>Shift #12 &bull; Ditutup';
+                    banner.classList.add("closed");
+                    banner.querySelector(".sic-title").textContent =
+                        "Shift #12 — Ditutup pukul 12:02 WIB";
+                    banner.querySelector(".sic-action").textContent = "Buka Shift Baru";
+                    banner.querySelector(".sic-action").className = "sic-action primary";
+                    timer.style.display = "none";
+                }
+            }
+        </script>
+    </body>
+</html>
