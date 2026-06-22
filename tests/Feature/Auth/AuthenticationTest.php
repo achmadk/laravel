@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -10,6 +11,9 @@ test('login screen can be rendered', function () {
 
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
+    // Give the user a permission so the login controller routes to a specific page
+    Permission::create(['name' => 'dashboard-access']);
+    $user->givePermissionTo('dashboard-access');
 
     $response = $this->post('/login', [
         'email' => $user->email,

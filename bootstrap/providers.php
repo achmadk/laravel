@@ -1,5 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Barryvdh\DomPDF\ServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
+    ServiceProvider::class,
+    PermissionServiceProvider::class,
 ];

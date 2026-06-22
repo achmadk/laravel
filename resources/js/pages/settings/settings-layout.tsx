@@ -1,11 +1,17 @@
-import { cx } from "@/lib/primitive"
-import { Container } from "@/components/ui/container"
-import { ListBox, ListBoxItem, type ListBoxItemProps } from "react-aria-components/ListBox"
-import ProfileController from "@/actions/App/Http/Controllers/Settings/ProfileController"
-import PasswordController from "@/actions/App/Http/Controllers/Settings/PasswordController"
-import AppearanceController from "@/actions/App/Http/Controllers/Settings/AppearanceController"
-import DeleteAccountController from "@/actions/App/Http/Controllers/Settings/DeleteAccountController"
-import { type InertiaLinkProps, Link as InertiaLink } from "@inertiajs/react"
+import { cx } from "@/lib/primitive";
+import { Container } from "@/components/ui/container";
+import { ListBox, ListBoxItem, type ListBoxItemProps } from "react-aria-components/ListBox";
+// @see ../pos-reference/app/Http/Controllers/ProfileController.php
+// @see ../pos-reference/app/Http/Controllers/Auth/PasswordController.php
+// @see ../pos-reference/app/Http/Controllers/ProfileController.php -- destroy
+// (no pos-reference equivalent for AppearanceController)
+// import ProfileController from "@/actions/App/Http/Controllers/Settings/ProfileController"
+// import PasswordController from "@/actions/App/Http/Controllers/Settings/PasswordController"
+// import AppearanceController from "@/actions/App/Http/Controllers/Settings/AppearanceController"
+// import DeleteAccountController from "@/actions/App/Http/Controllers/Settings/DeleteAccountController"
+import { type InertiaLinkProps, Link as InertiaLink } from "@inertiajs/react";
+import { edit as editProfile } from "@/routes/profile";
+import {} from "@/routes/settings";
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,25 +21,25 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
           <ListBox aria-label="Menu" selectionMode="single">
             <NavLink
               href="/settings/profile"
-              isCurrent={ProfileController.edit().url === window.location.pathname}
+              // isCurrent={editPassword().url === window.location.pathname}
             >
               Profile
             </NavLink>
             <NavLink
               href="/settings/password"
-              isCurrent={PasswordController.edit().url === window.location.pathname}
+              // isCurrent={PasswordController.edit().url === window.location.pathname}
             >
               Change password
             </NavLink>
             <NavLink
               href="/settings/appearance"
-              isCurrent={AppearanceController.url() === window.location.pathname}
+              // isCurrent={AppearanceController.url() === window.location.pathname}
             >
               Appearance
             </NavLink>
             <NavLink
               href="/settings/delete-account"
-              isCurrent={DeleteAccountController.index().url === window.location.pathname}
+              // isCurrent={DeleteAccountController.index().url === window.location.pathname}
             >
               Danger zone
             </NavLink>
@@ -42,11 +48,11 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         <div className="w-full min-w-0">{children}</div>
       </div>
     </Container>
-  )
+  );
 }
 
 interface NavLinkProps extends ListBoxItemProps {
-  isCurrent?: boolean
+  isCurrent?: boolean;
 }
 export function NavLink({ isCurrent, className, ...props }: NavLinkProps) {
   return (
@@ -66,5 +72,5 @@ export function NavLink({ isCurrent, className, ...props }: NavLinkProps) {
         )
       }
     />
-  )
+  );
 }

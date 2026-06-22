@@ -1,13 +1,13 @@
 import {
   DialogTrigger as DialogTriggerPrimitive,
   type DialogTriggerProps,
-} from "react-aria-components/Dialog"
+} from "react-aria-components/Dialog";
 import {
   OverlayArrow,
   Popover as PopoverPrimitive,
   type PopoverProps,
-} from "react-aria-components/Popover"
-import { cx } from "@/lib/primitive"
+} from "react-aria-components/Popover";
+import { cx } from "@/lib/primitive";
 import {
   DialogBody,
   DialogClose,
@@ -16,20 +16,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog"
+} from "./dialog";
 
 const Popover = (props: DialogTriggerProps) => {
-  return <DialogTriggerPrimitive {...props} />
-}
+  return <DialogTriggerPrimitive {...props} />;
+};
 
-const PopoverTitle = DialogTitle
-const PopoverHeader = DialogHeader
-const PopoverBody = DialogBody
-const PopoverFooter = DialogFooter
+const PopoverTitle = DialogTitle;
+const PopoverHeader = DialogHeader;
+const PopoverBody = DialogBody;
+const PopoverFooter = DialogFooter;
 
 interface PopoverContentProps extends PopoverProps {
-  arrow?: boolean
-  ref?: React.Ref<HTMLDivElement>
+  arrow?: boolean;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 const PopoverContent = ({
@@ -39,7 +39,7 @@ const PopoverContent = ({
   ref,
   ...props
 }: PopoverContentProps) => {
-  const offset = props.offset ?? (arrow ? 12 : 8)
+  const offset = props.offset ?? (arrow ? 12 : 8);
   return (
     <PopoverPrimitive
       ref={ref}
@@ -75,14 +75,14 @@ const PopoverContent = ({
         </>
       )}
     </PopoverPrimitive>
-  )
-}
+  );
+};
 
-const PopoverTrigger = DialogTrigger
-const PopoverClose = DialogClose
-const PopoverDescription = DialogDescription
+const PopoverTrigger = DialogTrigger;
+const PopoverClose = DialogClose;
+const PopoverDescription = DialogDescription;
 
-export type { PopoverContentProps, PopoverProps }
+export type { PopoverContentProps, PopoverProps };
 export {
   Popover,
   PopoverBody,
@@ -93,4 +93,4 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-}
+};

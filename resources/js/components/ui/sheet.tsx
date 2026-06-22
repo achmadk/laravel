@@ -1,9 +1,9 @@
 import {
   type DialogProps,
   DialogTrigger as DialogTriggerPrimitive,
-} from "react-aria-components/Dialog"
-import { Modal, ModalOverlay, type ModalOverlayProps } from "react-aria-components/Modal"
-import { cx } from "@/lib/primitive"
+} from "react-aria-components/Dialog";
+import { Modal, ModalOverlay, type ModalOverlayProps } from "react-aria-components/Modal";
+import { cx } from "@/lib/primitive";
 import {
   Dialog,
   DialogBody,
@@ -14,17 +14,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog"
+} from "./dialog";
 
-const Sheet = DialogTriggerPrimitive
+const Sheet = DialogTriggerPrimitive;
 
 interface SheetContentProps
-  extends Omit<ModalOverlayProps, "children">,
+  extends
+    Omit<ModalOverlayProps, "children">,
     Pick<DialogProps, "aria-label" | "role" | "aria-labelledby" | "children"> {
-  closeButton?: boolean
-  isFloat?: boolean
-  side?: "top" | "bottom" | "left" | "right"
-  overlay?: Omit<ModalOverlayProps, "children">
+  closeButton?: boolean;
+  isFloat?: boolean;
+  side?: "top" | "bottom" | "left" | "right";
+  overlay?: Omit<ModalOverlayProps, "children">;
 }
 
 const sideVariants: Record<string, string> = {
@@ -34,7 +35,7 @@ const sideVariants: Record<string, string> = {
   left: "entering:slide-in-from-left exiting:slide-out-to-left-80 inset-y-0 left-0 h-auto w-3/4 overflow-y-auto border-r sm:max-w-80 data-[float=true]:inset-y-2 data-[float=true]:left-2 data-[float=true]:border-r-0",
   right:
     "entering:slide-in-from-right exiting:slide-out-to-right-80 inset-y-0 right-0 h-auto w-3/4 overflow-y-auto border-l sm:max-w-80 data-[float=true]:inset-y-2 data-[float=true]:right-2 data-[float=true]:border-l-0",
-}
+};
 
 const SheetContent = ({
   className,
@@ -47,7 +48,7 @@ const SheetContent = ({
   children,
   ...props
 }: SheetContentProps) => {
-  const isDismissable = isDismissableInternal ?? role !== "alertdialog"
+  const isDismissable = isDismissableInternal ?? role !== "alertdialog";
   return (
     <ModalOverlay
       isDismissable={isDismissable}
@@ -82,18 +83,18 @@ const SheetContent = ({
         </Dialog>
       </Modal>
     </ModalOverlay>
-  )
-}
+  );
+};
 
-const SheetTrigger = DialogTrigger
-const SheetFooter = DialogFooter
-const SheetHeader = DialogHeader
-const SheetTitle = DialogTitle
-const SheetDescription = DialogDescription
-const SheetBody = DialogBody
-const SheetClose = DialogClose
+const SheetTrigger = DialogTrigger;
+const SheetFooter = DialogFooter;
+const SheetHeader = DialogHeader;
+const SheetTitle = DialogTitle;
+const SheetDescription = DialogDescription;
+const SheetBody = DialogBody;
+const SheetClose = DialogClose;
 
-export type { SheetContentProps }
+export type { SheetContentProps };
 export {
   Sheet,
   SheetBody,
@@ -104,4 +105,4 @@ export {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-}
+};

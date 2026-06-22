@@ -1,7 +1,7 @@
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 
 export interface ContainerProps extends React.ComponentProps<"div"> {
-  constrained?: boolean
+  constrained?: boolean;
 }
 
 export function Container({ className, constrained = false, ref, ...props }: ContainerProps) {
@@ -15,5 +15,5 @@ export function Container({ className, constrained = false, ref, ...props }: Con
       {...props}
       ref={ref}
     />
-  )
+  );
 }

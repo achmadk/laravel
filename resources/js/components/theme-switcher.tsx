@@ -1,15 +1,15 @@
-import { ComputerDesktopIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { type Theme, useTheme } from "@/hooks/use-theme"
+import { ComputerDesktopIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { type Theme, useTheme } from "@/hooks/use-theme";
 
 interface Themes {
-  value: Theme
-  icon: React.FC<React.SVGAttributes<SVGSVGElement>>
-  label: string
+  value: Theme;
+  icon: React.FC<React.SVGAttributes<SVGSVGElement>>;
+  label: string;
 }
 
 export function ThemeSwitcher() {
-  const { theme, updateTheme } = useTheme()
+  const { theme, updateTheme } = useTheme();
   const themes: Themes[] = [
     { value: "light", icon: SunIcon, label: "Light" },
     {
@@ -22,7 +22,7 @@ export function ThemeSwitcher() {
       icon: ComputerDesktopIcon,
       label: "System",
     },
-  ]
+  ];
 
   return (
     <ToggleGroup
@@ -30,7 +30,7 @@ export function ThemeSwitcher() {
       selectedKeys={new Set([theme])}
       onSelectionChange={(v) => {
         // @ts-expect-error
-        updateTheme([...v][0])
+        updateTheme([...v][0]);
       }}
       selectionMode="single"
       aria-label="Choose theme"
@@ -42,5 +42,5 @@ export function ThemeSwitcher() {
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
-  )
+  );
 }

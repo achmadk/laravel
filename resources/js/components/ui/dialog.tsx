@@ -1,11 +1,11 @@
-import { XMarkIcon } from "@heroicons/react/24/solid"
-import { Button as PrimitiveButton } from "react-aria-components/Button"
-import { Dialog as PrimitiveDialog } from "react-aria-components/Dialog"
-import { Heading, type HeadingProps } from "react-aria-components/Heading"
-import type { TextProps } from "react-aria-components/Text"
-import { twMerge } from "tailwind-merge"
-import { cx } from "@/lib/primitive"
-import { Button, type ButtonProps } from "./button"
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { Button as PrimitiveButton } from "react-aria-components/Button";
+import { Dialog as PrimitiveDialog } from "react-aria-components/Dialog";
+import { Heading, type HeadingProps } from "react-aria-components/Heading";
+import type { TextProps } from "react-aria-components/Text";
+import { twMerge } from "tailwind-merge";
+import { cx } from "@/lib/primitive";
+import { Button, type ButtonProps } from "./button";
 
 const Dialog = ({
   role = "dialog",
@@ -22,16 +22,16 @@ const Dialog = ({
       )}
       {...props}
     />
-  )
-}
+  );
+};
 
 const DialogTrigger = ({ className, ...props }: ButtonProps) => (
   <PrimitiveButton className={cx("cursor-pointer", className)} {...props} />
-)
+);
 
 interface DialogHeaderProps extends Omit<React.ComponentProps<"div">, "title"> {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
 }
 
 const DialogHeader = ({ className, ...props }: DialogHeaderProps) => {
@@ -51,11 +51,11 @@ const DialogHeader = ({ className, ...props }: DialogHeaderProps) => {
         props.children
       )}
     </div>
-  )
-}
+  );
+};
 
 interface DialogTitleProps extends HeadingProps {
-  ref?: React.Ref<HTMLHeadingElement>
+  ref?: React.Ref<HTMLHeadingElement>;
 }
 const DialogTitle = ({ className, ref, ...props }: DialogTitleProps) => (
   <Heading
@@ -64,10 +64,10 @@ const DialogTitle = ({ className, ref, ...props }: DialogTitleProps) => (
     className={twMerge("text-balance font-semibold text-fg text-lg/6 sm:text-base/6", className)}
     {...props}
   />
-)
+);
 
 interface DialogDescriptionProps extends TextProps {
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>;
 }
 const DialogDescription = ({ className, ref, ...props }: DialogDescriptionProps) => (
   <p
@@ -79,7 +79,7 @@ const DialogDescription = ({ className, ref, ...props }: DialogDescriptionProps)
     ref={ref}
     {...props}
   />
-)
+);
 
 interface DialogBodyProps extends React.ComponentProps<"div"> {}
 const DialogBody = ({ className, ...props }: DialogBodyProps) => (
@@ -92,7 +92,7 @@ const DialogBody = ({ className, ...props }: DialogBodyProps) => (
     )}
     {...props}
   />
-)
+);
 
 interface DialogFooterProps extends React.ComponentProps<"div"> {}
 const DialogFooter = ({ className, ...props }: DialogFooterProps) => {
@@ -105,16 +105,16 @@ const DialogFooter = ({ className, ...props }: DialogFooterProps) => {
       )}
       {...props}
     />
-  )
-}
+  );
+};
 
 const DialogClose = ({ intent = "plain", ref, ...props }: ButtonProps) => {
-  return <Button slot="close" ref={ref} intent={intent} {...props} />
-}
+  return <Button slot="close" ref={ref} intent={intent} {...props} />;
+};
 
 interface CloseButtonIndicatorProps extends Omit<ButtonProps, "children"> {
-  className?: string
-  isDismissable?: boolean | undefined
+  className?: string;
+  isDismissable?: boolean | undefined;
 }
 
 const DialogCloseIcon = ({ className, ...props }: CloseButtonIndicatorProps) => {
@@ -129,8 +129,8 @@ const DialogCloseIcon = ({ className, ...props }: CloseButtonIndicatorProps) => 
     >
       <XMarkIcon className="size-4" />
     </PrimitiveButton>
-  ) : null
-}
+  ) : null;
+};
 
 export type {
   CloseButtonIndicatorProps,
@@ -139,7 +139,7 @@ export type {
   DialogFooterProps,
   DialogHeaderProps,
   DialogTitleProps,
-}
+};
 export {
   Dialog,
   DialogBody,
@@ -150,4 +150,4 @@ export {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-}
+};

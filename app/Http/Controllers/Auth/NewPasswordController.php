@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\AuditLogService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,8 +18,12 @@ use Inertia\Response;
 
 class NewPasswordController extends Controller
 {
+    public function __construct(
+        private readonly AuditLogService $auditLogService
+    ) {}
+
     /**
-     * Show the password reset page.
+     * Display the password reset view.
      */
     public function create(Request $request): Response
     {
@@ -30,7 +36,7 @@ class NewPasswordController extends Controller
     /**
      * Handle an incoming new password request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -59,6 +65,22 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         if ($status == Password::PasswordReset) {
+            $user = User::where('email', $request->email)->first();
+
+            if ($user) {
+                $this->auditLogService->log(
+                    event: 'auth.password_changed',
+                    module: 'auth',
+                    auditable: $user,
+                    description: 'Password akun direset melalui email.',
+                    meta: [
+                        'severity' => 'high',
+                        'route' => $request->route()?->getName(),
+                        'source' => 'reset',
+                    ],
+                );
+            }
+
             return to_route('login')->with('status', __($status));
         }
 

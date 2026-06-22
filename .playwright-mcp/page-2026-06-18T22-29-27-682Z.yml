@@ -1,0 +1,29 @@
+- generic [ref=e3]:
+    - region "Notifications alt+T"
+    - generic [ref=e5]:
+        - link "Intent UI Aplikasi Kasir" [ref=e6] [cursor=pointer]:
+            - /url: /
+            - img "Intent UI" [ref=e9]
+            - generic [ref=e10]: Aplikasi Kasir
+        - heading "Selamat Datang Kembali" [level=1] [ref=e11]
+        - paragraph [ref=e12]: Masuk untuk mengakses dashboard Anda
+        - generic [ref=e14]:
+            - generic [ref=e15]:
+                - generic [ref=e16]: Email
+                - generic [ref=e17]:
+                    - img [ref=e19]
+                    - textbox "nama@email.com" [active] [ref=e22]
+            - generic [ref=e23]:
+                - generic [ref=e24]: Password
+                - generic [ref=e25]:
+                    - img [ref=e27]
+                    - textbox "••••••••" [ref=e31]
+                    - button [ref=e32]:
+                        - img [ref=e33]
+            - generic [ref=e36]:
+                - generic [ref=e37] [cursor=pointer]:
+                    - checkbox "Ingat saya" [ref=e38]
+                    - generic [ref=e39]: Ingat saya
+                - link "Lupa Password?" [ref=e40] [cursor=pointer]:
+                    - /url: /forgot-password
+            - button "Masuk" [ref=e41]

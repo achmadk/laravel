@@ -1,35 +1,35 @@
-import AppLayout from "@/layouts/app-layout"
-import { Head, useForm, usePage } from "@inertiajs/react"
-import type { SharedData } from "@/types/shared"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form } from "react-aria-components/Form"
-import { TextField } from "@/components/ui/text-field"
-import { Link } from "@inertiajs/react"
-import { Button } from "@/components/ui/button"
-import SettingsLayout from "@/pages/settings/settings-layout"
-import { FieldError, Label } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import AppLayout from "@/layouts/app-layout";
+import { Head, useForm, usePage } from "@inertiajs/react";
+import type { SharedData } from "@/types/shared";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "react-aria-components/Form";
+import { TextField } from "@/components/ui/text-field";
+import { Link } from "@inertiajs/react";
+import { Button } from "@/components/ui/button";
+import SettingsLayout from "@/pages/settings/settings-layout";
+import { FieldError, Label } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
 interface Props {
-  mustVerifyEmail: boolean
-  status?: string
+  mustVerifyEmail: boolean;
+  status?: string;
 }
 
-const title = "Profile"
+const title = "Profile";
 
 export default function Profile({ mustVerifyEmail, status }: Props) {
-  const { auth } = usePage<SharedData>().props
+  const { auth } = usePage<SharedData>().props;
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
     name: auth.user.name ?? "",
     email: auth.user.email ?? "",
-  })
+  });
 
   const submit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     patch("/settings/profile", {
       preserveScroll: true,
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -95,7 +95,7 @@ export default function Profile({ mustVerifyEmail, status }: Props) {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }
 
-Profile.layout = [AppLayout, SettingsLayout]
+Profile.layout = [AppLayout, SettingsLayout];

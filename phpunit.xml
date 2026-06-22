@@ -29,5 +29,7 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="SECURITY_BOT_GUARD_ENABLED" value="false"/>
+        <env name="AUTH_PUBLIC_REGISTRATION" value="true"/>
     </php>
 </phpunit>

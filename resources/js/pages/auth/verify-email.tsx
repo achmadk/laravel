@@ -1,48 +1,114 @@
-import GuestLayout from "@/layouts/guest-layout"
-import { Head, Form } from "@inertiajs/react"
-import { Button } from "@/components/ui/button"
-import { Link } from "@inertiajs/react"
-import { Loader } from "@/components/ui/loader"
-import EmailVerificationNotificationController from "@/actions/App/Http/Controllers/Auth/EmailVerificationNotificationController"
+import GuestLayout from "@/layouts/guest-layout";
+import AuthBotGuardFields from "@/components/auth-bot-guard-fields";
+import { Head, useForm, Link } from "@inertiajs/react";
+import { IconMailCheck, IconLoader2, IconLogout, IconRefresh } from "@tabler/icons-react";
+import type { BotGuardPayload } from "@/types/auth";
 
-export default function VerifyEmail({ status }: { status?: string }) {
+interface VerifyEmailProps {
+  status?: string;
+  botGuard?: BotGuardPayload;
+}
+
+export default function VerifyEmail({ status, botGuard }: VerifyEmailProps) {
+  const honeypotField = botGuard?.honeypot_field ?? "company_website";
+  const tokenField = botGuard?.token_field ?? "bot_guard_token";
+  const { data, setData, post, processing, errors } = useForm({
+    [honeypotField]: "",
+    [tokenField]: botGuard?.token ?? "",
+  });
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    post("/verify-email");
+  };
+
   return (
     <>
-      <Head title="Email Verification" />
+      <Head title="Verifikasi Email" />
+
       {status === "verification-link-sent" && (
-        <div className="mb-4 font-medium text-green-600 text-sm">
-          A new verification link has been sent to the email address you provided during
-          registration.
+        <div className="animate-fade-up stagger-1 mb-6 rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+          Link verifikasi baru sudah dikirim ke email Anda.
         </div>
       )}
 
-      <Form
-        {...EmailVerificationNotificationController.store.form()}
-        className="mt-4 flex items-center justify-between"
-      >
-        {({ processing }) => (
-          <>
-            <Button isPending={processing} type="submit">
-              {processing && <Loader />}
-              Resend Verification Email
-            </Button>
+      <div className="animate-fade-up stagger-1 rounded-[20px] border border-[var(--border)] bg-white p-6 dark:bg-[var(--overlay)]">
+        {/* Spam check tip */}
+        <div className="mb-5 rounded-xl bg-[var(--muted)] p-4 text-sm text-[var(--muted-fg)]">
+          Pastikan juga memeriksa folder spam atau promotion jika email belum terlihat di inbox.
+        </div>
 
-            <Link href="/logout" method="post" className="text-primary-subtle-fg">
-              Log Out
-            </Link>
-          </>
+        {errors.human && (
+          <div className="mb-5 rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
+            {errors.human}
+          </div>
         )}
-      </Form>
+
+        <form onSubmit={submit} className="space-y-3">
+          <AuthBotGuardFields
+            botGuard={botGuard}
+            data={data}
+            setData={setData as (field: string, value: unknown) => void}
+          />
+
+          {/* Resend button */}
+          <button
+            type="submit"
+            disabled={processing}
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 active:scale-[0.985] focus:ring-3 focus:ring-[var(--primary-subtle)] disabled:opacity-50"
+          >
+            {processing ? (
+              <>
+                <IconLoader2 size={18} className="animate-spin" />
+                Mengirim ulang...
+              </>
+            ) : (
+              <>
+                <IconRefresh size={18} />
+                Kirim Ulang Email Verifikasi
+              </>
+            )}
+          </button>
+
+          {/* Logout */}
+          <Link
+            href="/logout"
+            method="post"
+            as="button"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white font-semibold text-[var(--fg)] transition-all hover:bg-[var(--muted)] dark:bg-transparent"
+          >
+            <IconLogout size={18} />
+            Keluar
+          </Link>
+        </form>
+      </div>
     </>
-  )
+  );
 }
 
-VerifyEmail.layout = (page: any) => (
+VerifyEmail.layout = (page: React.ReactNode) => (
   <GuestLayout
-    header="Verify email"
-    description="
-                Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-                link we just emailed to you? If you didn't receive the email, we will gladly send you another."
+    header="Verifikasi Email Anda"
+    description="Sebelum masuk ke dashboard, klik link verifikasi yang sudah kami kirim ke email Anda. Jika email belum diterima, kirim ulang dari halaman ini."
+    hero={
+      <div className="text-center text-white">
+        <div className="mx-auto mb-8 flex size-24 items-center justify-center rounded-2xl bg-white/20">
+          <IconMailCheck size={48} />
+        </div>
+        <h2 className="mb-4 text-3xl font-bold">Aktivasi Akun Lebih Aman</h2>
+        <p className="text-lg opacity-90">
+          Verifikasi email membantu memastikan hanya akun yang valid yang dapat mengakses dashboard
+          dan data operasional toko.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          {["Akses Terverifikasi", "Perlindungan Akun", "Dashboard Aman"].map((item, index) => (
+            <span key={index} className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium">
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    }
     children={page}
   />
-)
+);

@@ -1,79 +1,239 @@
-import GuestLayout from "@/layouts/guest-layout"
-import { Head, Form } from "@inertiajs/react"
-
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Link } from "@/components/ui/link"
-import { TextField } from "@/components/ui/text-field"
-import { Loader } from "@/components/ui/loader"
-import { FieldError, Label } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import GuestLayout from "@/layouts/guest-layout";
+import AuthBotGuardFields from "@/components/auth-bot-guard-fields";
+import { Head, useForm, Link } from "@inertiajs/react";
+import {
+  IconMail,
+  IconLock,
+  IconEye,
+  IconEyeOff,
+  IconLoader2,
+  IconDeviceDesktopAnalytics,
+  IconCoin,
+  IconUsers,
+} from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import type { BotGuardPayload } from "@/types/auth";
 
 interface LoginProps {
-  status: string
-  canResetPassword: boolean
+  status?: string;
+  canResetPassword: boolean;
+  canRegister: boolean;
+  botGuard?: BotGuardPayload;
 }
 
-export default function Login(args: LoginProps) {
-  const { status, canResetPassword } = args
+export default function Login({ status, canResetPassword, canRegister, botGuard }: LoginProps) {
+  const honeypotField = botGuard?.honeypot_field ?? "company_website";
+  const tokenField = botGuard?.token_field ?? "bot_guard_token";
+  const { data, setData, post, processing, errors, reset } = useForm({
+    email: "",
+    password: "",
+    remember: false,
+    [honeypotField]: "",
+    [tokenField]: botGuard?.token ?? "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    return () => reset("password");
+  }, []);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    post("/login");
+  };
+
   return (
     <>
-      <Head title="Log in" />
+      <Head title="Masuk" />
 
-      {status && <div className="mb-4 font-medium text-success-subtle-fg">{status}</div>}
+      <form onSubmit={submit} className="space-y-5">
+        <AuthBotGuardFields
+          botGuard={botGuard}
+          data={data}
+          setData={setData as (field: string, value: unknown) => void}
+        />
 
-      <Form
-        method="post"
-        action="/login"
-        resetOnSuccess={["password"]}
-        className="flex flex-col gap-y-4"
-      >
-        {({ processing, errors }) => (
-          <>
-            <TextField name="email" autoComplete="username" autoFocus>
-              <Label>Email</Label>
-              <Input type="email" />
-              <FieldError>{errors.email}</FieldError>
-            </TextField>
-            <TextField name="password" autoComplete="current-password">
-              <Label>Password</Label>
-              <Input type="password" />
-              <FieldError>{errors.password}</FieldError>
-            </TextField>
-            <div className="flex items-center justify-between">
-              <Checkbox name="remember">Remember me</Checkbox>
-              {canResetPassword && (
-                <Link
-                  href="/forgot-password"
-                  className="text-base/6 text-primary-subtle-fg hover:underline sm:text-sm/6"
-                >
-                  Forgot your password?
-                </Link>
-              )}
-            </div>
-            <Button isPending={processing} type="submit">
-              {processing && <Loader />}
-              Log in
-            </Button>
-            <div className="text-center">
-              <Link
-                href="/register"
-                className="text-base/6 text-primary-subtle-fg hover:underline sm:text-sm/6"
-              >
-                Dont have account? Register
-              </Link>
-            </div>
-          </>
+        {errors.human && (
+          <div className="animate-fade-up stagger-1 rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
+            {errors.human}
+          </div>
         )}
-      </Form>
+
+        {status && (
+          <div className="animate-fade-up stagger-1 rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+            {status}
+          </div>
+        )}
+
+        {/* Email */}
+        <div className="animate-fade-up stagger-1">
+          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Email</label>
+          <div className="relative">
+            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+              <IconMail size={18} />
+            </div>
+            <input
+              type="email"
+              value={data.email}
+              onChange={(e) => setData("email", e.target.value)}
+              placeholder="nama@email.com"
+              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-4 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+                errors.email
+                  ? "border-danger-500"
+                  : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
+              }`}
+              autoComplete="username"
+              autoFocus
+            />
+          </div>
+          {errors.email && <p className="mt-1 text-xs text-danger-500">{errors.email}</p>}
+        </div>
+
+        {/* Password */}
+        <div className="animate-fade-up stagger-2">
+          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Password</label>
+          <div className="relative">
+            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+              <IconLock size={18} />
+            </div>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={data.password}
+              onChange={(e) => setData("password", e.target.value)}
+              placeholder="••••••••"
+              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-11 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+                errors.password
+                  ? "border-danger-500"
+                  : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
+              }`}
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--fg)]"
+              tabIndex={-1}
+            >
+              {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+            </button>
+          </div>
+          {errors.password && <p className="mt-1 text-xs text-danger-500">{errors.password}</p>}
+        </div>
+
+        {/* Remember & Forgot */}
+        <div className="animate-fade-up stagger-3 flex items-center justify-between">
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={data.remember as boolean}
+              onChange={(e) => setData("remember", e.target.checked)}
+              className="size-4 appearance-none rounded-[5px] border border-[var(--input)] bg-white checked:border-[var(--primary)] checked:bg-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)] dark:bg-[var(--overlay)]"
+              style={{
+                backgroundImage: data.remember
+                  ? "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E\")"
+                  : "none",
+                backgroundSize: "12px",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }}
+            />
+            <span className="text-sm text-[var(--muted-fg)]">Ingat saya</span>
+          </label>
+
+          {canResetPassword && (
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-[var(--primary)] hover:text-[var(--primary)]/80"
+            >
+              Lupa password?
+            </Link>
+          )}
+        </div>
+
+        {/* Submit */}
+        <div className="animate-fade-up stagger-4">
+          <button
+            type="submit"
+            disabled={processing}
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 active:scale-[0.985] focus:ring-3 focus:ring-[var(--primary-subtle)] disabled:opacity-50"
+          >
+            {processing ? (
+              <>
+                <IconLoader2 size={18} className="animate-spin" />
+                Memproses...
+              </>
+            ) : (
+              "Masuk"
+            )}
+          </button>
+        </div>
+
+        {/* Register Link */}
+        {canRegister && (
+          <p className="animate-fade-up stagger-5 text-center text-sm text-[var(--muted-fg)]">
+            Belum punya akun?{" "}
+            <Link
+              href="/register"
+              className="font-semibold text-[var(--primary)] hover:text-[var(--primary)]/80"
+            >
+              Buat akun baru
+            </Link>
+          </p>
+        )}
+      </form>
     </>
-  )
+  );
 }
 
 Login.layout = (page: React.ReactNode) => (
   <GuestLayout
-    header="Login"
-    description="Sign in with your email or continue with a connected account."
+    header="Masuk"
+    description="Masuk ke akun Anda untuk melanjutkan"
+    hero={
+      <div className="max-w-sm text-white">
+        <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.08] px-3 py-1 text-[0.75rem] font-medium text-white/[0.85]">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Solusi Kasir Terpercaya
+        </div>
+
+        <h2 className="mb-4 text-[1.75rem] font-semibold leading-tight tracking-tight text-white">
+          Kelola toko Anda
+          <br />
+          dengan mudah &amp; cepat
+        </h2>
+
+        <p className="mb-8 text-[0.9375rem] leading-relaxed text-white/75">
+          Platform POS all-in-one untuk mengelola penjualan, stok, dan laporan bisnis Anda dalam
+          satu tempat.
+        </p>
+
+        <div className="space-y-3">
+          {[
+            { icon: IconDeviceDesktopAnalytics, text: "Manajemen stok real-time" },
+            { icon: IconCoin, text: "Laporan keuangan harian" },
+            { icon: IconUsers, text: "Multi-kasir & multi-toko" },
+          ].map((feature, i) => (
+            <div key={i} className="flex items-center gap-2.5">
+              <div className="flex size-[22px] flex-shrink-0 items-center justify-center rounded-[6px] bg-white/[0.08] text-white/70">
+                <feature.icon size={12} />
+              </div>
+              <span className="text-[0.8125rem] text-white/[0.85]">{feature.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    }
     children={page}
   />
-)
+);

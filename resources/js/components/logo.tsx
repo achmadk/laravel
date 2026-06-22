@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar";
 
 export function Logo({ className, ...props }: React.ComponentProps<typeof Avatar>) {
   return (
@@ -10,5 +10,5 @@ export function Logo({ className, ...props }: React.ComponentProps<typeof Avatar
       alt="Intent UI"
       {...props}
     />
-  )
+  );
 }

@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Intent Zen · RTOS Categories</title>
+
+        <!--
+  DESIGNER'S NOTES — Direction #3: Intent Zen
+  Philosophy: Kenya Hara Eastern Minimalism (MA / 間 — negative space)
+  Designer/Studio reference: Kenya Hara — Muji art director, author of "Designing Design"
+  
+  KEY ASSUMPTIONS:
+  1. MA (間 / negative space) is the primary design element. Content breathes.
+  2. NO cards. NO containers. NO box-shadows. Content floats on the bare page.
+  3. Thin horizontal lines (1px, primary-tinted in light mode) are the ONLY dividers.
+  4. Typography is the main visual element — large headings, generous leading, minimal weight.
+  5. The brand blue primary appears ONLY as:
+     - A thin accent line (under active nav, section dividers)
+     - The submit button background (only colored element)
+  6. Icons are minimal or absent. Words carry meaning.
+  7. Dark mode: white text on dark bg, primary becomes a subtle glow line.
+  
+  WHY THIS WORKS FOR RTOS:
+  - An admin panel that respects the user's attention. No visual noise.
+  - Reduces cognitive load during inventory management.
+  - The extreme restraint makes the brand blue primary feel meaningful when it appears.
+  - Editorial quality signals premium — "this panel was designed, not assembled."
+  
+  PLACEHOLDERS:
+  - Category images use Unsplash (small thumbnails only)
+  - Search and pagination are visual-only
+  - Form submission is not functional
+  
+  CAVEAT: This direction is intentionally extreme. It may feel "too empty" compared
+  to conventional admin panels. That's the point — but it can be adjusted (e.g., 
+  adding back subtle card backgrounds) if the user prefers.
+-->
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+            rel="stylesheet"
+        />
+
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+        ></script>
+        <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --primary: oklch(0.546 0.245 262.881);
+                --primary-fg: #fff;
+                --primary-line: oklch(0.6 0.2 262.881 / 0.3);
+                --danger: oklch(0.6 0.2 25);
+                --success: oklch(0.6 0.18 145);
+
+                --bg: oklch(0.98 0.002 285.823);
+                --fg: oklch(0.181 0.005 285.823);
+                --muted-fg: oklch(0.55 0.01 285.823);
+                --border: oklch(0.85 0.008 285.823);
+                --sidebar-bg: #fff;
+                --sidebar-fg: oklch(0.181 0.005 285.823);
+                --sidebar-border: oklch(0.9 0.005 285.823);
+                --input-border: oklch(0.8 0.01 285.823);
+                --line: oklch(0.6 0.2 262.881 / 0.25);
+            }
+
+            [data-theme="dark"] {
+                --bg: oklch(0.181 0.005 285.823);
+                --fg: oklch(1 0 0);
+                --muted-fg: oklch(0.5 0.01 285.823);
+                --border: oklch(0.25 0.005 285.823);
+                --sidebar-bg: oklch(0.13 0.004 285.82);
+                --sidebar-fg: oklch(0.9 0.005 285.823);
+                --sidebar-border: oklch(0.2 0.005 285.823);
+                --input-border: oklch(0.3 0.005 285.823);
+                --line: oklch(0.6 0.2 262.881 / 0.15);
+            }
+
+            html {
+                font-family: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+                color: var(--fg);
+                background: var(--bg);
+                -webkit-font-smoothing: antialiased;
+            }
+            body {
+                margin: 0;
+                overflow: hidden;
+                height: 100vh;
+            }
+            #root {
+                height: 100vh;
+                display: flex;
+            }
+
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 2px;
+            }
+
+            input,
+            textarea,
+            button {
+                font-family: inherit;
+            }
+
+            ::placeholder {
+                color: var(--muted-fg);
+                opacity: 0.6;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useCallback, useEffect } = React;
+
+            // ─── DATA ──────────────────────────────────────────────
+            const CATEGORIES = [
+                {
+                    id: 1,
+                    name: "Elektronik",
+                    desc: "Komponen dan perangkat elektronik",
+                    productCount: 234,
+                    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 2,
+                    name: "Pakaian",
+                    desc: "Fashion dan apparel pria & wanita",
+                    productCount: 567,
+                    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 3,
+                    name: "Makanan",
+                    desc: "Makanan ringan, frozen food & bahan masak",
+                    productCount: 412,
+                    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 4,
+                    name: "Minuman",
+                    desc: "Minuman kemasan, kopi & teh",
+                    productCount: 189,
+                    image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 5,
+                    name: "Kesehatan",
+                    desc: "Vitamin, obat & alat kesehatan",
+                    productCount: 156,
+                    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 6,
+                    name: "Otomotif",
+                    desc: "Aksesoris & spare part kendaraan",
+                    productCount: 98,
+                    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 7,
+                    name: "Buku",
+                    desc: "Buku pendidikan, novel & komik",
+                    productCount: 321,
+                    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=120&h=120&fit=crop",
+                },
+                {
+                    id: 8,
+                    name: "Olahraga",
+                    desc: "Perlengkapan fitness & outdoor",
+                    productCount: 145,
+                    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=120&h=120&fit=crop",
+                },
+            ];
+
+            const NAV_ITEMS = [
+                { id: "dashboard", label: "Dashboard" },
+                { id: "categories", label: "Kategori" },
+                { id: "products", label: "Produk" },
+                { id: "orders", label: "Pesanan" },
+                { id: "customers", label: "Pelanggan" },
+                { id: "reports", label: "Laporan" },
+                { id: "settings", label: "Pengaturan" },
+            ];
+
+            // ─── THEME ──────────────────────────────────────────────
+            function useTheme() {
+                const [theme, setTheme] = useState(
+                    () => localStorage.getItem("zen-theme") || "light",
+                );
+                const toggle = useCallback(() => {
+                    setTheme((t) => {
+                        const n = t === "light" ? "dark" : "light";
+                        localStorage.setItem("zen-theme", n);
+                        return n;
+                    });
+                }, []);
+                return [theme, toggle];
+            }
+
+            // ─── MINIMAL SIDEBAR ───────────────────────────────────
+            function ZenSidebar({ collapsed, onToggle, theme, onThemeToggle }) {
+                // Minimal sidebar — thin, low visual weight, just a hint
+                const zen = {
+                    aside: {
+                        width: collapsed ? 56 : 180,
+                        minWidth: collapsed ? 56 : 180,
+                        height: "100vh",
+                        background: "var(--sidebar-bg)",
+                        borderRight: "1px solid var(--sidebar-border)",
+                        display: "flex",
+                        flexDirection: "column",
+                        transition: "width 0.3s ease, min-width 0.3s ease",
+                        overflow: "hidden",
+                    },
+                    logo: {
+                        padding: collapsed ? "24px 0" : "32px 20px 24px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        justifyContent: collapsed ? "center" : "flex-start",
+                        borderBottom: "1px solid var(--line)",
+                    },
+                    mark: {
+                        width: 22,
+                        height: 22,
+                        borderRadius: 4,
+                        background: "var(--primary)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontWeight: 600,
+                        fontSize: 11,
+                        flexShrink: 0,
+                    },
+                    logoText: {
+                        fontSize: 15,
+                        fontWeight: 600,
+                        color: "var(--fg)",
+                        letterSpacing: "0.5px",
+                        opacity: collapsed ? 0 : 1,
+                        transition: "opacity 0.2s",
+                        whiteSpace: "nowrap",
+                    },
+                    nav: {
+                        flex: 1,
+                        padding: "20px 0",
+                        display: "flex",
+                        flexDirection: "column",
+                    },
+                    item: (active) => ({
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        padding: collapsed ? "10px 0" : "10px 20px",
+                        cursor: "pointer",
+                        background: "none",
+                        color: active ? "var(--primary)" : "var(--muted-fg)",
+                        fontWeight: active ? 500 : 400,
+                        fontSize: 13,
+                        justifyContent: collapsed ? "center" : "flex-start",
+                        border: "none",
+                        borderRight: active ? "2px solid var(--primary)" : "2px solid transparent",
+                        textAlign: "left",
+                        width: "100%",
+                        transition: "color 0.2s, border-color 0.2s",
+                        letterSpacing: "0.3px",
+                    }),
+                    dot: (active) => ({
+                        width: 4,
+                        height: 4,
+                        borderRadius: "50%",
+                        background: active ? "var(--primary)" : "transparent",
+                        flexShrink: 0,
+                    }),
+                    footer: {
+                        padding: "16px 0",
+                        borderTop: "1px solid var(--line)",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: collapsed ? "center" : "flex-start",
+                    },
+                    themeBtn: {
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: collapsed ? "center" : "flex-start",
+                        gap: 10,
+                        padding: collapsed ? "10px 0" : "10px 20px",
+                        cursor: "pointer",
+                        background: "none",
+                        color: "var(--muted-fg)",
+                        border: "none",
+                        fontSize: 13,
+                        width: "100%",
+                        letterSpacing: "0.3px",
+                    },
+                    collapseBtn: {
+                        marginTop: 8,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "6px 0",
+                        cursor: "pointer",
+                        color: "var(--muted-fg)",
+                        background: "none",
+                        border: "none",
+                        width: "100%",
+                        fontSize: 11,
+                        transform: collapsed ? "rotate(180deg)" : "none",
+                        transition: "transform 0.3s",
+                    },
+                };
+
+                return (
+                    <aside style={zen.aside}>
+                        <div style={zen.logo}>
+                            <div style={zen.mark}>R</div>
+                            {!collapsed && <span style={zen.logoText}>RTOS</span>}
+                        </div>
+                        <nav style={zen.nav}>
+                            {NAV_ITEMS.map((item) => (
+                                <button key={item.id} style={zen.item(item.id === "categories")}>
+                                    <span style={zen.dot(item.id === "categories")} />
+                                    {!collapsed && <span>{item.label}</span>}
+                                </button>
+                            ))}
+                        </nav>
+                        <div style={zen.footer}>
+                            <button style={zen.themeBtn} onClick={onThemeToggle}>
+                                <span style={{ fontSize: 14, lineHeight: 1 }}>
+                                    {theme === "dark" ? "☀" : "☽"}
+                                </span>
+                                {!collapsed && <span>{theme === "dark" ? "Terang" : "Gelap"}</span>}
+                            </button>
+                            <button style={zen.collapseBtn} onClick={onToggle}>
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                >
+                                    <polyline points="15 18 9 12 15 6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </aside>
+                );
+            }
+
+            // ─── SEPARATOR LINE ─────────────────────────────────────
+            function Separator({ muted }) {
+                return (
+                    <div
+                        style={{
+                            height: 1,
+                            width: "100%",
+                            background: muted ? "var(--border)" : "var(--line)",
+                            margin: "0 0 24px 0",
+                        }}
+                    />
+                );
+            }
+
+            // ─── INDEX PAGE ─────────────────────────────────────────
+            function IndexPage({ onAdd, onEdit }) {
+                const [search, setSearch] = useState("");
+
+                const filtered = CATEGORIES.filter((c) =>
+                    c.name.toLowerCase().includes(search.toLowerCase()),
+                );
+
+                const pageHeader = {
+                    fontSize: 28,
+                    fontWeight: 500,
+                    color: "var(--fg)",
+                    letterSpacing: "-0.5px",
+                    marginBottom: 6,
+                };
+                const pageSub = {
+                    fontSize: 14,
+                    color: "var(--muted-fg)",
+                    marginBottom: 32,
+                    fontWeight: 400,
+                };
+
+                const searchInput = {
+                    border: "none",
+                    borderBottom: "1px solid var(--input-border)",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: 15,
+                    color: "var(--fg)",
+                    padding: "8px 0 6px",
+                    width: "300px",
+                    letterSpacing: "0.3px",
+                    transition: "border-color 0.2s",
+                };
+
+                const addLink = {
+                    fontSize: 13,
+                    color: "var(--primary)",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    fontWeight: 500,
+                    letterSpacing: "0.3px",
+                    textDecoration: "underline",
+                    textUnderlineOffset: 3,
+                    textDecorationThickness: 1,
+                };
+
+                const countStyle = {
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                    marginBottom: 20,
+                };
+
+                // List item styles — no card, just typo + small thumb
+                const listItem = {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
+                    padding: "14px 0",
+                    cursor: "pointer",
+                    borderBottom: "1px solid var(--border)",
+                    transition: "opacity 0.15s",
+                };
+                const thumb = {
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    flexShrink: 0,
+                    opacity: 0.85,
+                };
+                const catName = {
+                    fontSize: 16,
+                    fontWeight: 500,
+                    color: "var(--fg)",
+                    letterSpacing: "0.2px",
+                };
+                const catMeta = {
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                };
+                const catCount = {
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                    fontWeight: 400,
+                    whiteSpace: "nowrap",
+                };
+
+                const pagination = {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    marginTop: 28,
+                };
+                const pageNum = (active) => ({
+                    padding: "4px 10px",
+                    fontSize: 13,
+                    fontWeight: active ? 500 : 400,
+                    color: active ? "var(--primary)" : "var(--muted-fg)",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    borderBottom: active ? "2px solid var(--primary)" : "2px solid transparent",
+                });
+
+                const toolRow = {
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 28,
+                };
+
+                return (
+                    <div>
+                        <h1 style={pageHeader}>Kategori</h1>
+                        <p style={pageSub}>{filtered.length} kategori terdaftar</p>
+                        <Separator />
+
+                        <div style={toolRow}>
+                            <input
+                                type="text"
+                                placeholder="Cari kategori..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                style={searchInput}
+                            />
+                            <button style={addLink} onClick={onAdd}>
+                                + Tambah Kategori
+                            </button>
+                        </div>
+
+                        <div style={countStyle}>Menampilkan {filtered.length} kategori</div>
+
+                        {filtered.map((cat) => (
+                            <div key={cat.id} style={listItem} onClick={() => onEdit(cat)}>
+                                <img src={cat.image} alt={cat.name} style={thumb} />
+                                <div style={{ flex: 1 }}>
+                                    <div style={catName}>{cat.name}</div>
+                                    <div style={catMeta}>{cat.desc}</div>
+                                </div>
+                                <div style={catCount}>{cat.productCount} produk</div>
+                            </div>
+                        ))}
+
+                        <div style={pagination}>
+                            <button style={pageNum(false)}>←</button>
+                            {[1, 2, 3].map((n) => (
+                                <button key={n} style={pageNum(n === 1)}>
+                                    {n}
+                                </button>
+                            ))}
+                            <button style={pageNum(false)}>→</button>
+                            <span
+                                style={{ fontSize: 12, color: "var(--muted-fg)", marginLeft: 12 }}
+                            >
+                                1-8 dari 8
+                            </span>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ─── ZEN FORM ───────────────────────────────────────────
+            function ZenForm({ mode, onBack, cat }) {
+                const initialName = mode === "edit" ? cat?.name || "" : "";
+                const initialDesc = mode === "edit" ? cat?.desc || "" : "";
+                const initialImg = mode === "edit" ? cat?.image || null : null;
+
+                const [name, setName] = useState(initialName);
+                const [desc, setDesc] = useState(initialDesc);
+                const [preview, setPreview] = useState(initialImg);
+                const [saving, setSaving] = useState(false);
+
+                useEffect(() => {
+                    if (mode === "edit" && cat) {
+                        setName(cat.name);
+                        setDesc(cat.desc);
+                        setPreview(cat.image);
+                    }
+                }, [mode, cat]);
+
+                const handleFile = (e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setPreview(URL.createObjectURL(f));
+                };
+
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    setSaving(true);
+                    setTimeout(() => setSaving(false), 1500);
+                };
+
+                const backBtn = {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    color: "var(--muted-fg)",
+                    fontSize: 13,
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    marginBottom: 20,
+                };
+                const title = {
+                    fontSize: 28,
+                    fontWeight: 500,
+                    color: "var(--fg)",
+                    letterSpacing: "-0.5px",
+                    marginBottom: 4,
+                };
+                const subtitle = {
+                    fontSize: 14,
+                    color: "var(--muted-fg)",
+                    marginBottom: 32,
+                };
+                const fieldLabel = {
+                    display: "block",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "var(--muted-fg)",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    marginBottom: 8,
+                };
+                const inputBase = {
+                    width: "100%",
+                    padding: "10px 0 8px",
+                    border: "none",
+                    borderBottom: "1px solid var(--input-border)",
+                    borderRadius: 0,
+                    background: "transparent",
+                    color: "var(--fg)",
+                    fontSize: 16,
+                    outline: "none",
+                    transition: "border-color 0.2s",
+                    letterSpacing: "0.2px",
+                };
+                const textareaStyle = {
+                    ...inputBase,
+                    resize: "vertical",
+                    minHeight: 60,
+                    lineHeight: 1.6,
+                };
+                const fieldGroup = {
+                    marginBottom: 28,
+                };
+
+                const imageWrap = {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
+                    marginBottom: 28,
+                    paddingBottom: 20,
+                    borderBottom: "1px solid var(--border)",
+                };
+                const imagePreview = {
+                    width: 72,
+                    height: 72,
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    flexShrink: 0,
+                    border: "1px solid var(--border)",
+                };
+                const imagePlaceholder = {
+                    width: 72,
+                    height: 72,
+                    borderRadius: "50%",
+                    background: "var(--border)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--muted-fg)",
+                    fontSize: 11,
+                    flexShrink: 0,
+                    opacity: 0.5,
+                };
+                const imageLabel = {
+                    fontSize: 12,
+                    color: "var(--muted-fg)",
+                    fontWeight: 500,
+                    letterSpacing: "0.5px",
+                };
+                const fileInput = {
+                    fontSize: 12,
+                    color: "var(--muted-fg)",
+                    cursor: "pointer",
+                    marginTop: 4,
+                    display: "block",
+                };
+
+                const actionRow = {
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 16,
+                    marginTop: 36,
+                    paddingTop: 20,
+                    borderTop: "1px solid var(--line)",
+                };
+                const cancelBtn = {
+                    padding: "8px 20px",
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: "var(--muted-fg)",
+                    cursor: "pointer",
+                    background: "none",
+                    border: "none",
+                    letterSpacing: "0.3px",
+                };
+                const saveBtn = {
+                    padding: "8px 24px",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#fff",
+                    cursor: "pointer",
+                    background: "var(--primary)",
+                    border: "none",
+                    borderRadius: 2,
+                    letterSpacing: "0.3px",
+                    opacity: saving ? 0.6 : 1,
+                    transition: "opacity 0.2s",
+                };
+
+                return (
+                    <div>
+                        <button style={backBtn} onClick={onBack}>
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                            >
+                                <path d="M19 12H5M12 19l-7-7 7-7" />
+                            </svg>
+                            Kembali
+                        </button>
+                        <h1 style={title}>
+                            {mode === "create" ? "Tambah Kategori Baru" : "Edit Kategori"}
+                        </h1>
+                        <p style={subtitle}>
+                            {mode === "edit"
+                                ? `Mengedit "${cat?.name}"`
+                                : "Lengkapi informasi kategori di bawah"}
+                        </p>
+                        <Separator />
+
+                        <form
+                            onSubmit={handleSubmit}
+                            encType="multipart/form-data"
+                            style={{ maxWidth: 560 }}
+                        >
+                            {/* Image upload as inline circle + file picker — no card */}
+                            <div style={imageWrap}>
+                                {preview ? (
+                                    <img src={preview} alt="Preview" style={imagePreview} />
+                                ) : (
+                                    <div style={imagePlaceholder}>
+                                        <svg
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                        >
+                                            <rect
+                                                x="3"
+                                                y="3"
+                                                width="18"
+                                                height="18"
+                                                rx="2"
+                                                ry="2"
+                                            />
+                                            <circle cx="8.5" cy="8.5" r="1.5" />
+                                            <path d="M21 15l-5-5L5 21" />
+                                        </svg>
+                                    </div>
+                                )}
+                                <div>
+                                    <div style={imageLabel}>Gambar Kategori</div>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFile}
+                                        style={fileInput}
+                                    />
+                                </div>
+                            </div>
+
+                            <div style={fieldGroup}>
+                                <label style={fieldLabel}>Nama Kategori</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="cth: Elektronik"
+                                    style={inputBase}
+                                />
+                            </div>
+
+                            <div style={fieldGroup}>
+                                <label style={fieldLabel}>Deskripsi</label>
+                                <textarea
+                                    value={desc}
+                                    onChange={(e) => setDesc(e.target.value)}
+                                    placeholder="Deskripsi kategori (opsional)"
+                                    style={textareaStyle}
+                                />
+                            </div>
+
+                            <div style={actionRow}>
+                                <button type="button" onClick={onBack} style={cancelBtn}>
+                                    Batal
+                                </button>
+                                <button type="submit" disabled={saving} style={saveBtn}>
+                                    {saving
+                                        ? "Menyimpan..."
+                                        : mode === "create"
+                                          ? "Simpan"
+                                          : "Simpan Perubahan"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                );
+            }
+
+            // ─── APP ────────────────────────────────────────────────
+            function App() {
+                const [theme, toggleTheme] = useTheme();
+                const [collapsed, setCollapsed] = useState(false);
+                const [page, setPage] = useState("index");
+                const [editCat, setEditCat] = useState(null);
+
+                useEffect(() => {
+                    document.documentElement.setAttribute("data-theme", theme);
+                }, [theme]);
+
+                const mainStyle = {
+                    flex: 1,
+                    overflow: "auto",
+                    padding: "48px 48px 48px 40px",
+                    maxWidth: 820,
+                };
+
+                const handleEdit = (cat) => {
+                    setEditCat(cat);
+                    setPage("edit");
+                };
+
+                return (
+                    <div style={{ display: "flex", height: "100vh" }}>
+                        <ZenSidebar
+                            collapsed={collapsed}
+                            onToggle={() => setCollapsed((c) => !c)}
+                            theme={theme}
+                            onThemeToggle={toggleTheme}
+                        />
+                        <main style={mainStyle}>
+                            {page === "index" && (
+                                <IndexPage
+                                    onAdd={() => {
+                                        setEditCat(null);
+                                        setPage("create");
+                                    }}
+                                    onEdit={handleEdit}
+                                />
+                            )}
+                            {page === "create" && (
+                                <ZenForm mode="create" onBack={() => setPage("index")} />
+                            )}
+                            {page === "edit" && (
+                                <ZenForm
+                                    mode="edit"
+                                    onBack={() => setPage("index")}
+                                    cat={editCat}
+                                />
+                            )}
+                        </main>
+                    </div>
+                );
+            }
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(<App />);
+        </script>
+    </body>
+</html>

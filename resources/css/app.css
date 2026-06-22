@@ -7,11 +7,110 @@
 @variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-sans:
+        "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
     --font-sans--font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
     --font-mono--font-feature-settings: "ss02", "zero";
+
+    /* Custom spacing from POS theme */
+    --spacing-18: 4.5rem;
+    --spacing-88: 22rem;
+    --spacing-100: 25rem;
+    --spacing-112: 28rem;
+    --spacing-128: 32rem;
+
+    /* Touch target sizes */
+    --min-h-touch: 2.75rem;
+    --min-h-touch-lg: 3rem;
+    --min-w-touch: 2.75rem;
+    --min-w-touch-lg: 3rem;
+
+    /* Box shadows from POS theme */
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+    --shadow-glow-lg: 0 0 40px rgba(99, 102, 241, 0.4);
+    --shadow-inner-lg: inset 0 4px 6px -1px rgb(0 0 0 / 0.1);
+
+    /* Custom durations */
+    --transition-duration-250: 250ms;
+    --backdrop-blur-xs: 2px;
+
+    /* POS animations */
+    --animate-slide-in: slide-in 0.2s ease-out;
+    --animate-slide-up: slide-up 0.2s ease-out;
+    --animate-fade-in: fade-in 0.15s ease-out;
+    --animate-pulse-subtle: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-bounce-subtle: bounce-subtle 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --animate-cart-add: cart-add 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    @keyframes slide-in {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slide-up {
+        from {
+            transform: translateY(10px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulse-subtle {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    @keyframes bounce-subtle {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes cart-add {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
 
     --color-border: var(--border);
     --color-input: var(--input);
@@ -100,7 +199,8 @@
     --bg: oklch(1 0 0);
     --fg: oklch(0.21 0.006 285.885);
 
-    --primary: oklch(0.546 0.245 262.881);
+    /* --primary: oklch(0.546 0.245 262.881); */
+    --primary: oklch(0.44 0.18 265.67);
     --primary-fg: oklch(1 0 0);
 
     --primary-subtle: oklch(0.623 0.214 259.815 / 0.15);
@@ -184,7 +284,7 @@
     --secondary: oklch(0.244 0.006 286.033);
     --secondary-fg: oklch(0.985 0 0);
 
-    --overlay: oklch(0.210 0.006 285.885);
+    --overlay: oklch(0.21 0.006 285.885);
     --overlay-fg: oklch(0.985 0 0);
 
     --accent: oklch(0.274 0.006 286.033);
@@ -215,10 +315,10 @@
     --danger-subtle-fg: oklch(0.704 0.191 22.216);
 
     --border: oklch(0.342 0.017 285.786);
-    --input: oklch(0.320 0.013 285.805);
+    --input: oklch(0.32 0.013 285.805);
     --ring: oklch(0.546 0.245 262.881);
 
-    --navbar: oklch(0.190 0.006 285.885);
+    --navbar: oklch(0.19 0.006 285.885);
     --navbar-fg: oklch(0.985 0 0);
 
     --sidebar: oklch(0.21 0.006 285.885);
@@ -255,30 +355,71 @@
 }
 
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--border, currentColor);
-  }
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--border, currentColor);
+    }
+}
+
+/* ── Auth page animations ── */
+@utility animate-fade-up {
+    animation: fade-up 0.5s ease-out both;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@utility stagger-1 {
+    animation-delay: 0.05s;
+}
+@utility stagger-2 {
+    animation-delay: 0.1s;
+}
+@utility stagger-3 {
+    animation-delay: 0.15s;
+}
+@utility stagger-4 {
+    animation-delay: 0.2s;
+}
+@utility stagger-5 {
+    animation-delay: 0.25s;
+}
+@utility stagger-6 {
+    animation-delay: 0.3s;
+}
+@utility stagger-7 {
+    animation-delay: 0.35s;
+}
+@utility stagger-8 {
+    animation-delay: 0.4s;
 }
 
 @layer base {
-  * {
-    font-feature-settings: "cv11", "ss01";
-    font-variation-settings: "opsz" 850;
-    text-rendering: optimizeLegibility;
+    * {
+        font-feature-settings: "cv11", "ss01";
+        font-variation-settings: "opsz" 850;
+        text-rendering: optimizeLegibility;
 
-    /*
+        /*
          * Scrollbar
          */
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+    }
 
-  body {
-    background-color: var(--bg);
-    color: var(--fg);
-  }
+    body {
+        background-color: var(--bg);
+        color: var(--fg);
+    }
 }

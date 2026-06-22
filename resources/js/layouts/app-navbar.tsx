@@ -1,7 +1,7 @@
-import { router, usePage } from "@inertiajs/react"
-import { useEffect, useState } from "react"
-import { Avatar } from "@/components/ui/avatar"
-import { Button, buttonStyles } from "@/components/ui/button"
+import { router, usePage } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { Avatar } from "@/components/ui/avatar";
+import { Button, buttonStyles } from "@/components/ui/button";
 import {
   Menu,
   MenuContent,
@@ -10,7 +10,7 @@ import {
   MenuSection,
   MenuSeparator,
   MenuLabel,
-} from "@/components/ui/menu"
+} from "@/components/ui/menu";
 import {
   Navbar,
   NavbarGap,
@@ -21,12 +21,12 @@ import {
   NavbarSpacer,
   NavbarStart,
   NavbarTrigger,
-} from "@/components/ui/navbar"
-import { Logo } from "@/components/logo"
-import type { SharedData } from "@/types/shared"
-import { Link } from "@/components/ui/link"
-import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline"
-import { logout } from "@/routes"
+} from "@/components/ui/navbar";
+import { Logo } from "@/components/logo";
+import type { SharedData } from "@/types/shared";
+import { Link } from "@/components/ui/link";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+import { logout } from "@/routes";
 
 const navigations = [
   {
@@ -34,13 +34,13 @@ const navigations = [
     textValue: "Home",
     href: "/",
   },
-]
+];
 
 export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Navbar>) {
-  const page = usePage()
-  const { auth } = usePage<SharedData>().props
-  const [isOpen, setIsOpen] = useState(false)
-  useEffect(() => setIsOpen(false), [page.url])
+  const page = usePage();
+  const { auth } = usePage<SharedData>().props;
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => setIsOpen(false), [page.url]);
   return (
     <NavbarProvider isOpen={isOpen} onOpenChange={setIsOpen}>
       <Navbar {...props}>
@@ -96,11 +96,11 @@ export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Na
         </NavbarSection>
       </NavbarMobile>
     </NavbarProvider>
-  )
+  );
 }
 
 function UserMenu() {
-  const { auth } = usePage<SharedData>().props
+  const { auth } = usePage<SharedData>().props;
   return (
     <Menu>
       <Button size="sq-md" intent="plain" isCircle aria-label="Open menu">
@@ -134,5 +134,5 @@ function UserMenu() {
         </MenuItem>
       </MenuContent>
     </Menu>
-  )
+  );
 }

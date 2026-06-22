@@ -3,28 +3,36 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\AuditLogService;
+use App\Support\BotGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PasswordResetLinkController extends Controller
 {
+    public function __construct(
+        private readonly AuditLogService $auditLogService
+    ) {}
+
     /**
-     * Show the password reset link request page.
+     * Display the password reset link request view.
      */
     public function create(Request $request): Response
     {
         return Inertia::render('auth/forgot-password', [
             'status' => $request->session()->get('status'),
+            'botGuard' => BotGuard::payload(),
         ]);
     }
 
     /**
      * Handle an incoming password reset link request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -32,10 +40,27 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        Password::sendResetLink(
+        $status = Password::sendResetLink(
             $request->only('email')
         );
 
-        return back()->with('status', __('A reset link will be sent if the account exists.'));
+        $this->auditLogService->log(
+            event: 'auth.password_reset_requested',
+            module: 'auth',
+            auditable: ['target_label' => $request->email],
+            description: 'Permintaan reset password dikirim.',
+            meta: [
+                'severity' => 'info',
+                'route' => $request->route()?->getName(),
+            ],
+        );
+
+        if ($status == Password::RESET_LINK_SENT) {
+            return back()->with('status', __($status));
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [__($status)],
+        ]);
     }
 }

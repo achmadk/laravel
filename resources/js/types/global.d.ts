@@ -1,7 +1,7 @@
-import type { VisitOptions } from "@inertiajs/core"
+import type { VisitOptions } from "@inertiajs/core";
 
 declare module "react-aria-components" {
   interface RouterConfig {
-    routerOptions: VisitOptions
+    routerOptions: VisitOptions;
   }
 }

@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nordic Structure · RTOS Categories</title>
+
+        <!--
+  DESIGNER'S NOTES — Direction #1: Nordic Structure
+  Philosophy: Pentagram Information Architecture
+  Designer/Studio reference: Pentagram (Michael Bierut, Paula Scher, etc.)
+  
+  KEY ASSUMPTIONS:
+  1. The existing brand primary (oklch 0.546 0.245 262.881 / blue) is used deliberately as an accent
+     — buttons, active nav state, selection highlights. Not the dominant visual.
+  2. Cards with light bg + thin 1px border provide structure without visual weight.
+  3. Typography hierarchy: Plus Jakarta Sans Medium for headings, regular for body.
+  4. Sidebar uses a darker tone (oklch 0.13) in dark mode, near-white in light mode.
+  5. All three pages (Index, Create, Edit) follow the same card/panel grammar.
+  6. Data is placeholder until connected to real backend.
+  
+  WHY THIS WORKS FOR RTOS:
+  - An e-commerce admin panel needs clarity and trust. Nordic structure communicates
+    reliability without feeling cold.
+  - The blue primary is warm enough (263° hue) to feel approachable.
+  - Generous whitespace gives breathing room for inventory-heavy workflows.
+  
+  PLACEHOLDERS:
+  - Category images use Unsplash sourced URLs (external, will 404 offline)
+  - Search and pagination are visual-only
+  - Form submission is not functional
+-->
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+            rel="stylesheet"
+        />
+
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script
+            crossorigin
+            src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+        ></script>
+        <!-- <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
+
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --primary: oklch(0.546 0.245 262.881);
+                --primary-fg: #fff;
+                --primary-subtle: oklch(0.68 0.17 262.881);
+                --primary-subtle-fg: oklch(0.95 0.03 262.881);
+                --danger: oklch(0.6 0.2 25);
+                --success: oklch(0.6 0.18 145);
+
+                --bg: oklch(1 0 0);
+                --fg: oklch(0.181 0.005 285.823);
+                --muted-bg: oklch(0.967 0.001 286.375);
+                --muted-fg: oklch(0.55 0.015 285.823);
+                --border: oklch(0.922 0.004 286.375);
+                --sidebar-bg: oklch(0.98 0 0);
+                --sidebar-fg: oklch(0.181 0.005 285.823);
+                --sidebar-border: oklch(0.922 0.004 286.375);
+                --card-bg: #fff;
+                --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+                --radius: 12px;
+                --radius-sm: 8px;
+            }
+
+            [data-theme="dark"] {
+                --bg: oklch(0.181 0.005 285.823);
+                --fg: oklch(1 0 0);
+                --muted-bg: oklch(0.256 0.008 285.823);
+                --muted-fg: oklch(0.6 0.01 285.823);
+                --border: oklch(0.25 0.005 285.823);
+                --sidebar-bg: oklch(0.13 0.004 285.82);
+                --sidebar-fg: oklch(0.9 0.005 285.823);
+                --sidebar-border: oklch(0.2 0.005 285.823);
+                --card-bg: oklch(0.2 0.005 285.823);
+                --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            }
+
+            html {
+                font-family: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+                color: var(--fg);
+                background: var(--muted-bg);
+            }
+            body {
+                margin: 0;
+                overflow: hidden;
+                height: 100vh;
+            }
+            #root {
+                height: 100vh;
+                display: flex;
+            }
+
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 3px;
+            }
+
+            input,
+            textarea,
+            button {
+                font-family: inherit;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useCallback, useMemo } = React;
+
+            // ─── DATA ──────────────────────────────────────────────
+            const CATEGORIES = [
+                {
+                    id: 1,
+                    name: "Elektronik",
+                    slug: "elektronik",
+                    desc: "Komponen dan perangkat elektronik",
+                    productCount: 234,
+                    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 2,
+                    name: "Pakaian",
+                    slug: "pakaian",
+                    desc: "Fashion dan apparel pria & wanita",
+                    productCount: 567,
+                    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 3,
+                    name: "Makanan",
+                    slug: "makanan",
+                    desc: "Makanan ringan, frozen food & bahan masak",
+                    productCount: 412,
+                    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 4,
+                    name: "Minuman",
+                    slug: "minuman",
+                    desc: "Minuman kemasan, kopi & teh",
+                    productCount: 189,
+                    image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 5,
+                    name: "Kesehatan",
+                    slug: "kesehatan",
+                    desc: "Vitamin, obat & alat kesehatan",
+                    productCount: 156,
+                    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 6,
+                    name: "Otomotif",
+                    slug: "otomotif",
+                    desc: "Aksesoris & spare part kendaraan",
+                    productCount: 98,
+                    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 7,
+                    name: "Buku",
+                    slug: "buku",
+                    desc: "Buku pendidikan, novel & komik",
+                    productCount: 321,
+                    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=400&fit=crop",
+                },
+                {
+                    id: 8,
+                    name: "Olahraga",
+                    slug: "olahraga",
+                    desc: "Perlengkapan fitness & outdoor",
+                    productCount: 145,
+                    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=400&fit=crop",
+                },
+            ];
+
+            const SIDEBAR_ITEMS = [
+                { id: "dashboard", label: "Dashboard", icon: "⊞" },
+                { id: "categories", label: "Kategori", icon: "⊟", active: true },
+                { id: "products", label: "Produk", icon: "⊡" },
+                { id: "orders", label: "Pesanan", icon: "☰" },
+                { id: "customers", label: "Pelanggan", icon: "◎" },
+                { id: "reports", label: "Laporan", icon: "◈" },
+                { id: "settings", label: "Pengaturan", icon: "⚙" },
+            ];
+
+            const PAGE_LABELS = {
+                index: "Daftar Kategori",
+                create: "Tambah Kategori",
+                edit: "Edit Kategori",
+            };
+
+            // ─── THEME TOGGLE ──────────────────────────────────────
+            function useTheme() {
+                const [theme, setTheme] = useState(() => {
+                    const stored = localStorage.getItem("nordic-theme");
+                    return stored || "light";
+                });
+                const toggle = useCallback(() => {
+                    setTheme((t) => {
+                        const next = t === "light" ? "dark" : "light";
+                        localStorage.setItem("nordic-theme", next);
+                        return next;
+                    });
+                }, []);
+                return [theme, toggle];
+            }
+
+            // ─── ICONS (minimal SVG) ───────────────────────────────
+            const Icons = {
+                search: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                    </svg>
+                ),
+                grid: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                    >
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                        <rect x="14" y="14" width="7" height="7" />
+                    </svg>
+                ),
+                list: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                    >
+                        <line x1="8" y1="6" x2="21" y2="6" />
+                        <line x1="8" y1="12" x2="21" y2="12" />
+                        <line x1="8" y1="18" x2="21" y2="18" />
+                        <line x1="3" y1="6" x2="3.01" y2="6" />
+                        <line x1="3" y1="12" x2="3.01" y2="12" />
+                        <line x1="3" y1="18" x2="3.01" y2="18" />
+                    </svg>
+                ),
+                sun: (
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <circle cx="12" cy="12" r="5" />
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
+                ),
+                moon: (
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                ),
+                plus: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                ),
+                back: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                ),
+                photo: (
+                    <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                ),
+                save: (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
+                    </svg>
+                ),
+                chevronLeft: (
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                ),
+                chevronRight: (
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                    >
+                        <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                ),
+            };
+
+            // ─── SIDEBAR ────────────────────────────────────────────
+            function Sidebar({
+                collapsed,
+                onToggle,
+                theme,
+                onThemeToggle,
+                activePage,
+                onPageChange,
+            }) {
+                const nordicSide = {
+                    container: {
+                        width: collapsed ? 64 : 240,
+                        minWidth: collapsed ? 64 : 240,
+                        height: "100vh",
+                        background: "var(--sidebar-bg)",
+                        borderRight: "1px solid var(--sidebar-border)",
+                        display: "flex",
+                        flexDirection: "column",
+                        transition: "width 0.25s ease, min-width 0.25s ease",
+                        overflow: "hidden",
+                    },
+                    logo: {
+                        padding: collapsed ? "20px 0" : "20px 24px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        borderBottom: "1px solid var(--sidebar-border)",
+                        justifyContent: collapsed ? "center" : "flex-start",
+                    },
+                    logoMark: {
+                        width: 28,
+                        height: 28,
+                        borderRadius: 8,
+                        background: "var(--primary)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontSize: 14,
+                        flexShrink: 0,
+                    },
+                    logoText: {
+                        fontSize: 16,
+                        fontWeight: 700,
+                        color: "var(--sidebar-fg)",
+                        opacity: collapsed ? 0 : 1,
+                        transition: "opacity 0.2s",
+                        whiteSpace: "nowrap",
+                    },
+                    nav: {
+                        flex: 1,
+                        padding: "12px 8px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                    },
+                    navItem: (active) => ({
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        padding: collapsed ? "10px 0" : "10px 14px",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        background: active ? "var(--primary)" : "transparent",
+                        color: active ? "#fff" : "var(--muted-fg)",
+                        fontWeight: active ? 600 : 400,
+                        fontSize: 14,
+                        justifyContent: collapsed ? "center" : "flex-start",
+                        transition: "background 0.15s, color 0.15s",
+                        border: "none",
+                        width: "100%",
+                        textAlign: "left",
+                    }),
+                    navIcon: { fontSize: 18, flexShrink: 0, lineHeight: 1, opacity: 0.7 },
+                    navLabel: {
+                        opacity: collapsed ? 0 : 1,
+                        transition: "opacity 0.2s",
+                        whiteSpace: "nowrap",
+                    },
+                    spacer: { flex: 1 },
+                    footer: {
+                        padding: "12px 8px",
+                        borderTop: "1px solid var(--sidebar-border)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 4,
+                    },
+                    themeBtn: {
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: collapsed ? "center" : "flex-start",
+                        gap: 10,
+                        padding: collapsed ? "10px 0" : "10px 14px",
+                        borderRadius: 8,
+                        cursor: "pointer",
+                        background: "transparent",
+                        color: "var(--muted-fg)",
+                        border: "none",
+                        fontSize: 14,
+                        transition: "background 0.15s",
+                    },
+                    collapseBtn: {
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "8px 0",
+                        cursor: "pointer",
+                        color: "var(--muted-fg)",
+                        background: "transparent",
+                        border: "none",
+                        fontSize: 14,
+                        borderRadius: 8,
+                        transition: "transform 0.25s",
+                        transform: collapsed ? "rotate(180deg)" : "rotate(0deg)",
+                    },
+                };
+
+                return (
+                    <div style={nordicSide.container}>
+                        <div style={nordicSide.logo}>
+                            <div style={nordicSide.logoMark}>R</div>
+                            {!collapsed && <span style={nordicSide.logoText}>RTOS</span>}
+                        </div>
+                        <nav style={nordicSide.nav}>
+                            {SIDEBAR_ITEMS.map((item) => (
+                                <button
+                                    key={item.id}
+                                    style={nordicSide.navItem(item.id === "categories")}
+                                    onClick={() => {}}
+                                    title={item.label}
+                                >
+                                    <span style={nordicSide.navIcon}>{item.icon}</span>
+                                    {!collapsed && (
+                                        <span style={nordicSide.navLabel}>{item.label}</span>
+                                    )}
+                                </button>
+                            ))}
+                        </nav>
+                        <div style={nordicSide.footer}>
+                            <button
+                                style={nordicSide.themeBtn}
+                                onClick={onThemeToggle}
+                                title="Toggle theme"
+                            >
+                                {theme === "dark" ? Icons.sun : Icons.moon}
+                                {!collapsed && <span>{theme === "dark" ? "Terang" : "Gelap"}</span>}
+                            </button>
+                            <button
+                                style={nordicSide.collapseBtn}
+                                onClick={onToggle}
+                                title={collapsed ? "Perluas" : "Ciutkan"}
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                >
+                                    <polyline points="15 18 9 12 15 6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ─── HEADER ─────────────────────────────────────────────
+            function PageHeader({ title, onAdd }) {
+                const hdr = {
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 24,
+                };
+                const titleStyle = {
+                    fontSize: 22,
+                    fontWeight: 600,
+                    color: "var(--fg)",
+                    letterSpacing: "-0.3px",
+                };
+                const addBtn = {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "10px 20px",
+                    borderRadius: "var(--radius)",
+                    background: "var(--primary)",
+                    color: "#fff",
+                    border: "none",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    transition: "box-shadow 0.15s",
+                };
+
+                return (
+                    <div style={hdr}>
+                        <h1 style={titleStyle}>{title}</h1>
+                        {onAdd && (
+                            <button style={addBtn} onClick={onAdd}>
+                                {Icons.plus} Tambah Kategori
+                            </button>
+                        )}
+                    </div>
+                );
+            }
+
+            // ─── SEARCH BAR ─────────────────────────────────────────
+            function SearchBar({ value, onChange, viewMode, onViewChange }) {
+                const bar = {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    marginBottom: 20,
+                };
+                const inputWrap = {
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "10px 16px",
+                    borderRadius: "var(--radius)",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "var(--card-shadow)",
+                };
+                const input = {
+                    border: "none",
+                    outline: "none",
+                    background: "transparent",
+                    fontSize: 14,
+                    color: "var(--fg)",
+                    width: "100%",
+                };
+                const toggleBtn = (active) => ({
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 36,
+                    height: 36,
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
+                    background: active ? "var(--primary)" : "var(--card-bg)",
+                    color: active ? "#fff" : "var(--muted-fg)",
+                    cursor: "pointer",
+                    transition: "background 0.15s",
+                });
+
+                return (
+                    <div style={bar}>
+                        <div style={inputWrap}>
+                            <span style={{ color: "var(--muted-fg)", display: "flex" }}>
+                                {Icons.search}
+                            </span>
+                            <input
+                                type="text"
+                                placeholder="Cari kategori..."
+                                value={value}
+                                onChange={onChange}
+                                style={input}
+                            />
+                        </div>
+                        <button
+                            style={toggleBtn(viewMode === "grid")}
+                            onClick={() => onViewChange("grid")}
+                            title="Grid"
+                        >
+                            {Icons.grid}
+                        </button>
+                        <button
+                            style={toggleBtn(viewMode === "list")}
+                            onClick={() => onViewChange("list")}
+                            title="List"
+                        >
+                            {Icons.list}
+                        </button>
+                    </div>
+                );
+            }
+
+            // ─── CATEGORY CARD ──────────────────────────────────────
+            function CategoryCard({ cat, viewMode }) {
+                if (viewMode === "list") {
+                    const row = {
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 16,
+                        padding: "14px 16px",
+                        background: "var(--card-bg)",
+                        borderRadius: "var(--radius)",
+                        border: "1px solid var(--border)",
+                        boxShadow: "var(--card-shadow)",
+                        cursor: "pointer",
+                        transition: "border-color 0.15s",
+                    };
+                    const img = {
+                        width: 44,
+                        height: 44,
+                        borderRadius: "var(--radius-sm)",
+                        objectFit: "cover",
+                        flexShrink: 0,
+                    };
+                    return (
+                        <div style={row}>
+                            <img src={cat.image} alt={cat.name} style={img} />
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 15, fontWeight: 600, color: "var(--fg)" }}>
+                                    {cat.name}
+                                </div>
+                                <div
+                                    style={{ fontSize: 13, color: "var(--muted-fg)", marginTop: 2 }}
+                                >
+                                    {cat.desc}
+                                </div>
+                            </div>
+                            <div
+                                style={{
+                                    fontSize: 13,
+                                    color: "var(--muted-fg)",
+                                    whiteSpace: "nowrap",
+                                }}
+                            >
+                                {cat.productCount} produk
+                            </div>
+                        </div>
+                    );
+                }
+
+                const card = {
+                    borderRadius: "var(--radius)",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "var(--card-shadow)",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    transition: "border-color 0.15s, box-shadow 0.15s",
+                };
+                const img = {
+                    width: "100%",
+                    aspectRatio: "1",
+                    objectFit: "cover",
+                    display: "block",
+                };
+                const body = {
+                    padding: "14px 16px",
+                };
+                return (
+                    <div style={card}>
+                        <img src={cat.image} alt={cat.name} style={img} />
+                        <div style={body}>
+                            <div style={{ fontSize: 15, fontWeight: 600, color: "var(--fg)" }}>
+                                {cat.name}
+                            </div>
+                            <div style={{ fontSize: 13, color: "var(--muted-fg)", marginTop: 3 }}>
+                                {cat.desc}
+                            </div>
+                            <div
+                                style={{
+                                    fontSize: 12,
+                                    color: "var(--primary)",
+                                    marginTop: 8,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                {cat.productCount} produk
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // ─── PAGINATION ─────────────────────────────────────────
+            function Pagination({ current, total }) {
+                const wrap = {
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    marginTop: 24,
+                    paddingTop: 20,
+                    borderTop: "1px solid var(--border)",
+                };
+                const btn = (active) => ({
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minWidth: 34,
+                    height: 34,
+                    borderRadius: "var(--radius-sm)",
+                    border: active ? "none" : "1px solid var(--border)",
+                    background: active ? "var(--primary)" : "transparent",
+                    color: active ? "#fff" : "var(--fg)",
+                    fontSize: 13,
+                    fontWeight: active ? 600 : 400,
+                    cursor: "pointer",
+                    padding: "0 10px",
+                    transition: "background 0.15s",
+                });
+                const info = {
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                    margin: "0 12px",
+                };
+                return (
+                    <div style={wrap}>
+                        <button style={btn(false)}>{Icons.chevronLeft} Sebelumnya</button>
+                        {[1, 2, 3].map((n) => (
+                            <button key={n} style={btn(n === current)}>
+                                {n}
+                            </button>
+                        ))}
+                        <span style={info}>menampilkan 1-8 dari 8 kategori</span>
+                        <button style={btn(false)}>Selanjutnya {Icons.chevronRight}</button>
+                    </div>
+                );
+            }
+
+            // ─── INDEX PAGE ─────────────────────────────────────────
+            function IndexPage({ onAdd }) {
+                const [search, setSearch] = useState("");
+                const [view, setView] = useState("grid");
+
+                const filtered = CATEGORIES.filter((c) =>
+                    c.name.toLowerCase().includes(search.toLowerCase()),
+                );
+
+                const gridStyle = {
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                    gap: 16,
+                };
+                const listStyle = {
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                };
+                const countBadge = {
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                    marginBottom: 16,
+                };
+
+                return (
+                    <div>
+                        <PageHeader title="Kategori" onAdd={onAdd} />
+                        <SearchBar
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            viewMode={view}
+                            onViewChange={setView}
+                        />
+                        <div style={countBadge}>{filtered.length} kategori</div>
+                        <div style={view === "grid" ? gridStyle : listStyle}>
+                            {filtered.map((cat) => (
+                                <CategoryCard key={cat.id} cat={cat} viewMode={view} />
+                            ))}
+                        </div>
+                        <Pagination current={1} total={3} />
+                    </div>
+                );
+            }
+
+            // ─── FORM COMPONENTS ────────────────────────────────────
+            function FormField({ label, error, children }) {
+                const wrap = { marginBottom: 20 };
+                const lbl = {
+                    display: "block",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "var(--fg)",
+                    marginBottom: 6,
+                };
+                const err = { fontSize: 12, color: "var(--danger)", marginTop: 4 };
+                return (
+                    <div style={wrap}>
+                        <label style={lbl}>{label}</label>
+                        {children}
+                        {error && <p style={err}>{error}</p>}
+                    </div>
+                );
+            }
+
+            function ImageUpload({ preview, onFileChange, error }) {
+                const box = {
+                    aspectRatio: "1",
+                    borderRadius: "var(--radius)",
+                    background: "var(--muted-bg)",
+                    border: "2px dashed var(--border)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    marginBottom: 12,
+                };
+                const placeholder = { textAlign: "center", color: "var(--muted-fg)" };
+                const inputStyle = {
+                    display: "block",
+                    width: "100%",
+                    fontSize: 13,
+                    color: "var(--muted-fg)",
+                    cursor: "pointer",
+                };
+                const inputFile = {
+                    ...inputStyle,
+                };
+
+                return (
+                    <div>
+                        <div style={box}>
+                            {preview ? (
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                />
+                            ) : (
+                                <div style={placeholder}>
+                                    <span
+                                        style={{ opacity: 0.4, display: "block", marginBottom: 6 }}
+                                    >
+                                        {Icons.photo}
+                                    </span>
+                                    <span style={{ fontSize: 13 }}>Belum ada gambar</span>
+                                </div>
+                            )}
+                        </div>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={onFileChange}
+                            style={inputFile}
+                        />
+                        {error && (
+                            <p style={{ fontSize: 12, color: "var(--danger)", marginTop: 4 }}>
+                                {error}
+                            </p>
+                        )}
+                    </div>
+                );
+            }
+
+            // ─── CREATE PAGE ────────────────────────────────────────
+            function CreatePage({ onBack }) {
+                const [name, setName] = useState("");
+                const [desc, setDesc] = useState("");
+                const [preview, setPreview] = useState(null);
+                const [errors, setErrors] = useState({});
+                const [saving, setSaving] = useState(false);
+
+                const handleFile = (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) setPreview(URL.createObjectURL(file));
+                };
+
+                // Assumption: form is visual-only for prototype
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    setSaving(true);
+                    setTimeout(() => setSaving(false), 1500);
+                };
+
+                const inputStyle = (hasError) => ({
+                    width: "100%",
+                    padding: "10px 14px",
+                    borderRadius: "var(--radius)",
+                    border: `1px solid ${hasError ? "var(--danger)" : "var(--border)"}`,
+                    background: "var(--card-bg)",
+                    color: "var(--fg)",
+                    fontSize: 14,
+                    outline: "none",
+                    transition: "border-color 0.15s",
+                });
+
+                const textareaStyle = { ...inputStyle(false), resize: "vertical", minHeight: 80 };
+
+                return (
+                    <div>
+                        <div style={{ marginBottom: 24 }}>
+                            <button
+                                onClick={onBack}
+                                style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 6,
+                                    color: "var(--muted-fg)",
+                                    fontSize: 13,
+                                    cursor: "pointer",
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                    marginBottom: 8,
+                                    transition: "color 0.15s",
+                                }}
+                            >
+                                {Icons.back} Kembali ke Kategori
+                            </button>
+                            <h1
+                                style={{
+                                    fontSize: 22,
+                                    fontWeight: 600,
+                                    color: "var(--fg)",
+                                    letterSpacing: "-0.3px",
+                                }}
+                            >
+                                Tambah Kategori Baru
+                            </h1>
+                        </div>
+
+                        <form onSubmit={handleSubmit} encType="multipart/form-data">
+                            <div
+                                style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 24 }}
+                            >
+                                {/* Image */}
+                                <div
+                                    style={{
+                                        background: "var(--card-bg)",
+                                        borderRadius: "var(--radius)",
+                                        border: "1px solid var(--border)",
+                                        boxShadow: "var(--card-shadow)",
+                                        padding: 20,
+                                    }}
+                                >
+                                    <FormField label="Gambar Kategori" error={errors.image}>
+                                        <ImageUpload
+                                            preview={preview}
+                                            onFileChange={handleFile}
+                                            error={errors.image}
+                                        />
+                                    </FormField>
+                                </div>
+
+                                {/* Fields */}
+                                <div
+                                    style={{
+                                        background: "var(--card-bg)",
+                                        borderRadius: "var(--radius)",
+                                        border: "1px solid var(--border)",
+                                        boxShadow: "var(--card-shadow)",
+                                        padding: 20,
+                                    }}
+                                >
+                                    <FormField label="Nama Kategori" error={errors.name}>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="Masukkan nama kategori"
+                                            style={inputStyle(!!errors.name)}
+                                        />
+                                    </FormField>
+                                    <FormField label="Deskripsi" error={errors.description}>
+                                        <textarea
+                                            value={desc}
+                                            onChange={(e) => setDesc(e.target.value)}
+                                            placeholder="Deskripsi kategori (opsional)"
+                                            style={textareaStyle}
+                                        />
+                                    </FormField>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                            gap: 12,
+                                            marginTop: 8,
+                                        }}
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={onBack}
+                                            style={{
+                                                padding: "10px 24px",
+                                                borderRadius: "var(--radius)",
+                                                border: "1px solid var(--border)",
+                                                color: "var(--muted-fg)",
+                                                fontSize: 14,
+                                                fontWeight: 500,
+                                                cursor: "pointer",
+                                                background: "transparent",
+                                                transition: "background 0.15s",
+                                            }}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={saving}
+                                            style={{
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                                padding: "10px 24px",
+                                                borderRadius: "var(--radius)",
+                                                background: "var(--primary)",
+                                                color: "#fff",
+                                                border: "none",
+                                                fontSize: 14,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                opacity: saving ? 0.7 : 1,
+                                                transition: "opacity 0.15s",
+                                            }}
+                                        >
+                                            {Icons.save}{" "}
+                                            {saving ? "Menyimpan..." : "Simpan Kategori"}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                );
+            }
+
+            // ─── EDIT PAGE ──────────────────────────────────────────
+            function EditPage({ onBack }) {
+                const cat = CATEGORIES[0]; // Edit first category as demo
+                const [name, setName] = useState(cat.name);
+                const [desc, setDesc] = useState(cat.desc);
+                const [preview, setPreview] = useState(cat.image);
+                const [errors, setErrors] = useState({});
+                const [saving, setSaving] = useState(false);
+
+                const handleFile = (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) setPreview(URL.createObjectURL(file));
+                };
+
+                const handleSubmit = (e) => {
+                    e.preventDefault();
+                    setSaving(true);
+                    setTimeout(() => setSaving(false), 1500);
+                };
+
+                const inputStyle = (hasError) => ({
+                    width: "100%",
+                    padding: "10px 14px",
+                    borderRadius: "var(--radius)",
+                    border: `1px solid ${hasError ? "var(--danger)" : "var(--border)"}`,
+                    background: "var(--card-bg)",
+                    color: "var(--fg)",
+                    fontSize: 14,
+                    outline: "none",
+                    transition: "border-color 0.15s",
+                });
+
+                const textareaStyle = { ...inputStyle(false), resize: "vertical", minHeight: 80 };
+
+                return (
+                    <div>
+                        <div style={{ marginBottom: 24 }}>
+                            <button
+                                onClick={onBack}
+                                style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 6,
+                                    color: "var(--muted-fg)",
+                                    fontSize: 13,
+                                    cursor: "pointer",
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                    marginBottom: 8,
+                                    transition: "color 0.15s",
+                                }}
+                            >
+                                {Icons.back} Kembali ke Kategori
+                            </button>
+                            <h1
+                                style={{
+                                    fontSize: 22,
+                                    fontWeight: 600,
+                                    color: "var(--fg)",
+                                    letterSpacing: "-0.3px",
+                                }}
+                            >
+                                Edit Kategori
+                            </h1>
+                            <p style={{ fontSize: 14, color: "var(--muted-fg)", marginTop: 4 }}>
+                                {cat.name}
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} encType="multipart/form-data">
+                            <div
+                                style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 24 }}
+                            >
+                                <div
+                                    style={{
+                                        background: "var(--card-bg)",
+                                        borderRadius: "var(--radius)",
+                                        border: "1px solid var(--border)",
+                                        boxShadow: "var(--card-shadow)",
+                                        padding: 20,
+                                    }}
+                                >
+                                    <FormField label="Gambar Kategori" error={errors.image}>
+                                        <ImageUpload
+                                            preview={preview}
+                                            onFileChange={handleFile}
+                                            error={errors.image}
+                                        />
+                                    </FormField>
+                                </div>
+                                <div
+                                    style={{
+                                        background: "var(--card-bg)",
+                                        borderRadius: "var(--radius)",
+                                        border: "1px solid var(--border)",
+                                        boxShadow: "var(--card-shadow)",
+                                        padding: 20,
+                                    }}
+                                >
+                                    <FormField label="Nama Kategori" error={errors.name}>
+                                        <input
+                                            type="text"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="Nama kategori"
+                                            style={inputStyle(!!errors.name)}
+                                        />
+                                    </FormField>
+                                    <FormField label="Deskripsi" error={errors.description}>
+                                        <textarea
+                                            value={desc}
+                                            onChange={(e) => setDesc(e.target.value)}
+                                            placeholder="Deskripsi kategori"
+                                            style={textareaStyle}
+                                        />
+                                    </FormField>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                            gap: 12,
+                                            marginTop: 8,
+                                        }}
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={onBack}
+                                            style={{
+                                                padding: "10px 24px",
+                                                borderRadius: "var(--radius)",
+                                                border: "1px solid var(--border)",
+                                                color: "var(--muted-fg)",
+                                                fontSize: 14,
+                                                fontWeight: 500,
+                                                cursor: "pointer",
+                                                background: "transparent",
+                                            }}
+                                        >
+                                            Batal
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={saving}
+                                            style={{
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                                padding: "10px 24px",
+                                                borderRadius: "var(--radius)",
+                                                background: "var(--primary)",
+                                                color: "#fff",
+                                                border: "none",
+                                                fontSize: 14,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                opacity: saving ? 0.7 : 1,
+                                            }}
+                                        >
+                                            {Icons.save}{" "}
+                                            {saving ? "Menyimpan..." : "Simpan Perubahan"}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                );
+            }
+
+            // ─── APP ────────────────────────────────────────────────
+            function App() {
+                const [theme, toggleTheme] = useTheme();
+                const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+                const [page, setPage] = useState("index");
+
+                React.useEffect(() => {
+                    document.documentElement.setAttribute("data-theme", theme);
+                }, [theme]);
+
+                const mainStyle = {
+                    flex: 1,
+                    overflow: "auto",
+                    padding: "28px 32px",
+                    background: "var(--bg)",
+                };
+
+                return (
+                    <>
+                        <Sidebar
+                            collapsed={sidebarCollapsed}
+                            onToggle={() => setSidebarCollapsed((c) => !c)}
+                            theme={theme}
+                            onThemeToggle={toggleTheme}
+                            activePage={page}
+                            onPageChange={setPage}
+                        />
+                        <main style={mainStyle}>
+                            {page === "index" && <IndexPage onAdd={() => setPage("create")} />}
+                            {page === "create" && <CreatePage onBack={() => setPage("index")} />}
+                            {page === "edit" && <EditPage onBack={() => setPage("index")} />}
+                        </main>
+                    </>
+                );
+            }
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(<App />);
+        </script>
+    </body>
+</html>

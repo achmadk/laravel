@@ -1,46 +1,47 @@
-import { useRef } from "react"
-import { Head, useForm } from "@inertiajs/react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Form } from "react-aria-components/Form"
-import { TextField } from "@/components/ui/text-field"
-import { Button } from "@/components/ui/button"
-import AppLayout from "@/layouts/app-layout"
-import SettingsLayout from "@/pages/settings/settings-layout"
-import PasswordController from "@/actions/App/Http/Controllers/Settings/PasswordController"
-import { FieldError, Label } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import { useRef } from "react";
+import { Head, useForm } from "@inertiajs/react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "react-aria-components/Form";
+import { TextField } from "@/components/ui/text-field";
+import { Button } from "@/components/ui/button";
+import AppLayout from "@/layouts/app-layout";
+import SettingsLayout from "@/pages/settings/settings-layout";
+// @see ../pos-reference/app/Http/Controllers/Auth/PasswordController.php
+// import PasswordController from "@/actions/App/Http/Controllers/Settings/PasswordController"
+import { FieldError, Label } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
-const title = "Change Password"
+const title = "Change Password";
 
 export default function Password() {
-  const passwordInput = useRef<HTMLInputElement>(null)
-  const currentPasswordInput = useRef<HTMLInputElement>(null)
+  const passwordInput = useRef<HTMLInputElement>(null);
+  const currentPasswordInput = useRef<HTMLInputElement>(null);
   const { data, setData, put, errors, reset, processing, recentlySuccessful } = useForm({
     current_password: "",
     password: "",
     password_confirmation: "",
-  })
+  });
 
   const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    put(PasswordController.update().url, {
-      preserveScroll: true,
-      onSuccess: () => {
-        reset()
-      },
-      onError: () => {
-        if (errors.password) {
-          reset("password", "password_confirmation")
-          passwordInput.current?.focus()
-        }
+    e.preventDefault();
+    // put(PasswordController.update().url, {
+    //   preserveScroll: true,
+    //   onSuccess: () => {
+    //     reset()
+    //   },
+    //   onError: () => {
+    //     if (errors.password) {
+    //       reset("password", "password_confirmation")
+    //       passwordInput.current?.focus()
+    //     }
 
-        if (errors.current_password) {
-          reset("current_password")
-          currentPasswordInput.current?.focus()
-        }
-      },
-    })
-  }
+    //     if (errors.current_password) {
+    //       reset("current_password")
+    //       currentPasswordInput.current?.focus()
+    //     }
+    //   },
+    // })
+  };
 
   return (
     <>
@@ -99,7 +100,7 @@ export default function Password() {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }
 
-Password.layout = [AppLayout, SettingsLayout]
+Password.layout = [AppLayout, SettingsLayout];

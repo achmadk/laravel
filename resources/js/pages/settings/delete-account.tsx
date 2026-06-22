@@ -1,10 +1,10 @@
-import { useState } from "react"
-import { Head, useForm } from "@inertiajs/react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { TextField } from "@/components/ui/text-field"
-import { Button } from "@/components/ui/button"
-import AppLayout from "@/layouts/app-layout"
-import SettingsLayout from "@/pages/settings/settings-layout"
+import { useState } from "react";
+import { Head, useForm } from "@inertiajs/react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { TextField } from "@/components/ui/text-field";
+import { Button } from "@/components/ui/button";
+import AppLayout from "@/layouts/app-layout";
+import SettingsLayout from "@/pages/settings/settings-layout";
 import {
   Modal,
   ModalBody,
@@ -14,14 +14,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-} from "@/components/ui/modal"
-import DeleteAccountController from "@/actions/App/Http/Controllers/Settings/DeleteAccountController"
-import { FieldError, Label } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/modal";
+// @see ../pos-reference/app/Http/Controllers/ProfileController.php (method: destroy)
+import DeleteAccountController from "@/actions/App/Http/Controllers/Settings/DeleteAccountController";
+import { FieldError, Label } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
-const title = "Delete Account"
+const title = "Delete Account";
 export default function DeleteAccount() {
-  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false)
+  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
   const {
     data,
     setData,
@@ -31,20 +32,20 @@ export default function DeleteAccount() {
     errors,
   } = useForm({
     password: "",
-  })
+  });
 
   const deleteUser = () => {
     destroy(DeleteAccountController.destroy().url, {
       preserveScroll: true,
       onSuccess: () => closeModal(),
       onFinish: () => reset(),
-    })
-  }
+    });
+  };
 
   const closeModal = () => {
-    setConfirmingUserDeletion(false)
-    reset()
-  }
+    setConfirmingUserDeletion(false);
+    reset();
+  };
 
   return (
     <>
@@ -96,7 +97,7 @@ export default function DeleteAccount() {
         </CardContent>
       </Card>
     </>
-  )
+  );
 }
 
-DeleteAccount.layout = [AppLayout, SettingsLayout]
+DeleteAccount.layout = [AppLayout, SettingsLayout];

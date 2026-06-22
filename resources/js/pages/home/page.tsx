@@ -1,8 +1,8 @@
-import AppLayout from "@/layouts/app-layout"
+import AppLayout from "@/layouts/app-layout";
 
-import { Head } from "@inertiajs/react"
-import { CardHeader } from "@/components/ui/card"
-import { Container } from "@/components/ui/container"
+import { Head } from "@inertiajs/react";
+import { CardHeader } from "@/components/ui/card";
+import { Container } from "@/components/ui/container";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
         />
       </Container>
     </>
-  )
+  );
 }
 
-Home.layout = (page: any) => <AppLayout children={page} />
+Home.layout = (page: any) => <AppLayout children={page} />;

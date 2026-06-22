@@ -1,13 +1,13 @@
 import {
   Button as ButtonPrimitive,
   type ButtonProps as ButtonPrimitiveProps,
-} from "react-aria-components/Button"
-import { tv, type VariantProps } from "tailwind-variants"
-import { cx } from "@/lib/primitive"
+} from "react-aria-components/Button";
+import { tv, type VariantProps } from "tailwind-variants";
+import { cx } from "@/lib/primitive";
 
 export const buttonStyles = tv({
   base: [
-    "[--btn-border:var(--color-fg)]/15 [--btn-icon-active:var(--btn-fg)] [--btn-outline:var(--btn-bg)] [--btn-radius:calc(var(--radius-lg)-1px)] [--btn-ring:var(--btn-bg)]/20",
+    "[--btn-border:var(--color-fg)]/15 [--btn-icon-active:var(--btn-fg)] [--btn-outline:var(--btn-bg)] [--btn-radius:calc(var(--radius-lg)-1px)] [--btn-ring:var(--btn-bg)]/20 cursor-pointer",
     "bg-(--btn-bg) text-(--btn-fg) outline-(--btn-outline) ring-(--btn-ring) hover:bg-(--btn-overlay)",
     "relative isolate inline-flex items-center justify-center border border-(--btn-border) font-medium hover:no-underline",
     "focus:outline-0 focus-visible:outline focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-offset-3 focus-visible:ring-offset-bg",
@@ -86,10 +86,10 @@ export const buttonStyles = tv({
     size: "md",
     isCircle: false,
   },
-})
+});
 
 export interface ButtonProps extends ButtonPrimitiveProps, VariantProps<typeof buttonStyles> {
-  ref?: React.Ref<HTMLButtonElement>
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 export function Button({ className, intent, size, isCircle, ref, ...props }: ButtonProps) {
@@ -106,5 +106,5 @@ export function Button({ className, intent, size, isCircle, ref, ...props }: But
         className,
       )}
     />
-  )
+  );
 }

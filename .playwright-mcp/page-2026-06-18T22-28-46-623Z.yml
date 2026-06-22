@@ -1,0 +1,111 @@
+- generic [ref=e3]:
+    - navigation [ref=e4]:
+        - generic [ref=e5]:
+            - generic [ref=e6]:
+                - img [ref=e8]
+                - generic [ref=e13]: Aplikasi Kasir
+            - generic [ref=e14]:
+                - link "Fitur" [ref=e15] [cursor=pointer]:
+                    - /url: "#features"
+                - link "Teknologi" [ref=e16] [cursor=pointer]:
+                    - /url: "#tech"
+                - link "Instalasi" [ref=e17] [cursor=pointer]:
+                    - /url: "#install"
+            - generic [ref=e18]:
+                - link "Masuk" [ref=e19] [cursor=pointer]:
+                    - /url: /login
+                - link "Daftar Gratis" [ref=e20] [cursor=pointer]:
+                    - /url: /register
+    - generic [ref=e22]:
+        - generic [ref=e23]:
+            - generic [ref=e24]:
+                - img [ref=e25]
+                - text: Responsive & Mobile-Friendly
+            - heading "Sistem Point of Sale Modern & Mudah Digunakan" [level=1] [ref=e27]:
+                - text: Sistem Point of Sale
+                - generic [ref=e28]: Modern & Mudah Digunakan
+            - paragraph [ref=e29]: Aplikasi kasir berbasis web untuk warung & toko kecil–menengah. Mendukung pencatatan transaksi, laporan, manajemen produk, pelanggan, dan banyak lagi.
+            - generic [ref=e30]:
+                - link "Mulai Sekarang" [ref=e31] [cursor=pointer]:
+                    - /url: /register
+                    - text: Mulai Sekarang
+                    - img [ref=e32]
+                - link "View Repository" [ref=e35] [cursor=pointer]:
+                    - /url: https://github.com
+                    - img [ref=e36]
+                    - text: View Repository
+        - generic [ref=e39]:
+            - generic [ref=e45]: dashboard.app
+            - img "Preview POS Dashboard" [ref=e46]
+    - generic [ref=e48]:
+        - generic [ref=e49]:
+            - generic [ref=e50]:
+                - img [ref=e51]
+                - text: Before & After
+            - heading "Perjalanan Evolusi" [level=2] [ref=e54]
+            - paragraph [ref=e55]: Dari versi pertama hingga redesign modern dengan UI/UX yang lebih baik
+        - generic [ref=e56]:
+            - generic [ref=e57]:
+                - generic [ref=e59]: Version 1.0
+                - img "POS V1" [ref=e61]
+                - img "Dashboard V1" [ref=e63]
+            - generic [ref=e64]:
+                - generic [ref=e66]: ✨ Revamp 2.0
+                - img "POS Revamp" [ref=e68]
+                - img "Dashboard Revamp" [ref=e70]
+    - generic [ref=e72]:
+        - generic [ref=e73]:
+            - heading "Fitur Lengkap" [level=2] [ref=e74]
+            - paragraph [ref=e75]: Semua yang Anda butuhkan untuk mengelola bisnis retail dalam satu aplikasi
+        - generic [ref=e76]:
+            - generic [ref=e77]:
+                - img [ref=e79]
+                - heading "Transaksi Cepat" [level=3] [ref=e84]
+                - paragraph [ref=e85]: Proses jual beli dalam hitungan detik
+            - generic [ref=e86]:
+                - img [ref=e88]
+                - heading "Cetak Struk" [level=3] [ref=e90]
+                - paragraph [ref=e91]: Print thermal 58mm, 80mm, dan invoice
+            - generic [ref=e92]:
+                - img [ref=e94]
+                - heading "Pelanggan & History" [level=3] [ref=e99]
+                - paragraph [ref=e100]: Kelola data pelanggan dan riwayat
+            - generic [ref=e101]:
+                - img [ref=e103]
+                - heading "Inventori Produk" [level=3] [ref=e107]
+                - paragraph [ref=e108]: Stok, kategori, dan barcode scanner
+            - generic [ref=e109]:
+                - img [ref=e111]
+                - heading "Laporan Lengkap" [level=3] [ref=e115]
+                - paragraph [ref=e116]: Penjualan, keuntungan, dan grafik
+            - generic [ref=e117]:
+                - img [ref=e119]
+                - heading "Multi Payment" [level=3] [ref=e123]
+                - paragraph [ref=e124]: Tunai, QRIS, dan Midtrans
+    - generic [ref=e126]:
+        - heading "Tech Stack" [level=2] [ref=e127]
+        - paragraph [ref=e128]: Dibangun dengan teknologi modern yang cepat dan stabil
+        - generic [ref=e129]:
+            - generic [ref=e132]: Laravel 12
+            - generic [ref=e135]: Inertia.js
+            - generic [ref=e138]: React
+            - generic [ref=e141]: TailwindCSS
+            - generic [ref=e144]: MySQL
+    - generic [ref=e146]:
+        - generic [ref=e147]:
+            - heading "Panduan Instalasi" [level=2] [ref=e148]
+            - paragraph [ref=e149]: Clone repository dan jalankan dalam hitungan menit
+        - generic [ref=e151]: "git clone https://github.com/aryadwiputra/point-of-sales cd point-of-sales composer install npm install cp .env.example .env php artisan key:generate # Setup database di .env php artisan migrate --seed php artisan storage:link npm run dev php artisan serve"
+    - generic [ref=e154]:
+        - heading "Siap Memulai?" [level=2] [ref=e155]
+        - paragraph [ref=e156]: Daftarkan bisnis Anda sekarang dan rasakan kemudahannya
+        - link "Daftar Gratis Sekarang" [ref=e157] [cursor=pointer]:
+            - /url: /register
+            - text: Daftar Gratis Sekarang
+            - img [ref=e158]
+    - contentinfo [ref=e161]:
+        - generic [ref=e162]:
+            - generic [ref=e163]:
+                - img [ref=e165]
+                - generic [ref=e170]: Aplikasi Kasir
+            - paragraph [ref=e171]: © 2026 All rights reserved

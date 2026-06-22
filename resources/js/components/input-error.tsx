@@ -1,6 +1,6 @@
-import type { HTMLAttributes } from "react"
-import { Description } from "@/components/ui/field"
-import { twMerge } from "tailwind-merge"
+import type { HTMLAttributes } from "react";
+import { Description } from "@/components/ui/field";
+import { twMerge } from "tailwind-merge";
 
 export function InputError({
   message,
@@ -11,5 +11,5 @@ export function InputError({
     <Description {...props} className={twMerge("block text-danger text-sm")}>
       {message}
     </Description>
-  ) : null
+  ) : null;
 }

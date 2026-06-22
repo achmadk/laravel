@@ -1,9 +1,9 @@
-import type { SVGProps } from "react"
-import { Button } from "@/components/ui/button"
-import { Link } from "@/components/ui/link"
-import { TextField } from "@/components/ui/text-field"
-import { Input } from "@/components/ui/input"
-import { FieldError } from "@/components/ui/field"
+import type { SVGProps } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
+import { TextField } from "@/components/ui/text-field";
+import { Input } from "@/components/ui/input";
+import { FieldError } from "@/components/ui/field";
 
 const navigation = {
   solutions: [
@@ -92,7 +92,7 @@ const navigation = {
       ),
     },
   ],
-}
+};
 
 export function Footer() {
   return (
@@ -217,5 +217,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

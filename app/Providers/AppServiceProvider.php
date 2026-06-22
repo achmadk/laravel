@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Vite;
+use App\Support\ProductionSecurityBaseline;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,7 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        JsonResource::withoutWrapping();
-        Vite::prefetch(concurrency: 3);
+        $issues = ProductionSecurityBaseline::issues();
+
+        if ($issues !== []) {
+            Log::warning('Production security baseline check failed.', [
+                'issues' => $issues,
+            ]);
+        }
     }
 }

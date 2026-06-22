@@ -1,0 +1,3015 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>RTOS Redesign — Prototype</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Tabler Icons webfont -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.48.0/dist/tabler-icons.min.css"
+        />
+
+        <!-- React + Babel -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+
+        <style>
+            /* ============================================================
+     DESIGN SYSTEM — Exact match of existing RTOS app tokens
+     ============================================================ */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                /* Fonts */
+                --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+                --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+                /* Light theme - exact oklch values from app.css */
+                --bg: oklch(1 0 0);
+                --fg: oklch(0.21 0.006 285.885);
+                --primary: oklch(0.546 0.245 262.881);
+                --primary-fg: oklch(1 0 0);
+                --primary-subtle: oklch(0.623 0.214 259.815 / 0.15);
+                --primary-subtle-fg: oklch(0.488 0.243 264.376);
+                --secondary: oklch(0.92 0.004 286.32);
+                --secondary-fg: oklch(0.141 0.005 285.823);
+                --muted: oklch(0.967 0.001 286.375);
+                --muted-fg: oklch(0.552 0.016 285.938);
+                --success: oklch(0.596 0.145 163.225);
+                --success-fg: oklch(1 0 0);
+                --success-subtle: oklch(0.696 0.17 162.48 / 0.15);
+                --warning: oklch(0.828 0.189 84.429);
+                --warning-fg: oklch(0.279 0.077 45.635);
+                --warning-subtle: oklch(0.828 0.189 84.429 / 0.2);
+                --danger: oklch(0.577 0.245 27.325);
+                --danger-fg: oklch(0.971 0.013 17.38);
+                --danger-subtle: oklch(0.637 0.237 25.331 / 0.15);
+                --border: oklch(0.911 0.006 286.286);
+                --input: oklch(0.871 0.006 286.286);
+                --ring: oklch(0.546 0.245 262.881);
+                --sidebar: oklch(0.985 0 0);
+                --sidebar-fg: oklch(0.141 0.005 285.823);
+                --sidebar-primary: oklch(0.623 0.214 259.815 / 0.15);
+                --sidebar-border: oklch(0.901 0.006 286.286);
+                --navbar: oklch(0.995 0 0);
+                --navbar-fg: oklch(0.141 0.005 285.823);
+                --overlay: oklch(1 0 0);
+                --overlay-fg: oklch(0.141 0.005 285.823);
+
+                /* Radius */
+                --radius-lg: 0.5rem;
+                --radius-xs: calc(var(--radius-lg) * 0.5);
+                --radius-sm: calc(var(--radius-lg) * 0.75);
+                --radius-md: calc(var(--radius-lg) * 0.9);
+                --radius-xl: calc(var(--radius-lg) * 1.25);
+                --radius-2xl: calc(var(--radius-lg) * 1.5);
+                --radius-3xl: calc(var(--radius-lg) * 2);
+                --radius-4xl: calc(var(--radius-lg) * 3);
+
+                /* Shadows */
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+                --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.06), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+            }
+
+            .dark {
+                --bg: oklch(0.181 0.005 285.823);
+                --fg: oklch(0.985 0 0);
+                --primary: oklch(0.546 0.245 262.881);
+                --primary-fg: oklch(1 0 0);
+                --primary-subtle: oklch(0.623 0.214 259.815 / 0.1);
+                --primary-subtle-fg: oklch(0.707 0.165 254.624);
+                --secondary: oklch(0.244 0.006 286.033);
+                --secondary-fg: oklch(0.985 0 0);
+                --muted: oklch(0.21 0.006 285.885);
+                --muted-fg: oklch(0.705 0.015 286.067);
+                --border: oklch(0.342 0.017 285.786);
+                --input: oklch(0.32 0.013 285.805);
+                --sidebar: oklch(0.21 0.006 285.885);
+                --sidebar-fg: oklch(0.985 0 0);
+                --sidebar-primary: oklch(0.623 0.214 259.815 / 0.1);
+                --sidebar-border: oklch(0.274 0.006 286.033);
+                --navbar: oklch(0.19 0.006 285.885);
+                --navbar-fg: oklch(0.985 0 0);
+                --overlay: oklch(0.21 0.006 285.885);
+                --overlay-fg: oklch(0.985 0 0);
+                --success-subtle: oklch(0.696 0.17 162.48 / 0.1);
+                --warning-subtle: oklch(0.828 0.189 84.429 / 0.1);
+                --danger-subtle: oklch(0.637 0.237 25.331 / 0.1);
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+                --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.25);
+                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+                --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3);
+            }
+
+            html {
+                font-family: var(--font-sans);
+                -webkit-font-smoothing: antialiased;
+            }
+            body {
+                background: var(--bg);
+                color: var(--fg);
+                line-height: 1.6;
+                overflow: hidden;
+                height: 100vh;
+            }
+            #root {
+                height: 100vh;
+                display: flex;
+            }
+
+            /* Scrollbar styling */
+            ::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 4px;
+            }
+            * {
+                scrollbar-width: thin;
+                scrollbar-color: var(--border) transparent;
+            }
+
+            .ti {
+                font-size: 1.25rem;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            {
+                /* ================================================================
+     DESIGN ASSUMPTIONS & REASONING
+     
+     1. Design system tokens (colors, fonts, radii, spacing) are
+        EXACTLY from the existing app.css — no new colors invented.
+     2. Layout structure (sidebar + header + content) mirrors the
+        real app's DashboardLayout + Sidebar components.
+     3. Improvements focus on: visual hierarchy, spacing rhythm,
+        card refinement, micro-interactions, data presentation.
+     4. All interactive states preserved: grid/list toggle, search,
+        pagination, CRUD buttons, permission-aware elements.
+     5. Dark mode uses exact .dark token values from app.css.
+     6. Icons use Tabler Icons webfont — same as production app.
+     7. This is a hi-fi prototype for visual review, not production code.
+     ================================================================ */
+            }
+
+            const { useState, useEffect, useRef, useMemo, useCallback, createContext, useContext } =
+                React;
+
+            // ============================================================
+            // DATA
+            // ============================================================
+            const CATEGORIES = Array.from({ length: 14 }, (_, i) => ({
+                id: i + 1,
+                name: [
+                    "Minuman",
+                    "Makanan Ringan",
+                    "Makanan Berat",
+                    "Rokok",
+                    "Obat-obatan",
+                    "Alat Tulis",
+                    "Perlengkapan Mandi",
+                    "Sembako",
+                    "Minuman Dingin",
+                    "Bumbu Dapur",
+                    "Susu & Olahan",
+                    "Cemilan Import",
+                    "Alat Rumah Tangga",
+                    "Frozen Food",
+                ][i],
+                description: [
+                    "Aneka minuman kemasan dan botol",
+                    "Camilan ringan kemasan",
+                    "Makanan siap saji",
+                    "Produk tembakau",
+                    "Obat bebas dan suplemen",
+                    "Peralatan tulis kantor",
+                    "Sabun, sampo, pasta gigi",
+                    "Bahan pokok sehari-hari",
+                    "Minuman dingin dan es krim",
+                    "Bumbu masak dan rempah",
+                    "Produk susu segar dan UHT",
+                    "Cemilan impor berkualitas",
+                    "Peralatan kebersihan rumah",
+                    "Makanan beku siap olah",
+                ][i],
+                image: null,
+                productCount: [23, 45, 12, 67, 34, 28, 56, 89, 19, 42, 15, 8, 31, 24][i],
+            }));
+
+            const RECENT_TRANSACTIONS = [
+                {
+                    invoice: "INV-2026-0622-001",
+                    total: 285000,
+                    date: "22 Jun 2026",
+                    cashier: "Ahmad",
+                    customer: "Walk-in",
+                },
+                {
+                    invoice: "INV-2026-0622-002",
+                    total: 45000,
+                    date: "22 Jun 2026",
+                    cashier: "Siti",
+                    customer: "Budi Santoso",
+                },
+                {
+                    invoice: "INV-2026-0622-003",
+                    total: 132500,
+                    date: "22 Jun 2026",
+                    cashier: "Ahmad",
+                    customer: "Walk-in",
+                },
+                {
+                    invoice: "INV-2026-0621-004",
+                    total: 78900,
+                    date: "21 Jun 2026",
+                    cashier: "Rina",
+                    customer: "Dewi Lestari",
+                },
+                {
+                    invoice: "INV-2026-0621-005",
+                    total: 210000,
+                    date: "21 Jun 2026",
+                    cashier: "Siti",
+                    customer: "Walk-in",
+                },
+            ];
+
+            const TOP_PRODUCTS = [
+                { name: "Aqua 600ml", sku: "AQ-001", qty: 47 },
+                { name: "Indomie Goreng", sku: "IDM-002", qty: 38 },
+                { name: "Kopi Kapal Api", sku: "KK-005", qty: 29 },
+            ];
+
+            const WIDGET_COLORS = [
+                { bg: "oklch(0.546 0.245 262.881 / 0.08)", fg: "oklch(0.546 0.245 262.881)" },
+                { bg: "oklch(0.596 0.145 163.225 / 0.08)", fg: "oklch(0.596 0.145 163.225)" },
+                { bg: "oklch(0.828 0.189 84.429 / 0.08)", fg: "oklch(0.828 0.189 84.429)" },
+                { bg: "oklch(0.577 0.245 27.325 / 0.08)", fg: "oklch(0.577 0.245 27.325)" },
+            ];
+
+            const CATEGORY_GRADIENTS = [
+                "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+                "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+                "linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)",
+                "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
+                "linear-gradient(135deg, #f5576c 0%, #ff7eb3 100%)",
+                "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+                "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
+                "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
+                "linear-gradient(135deg, #fddb92 0%, #d1fdff 100%)",
+            ];
+
+            const CHART_MONTHS = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "Mei",
+                "Jun",
+                "Jul",
+                "Agu",
+                "Sep",
+                "Okt",
+                "Nov",
+                "Des",
+            ];
+            const CHART_DATA = [
+                32000000, 28500000, 41000000, 38000000, 52000000, 47000000, 55000000, 48000000,
+                61000000, 58000000, 72000000, 68000000,
+            ];
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                }).format(value);
+            }
+
+            // ============================================================
+            // CONTEXT
+            // ============================================================
+            const AppContext = createContext();
+
+            // ============================================================
+            // COMPONENTS
+            // ============================================================
+
+            /* ---- Sidebar ---- */
+            function Sidebar({ collapsed, onToggleCollapse }) {
+                const { currentPage, navigate } = useContext(AppContext);
+
+                const menuSections = [
+                    {
+                        label: "Menu Utama",
+                        items: [
+                            {
+                                id: "dashboard",
+                                icon: "ti-dashboard",
+                                label: "Dashboard",
+                                href: "#",
+                            },
+                            { id: "categories", icon: "ti-category", label: "Kategori", href: "#" },
+                        ],
+                    },
+                    {
+                        label: "Manajemen",
+                        items: [
+                            { id: "products", icon: "ti-box", label: "Produk", href: "#" },
+                            { id: "customers", icon: "ti-users", label: "Pelanggan", href: "#" },
+                            {
+                                id: "suppliers",
+                                icon: "ti-truck-delivery",
+                                label: "Supplier",
+                                href: "#",
+                            },
+                        ],
+                    },
+                    {
+                        label: "Transaksi",
+                        items: [
+                            { id: "pos", icon: "ti-shopping-cart", label: "POS", href: "#" },
+                            { id: "history", icon: "ti-clock-hour-4", label: "Riwayat", href: "#" },
+                            { id: "reports", icon: "ti-chart-bar", label: "Laporan", href: "#" },
+                        ],
+                    },
+                    {
+                        label: "Pengaturan",
+                        items: [
+                            { id: "settings", icon: "ti-settings", label: "Pengaturan", href: "#" },
+                            { id: "users", icon: "ti-user-shield", label: "Pengguna", href: "#" },
+                        ],
+                    },
+                ];
+
+                return (
+                    <aside
+                        style={{
+                            width: collapsed ? 72 : 260,
+                            minWidth: collapsed ? 72 : 260,
+                            height: "100vh",
+                            background: "var(--sidebar)",
+                            borderRight: "1px solid var(--sidebar-border)",
+                            display: "flex",
+                            flexDirection: "column",
+                            transition: "width 0.3s ease, min-width 0.3s ease",
+                            position: "relative",
+                            zIndex: 40,
+                        }}
+                    >
+                        {/* Logo */}
+                        <div
+                            style={{
+                                height: 64,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: collapsed ? "center" : "flex-start",
+                                gap: 12,
+                                padding: collapsed ? "0" : "0 20px",
+                                borderBottom: "1px solid var(--sidebar-border)",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: 10,
+                                    background:
+                                        "linear-gradient(135deg, var(--primary), oklch(0.488 0.243 264.376))",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                }}
+                            >
+                                <i
+                                    className="ti ti-building-store"
+                                    style={{ color: "white", fontSize: 18 }}
+                                />
+                            </div>
+                            {!collapsed && (
+                                <span
+                                    style={{
+                                        fontSize: 16,
+                                        fontWeight: 700,
+                                        color: "var(--sidebar-fg)",
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    Toko Kita
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Menu */}
+                        <nav style={{ flex: 1, overflowY: "auto", padding: "12px 8px" }}>
+                            {menuSections.map((section) => (
+                                <div key={section.label} style={{ marginBottom: 20 }}>
+                                    {!collapsed && (
+                                        <div
+                                            style={{
+                                                padding: "0 12px 8px",
+                                                fontSize: 10,
+                                                fontWeight: 700,
+                                                textTransform: "uppercase",
+                                                letterSpacing: "0.08em",
+                                                color: "var(--muted-fg)",
+                                            }}
+                                        >
+                                            {section.label}
+                                        </div>
+                                    )}
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 2 }}
+                                    >
+                                        {section.items.map((item) => {
+                                            const isActive =
+                                                currentPage === item.id ||
+                                                (item.id === "categories" &&
+                                                    [
+                                                        "categories",
+                                                        "categories-create",
+                                                        "categories-edit",
+                                                    ].includes(currentPage));
+                                            return (
+                                                <div
+                                                    key={item.id}
+                                                    onClick={() => navigate(item.id)}
+                                                    style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: 12,
+                                                        padding: collapsed ? "10px 0" : "10px 12px",
+                                                        borderRadius: 8,
+                                                        cursor: "pointer",
+                                                        background: isActive
+                                                            ? "var(--sidebar-primary)"
+                                                            : "transparent",
+                                                        color: isActive
+                                                            ? "var(--primary)"
+                                                            : "var(--muted-fg)",
+                                                        fontWeight: isActive ? 600 : 500,
+                                                        fontSize: 13,
+                                                        transition: "all 0.15s ease",
+                                                        justifyContent: collapsed
+                                                            ? "center"
+                                                            : "flex-start",
+                                                        position: "relative",
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        if (!isActive)
+                                                            e.currentTarget.style.background =
+                                                                "var(--secondary)";
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        if (!isActive)
+                                                            e.currentTarget.style.background =
+                                                                "transparent";
+                                                    }}
+                                                >
+                                                    {isActive && !collapsed && (
+                                                        <div
+                                                            style={{
+                                                                position: "absolute",
+                                                                left: 0,
+                                                                top: 6,
+                                                                bottom: 6,
+                                                                width: 3,
+                                                                borderRadius: "0 4px 4px 0",
+                                                                background: "var(--primary)",
+                                                            }}
+                                                        />
+                                                    )}
+                                                    <i
+                                                        className={item.icon}
+                                                        style={{ fontSize: 20, flexShrink: 0 }}
+                                                    />
+                                                    {!collapsed && (
+                                                        <span style={{ whiteSpace: "nowrap" }}>
+                                                            {item.label}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            ))}
+                        </nav>
+
+                        {/* Collapse button */}
+                        <div
+                            style={{
+                                borderTop: "1px solid var(--sidebar-border)",
+                                padding: "8px 12px",
+                                display: "flex",
+                                justifyContent: collapsed ? "center" : "flex-end",
+                            }}
+                        >
+                            <div
+                                onClick={onToggleCollapse}
+                                style={{
+                                    width: 28,
+                                    height: 28,
+                                    borderRadius: 6,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    color: "var(--muted-fg)",
+                                    transition: "transform 0.3s ease",
+                                    transform: collapsed ? "rotate(180deg)" : "rotate(0deg)",
+                                }}
+                            >
+                                <i className="ti ti-chevron-left" style={{ fontSize: 16 }} />
+                            </div>
+                        </div>
+                    </aside>
+                );
+            }
+
+            /* ---- Header ---- */
+            function Header() {
+                const { theme, toggleTheme, currentPage, navigate } = useContext(AppContext);
+
+                const pageTitles = {
+                    dashboard: { title: "Dashboard", subtitle: "Ringkasan aktivitas bisnis Anda" },
+                    categories: { title: "Kategori", subtitle: "14 kategori terdaftar" },
+                    "categories-create": {
+                        title: "Tambah Kategori",
+                        subtitle: "Buat kategori baru",
+                    },
+                    "categories-edit": {
+                        title: "Edit Kategori",
+                        subtitle: "Minuman — ubah informasi kategori",
+                    },
+                };
+                const info = pageTitles[currentPage] || pageTitles["dashboard"];
+
+                return (
+                    <header
+                        style={{
+                            height: 64,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "0 24px",
+                            borderBottom: "1px solid var(--border)",
+                            background: "var(--navbar)",
+                            flexShrink: 0,
+                        }}
+                    >
+                        <div>
+                            <h1
+                                style={{
+                                    fontSize: 20,
+                                    fontWeight: 700,
+                                    color: "var(--fg)",
+                                    letterSpacing: "-0.01em",
+                                }}
+                            >
+                                {info.title}
+                            </h1>
+                            <p style={{ fontSize: 13, color: "var(--muted-fg)", marginTop: 1 }}>
+                                {info.subtitle}
+                            </p>
+                        </div>
+
+                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                            {/* Theme toggle */}
+                            <div
+                                onClick={toggleTheme}
+                                style={{
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: 10,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    color: "var(--muted-fg)",
+                                    background: "var(--secondary)",
+                                    transition: "all 0.2s ease",
+                                }}
+                                title="Toggle theme"
+                            >
+                                <i
+                                    className={theme === "dark" ? "ti ti-sun" : "ti ti-moon"}
+                                    style={{ fontSize: 18 }}
+                                />
+                            </div>
+
+                            {/* Notification bell */}
+                            <div
+                                style={{
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: 10,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    color: "var(--muted-fg)",
+                                    background: "var(--secondary)",
+                                    position: "relative",
+                                }}
+                            >
+                                <i className="ti ti-bell" style={{ fontSize: 18 }} />
+                                <span
+                                    style={{
+                                        position: "absolute",
+                                        top: 4,
+                                        right: 4,
+                                        width: 16,
+                                        height: 16,
+                                        borderRadius: "50%",
+                                        background: "var(--danger)",
+                                        color: "white",
+                                        fontSize: 9,
+                                        fontWeight: 700,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    3
+                                </span>
+                            </div>
+
+                            {/* User avatar */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 10,
+                                    padding: "4px 12px 4px 4px",
+                                    borderRadius: 10,
+                                    background: "var(--secondary)",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        width: 32,
+                                        height: 32,
+                                        borderRadius: 8,
+                                        background:
+                                            "linear-gradient(135deg, var(--primary), oklch(0.488 0.243 264.376))",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        color: "white",
+                                        fontSize: 13,
+                                        fontWeight: 700,
+                                    }}
+                                >
+                                    A
+                                </div>
+                                <span style={{ fontSize: 13, fontWeight: 500, color: "var(--fg)" }}>
+                                    Admin
+                                </span>
+                            </div>
+                        </div>
+                    </header>
+                );
+            }
+
+            {
+                /* ============================================================
+     PAGE: DASHBOARD
+     ============================================================ */
+            }
+            function DashboardPage() {
+                const { navigate } = useContext(AppContext);
+
+                const statCards = [
+                    {
+                        title: "Penjualan Hari Ini",
+                        value: formatCurrency(4850000),
+                        icon: "ti-coin",
+                        gradient: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)",
+                        change: "+12%",
+                        trend: "up",
+                    },
+                    {
+                        title: "Profit Hari Ini",
+                        value: formatCurrency(1240000),
+                        icon: "ti-trending-up",
+                        gradient: "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                        change: "+8%",
+                        trend: "up",
+                    },
+                    {
+                        title: "Target Bulan Ini",
+                        value: "72%",
+                        icon: "ti-target",
+                        gradient: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                        subtitle: "Rp145jt / Rp200jt",
+                    },
+                    {
+                        title: "Transaksi Hari Ini",
+                        value: "47",
+                        icon: "ti-clock",
+                        gradient: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                        change: "-3%",
+                        trend: "down",
+                    },
+                ];
+
+                const infoCards = [
+                    { title: "Total Kategori", value: "14", icon: "ti-category" },
+                    { title: "Total Produk", value: "513", icon: "ti-box" },
+                    { title: "Total Transaksi", value: "2,847", icon: "ti-receipt" },
+                    { title: "Total Pelanggan", value: "189", icon: "ti-users" },
+                ];
+
+                return (
+                    <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 24,
+                                maxWidth: 1280,
+                            }}
+                        >
+                            {/* Greeting */}
+                            <div
+                                style={{
+                                    padding: "20px 24px",
+                                    borderRadius: 16,
+                                    border: "1px solid var(--border)",
+                                    background: "var(--overlay)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <div>
+                                    <p
+                                        style={{
+                                            fontSize: 18,
+                                            fontWeight: 600,
+                                            color: "var(--fg)",
+                                        }}
+                                    >
+                                        Selamat siang, Admin! 👋
+                                    </p>
+                                    <p
+                                        style={{
+                                            fontSize: 13,
+                                            color: "var(--muted-fg)",
+                                            marginTop: 4,
+                                        }}
+                                    >
+                                        Senin, 22 Juni 2026
+                                    </p>
+                                </div>
+                                <div
+                                    style={{
+                                        padding: "8px 16px",
+                                        borderRadius: 10,
+                                        background: "var(--success-subtle)",
+                                        color: "var(--success)",
+                                        fontSize: 12,
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    <i
+                                        className="ti ti-check"
+                                        style={{ fontSize: 14, marginRight: 6 }}
+                                    />
+                                    Sistem berjalan normal
+                                </div>
+                            </div>
+
+                            {/* Stat Cards */}
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                                    gap: 16,
+                                }}
+                            >
+                                {statCards.map((card, i) => (
+                                    <div
+                                        key={i}
+                                        style={{
+                                            padding: "20px 24px",
+                                            borderRadius: 16,
+                                            background: card.gradient,
+                                            color: "white",
+                                            position: "relative",
+                                            overflow: "hidden",
+                                            cursor: "default",
+                                            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                                            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = "translateY(-2px)";
+                                            e.currentTarget.style.boxShadow =
+                                                "0 8px 24px rgba(0,0,0,0.12)";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = "translateY(0)";
+                                            e.currentTarget.style.boxShadow =
+                                                "0 4px 12px rgba(0,0,0,0.08)";
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: -20,
+                                                right: -20,
+                                                opacity: 0.08,
+                                            }}
+                                        >
+                                            <i className={card.icon} style={{ fontSize: 120 }} />
+                                        </div>
+                                        <div style={{ position: "relative", zIndex: 1 }}>
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    gap: 10,
+                                                    marginBottom: 12,
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        width: 36,
+                                                        height: 36,
+                                                        borderRadius: 10,
+                                                        background: "rgba(255,255,255,0.15)",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                    }}
+                                                >
+                                                    <i
+                                                        className={card.icon}
+                                                        style={{ fontSize: 18 }}
+                                                    />
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 12,
+                                                        fontWeight: 500,
+                                                        opacity: 0.85,
+                                                    }}
+                                                >
+                                                    {card.title}
+                                                </span>
+                                            </div>
+                                            <p
+                                                style={{
+                                                    fontSize: 28,
+                                                    fontWeight: 800,
+                                                    letterSpacing: "-0.02em",
+                                                }}
+                                            >
+                                                {card.value}
+                                            </p>
+                                            {card.change && (
+                                                <p
+                                                    style={{
+                                                        fontSize: 12,
+                                                        marginTop: 8,
+                                                        opacity: 0.85,
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: 4,
+                                                    }}
+                                                >
+                                                    <i
+                                                        className={
+                                                            card.trend === "up"
+                                                                ? "ti ti-trending-up"
+                                                                : "ti ti-trending-down"
+                                                        }
+                                                        style={{ fontSize: 14 }}
+                                                    />
+                                                    {card.change} dari kemarin
+                                                </p>
+                                            )}
+                                            {card.subtitle && (
+                                                <p
+                                                    style={{
+                                                        fontSize: 12,
+                                                        marginTop: 8,
+                                                        opacity: 0.75,
+                                                    }}
+                                                >
+                                                    {card.subtitle}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Info Cards */}
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                                    gap: 12,
+                                }}
+                            >
+                                {infoCards.map((card, i) => (
+                                    <div
+                                        key={i}
+                                        style={{
+                                            padding: "16px 20px",
+                                            borderRadius: 14,
+                                            border: "1px solid var(--border)",
+                                            background: "var(--overlay)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                            transition: "box-shadow 0.2s ease",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.boxShadow = "var(--shadow-md)";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.boxShadow = "none";
+                                        }}
+                                    >
+                                        <div>
+                                            <p
+                                                style={{
+                                                    fontSize: 12,
+                                                    color: "var(--muted-fg)",
+                                                    fontWeight: 500,
+                                                }}
+                                            >
+                                                {card.title}
+                                            </p>
+                                            <p
+                                                style={{
+                                                    fontSize: 22,
+                                                    fontWeight: 700,
+                                                    color: "var(--fg)",
+                                                    marginTop: 4,
+                                                }}
+                                            >
+                                                {card.value}
+                                            </p>
+                                        </div>
+                                        <div
+                                            style={{
+                                                width: 40,
+                                                height: 40,
+                                                borderRadius: 10,
+                                                background: "var(--muted)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                color: "var(--muted-fg)",
+                                            }}
+                                        >
+                                            <i className={card.icon} style={{ fontSize: 20 }} />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Chart + Recent Transactions */}
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "2fr 1fr",
+                                    gap: 16,
+                                }}
+                            >
+                                {/* Revenue Chart Card */}
+                                <div
+                                    style={{
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            padding: "16px 20px",
+                                            borderBottom: "1px solid var(--border)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 10,
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: 32,
+                                                    height: 32,
+                                                    borderRadius: 8,
+                                                    background: "var(--primary-subtle)",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <i
+                                                    className="ti ti-chart-bar"
+                                                    style={{
+                                                        fontSize: 16,
+                                                        color: "var(--primary)",
+                                                    }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <h3
+                                                    style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 600,
+                                                        color: "var(--fg)",
+                                                    }}
+                                                >
+                                                    Tren Pendapatan
+                                                </h3>
+                                                <p
+                                                    style={{
+                                                        fontSize: 11,
+                                                        color: "var(--muted-fg)",
+                                                    }}
+                                                >
+                                                    Tahunan — 12 data terakhir
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div style={{ display: "flex", gap: 4 }}>
+                                            {["7H", "14H", "30H", "1Y"].map((label, i) => (
+                                                <div
+                                                    key={i}
+                                                    style={{
+                                                        padding: "4px 10px",
+                                                        borderRadius: 6,
+                                                        fontSize: 11,
+                                                        fontWeight: 600,
+                                                        background:
+                                                            i === 3
+                                                                ? "var(--muted)"
+                                                                : "transparent",
+                                                        color:
+                                                            i === 3
+                                                                ? "var(--fg)"
+                                                                : "var(--muted-fg)",
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    {label}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div style={{ padding: 20 }}>
+                                        <svg
+                                            viewBox="0 0 600 220"
+                                            style={{ width: "100%", height: 200 }}
+                                        >
+                                            {/* Grid lines */}
+                                            {[0, 1, 2, 3].map((i) => (
+                                                <line
+                                                    key={i}
+                                                    x1="40"
+                                                    y1={40 + i * 45}
+                                                    x2="580"
+                                                    y2={40 + i * 45}
+                                                    stroke="var(--border)"
+                                                    strokeWidth="0.5"
+                                                />
+                                            ))}
+                                            {/* Area fill */}
+                                            <defs>
+                                                <linearGradient
+                                                    id="chartGrad"
+                                                    x1="0"
+                                                    y1="0"
+                                                    x2="0"
+                                                    y2="1"
+                                                >
+                                                    <stop
+                                                        offset="0%"
+                                                        stopColor="var(--primary)"
+                                                        stopOpacity="0.2"
+                                                    />
+                                                    <stop
+                                                        offset="100%"
+                                                        stopColor="var(--primary)"
+                                                        stopOpacity="0.01"
+                                                    />
+                                                </linearGradient>
+                                            </defs>
+                                            <path
+                                                d={(() => {
+                                                    const max = Math.max(...CHART_DATA);
+                                                    const w = 540 / (CHART_DATA.length - 1);
+                                                    const pts = CHART_DATA.map((v, i) => {
+                                                        const x = 40 + i * w;
+                                                        const y = 40 + (1 - v / max) * 180;
+                                                        return `${i === 0 ? "M" : "L"}${x},${y}`;
+                                                    }).join(" ");
+                                                    const lastX = 40 + (CHART_DATA.length - 1) * w;
+                                                    return `${pts} L${lastX},220 L40,220 Z`;
+                                                })()}
+                                                fill="url(#chartGrad)"
+                                            />
+                                            {/* Line */}
+                                            <path
+                                                d={(() => {
+                                                    const max = Math.max(...CHART_DATA);
+                                                    const w = 540 / (CHART_DATA.length - 1);
+                                                    return CHART_DATA.map((v, i) => {
+                                                        const x = 40 + i * w;
+                                                        const y = 40 + (1 - v / max) * 180;
+                                                        return `${i === 0 ? "M" : "L"}${x},${y}`;
+                                                    }).join(" ");
+                                                })()}
+                                                fill="none"
+                                                stroke="var(--primary)"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            {/* Dots on last 3 */}
+                                            {CHART_DATA.slice(-3).map((v, i) => {
+                                                const idx = CHART_DATA.length - 3 + i;
+                                                const max = Math.max(...CHART_DATA);
+                                                const w = 540 / (CHART_DATA.length - 1);
+                                                const x = 40 + idx * w;
+                                                const y = 40 + (1 - v / max) * 180;
+                                                return (
+                                                    <circle
+                                                        key={i}
+                                                        cx={x}
+                                                        cy={y}
+                                                        r="4"
+                                                        fill="var(--primary)"
+                                                        stroke="var(--overlay)"
+                                                        strokeWidth="2"
+                                                    />
+                                                );
+                                            })}
+                                            {/* X-axis labels (every other) */}
+                                            {CHART_MONTHS.map((m, i) => {
+                                                if (i % 2 !== 0) return null;
+                                                const w = 540 / (CHART_DATA.length - 1);
+                                                return (
+                                                    <text
+                                                        key={i}
+                                                        x={40 + i * w}
+                                                        y="210"
+                                                        textAnchor="middle"
+                                                        fill="var(--muted-fg)"
+                                                        fontSize="10"
+                                                    >
+                                                        {m}
+                                                    </text>
+                                                );
+                                            })}
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                {/* Recent Transactions */}
+                                <div
+                                    style={{
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            padding: "16px 20px",
+                                            borderBottom: "1px solid var(--border)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 10,
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                width: 32,
+                                                height: 32,
+                                                borderRadius: 8,
+                                                background: "var(--primary-subtle)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <i
+                                                className="ti ti-receipt"
+                                                style={{ fontSize: 16, color: "var(--primary)" }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h3
+                                                style={{
+                                                    fontSize: 14,
+                                                    fontWeight: 600,
+                                                    color: "var(--fg)",
+                                                }}
+                                            >
+                                                Transaksi Terbaru
+                                            </h3>
+                                            <p style={{ fontSize: 11, color: "var(--muted-fg)" }}>
+                                                5 transaksi terakhir
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div style={{ padding: "8px 0" }}>
+                                        {RECENT_TRANSACTIONS.map((trx, i) => (
+                                            <div
+                                                key={i}
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-between",
+                                                    padding: "10px 20px",
+                                                    transition: "background 0.15s ease",
+                                                    cursor: "default",
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.currentTarget.style.background =
+                                                        "var(--muted)";
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.currentTarget.style.background =
+                                                        "transparent";
+                                                }}
+                                            >
+                                                <div style={{ minWidth: 0 }}>
+                                                    <p
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 600,
+                                                            color: "var(--fg)",
+                                                            whiteSpace: "nowrap",
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis",
+                                                        }}
+                                                    >
+                                                        {trx.invoice}
+                                                    </p>
+                                                    <p
+                                                        style={{
+                                                            fontSize: 11,
+                                                            color: "var(--muted-fg)",
+                                                            marginTop: 2,
+                                                        }}
+                                                    >
+                                                        {trx.cashier} · {trx.date}
+                                                    </p>
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 13,
+                                                        fontWeight: 700,
+                                                        color: "var(--primary)",
+                                                        whiteSpace: "nowrap",
+                                                        marginLeft: 12,
+                                                    }}
+                                                >
+                                                    {formatCurrency(trx.total)}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Widget Grid — 4 columns */}
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                                    gap: 16,
+                                }}
+                            >
+                                {/* Active Shifts */}
+                                <WidgetCard
+                                    title="Shift Aktif"
+                                    icon="ti-wallet"
+                                    subtitle="Pemantauan kasir"
+                                >
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 8 }}
+                                    >
+                                        {[
+                                            { name: "Ahmad K.", txn: 23, cash: 2850000 },
+                                            { name: "Siti N.", txn: 18, cash: 1920000 },
+                                        ].map((s, i) => (
+                                            <div
+                                                key={i}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    padding: "10px 0",
+                                                    borderBottom:
+                                                        i === 0
+                                                            ? "1px solid var(--border)"
+                                                            : "none",
+                                                }}
+                                            >
+                                                <div>
+                                                    <p
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 600,
+                                                            color: "var(--fg)",
+                                                        }}
+                                                    >
+                                                        {s.name}
+                                                    </p>
+                                                    <p
+                                                        style={{
+                                                            fontSize: 11,
+                                                            color: "var(--muted-fg)",
+                                                        }}
+                                                    >
+                                                        {s.txn} transaksi
+                                                    </p>
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 12,
+                                                        fontWeight: 600,
+                                                        color: "var(--success)",
+                                                    }}
+                                                >
+                                                    {formatCurrency(s.cash)}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </WidgetCard>
+
+                                {/* Top Products */}
+                                <WidgetCard
+                                    title="Produk Terlaris"
+                                    icon="ti-box"
+                                    subtitle="Best seller"
+                                >
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                                    >
+                                        {TOP_PRODUCTS.map((p, i) => (
+                                            <div
+                                                key={i}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    padding: "8px 0",
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: 10,
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            width: 22,
+                                                            height: 22,
+                                                            borderRadius: 6,
+                                                            background: "var(--primary-subtle)",
+                                                            color: "var(--primary)",
+                                                            fontSize: 11,
+                                                            fontWeight: 700,
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        {i + 1}
+                                                    </span>
+                                                    <div>
+                                                        <p
+                                                            style={{
+                                                                fontSize: 13,
+                                                                fontWeight: 600,
+                                                                color: "var(--fg)",
+                                                            }}
+                                                        >
+                                                            {p.name}
+                                                        </p>
+                                                        <p
+                                                            style={{
+                                                                fontSize: 10,
+                                                                color: "var(--muted-fg)",
+                                                            }}
+                                                        >
+                                                            SKU: {p.sku}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 700,
+                                                        color: "var(--primary)",
+                                                    }}
+                                                >
+                                                    {p.qty}x
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </WidgetCard>
+
+                                {/* Slow Moving */}
+                                <WidgetCard
+                                    title="Slow Moving"
+                                    icon="ti-package-off"
+                                    subtitle="Tidak terjual 30 hari"
+                                >
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                                    >
+                                        {[
+                                            { name: "Susu Ultra Coklat", stock: 4 },
+                                            { name: "Pringles Original", stock: 2 },
+                                            { name: "Kecap ABC 600ml", stock: 6 },
+                                        ].map((p, i) => (
+                                            <div
+                                                key={i}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    padding: "8px 0",
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: 10,
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            width: 22,
+                                                            height: 22,
+                                                            borderRadius: 6,
+                                                            background: "var(--warning-subtle)",
+                                                            color: "var(--warning)",
+                                                            fontSize: 11,
+                                                            fontWeight: 700,
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        {i + 1}
+                                                    </span>
+                                                    <span
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 500,
+                                                            color: "var(--fg)",
+                                                        }}
+                                                    >
+                                                        {p.name}
+                                                    </span>
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 12,
+                                                        fontWeight: 600,
+                                                        color: "var(--warning)",
+                                                    }}
+                                                >
+                                                    {p.stock} pcs
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </WidgetCard>
+
+                                {/* Low Stock */}
+                                <WidgetCard
+                                    title="Stok Menipis"
+                                    icon="ti-alert-triangle"
+                                    subtitle="Stok < 10"
+                                >
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 6 }}
+                                    >
+                                        {[
+                                            { name: "Aqua 600ml", stock: 3 },
+                                            { name: "Mie Sedap", stock: 5 },
+                                            { name: "Gulaku 1kg", stock: 1 },
+                                        ].map((p, i) => (
+                                            <div
+                                                key={i}
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    padding: "8px 0",
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: 10,
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            width: 22,
+                                                            height: 22,
+                                                            borderRadius: 6,
+                                                            background: "var(--danger-subtle)",
+                                                            color: "var(--danger)",
+                                                            fontSize: 11,
+                                                            fontWeight: 700,
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        {i + 1}
+                                                    </span>
+                                                    <span
+                                                        style={{
+                                                            fontSize: 13,
+                                                            fontWeight: 500,
+                                                            color: "var(--fg)",
+                                                        }}
+                                                    >
+                                                        {p.name}
+                                                    </span>
+                                                </div>
+                                                <span
+                                                    style={{
+                                                        fontSize: 12,
+                                                        fontWeight: 600,
+                                                        color: "var(--danger)",
+                                                    }}
+                                                >
+                                                    {p.stock} pcs
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </WidgetCard>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            /* ---- Widget Card (shared component) ---- */
+            function WidgetCard({ title, icon, subtitle, children }) {
+                return (
+                    <div
+                        style={{
+                            borderRadius: 16,
+                            border: "1px solid var(--border)",
+                            background: "var(--overlay)",
+                            overflow: "hidden",
+                            transition: "box-shadow 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.boxShadow = "var(--shadow-md)";
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.boxShadow = "none";
+                        }}
+                    >
+                        <div
+                            style={{
+                                padding: "14px 16px",
+                                borderBottom: "1px solid var(--border)",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 10,
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: 28,
+                                    height: 28,
+                                    borderRadius: 8,
+                                    background: "var(--primary-subtle)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <i
+                                    className={icon}
+                                    style={{ fontSize: 14, color: "var(--primary)" }}
+                                />
+                            </div>
+                            <div>
+                                <h3 style={{ fontSize: 13, fontWeight: 600, color: "var(--fg)" }}>
+                                    {title}
+                                </h3>
+                                {subtitle && (
+                                    <p style={{ fontSize: 10, color: "var(--muted-fg)" }}>
+                                        {subtitle}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <div style={{ padding: "4px 16px 12px" }}>{children}</div>
+                    </div>
+                );
+            }
+
+            {
+                /* ============================================================
+     PAGE: CATEGORIES INDEX
+     ============================================================ */
+            }
+            function CategoriesIndexPage() {
+                const { navigate } = useContext(AppContext);
+                const [viewMode, setViewMode] = useState("grid");
+                const [searchQuery, setSearchQuery] = useState("");
+                const [page, setPage] = useState(1);
+                const perPage = 10;
+
+                const filtered = CATEGORIES.filter(
+                    (c) =>
+                        c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        c.description.toLowerCase().includes(searchQuery.toLowerCase()),
+                );
+                const totalPages = Math.ceil(filtered.length / perPage);
+                const paginated = filtered.slice((page - 1) * perPage, page * perPage);
+
+                return (
+                    <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+                        <div
+                            style={{
+                                maxWidth: 1280,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 20,
+                            }}
+                        >
+                            {/* Header row */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    flexWrap: "wrap",
+                                    gap: 12,
+                                }}
+                            >
+                                {/* Search */}
+                                <div style={{ position: "relative", width: 280 }}>
+                                    <i
+                                        className="ti ti-search"
+                                        style={{
+                                            position: "absolute",
+                                            left: 12,
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            fontSize: 16,
+                                            color: "var(--muted-fg)",
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Cari kategori..."
+                                        value={searchQuery}
+                                        onChange={(e) => {
+                                            setSearchQuery(e.target.value);
+                                            setPage(1);
+                                        }}
+                                        style={{
+                                            width: "100%",
+                                            padding: "9px 12px 9px 36px",
+                                            borderRadius: 10,
+                                            border: "1px solid var(--input)",
+                                            background: "var(--overlay)",
+                                            color: "var(--fg)",
+                                            fontSize: 13,
+                                            outline: "none",
+                                            transition: "border-color 0.2s, box-shadow 0.2s",
+                                        }}
+                                        onFocus={(e) => {
+                                            e.currentTarget.style.borderColor = "var(--ring)";
+                                            e.currentTarget.style.boxShadow =
+                                                "0 0 0 3px color-mix(in oklab, var(--ring) 15%, transparent)";
+                                        }}
+                                        onBlur={(e) => {
+                                            e.currentTarget.style.borderColor = "var(--input)";
+                                            e.currentTarget.style.boxShadow = "none";
+                                        }}
+                                    />
+                                </div>
+
+                                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                    {/* View toggle */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: 2,
+                                            padding: 3,
+                                            borderRadius: 10,
+                                            background: "var(--muted)",
+                                        }}
+                                    >
+                                        {["grid", "list"].map((mode) => (
+                                            <div
+                                                key={mode}
+                                                onClick={() => setViewMode(mode)}
+                                                style={{
+                                                    padding: "6px 8px",
+                                                    borderRadius: 7,
+                                                    background:
+                                                        viewMode === mode
+                                                            ? "var(--overlay)"
+                                                            : "transparent",
+                                                    color:
+                                                        viewMode === mode
+                                                            ? "var(--fg)"
+                                                            : "var(--muted-fg)",
+                                                    cursor: "pointer",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    boxShadow:
+                                                        viewMode === mode
+                                                            ? "var(--shadow-sm)"
+                                                            : "none",
+                                                }}
+                                            >
+                                                <i
+                                                    className={
+                                                        mode === "grid"
+                                                            ? "ti ti-layout-grid"
+                                                            : "ti ti-list"
+                                                    }
+                                                    style={{ fontSize: 16 }}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* Add button */}
+                                    <div
+                                        onClick={() => navigate("categories-create")}
+                                        style={{
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: 8,
+                                            padding: "9px 16px",
+                                            borderRadius: 10,
+                                            background: "var(--primary)",
+                                            color: "var(--primary-fg)",
+                                            fontSize: 13,
+                                            fontWeight: 600,
+                                            cursor: "pointer",
+                                            transition: "all 0.15s ease",
+                                            boxShadow:
+                                                "0 2px 8px color-mix(in oklab, var(--primary) 30%, transparent)",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.opacity = "0.9";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.opacity = "1";
+                                        }}
+                                    >
+                                        <i className="ti ti-plus" style={{ fontSize: 16 }} />
+                                        Tambah Kategori
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            {filtered.length === 0 ? (
+                                /* Empty State */
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        padding: "80px 20px",
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            width: 64,
+                                            height: 64,
+                                            borderRadius: 16,
+                                            background: "var(--muted)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            marginBottom: 16,
+                                            color: "var(--muted-fg)",
+                                        }}
+                                    >
+                                        <i
+                                            className="ti ti-database-off"
+                                            style={{ fontSize: 28 }}
+                                        />
+                                    </div>
+                                    <h3
+                                        style={{
+                                            fontSize: 16,
+                                            fontWeight: 600,
+                                            color: "var(--fg)",
+                                            marginBottom: 4,
+                                        }}
+                                    >
+                                        Belum Ada Kategori
+                                    </h3>
+                                    <p
+                                        style={{
+                                            fontSize: 13,
+                                            color: "var(--muted-fg)",
+                                            marginBottom: 20,
+                                        }}
+                                    >
+                                        {searchQuery
+                                            ? "Pencarian tidak ditemukan"
+                                            : "Tambahkan kategori pertama Anda"}
+                                    </p>
+                                    {!searchQuery && (
+                                        <div
+                                            onClick={() => navigate("categories-create")}
+                                            style={{
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                                padding: "9px 16px",
+                                                borderRadius: 10,
+                                                background: "var(--primary)",
+                                                color: "var(--primary-fg)",
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            <i className="ti ti-plus" style={{ fontSize: 16 }} />
+                                            Tambah Kategori
+                                        </div>
+                                    )}
+                                </div>
+                            ) : viewMode === "grid" ? (
+                                /* Grid View */
+                                <div
+                                    style={{
+                                        display: "grid",
+                                        gridTemplateColumns:
+                                            "repeat(auto-fill, minmax(200px, 1fr))",
+                                        gap: 16,
+                                    }}
+                                >
+                                    {paginated.map((cat, i) => (
+                                        <div
+                                            key={cat.id}
+                                            style={{
+                                                borderRadius: 16,
+                                                border: "1px solid var(--border)",
+                                                background: "var(--overlay)",
+                                                overflow: "hidden",
+                                                transition:
+                                                    "transform 0.2s ease, box-shadow 0.2s ease",
+                                                cursor: "pointer",
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform =
+                                                    "translateY(-3px)";
+                                                e.currentTarget.style.boxShadow =
+                                                    "var(--shadow-lg)";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = "translateY(0)";
+                                                e.currentTarget.style.boxShadow = "none";
+                                            }}
+                                        >
+                                            {/* Image area */}
+                                            <div
+                                                style={{
+                                                    position: "relative",
+                                                    height: 140,
+                                                    background:
+                                                        CATEGORY_GRADIENTS[
+                                                            i % CATEGORY_GRADIENTS.length
+                                                        ],
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    overflow: "hidden",
+                                                }}
+                                            >
+                                                <i
+                                                    className="ti ti-category"
+                                                    style={{
+                                                        fontSize: 48,
+                                                        color: "rgba(255,255,255,0.25)",
+                                                    }}
+                                                />
+                                                {/* Product count badge */}
+                                                <span
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: 10,
+                                                        right: 10,
+                                                        padding: "2px 8px",
+                                                        borderRadius: 6,
+                                                        background: "rgba(0,0,0,0.2)",
+                                                        color: "white",
+                                                        fontSize: 10,
+                                                        fontWeight: 600,
+                                                        backdropFilter: "blur(4px)",
+                                                    }}
+                                                >
+                                                    {cat.productCount} produk
+                                                </span>
+                                                {/* Hover overlay */}
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        inset: 0,
+                                                        background: "rgba(0,0,0,0)",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        gap: 8,
+                                                        opacity: 0,
+                                                        transition: "all 0.2s ease",
+                                                    }}
+                                                    className="cat-card-actions"
+                                                >
+                                                    <div
+                                                        style={{
+                                                            width: 32,
+                                                            height: 32,
+                                                            borderRadius: 8,
+                                                            background: "white",
+                                                            color: "#d97706",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            cursor: "pointer",
+                                                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                                                        }}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            navigate("categories-edit");
+                                                        }}
+                                                    >
+                                                        <i
+                                                            className="ti ti-pencil"
+                                                            style={{ fontSize: 14 }}
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 32,
+                                                            height: 32,
+                                                            borderRadius: 8,
+                                                            background: "white",
+                                                            color: "#dc2626",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                            cursor: "pointer",
+                                                            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                                                        }}
+                                                    >
+                                                        <i
+                                                            className="ti ti-trash"
+                                                            style={{ fontSize: 14 }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <style>{`
+                      .cat-card-actions { transition: all 0.2s ease; }
+                      div:hover > .cat-card-actions { opacity: 1; background: rgba(0,0,0,0.3); }
+                    `}</style>
+                                            </div>
+                                            {/* Info */}
+                                            <div style={{ padding: "12px 14px 14px" }}>
+                                                <h3
+                                                    style={{
+                                                        fontSize: 14,
+                                                        fontWeight: 600,
+                                                        color: "var(--fg)",
+                                                        whiteSpace: "nowrap",
+                                                        overflow: "hidden",
+                                                        textOverflow: "ellipsis",
+                                                    }}
+                                                >
+                                                    {cat.name}
+                                                </h3>
+                                                {cat.description && (
+                                                    <p
+                                                        style={{
+                                                            fontSize: 12,
+                                                            color: "var(--muted-fg)",
+                                                            marginTop: 4,
+                                                            display: "-webkit-box",
+                                                            WebkitLineClamp: 2,
+                                                            WebkitBoxOrient: "vertical",
+                                                            overflow: "hidden",
+                                                            lineHeight: 1.5,
+                                                        }}
+                                                    >
+                                                        {cat.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                /* List View */
+                                <div
+                                    style={{
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            overflowX: "auto",
+                                        }}
+                                    >
+                                        <table
+                                            style={{ width: "100%", borderCollapse: "collapse" }}
+                                        >
+                                            <thead>
+                                                <tr style={{ background: "var(--muted)" }}>
+                                                    <th
+                                                        style={{
+                                                            padding: "10px 16px",
+                                                            textAlign: "left",
+                                                            fontSize: 12,
+                                                            fontWeight: 600,
+                                                            color: "var(--muted-fg)",
+                                                            width: 50,
+                                                        }}
+                                                    >
+                                                        No
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            padding: "10px 16px",
+                                                            textAlign: "left",
+                                                            fontSize: 12,
+                                                            fontWeight: 600,
+                                                            color: "var(--muted-fg)",
+                                                        }}
+                                                    >
+                                                        Kategori
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            padding: "10px 16px",
+                                                            textAlign: "left",
+                                                            fontSize: 12,
+                                                            fontWeight: 600,
+                                                            color: "var(--muted-fg)",
+                                                        }}
+                                                    >
+                                                        Deskripsi
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            padding: "10px 16px",
+                                                            textAlign: "center",
+                                                            fontSize: 12,
+                                                            fontWeight: 600,
+                                                            color: "var(--muted-fg)",
+                                                            width: 60,
+                                                        }}
+                                                    >
+                                                        Produk
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            padding: "10px 16px",
+                                                            textAlign: "right",
+                                                            fontSize: 12,
+                                                            fontWeight: 600,
+                                                            color: "var(--muted-fg)",
+                                                            width: 90,
+                                                        }}
+                                                    >
+                                                        Aksi
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {paginated.map((cat, i) => (
+                                                    <tr
+                                                        key={cat.id}
+                                                        style={{
+                                                            borderTop: "1px solid var(--border)",
+                                                            transition: "background 0.15s ease",
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.background =
+                                                                "var(--muted)";
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.background =
+                                                                "transparent";
+                                                        }}
+                                                    >
+                                                        <td
+                                                            style={{
+                                                                padding: "12px 16px",
+                                                                fontSize: 13,
+                                                                color: "var(--muted-fg)",
+                                                            }}
+                                                        >
+                                                            {(page - 1) * perPage + i + 1}
+                                                        </td>
+                                                        <td style={{ padding: "12px 16px" }}>
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    alignItems: "center",
+                                                                    gap: 10,
+                                                                }}
+                                                            >
+                                                                <div
+                                                                    style={{
+                                                                        width: 36,
+                                                                        height: 36,
+                                                                        borderRadius: 10,
+                                                                        background:
+                                                                            CATEGORY_GRADIENTS[
+                                                                                i %
+                                                                                    CATEGORY_GRADIENTS.length
+                                                                            ],
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        justifyContent: "center",
+                                                                    }}
+                                                                >
+                                                                    <i
+                                                                        className="ti ti-category"
+                                                                        style={{
+                                                                            fontSize: 16,
+                                                                            color: "rgba(255,255,255,0.7)",
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <span
+                                                                    style={{
+                                                                        fontSize: 13,
+                                                                        fontWeight: 600,
+                                                                        color: "var(--fg)",
+                                                                    }}
+                                                                >
+                                                                    {cat.name}
+                                                                </span>
+                                                            </div>
+                                                        </td>
+                                                        <td
+                                                            style={{
+                                                                padding: "12px 16px",
+                                                                fontSize: 13,
+                                                                color: "var(--muted-fg)",
+                                                                maxWidth: 250,
+                                                            }}
+                                                        >
+                                                            <span
+                                                                style={{
+                                                                    display: "-webkit-box",
+                                                                    WebkitLineClamp: 1,
+                                                                    WebkitBoxOrient: "vertical",
+                                                                    overflow: "hidden",
+                                                                }}
+                                                            >
+                                                                {cat.description || "-"}
+                                                            </span>
+                                                        </td>
+                                                        <td
+                                                            style={{
+                                                                padding: "12px 16px",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <span
+                                                                style={{
+                                                                    padding: "2px 8px",
+                                                                    borderRadius: 6,
+                                                                    background:
+                                                                        "var(--primary-subtle)",
+                                                                    color: "var(--primary)",
+                                                                    fontSize: 12,
+                                                                    fontWeight: 600,
+                                                                }}
+                                                            >
+                                                                {cat.productCount}
+                                                            </span>
+                                                        </td>
+                                                        <td
+                                                            style={{
+                                                                padding: "12px 16px",
+                                                                textAlign: "right",
+                                                            }}
+                                                        >
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    gap: 6,
+                                                                    justifyContent: "flex-end",
+                                                                }}
+                                                            >
+                                                                <div
+                                                                    onClick={() =>
+                                                                        navigate("categories-edit")
+                                                                    }
+                                                                    style={{
+                                                                        width: 30,
+                                                                        height: 30,
+                                                                        borderRadius: 8,
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        justifyContent: "center",
+                                                                        background:
+                                                                            "var(--warning-subtle)",
+                                                                        color: "var(--warning)",
+                                                                        cursor: "pointer",
+                                                                        transition: "opacity 0.15s",
+                                                                    }}
+                                                                >
+                                                                    <i
+                                                                        className="ti ti-pencil"
+                                                                        style={{ fontSize: 14 }}
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    style={{
+                                                                        width: 30,
+                                                                        height: 30,
+                                                                        borderRadius: 8,
+                                                                        display: "flex",
+                                                                        alignItems: "center",
+                                                                        justifyContent: "center",
+                                                                        background:
+                                                                            "var(--danger-subtle)",
+                                                                        color: "var(--danger)",
+                                                                        cursor: "pointer",
+                                                                    }}
+                                                                >
+                                                                    <i
+                                                                        className="ti ti-trash"
+                                                                        style={{ fontSize: 14 }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Pagination */}
+                            {totalPages > 1 && (
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        padding: "8px 0",
+                                    }}
+                                >
+                                    <span style={{ fontSize: 12, color: "var(--muted-fg)" }}>
+                                        Halaman {page} dari {totalPages}
+                                    </span>
+                                    <div style={{ display: "flex", gap: 4 }}>
+                                        <button
+                                            onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                            disabled={page === 1}
+                                            style={{
+                                                padding: "6px 12px",
+                                                borderRadius: 8,
+                                                border: "1px solid var(--border)",
+                                                background: "var(--overlay)",
+                                                color: page === 1 ? "var(--muted-fg)" : "var(--fg)",
+                                                fontSize: 12,
+                                                fontWeight: 500,
+                                                cursor: page === 1 ? "default" : "pointer",
+                                                opacity: page === 1 ? 0.5 : 1,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 4,
+                                            }}
+                                        >
+                                            <i
+                                                className="ti ti-chevron-left"
+                                                style={{ fontSize: 14 }}
+                                            />
+                                            Sebelumnya
+                                        </button>
+                                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                                            (p) => (
+                                                <button
+                                                    key={p}
+                                                    onClick={() => setPage(p)}
+                                                    style={{
+                                                        width: 32,
+                                                        height: 32,
+                                                        borderRadius: 8,
+                                                        border: "1px solid var(--border)",
+                                                        background:
+                                                            p === page
+                                                                ? "var(--primary)"
+                                                                : "var(--overlay)",
+                                                        color:
+                                                            p === page
+                                                                ? "var(--primary-fg)"
+                                                                : "var(--fg)",
+                                                        fontSize: 12,
+                                                        fontWeight: 600,
+                                                        cursor: "pointer",
+                                                    }}
+                                                >
+                                                    {p}
+                                                </button>
+                                            ),
+                                        )}
+                                        <button
+                                            onClick={() =>
+                                                setPage((p) => Math.min(totalPages, p + 1))
+                                            }
+                                            disabled={page === totalPages}
+                                            style={{
+                                                padding: "6px 12px",
+                                                borderRadius: 8,
+                                                border: "1px solid var(--border)",
+                                                background: "var(--overlay)",
+                                                color:
+                                                    page === totalPages
+                                                        ? "var(--muted-fg)"
+                                                        : "var(--fg)",
+                                                fontSize: 12,
+                                                fontWeight: 500,
+                                                cursor: page === totalPages ? "default" : "pointer",
+                                                opacity: page === totalPages ? 0.5 : 1,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 4,
+                                            }}
+                                        >
+                                            Selanjutnya
+                                            <i
+                                                className="ti ti-chevron-right"
+                                                style={{ fontSize: 14 }}
+                                            />
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            {
+                /* ============================================================
+     PAGE: CATEGORY FORM (shared between Create & Edit)
+     ============================================================ */
+            }
+            function CategoryFormPage({ mode }) {
+                const { navigate } = useContext(AppContext);
+                const isEdit = mode === "edit";
+                const [imagePreview, setImagePreview] = useState(
+                    isEdit
+                        ? "https://images.unsplash.com/photo-1558021211-6d1403321394?w=400&h=400&fit=crop"
+                        : null,
+                );
+
+                const [formData, setFormData] = useState({
+                    name: isEdit ? "Minuman" : "",
+                    description: isEdit
+                        ? "Aneka minuman kemasan dan botol, termasuk minuman ringan, air mineral, teh, kopi, dan minuman energi."
+                        : "",
+                });
+
+                function handleChange(field, value) {
+                    setFormData((prev) => ({ ...prev, [field]: value }));
+                }
+
+                return (
+                    <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+                        <div
+                            style={{
+                                maxWidth: 1000,
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 20,
+                            }}
+                        >
+                            {/* Back link */}
+                            <div
+                                onClick={() => navigate("categories")}
+                                style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 6,
+                                    fontSize: 13,
+                                    color: "var(--muted-fg)",
+                                    cursor: "pointer",
+                                    transition: "color 0.15s",
+                                    width: "fit-content",
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = "var(--primary)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = "var(--muted-fg)";
+                                }}
+                            >
+                                <i className="ti ti-arrow-left" style={{ fontSize: 16 }} />
+                                Kembali ke Kategori
+                            </div>
+
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateColumns: "320px 1fr",
+                                    gap: 20,
+                                    alignItems: "start",
+                                }}
+                            >
+                                {/* Left: Image Upload */}
+                                <div
+                                    style={{
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                        padding: "20px",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 10,
+                                            marginBottom: 16,
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                width: 28,
+                                                height: 28,
+                                                borderRadius: 8,
+                                                background: "var(--primary-subtle)",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <i
+                                                className="ti ti-photo"
+                                                style={{ fontSize: 14, color: "var(--primary)" }}
+                                            />
+                                        </div>
+                                        <span
+                                            style={{
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                color: "var(--fg)",
+                                            }}
+                                        >
+                                            Gambar Kategori
+                                        </span>
+                                    </div>
+
+                                    {/* Upload area */}
+                                    <div
+                                        style={{
+                                            aspectRatio: "1/1",
+                                            borderRadius: 12,
+                                            border: "2px dashed var(--input)",
+                                            background: imagePreview
+                                                ? "transparent"
+                                                : "var(--muted)",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            overflow: "hidden",
+                                            marginBottom: 12,
+                                            position: "relative",
+                                            transition: "border-color 0.2s",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (!imagePreview)
+                                                e.currentTarget.style.borderColor = "var(--ring)";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.borderColor = "var(--input)";
+                                        }}
+                                    >
+                                        {imagePreview ? (
+                                            <img
+                                                src={imagePreview}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "cover",
+                                                }}
+                                            />
+                                        ) : (
+                                            <div style={{ textAlign: "center", padding: 20 }}>
+                                                <i
+                                                    className="ti ti-cloud-upload"
+                                                    style={{
+                                                        fontSize: 40,
+                                                        color: "var(--muted-fg)",
+                                                        marginBottom: 8,
+                                                        display: "block",
+                                                    }}
+                                                />
+                                                <p
+                                                    style={{
+                                                        fontSize: 12,
+                                                        color: "var(--muted-fg)",
+                                                    }}
+                                                >
+                                                    Klik atau taruh file di sini
+                                                </p>
+                                                <p
+                                                    style={{
+                                                        fontSize: 10,
+                                                        color: "var(--muted-fg)",
+                                                        marginTop: 4,
+                                                    }}
+                                                >
+                                                    PNG, JPG, WebP (max 2MB)
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Upload button */}
+                                    <label
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            gap: 8,
+                                            padding: "8px 16px",
+                                            borderRadius: 10,
+                                            border: "1px solid var(--border)",
+                                            fontSize: 12,
+                                            fontWeight: 500,
+                                            color: "var(--fg)",
+                                            cursor: "pointer",
+                                            transition: "background 0.15s",
+                                            width: "100%",
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = "var(--muted)";
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = "transparent";
+                                        }}
+                                    >
+                                        <i className="ti ti-upload" style={{ fontSize: 14 }} />
+                                        {imagePreview ? "Ganti Gambar" : "Pilih Gambar"}
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file)
+                                                    setImagePreview(URL.createObjectURL(file));
+                                            }}
+                                        />
+                                    </label>
+                                    {isEdit && (
+                                        <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
+                                            <label
+                                                style={{
+                                                    flex: 1,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    gap: 6,
+                                                    padding: "6px 12px",
+                                                    borderRadius: 8,
+                                                    border: "1px solid var(--danger-subtle)",
+                                                    fontSize: 11,
+                                                    fontWeight: 500,
+                                                    color: "var(--danger)",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                <i
+                                                    className="ti ti-trash"
+                                                    style={{ fontSize: 12 }}
+                                                />
+                                                Hapus
+                                                <input
+                                                    type="checkbox"
+                                                    style={{ display: "none" }}
+                                                />
+                                            </label>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Right: Form */}
+                                <div
+                                    style={{
+                                        borderRadius: 16,
+                                        border: "1px solid var(--border)",
+                                        background: "var(--overlay)",
+                                        padding: "20px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: 20,
+                                    }}
+                                >
+                                    {/* Section header */}
+                                    <div>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 10,
+                                                marginBottom: 4,
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: 28,
+                                                    height: 28,
+                                                    borderRadius: 8,
+                                                    background: "var(--primary-subtle)",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <i
+                                                    className="ti ti-info-circle"
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: "var(--primary)",
+                                                    }}
+                                                />
+                                            </div>
+                                            <span
+                                                style={{
+                                                    fontSize: 14,
+                                                    fontWeight: 600,
+                                                    color: "var(--fg)",
+                                                }}
+                                            >
+                                                Informasi Kategori
+                                            </span>
+                                        </div>
+                                        <p
+                                            style={{
+                                                fontSize: 12,
+                                                color: "var(--muted-fg)",
+                                                marginLeft: 38,
+                                            }}
+                                        >
+                                            Isi detail kategori produk
+                                        </p>
+                                    </div>
+
+                                    {/* Name field */}
+                                    <div>
+                                        <label
+                                            style={{
+                                                display: "block",
+                                                fontSize: 12,
+                                                fontWeight: 600,
+                                                color: "var(--fg)",
+                                                marginBottom: 6,
+                                            }}
+                                        >
+                                            Nama Kategori{" "}
+                                            <span style={{ color: "var(--danger)" }}>*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.name}
+                                            onChange={(e) => handleChange("name", e.target.value)}
+                                            placeholder="Masukkan nama kategori"
+                                            style={{
+                                                width: "100%",
+                                                padding: "10px 14px",
+                                                borderRadius: 10,
+                                                border: "1px solid var(--input)",
+                                                background: "var(--overlay)",
+                                                color: "var(--fg)",
+                                                fontSize: 13,
+                                                outline: "none",
+                                                transition: "border-color 0.2s, box-shadow 0.2s",
+                                            }}
+                                            onFocus={(e) => {
+                                                e.currentTarget.style.borderColor = "var(--ring)";
+                                                e.currentTarget.style.boxShadow =
+                                                    "0 0 0 3px color-mix(in oklab, var(--ring) 15%, transparent)";
+                                            }}
+                                            onBlur={(e) => {
+                                                e.currentTarget.style.borderColor = "var(--input)";
+                                                e.currentTarget.style.boxShadow = "none";
+                                            }}
+                                        />
+                                        {!formData.name && (
+                                            <p
+                                                style={{
+                                                    fontSize: 11,
+                                                    color: "var(--muted-fg)",
+                                                    marginTop: 4,
+                                                }}
+                                            >
+                                                Nama akan ditampilkan di halaman kategori
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    {/* Description field */}
+                                    <div>
+                                        <label
+                                            style={{
+                                                display: "block",
+                                                fontSize: 12,
+                                                fontWeight: 600,
+                                                color: "var(--fg)",
+                                                marginBottom: 6,
+                                            }}
+                                        >
+                                            Deskripsi{" "}
+                                            <span
+                                                style={{
+                                                    color: "var(--muted-fg)",
+                                                    fontWeight: 400,
+                                                }}
+                                            >
+                                                (opsional)
+                                            </span>
+                                        </label>
+                                        <textarea
+                                            value={formData.description}
+                                            onChange={(e) =>
+                                                handleChange("description", e.target.value)
+                                            }
+                                            placeholder="Deskripsi kategori"
+                                            rows={4}
+                                            style={{
+                                                width: "100%",
+                                                padding: "10px 14px",
+                                                borderRadius: 10,
+                                                border: "1px solid var(--input)",
+                                                background: "var(--overlay)",
+                                                color: "var(--fg)",
+                                                fontSize: 13,
+                                                resize: "vertical",
+                                                outline: "none",
+                                                transition: "border-color 0.2s, box-shadow 0.2s",
+                                                fontFamily: "inherit",
+                                            }}
+                                            onFocus={(e) => {
+                                                e.currentTarget.style.borderColor = "var(--ring)";
+                                                e.currentTarget.style.boxShadow =
+                                                    "0 0 0 3px color-mix(in oklab, var(--ring) 15%, transparent)";
+                                            }}
+                                            onBlur={(e) => {
+                                                e.currentTarget.style.borderColor = "var(--input)";
+                                                e.currentTarget.style.boxShadow = "none";
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Separator */}
+                                    <div style={{ height: 1, background: "var(--border)" }} />
+
+                                    {/* Action buttons */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "flex-end",
+                                            gap: 10,
+                                        }}
+                                    >
+                                        <div
+                                            onClick={() => navigate("categories")}
+                                            style={{
+                                                padding: "10px 20px",
+                                                borderRadius: 10,
+                                                border: "1px solid var(--border)",
+                                                fontSize: 13,
+                                                fontWeight: 500,
+                                                color: "var(--fg)",
+                                                cursor: "pointer",
+                                                transition: "background 0.15s",
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.background = "var(--muted)";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.background = "transparent";
+                                            }}
+                                        >
+                                            Batal
+                                        </div>
+                                        <div
+                                            style={{
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 8,
+                                                padding: "10px 24px",
+                                                borderRadius: 10,
+                                                background: "var(--primary)",
+                                                color: "var(--primary-fg)",
+                                                fontSize: 13,
+                                                fontWeight: 600,
+                                                cursor: "pointer",
+                                                transition: "opacity 0.15s",
+                                                boxShadow:
+                                                    "0 2px 8px color-mix(in oklab, var(--primary) 30%, transparent)",
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.opacity = "0.9";
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.opacity = "1";
+                                            }}
+                                        >
+                                            <i
+                                                className="ti ti-device-floppy"
+                                                style={{ fontSize: 16 }}
+                                            />
+                                            {isEdit ? "Simpan Perubahan" : "Simpan Kategori"}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            {
+                /* ============================================================
+     APP ROOT
+     ============================================================ */
+            }
+            function App() {
+                const [currentPage, setCurrentPage] = useState("dashboard");
+                const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+                const [theme, setTheme] = useState(() => {
+                    if (typeof document !== "undefined") {
+                        return document.documentElement.getAttribute("data-theme") || "light";
+                    }
+                    return "light";
+                });
+
+                useEffect(() => {
+                    document.documentElement.setAttribute("data-theme", theme);
+                    if (theme === "dark") {
+                        document.documentElement.classList.add("dark");
+                    } else {
+                        document.documentElement.classList.remove("dark");
+                    }
+                }, [theme]);
+
+                function toggleTheme() {
+                    setTheme((t) => (t === "dark" ? "light" : "dark"));
+                }
+
+                function navigate(page) {
+                    setCurrentPage(page);
+                }
+
+                function renderPage() {
+                    switch (currentPage) {
+                        case "dashboard":
+                            return <DashboardPage />;
+                        case "categories":
+                            return <CategoriesIndexPage />;
+                        case "categories-create":
+                            return <CategoryFormPage mode="create" />;
+                        case "categories-edit":
+                            return <CategoryFormPage mode="edit" />;
+                        default:
+                            return <DashboardPage />;
+                    }
+                }
+
+                return (
+                    <AppContext.Provider value={{ currentPage, navigate, theme, toggleTheme }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                height: "100vh",
+                                width: "100vw",
+                                overflow: "hidden",
+                                background: "var(--bg)",
+                            }}
+                        >
+                            <Sidebar
+                                collapsed={sidebarCollapsed}
+                                onToggleCollapse={() => setSidebarCollapsed((c) => !c)}
+                            />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    flex: 1,
+                                    minWidth: 0,
+                                }}
+                            >
+                                <Header />
+                                {renderPage()}
+                            </div>
+                        </div>
+                        {/* Version badge */}
+                        <div
+                            style={{
+                                position: "fixed",
+                                bottom: 8,
+                                right: 8,
+                                fontSize: 10,
+                                color: "var(--muted-fg)",
+                                opacity: 0.5,
+                                fontFamily: "var(--font-mono)",
+                            }}
+                        >
+                            RTOS Redesign · Prototype v1
+                        </div>
+                    </AppContext.Provider>
+                );
+            }
+
+            const root = ReactDOM.createRoot(document.getElementById("root"));
+            root.render(<App />);
+        </script>
+    </body>
+</html>
