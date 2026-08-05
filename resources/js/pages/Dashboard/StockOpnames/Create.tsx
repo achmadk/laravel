@@ -23,12 +23,12 @@ export default function Create() {
       <div className="mb-6">
         <Link
           href={stockOpnames.index.url()}
-          className="mb-3 inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke daftar stock opname
         </Link>
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-fg">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
           <IconClipboardCheck size={28} className="text-primary" />
           Buat Sesi Stock Opname
         </h1>
@@ -38,22 +38,22 @@ export default function Create() {
         <Card>
           <CardContent className="p-5">
             <div>
-              <label className="mb-2 block text-sm font-medium text-fg">Catatan Sesi</label>
+              <label className="mb-2 block font-medium text-fg text-sm">Catatan Sesi</label>
               <textarea
                 placeholder="Contoh: opname bulanan gudang depan"
                 value={data.notes}
                 onChange={(e) => setData("notes", e.target.value)}
                 rows={5}
-                className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
               />
-              {errors.notes && <p className="mt-1 text-sm text-danger">{errors.notes}</p>}
+              {errors.notes && <p className="mt-1 text-danger text-sm">{errors.notes}</p>}
             </div>
 
             <div className="mt-5 flex justify-end">
               <button
                 type="submit"
                 disabled={processing}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 disabled:opacity-50"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
                 <IconClipboardCheck size={18} />
                 {processing ? "Menyimpan..." : "Buat Sesi"}

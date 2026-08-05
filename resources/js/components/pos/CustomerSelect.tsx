@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconUserCircle, IconUserPlus, IconX } from "@tabler/icons-react";
+import { IconUserPlus, IconX } from "@tabler/icons-react";
 import AddCustomerModal from "./AddCustomerModal";
 import CustomerHistoryPanel from "./CustomerHistoryPanel";
 import type { POSCustomer } from "@/types/pos";
@@ -16,16 +16,16 @@ export default function CustomerSelect({ customer, onSelect }: CustomerSelectPro
   return (
     <>
       {customer ? (
-        <div className="flex items-center justify-between px-4 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 font-semibold text-sm flex-shrink-0">
+        <div className="flex items-center justify-between border-slate-200 border-b bg-white px-4 py-2.5 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 font-semibold text-primary-600 text-sm dark:bg-primary-900/50 dark:text-primary-400">
               {customer.name.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">
+              <p className="truncate font-medium text-slate-800 text-sm dark:text-slate-200">
                 {customer.name}
               </p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{customer.no_telp}</p>
+              <p className="text-slate-500 text-xs dark:text-slate-400">{customer.no_telp}</p>
             </div>
           </div>
 
@@ -34,10 +34,10 @@ export default function CustomerSelect({ customer, onSelect }: CustomerSelectPro
               onClick={() => {
                 setShowHistory(true);
               }}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950/30"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950/30"
               title="Riwayat"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -49,7 +49,7 @@ export default function CustomerSelect({ customer, onSelect }: CustomerSelectPro
 
             <button
               onClick={() => onSelect(null)}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-danger-500 hover:bg-danger-50 dark:hover:bg-danger-950/50"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-danger-50 hover:text-danger-500 dark:hover:bg-danger-950/50"
               title="Hapus pelanggan"
             >
               <IconX size={16} />
@@ -57,10 +57,10 @@ export default function CustomerSelect({ customer, onSelect }: CustomerSelectPro
           </div>
         </div>
       ) : (
-        <div className="px-4 py-2.5 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div className="border-slate-200 border-b bg-white px-4 py-2.5 dark:border-slate-800 dark:bg-slate-900">
           <button
             onClick={() => setShowModal(true)}
-            className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-primary-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-all text-sm font-medium"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-slate-300 border-dashed py-2 font-medium text-slate-500 text-sm transition-all hover:border-primary-400 hover:bg-primary-50 hover:text-primary-600 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-primary-950/30"
           >
             <IconUserPlus size={18} />
             Tambah Pelanggan

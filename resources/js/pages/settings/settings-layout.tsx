@@ -10,8 +10,6 @@ import { ListBox, ListBoxItem, type ListBoxItemProps } from "react-aria-componen
 // import AppearanceController from "@/actions/App/Http/Controllers/Settings/AppearanceController"
 // import DeleteAccountController from "@/actions/App/Http/Controllers/Settings/DeleteAccountController"
 import { type InertiaLinkProps, Link as InertiaLink } from "@inertiajs/react";
-import { edit as editProfile } from "@/routes/profile";
-import {} from "@/routes/settings";
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   return (

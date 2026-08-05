@@ -337,15 +337,15 @@ function Draggable() {
 
 ### Properties
 
-| Name                       | Type                           | Description |
+| Name | Type | Description |
 | -------------------------- | ------------------------------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `onDragStart`              | `((e: DragStartEvent) => void) | undefined`  | Handler that is called when a drag operation is started.                                                                                                                                                          |
-| `onDragMove`               | `((e: DragMoveEvent) => void)  | undefined`  | Handler that is called when the drag is moved.                                                                                                                                                                    |
-| `onDragEnd`                | `((e: DragEndEvent) => void)   | undefined`  | Handler that is called when the drag operation is ended, either as a result of a drop or a cancellation.                                                                                                          |
-| `preview`                  | `RefObject<DragPreviewRenderer | null>       | undefined`                                                                                                                                                                                                        | The ref of the element that will be rendered as the drag preview while dragging. |
-| `getAllowedDropOperations` | `(() => DropOperation[])       | undefined`  | Function that returns the drop operations that are allowed for the dragged items. If not provided, all drop operations are allowed.                                                                               |
-| `hasDragButton`            | `boolean                       | undefined`  | Whether the item has an explicit focusable drag affordance to initiate accessible drag and drop mode. If true, the dragProps will omit these event handlers, and they will be applied to dragButtonProps instead. |
-| `isDisabled`               | `boolean                       | undefined`  | Whether the drag operation is disabled. If true, the element will not be draggable.                                                                                                                               |
+| `onDragStart` | `((e: DragStartEvent) => void) | undefined` | Handler that is called when a drag operation is started. |
+| `onDragMove` | `((e: DragMoveEvent) => void)  | undefined` | Handler that is called when the drag is moved. |
+| `onDragEnd` | `((e: DragEndEvent) => void)   | undefined` | Handler that is called when the drag operation is ended, either as a result of a drop or a cancellation. |
+| `preview` | `RefObject<DragPreviewRenderer | null>       | undefined` | The ref of the element that will be rendered as the drag preview while dragging. |
+| `getAllowedDropOperations` | `(() => DropOperation[])       | undefined` | Function that returns the drop operations that are allowed for the dragged items. If not provided, all drop operations are allowed. |
+| `hasDragButton` | `boolean                       | undefined` | Whether the item has an explicit focusable drag affordance to initiate accessible drag and drop mode. If true, the dragProps will omit these event handlers, and they will be applied to dragButtonProps instead. |
+| `isDisabled` | `boolean                       | undefined` | Whether the drag operation is disabled. If true, the element will not be draggable. |
 
 ### Methods
 

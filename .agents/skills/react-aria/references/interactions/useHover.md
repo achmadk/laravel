@@ -67,12 +67,12 @@ function Example() {
 
 ### HoverProps
 
-| Name            | Type                             | Description |
+| Name | Type | Description |
 | --------------- | -------------------------------- | ----------- | ------------------------------------------------------- |
-| `isDisabled`    | `boolean                         | undefined`  | Whether the hover events should be disabled.            |
-| `onHoverStart`  | `((e: HoverEvent) => void)       | undefined`  | Handler that is called when a hover interaction starts. |
-| `onHoverEnd`    | `((e: HoverEvent) => void)       | undefined`  | Handler that is called when a hover interaction ends.   |
-| `onHoverChange` | `((isHovering: boolean) => void) | undefined`  | Handler that is called when the hover state changes.    |
+| `isDisabled` | `boolean                         | undefined` | Whether the hover events should be disabled. |
+| `onHoverStart` | `((e: HoverEvent) => void)       | undefined` | Handler that is called when a hover interaction starts. |
+| `onHoverEnd` | `((e: HoverEvent) => void)       | undefined` | Handler that is called when a hover interaction ends. |
+| `onHoverChange` | `((isHovering: boolean) => void) | undefined` | Handler that is called when the hover state changes. |
 
 ### HoverResult
 

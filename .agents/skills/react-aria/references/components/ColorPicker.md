@@ -309,13 +309,13 @@ import { ColorSwatchPicker, ColorSwatchPickerItem } from "vanilla-starter/ColorS
 
 ## API
 
-| Name           | Type                                         | Default    | Description                                                                                               |
+| Name | Type | Default | Description |
 | -------------- | -------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`     | `ChildrenOrFunction<ColorPickerRenderProps>` | —          | The children of the component. A function may be provided to alter the children based on component state. |
-| `defaultValue` | `string                                      | Color      | undefined`                                                                                                | —                                              | The default value (uncontrolled).                                                                                                                                                                                |
-| `onChange`     | `((value: Color) => void)                    | undefined` | —                                                                                                         | Handler that is called when the value changes. |
-| `slot`         | `string                                      | null       | undefined`                                                                                                | —                                              | A slot name for the component. Slots allow the component to receive props from a parent component. An explicit `null` value indicates that the local props completely override all props received from a parent. |
-| `value`        | `string                                      | Color      | undefined`                                                                                                | —                                              | The current value (controlled).                                                                                                                                                                                  |
+| `children` | `ChildrenOrFunction<ColorPickerRenderProps>` | — | The children of the component. A function may be provided to alter the children based on component state. |
+| `defaultValue` | `string                                      | Color      | undefined` | — | The default value (uncontrolled). |
+| `onChange` | `((value: Color) => void)                    | undefined` | — | Handler that is called when the value changes. |
+| `slot` | `string                                      | null       | undefined` | — | A slot name for the component. Slots allow the component to receive props from a parent component. An explicit `null` value indicates that the local props completely override all props received from a parent. |
+| `value` | `string                                      | Color      | undefined` | — | The current value (controlled). |
 
 ## Related Types
 

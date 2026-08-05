@@ -72,11 +72,11 @@ function MetricCard({
   return (
     <Card>
       <CardContent className="p-4">
-        <div className="flex items-center gap-2 text-sm text-muted-fg">
+        <div className="flex items-center gap-2 text-muted-fg text-sm">
           <Icon size={18} />
           <span>{title}</span>
         </div>
-        <p className="mt-3 text-xl font-semibold text-fg">{value}</p>
+        <p className="mt-3 font-semibold text-fg text-xl">{value}</p>
       </CardContent>
     </Card>
   );
@@ -136,18 +136,18 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
           <div>
             <Link
               href={cashierShifts.index.url()}
-              className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-muted-fg transition hover:text-primary"
+              className="mb-3 inline-flex items-center gap-2 font-medium text-muted-fg text-sm transition hover:text-primary"
             >
               <IconArrowLeft size={16} />
               <span>Kembali ke histori shift</span>
             </Link>
-            <h1 className="text-2xl font-bold text-fg">
+            <h1 className="font-bold text-2xl text-fg">
               Shift Kasir {cashierShift.user?.name || "-"}
             </h1>
-            <p className="text-sm text-muted-fg">Dibuka {formatDateTime(cashierShift.opened_at)}</p>
+            <p className="text-muted-fg text-sm">Dibuka {formatDateTime(cashierShift.opened_at)}</p>
           </div>
           <span
-            className={`inline-flex rounded-full px-3 py-1.5 text-sm font-semibold ${statusStyle}`}
+            className={`inline-flex rounded-full px-3 py-1.5 font-semibold text-sm ${statusStyle}`}
           >
             {statusLabel}
           </span>
@@ -179,57 +179,57 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
         <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
           <Card>
             <CardContent className="p-5">
-              <h2 className="text-lg font-semibold text-fg">Ringkasan Shift</h2>
+              <h2 className="font-semibold text-fg text-lg">Ringkasan Shift</h2>
               <div className="mt-5 grid gap-4 md:grid-cols-2">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Kasir
                   </p>
-                  <p className="mt-2 text-sm text-fg">{cashierShift.user?.name || "-"}</p>
+                  <p className="mt-2 text-fg text-sm">{cashierShift.user?.name || "-"}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Dibuka Oleh
                   </p>
-                  <p className="mt-2 text-sm text-fg">{cashierShift.opened_by?.name || "-"}</p>
+                  <p className="mt-2 text-fg text-sm">{cashierShift.opened_by?.name || "-"}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Waktu Tutup
                   </p>
-                  <p className="mt-2 text-sm text-fg">{formatDateTime(cashierShift.closed_at)}</p>
+                  <p className="mt-2 text-fg text-sm">{formatDateTime(cashierShift.closed_at)}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Ditutup Oleh
                   </p>
-                  <p className="mt-2 text-sm text-fg">{cashierShift.closed_by?.name || "-"}</p>
+                  <p className="mt-2 text-fg text-sm">{cashierShift.closed_by?.name || "-"}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Total Transaksi
                   </p>
-                  <p className="mt-2 text-sm text-fg">{cashierShift.transactions_count}</p>
+                  <p className="mt-2 text-fg text-sm">{cashierShift.transactions_count}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Total Retur
                   </p>
-                  <p className="mt-2 text-sm text-fg">{cashierShift.sales_returns_count}</p>
+                  <p className="mt-2 text-fg text-sm">{cashierShift.sales_returns_count}</p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Penjualan Non Tunai
                   </p>
-                  <p className="mt-2 text-sm text-fg">
+                  <p className="mt-2 text-fg text-sm">
                     {formatCurrency(cashierShift.non_cash_sales_total)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Refund Non Tunai
                   </p>
-                  <p className="mt-2 text-sm text-fg">
+                  <p className="mt-2 text-fg text-sm">
                     {formatCurrency(cashierShift.non_cash_refund_total)}
                   </p>
                 </div>
@@ -237,18 +237,18 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
 
               <div className="mt-5 grid gap-4 md:grid-cols-2">
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Catatan Shift
                   </p>
-                  <p className="mt-2 text-sm text-fg">
+                  <p className="mt-2 text-fg text-sm">
                     {cashierShift.notes || "Tidak ada catatan pembukaan."}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                  <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                     Catatan Closing
                   </p>
-                  <p className="mt-2 text-sm text-fg">
+                  <p className="mt-2 text-fg text-sm">
                     {cashierShift.close_notes || "Tidak ada catatan penutupan."}
                   </p>
                 </div>
@@ -259,16 +259,16 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
           <div className="space-y-6">
             <Card>
               <CardContent className="p-5">
-                <h2 className="text-lg font-semibold text-fg">Cash Closing</h2>
+                <h2 className="font-semibold text-fg text-lg">Cash Closing</h2>
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3">
-                    <span className="text-sm text-muted-fg">Expected Cash</span>
+                    <span className="text-muted-fg text-sm">Expected Cash</span>
                     <span className="font-semibold text-fg">
                       {formatCurrency(cashierShift.expected_cash)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3">
-                    <span className="text-sm text-muted-fg">Actual Cash</span>
+                    <span className="text-muted-fg text-sm">Actual Cash</span>
                     <span className="font-semibold text-fg">
                       {cashierShift.actual_cash === null
                         ? "-"
@@ -276,7 +276,7 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
                     </span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-muted px-4 py-3">
-                    <span className="text-sm text-muted-fg">Selisih</span>
+                    <span className="text-muted-fg text-sm">Selisih</span>
                     <span className="font-semibold text-fg">
                       {cashierShift.cash_difference === null
                         ? "-"
@@ -290,13 +290,13 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
             {canCloseShift && (
               <Card>
                 <CardContent className="p-5">
-                  <h2 className="text-lg font-semibold text-fg">Tutup Shift</h2>
-                  <p className="mt-1 text-sm text-muted-fg">
+                  <h2 className="font-semibold text-fg text-lg">Tutup Shift</h2>
+                  <p className="mt-1 text-muted-fg text-sm">
                     Input kas fisik akhir untuk finalisasi cash closing.
                   </p>
                   <form onSubmit={handleCloseShift} className="mt-4 space-y-4">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Kas Fisik Aktual
                       </label>
                       <input
@@ -304,23 +304,23 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
                         min="0"
                         value={actualCash}
                         onChange={(e) => setActualCash(e.target.value)}
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {(errors as Record<string, string>)?.actual_cash && (
-                        <p className="mt-2 text-xs text-danger">
+                        <p className="mt-2 text-danger text-xs">
                           {(errors as Record<string, string>).actual_cash}
                         </p>
                       )}
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Catatan Closing
                       </label>
                       <textarea
                         rows={4}
                         value={closeNotes}
                         onChange={(e) => setCloseNotes(e.target.value)}
-                        className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                        className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                         placeholder="Opsional"
                       />
                     </div>
@@ -337,7 +337,7 @@ export default function Show({ cashierShift, canForceClose = false }: ShowProps)
                     )}
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white transition-colors hover:bg-primary/90"
                     >
                       <IconCashBanknote size={18} />
                       <span>Finalisasi Closing</span>

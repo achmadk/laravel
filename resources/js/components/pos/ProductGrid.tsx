@@ -32,15 +32,15 @@ export default function ProductGrid({
   const showSearchResultText = searchQuery.length > 0;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="overflow-x-auto px-4 py-3 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex gap-2 min-w-max">
+    <div className="flex h-full flex-col">
+      <div className="overflow-x-auto border-slate-200 border-b px-4 py-3 dark:border-slate-800">
+        <div className="flex min-w-max gap-2">
           <button
             onClick={() => onCategoryChange(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+            className={`whitespace-nowrap rounded-full px-4 py-2 font-medium text-sm transition-all ${
               selectedCategory === null
                 ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30"
-                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
             }`}
           >
             Semua
@@ -50,10 +50,10 @@ export default function ProductGrid({
             <button
               key={cat.id}
               onClick={() => onCategoryChange(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+              className={`cursor-pointer whitespace-nowrap rounded-full px-4 py-2 font-medium text-sm transition-all ${
                 selectedCategory === cat.id
                   ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
               }`}
             >
               {cat.name}
@@ -64,17 +64,17 @@ export default function ProductGrid({
 
       <div className="flex-1 overflow-y-auto p-4">
         {showSearchResultText && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+          <p className="mb-3 text-slate-500 text-xs dark:text-slate-400">
             Hasil pencarian: "{searchQuery}" ({products.length} produk)
           </p>
         )}
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="w-10 h-10 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {products.map((product) => {
               const isInCart = cartProductIds.includes(product.id);
 
@@ -83,32 +83,32 @@ export default function ProductGrid({
                   key={product.id}
                   onClick={() => onProductClick(product)}
                   disabled={product.stock <= 0}
-                  className={`group relative flex flex-col bg-white dark:bg-slate-900 rounded-2xl border-2 transition-all duration-200 overflow-hidden ${
+                  className={`group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border-2 bg-white transition-all duration-200 dark:bg-slate-900 ${
                     isInCart
-                      ? "border-primary-500 dark:border-primary-400 shadow-md shadow-primary-500/20"
+                      ? "border-primary-500 shadow-md shadow-primary-500/20 dark:border-primary-400"
                       : product.stock <= 0
-                        ? "border-slate-200 dark:border-slate-700 opacity-60"
-                        : "border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-lg hover:-translate-y-0.5"
+                        ? "border-slate-200 opacity-60 dark:border-slate-700"
+                        : "border-slate-200 hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-lg dark:border-slate-700 dark:hover:border-primary-600"
                   }`}
                 >
                   {isInCart && (
-                    <div className="absolute top-2 right-2 z-10 w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-xs font-bold shadow-lg">
+                    <div className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary-500 font-bold text-white text-xs shadow-lg">
                       ✓
                     </div>
                   )}
 
-                  <div className="aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <div className="aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
                     {product.image ? (
                       <img
                         src={imageUrl(product.image) || ""}
                         alt={product.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="flex h-full w-full items-center justify-center">
                         <svg
-                          className="w-10 h-10 text-slate-300 dark:text-slate-600"
+                          className="h-10 w-10 text-slate-300 dark:text-slate-600"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -124,19 +124,19 @@ export default function ProductGrid({
                     )}
 
                     {product.stock <= 0 && (
-                      <div className="absolute inset-0 bg-white/60 dark:bg-slate-900/60 flex items-center justify-center">
-                        <span className="px-3 py-1 bg-danger-500 text-white text-xs font-bold rounded-full">
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-slate-900/60">
+                        <span className="rounded-full bg-danger-500 px-3 py-1 font-bold text-white text-xs">
                           HABIS
                         </span>
                       </div>
                     )}
                   </div>
 
-                  <div className="p-2.5 text-left flex-1 flex flex-col justify-between gap-1">
-                    <p className="text-xs font-medium text-slate-700 dark:text-slate-300 line-clamp-2 leading-snug">
+                  <div className="flex flex-1 flex-col justify-between gap-1 p-2.5 text-left">
+                    <p className="line-clamp-2 font-medium text-slate-700 text-xs leading-snug dark:text-slate-300">
                       {product.title}
                     </p>
-                    <p className="text-sm font-bold text-primary-600 dark:text-primary-400">
+                    <p className="font-bold text-primary-600 text-sm dark:text-primary-400">
                       {formatPrice(product.sell_price)}
                     </p>
                   </div>
@@ -146,9 +146,9 @@ export default function ProductGrid({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+            <div className="mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
               <svg
-                className="w-8 h-8 text-slate-400"
+                className="h-8 w-8 text-slate-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -161,7 +161,7 @@ export default function ProductGrid({
                 />
               </svg>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-slate-500 text-sm dark:text-slate-400">
               {showSearchResultText ? "Produk tidak ditemukan" : "Tidak ada produk"}
             </p>
           </div>

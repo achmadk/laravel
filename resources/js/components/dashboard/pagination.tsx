@@ -19,13 +19,13 @@ export function Pagination({ links, className }: PaginationProps) {
   }
 
   return (
-    <ul className={twMerge("mt-2 lg:mt-5 flex items-center justify-end gap-1", className)}>
+    <ul className={twMerge("mt-2 flex items-center justify-end gap-1 lg:mt-5", className)}>
       {links.map((link, i) => {
         if (link.url == null) {
           return (
             <li
               key={i}
-              className="px-2 py-1 text-sm text-muted-fg opacity-50"
+              className="px-2 py-1 text-muted-fg text-sm opacity-50"
               dangerouslySetInnerHTML={{ __html: link.label }}
             />
           );
@@ -39,7 +39,7 @@ export function Pagination({ links, className }: PaginationProps) {
             {isPrevious || isNext ? (
               <Link
                 href={link.url}
-                className="p-1 text-sm border rounded-md bg-bg text-muted-fg hover:bg-muted border-border"
+                className="rounded-md border border-border bg-bg p-1 text-muted-fg text-sm hover:bg-muted"
               >
                 {isPrevious ? (
                   <IconChevronLeft size={20} strokeWidth={1.5} />
@@ -51,10 +51,10 @@ export function Pagination({ links, className }: PaginationProps) {
               <Link
                 href={link.url}
                 className={twMerge(
-                  "px-2 py-1 text-sm border rounded-md",
+                  "rounded-md border px-2 py-1 text-sm",
                   link.active
-                    ? "bg-bg text-fg font-semibold border-border"
-                    : "bg-bg text-muted-fg hover:bg-muted border-border",
+                    ? "border-border bg-bg font-semibold text-fg"
+                    : "border-border bg-bg text-muted-fg hover:bg-muted",
                 )}
                 dangerouslySetInnerHTML={{ __html: link.label }}
               />

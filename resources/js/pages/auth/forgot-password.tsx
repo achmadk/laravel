@@ -42,22 +42,22 @@ export default function ForgotPassword({ status, botGuard }: ForgotPasswordProps
         />
 
         {errors.human && (
-          <div className="animate-fade-up stagger-1 rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
             {errors.human}
           </div>
         )}
 
         {status && (
-          <div className="animate-fade-up stagger-1 rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
             {status}
           </div>
         )}
 
         {/* Email */}
-        <div className="animate-fade-up stagger-1">
-          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Email</label>
+        <div className="stagger-1 animate-fade-up">
+          <label className="mb-1.5 block font-medium text-[var(--fg)] text-xs">Email</label>
           <div className="relative">
-            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+            <div className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted-fg)]">
               <IconMail size={18} />
             </div>
             <input
@@ -65,7 +65,7 @@ export default function ForgotPassword({ status, botGuard }: ForgotPasswordProps
               value={data.email}
               onChange={(e) => setData("email", e.target.value)}
               placeholder="nama@email.com"
-              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-4 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+              className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.email
                   ? "border-danger-500"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
@@ -74,11 +74,11 @@ export default function ForgotPassword({ status, botGuard }: ForgotPasswordProps
               autoFocus
             />
           </div>
-          {errors.email && <p className="mt-1 text-xs text-danger-500">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-danger-500 text-xs">{errors.email}</p>}
         </div>
 
         {/* Actions */}
-        <div className="animate-fade-up stagger-2 flex gap-3">
+        <div className="stagger-2 flex animate-fade-up gap-3">
           <Link
             href="/login"
             className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-white font-semibold text-[var(--fg)] transition-all hover:bg-[var(--muted)] dark:bg-transparent"
@@ -89,7 +89,7 @@ export default function ForgotPassword({ status, botGuard }: ForgotPasswordProps
           <button
             type="submit"
             disabled={processing}
-            className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 active:scale-[0.985] focus:ring-3 focus:ring-[var(--primary-subtle)] disabled:opacity-50"
+            className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 focus:ring-3 focus:ring-[var(--primary-subtle)] active:scale-[0.985] disabled:opacity-50"
           >
             {processing ? (
               <>
@@ -112,7 +112,7 @@ ForgotPassword.layout = (page: React.ReactNode) => (
     description="Masukkan email Anda untuk menerima link reset password."
     hero={
       <div className="max-w-sm text-white">
-        <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.08] px-3 py-1 text-[0.75rem] font-medium text-white/[0.85]">
+        <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.08] px-3 py-1 font-medium text-[0.75rem] text-white/[0.85]">
           <svg
             width="12"
             height="12"
@@ -128,13 +128,13 @@ ForgotPassword.layout = (page: React.ReactNode) => (
           Pemulihan Akun
         </div>
 
-        <h2 className="mb-4 text-[1.75rem] font-semibold leading-tight tracking-tight text-white">
+        <h2 className="mb-4 font-semibold text-[1.75rem] text-white leading-tight tracking-tight">
           Jangan khawatir,
           <br />
           kami bantu Anda kembali
         </h2>
 
-        <p className="mb-8 text-[0.9375rem] leading-relaxed text-white/75">
+        <p className="mb-8 text-[0.9375rem] text-white/75 leading-relaxed">
           Masukkan email terdaftar Anda dan kami akan kirimkan tautan aman untuk mereset password.
         </p>
 

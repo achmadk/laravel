@@ -133,9 +133,9 @@ export default function MembersIndex({
     <>
       <Head title="Member" />
       <div className="space-y-6">
-        <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
+            <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
               <IconUsers size={26} className="text-primary-500" />
               Member
             </h1>
@@ -146,45 +146,45 @@ export default function MembersIndex({
           </div>
           <Link
             href={createMember().url}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-500 text-white text-sm font-semibold shadow-lg shadow-primary-500/30 hover:bg-primary-600 transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
           >
             <IconCirclePlus size={18} />
             Daftarkan Member
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
           {summaryCards.map((card) => (
             <div key={card.label} className="rounded-2xl border border-border bg-bg p-4">
-              <p className="text-xs font-semibold uppercase tracking-widetext-muted-fg">
+              <p className="font-semibold text-xs uppercase tracking-widetext-muted-fg">
                 {card.label}
               </p>
-              <p className="mt-2 text-2xl font-bold text-fg">{card.value}</p>
-              <p className="mt-2 text-xs text-muted-fg">{card.helper}</p>
+              <p className="mt-2 font-bold text-2xl text-fg">{card.value}</p>
+              <p className="mt-2 text-muted-fg text-xs">{card.helper}</p>
             </div>
           ))}
         </div>
 
         <form
           onSubmit={applyFilter}
-          className="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-bg border border-border rounded-2xl p-4"
+          className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 sm:grid-cols-4"
         >
           <div className="relative w-full sm:col-span-2">
             <IconSearch
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-fg"
+              className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-fg"
             />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari nama member atau nomor anggota..."
-              className="w-full h-11 pl-10 pr-3 rounded-xl border border-border bg-muted text-sm"
+              className="h-11 w-full rounded-xl border border-border bg-muted pr-3 pl-10 text-sm"
             />
           </div>
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
-            className="w-full h-11 px-3 rounded-xl border border-border bg-muted text-sm"
+            className="h-11 w-full rounded-xl border border-border bg-muted px-3 text-sm"
           >
             <option value="">Semua Tier</option>
             {tierOptions.map((opt) => (
@@ -196,7 +196,7 @@ export default function MembersIndex({
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full h-11 px-3 rounded-xl border border-border bg-muted text-sm"
+            className="h-11 w-full rounded-xl border border-border bg-muted px-3 text-sm"
           >
             <option value="active">Member Aktif</option>
             <option value="inactive">Member Nonaktif</option>
@@ -204,10 +204,10 @@ export default function MembersIndex({
           </select>
         </form>
 
-        <div className="bg-transparent border-0 shadow-none rounded-2xl sm:bg-bg sm:border sm:border-border sm:overflow-hidden">
-          <div className="w-full overflow-x-auto hidden sm:block">
+        <div className="rounded-2xl border-0 bg-transparent shadow-none sm:overflow-hidden sm:border sm:border-border sm:bg-bg">
+          <div className="hidden w-full overflow-x-auto sm:block">
             <div className="min-w-[800px]">
-              <div className="grid grid-cols-12 gap-2 px-3 sm:px-4 py-3 text-xs font-semiboldtext-muted-fg uppercase tracking-wider border-b border-border">
+              <div className="grid grid-cols-12 gap-2 border-border border-b px-3 py-3 font-semiboldtext-muted-fg text-xs uppercase tracking-wider sm:px-4">
                 <div className="col-span-3">Member</div>
                 <div className="col-span-2">Tier</div>
                 <div className="col-span-1 text-right">Poin</div>
@@ -220,38 +220,38 @@ export default function MembersIndex({
                 members.data.map((member) => (
                   <div
                     key={member.id}
-                    className="grid grid-cols-12 gap-2 px-3 sm:px-4 py-3 items-center border-b border-border hover:bg-muted transition-colors"
+                    className="grid grid-cols-12 items-center gap-2 border-border border-b px-3 py-3 transition-colors hover:bg-muted sm:px-4"
                   >
                     <div className="col-span-3">
                       <Link
                         href={showMember({ member: member.id }).url}
-                        className="font-semibold text-sm text-fg hover:text-primary"
+                        className="font-semibold text-fg text-sm hover:text-primary"
                       >
                         {member.name}
                       </Link>
-                      <p className="text-xs text-muted-fg">
+                      <p className="text-muted-fg text-xs">
                         {member.member_code || "Belum ada nomor anggota"}
                       </p>
-                      <p className="text-xs text-muted-fg">{member.no_telp || "-"}</p>
+                      <p className="text-muted-fg text-xs">{member.no_telp || "-"}</p>
                     </div>
                     <div className="col-span-2">
-                      <span className="inline-flex rounded-full bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary">
+                      <span className="inline-flex rounded-full bg-primary/15 px-2.5 py-1 font-semibold text-primary text-xs">
                         {member.loyalty_tier || "regular"}
                       </span>
                       <p className="mt-1 text-[11px] text-muted-fg">
                         {member.is_loyalty_member ? "Aktif" : "Nonaktif"}
                       </p>
                     </div>
-                    <div className="col-span-1 text-right text-sm text-fg">
+                    <div className="col-span-1 text-right text-fg text-sm">
                       {member.loyalty_points || 0}
                     </div>
-                    <div className="col-span-2 text-right text-sm font-semibold text-fg">
+                    <div className="col-span-2 text-right font-semibold text-fg text-sm">
                       {formatCurrency(member.loyalty_total_spent || 0)}
                     </div>
-                    <div className="col-span-2 text-right text-sm text-fg">
+                    <div className="col-span-2 text-right text-fg text-sm">
                       {member.loyalty_transaction_count || 0}
                     </div>
-                    <div className="col-span-1 text-sm text-muted-fg">
+                    <div className="col-span-1 text-muted-fg text-sm">
                       {formatDate(member.last_purchase_at)}
                     </div>
                     <div className="col-span-1 flex justify-center">
@@ -273,18 +273,18 @@ export default function MembersIndex({
             </div>
           </div>
 
-          <div className="sm:hidden flex flex-col gap-3 px-1">
+          <div className="flex flex-col gap-3 px-1 sm:hidden">
             {hasData ? (
               members.data.map((member) => (
                 <div
                   key={member.id}
-                  className="p-4 space-y-3 bg-bg border border-border rounded-xl shadow-sm"
+                  className="space-y-3 rounded-xl border border-border bg-bg p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between">
                     <div className="space-y-1">
                       <Link
                         href={showMember({ member: member.id }).url}
-                        className="text-sm font-semibold text-fg hover:text-primary-600"
+                        className="font-semibold text-fg text-sm hover:text-primary-600"
                       >
                         {member.name}
                       </Link>
@@ -292,7 +292,7 @@ export default function MembersIndex({
                         {member.member_code || member.no_telp || "-"}
                       </p>
                     </div>
-                    <span className="inline-flex rounded-full bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary">
+                    <span className="inline-flex rounded-full bg-primary/15 px-2.5 py-1 font-semibold text-primary text-xs">
                       {member.loyalty_tier || "regular"}
                     </span>
                   </div>
@@ -322,7 +322,7 @@ export default function MembersIndex({
                 </div>
               ))
             ) : (
-              <div className="p-6 text-centertext-muted-fg bg-bg border border-border rounded-xl">
+              <div className="rounded-xl border border-border bg-bg p-6 text-centertext-muted-fg">
                 <IconAlertCircle size={28} className="mx-auto mb-2 text-muted-fg" />
                 Belum ada member yang sesuai dengan filter.
               </div>
@@ -337,8 +337,8 @@ export default function MembersIndex({
                 <IconCrown size={20} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-fg">Top Member by Spending</p>
-                <p className="text-xs text-muted-fg">
+                <p className="font-semibold text-fg text-sm">Top Member by Spending</p>
+                <p className="text-muted-fg text-xs">
                   {summary.top_member.name} &bull; {formatCurrency(summary.top_member.total_spent)}
                 </p>
               </div>
@@ -354,9 +354,9 @@ export default function MembersIndex({
                   <Link
                     key={i}
                     href={link.url}
-                    className="p-1 text-sm border rounded-md bg-bg text-muted-fg hover:bg-muted border-border"
+                    className="rounded-md border border-border bg-bg p-1 text-muted-fg text-sm hover:bg-muted"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -369,9 +369,9 @@ export default function MembersIndex({
                   <Link
                     key={i}
                     href={link.url}
-                    className="p-1 text-sm border rounded-md bg-bg text-muted-fg hover:bg-muted border-border"
+                    className="rounded-md border border-border bg-bg p-1 text-muted-fg text-sm hover:bg-muted"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -384,7 +384,7 @@ export default function MembersIndex({
                   <Link
                     key={i}
                     href={link.url}
-                    className={`px-2 py-1 text-sm border rounded-md ${
+                    className={`rounded-md border px-2 py-1 text-sm ${
                       link.active ? "bg-muted text-fg" : "bg-bg text-muted-fg hover:bg-muted"
                     } border-border`}
                   >
@@ -396,10 +396,10 @@ export default function MembersIndex({
           </ul>
         )}
 
-        <div className="rounded-2xl border border-dashed border-border bg-muted p-4">
+        <div className="rounded-2xl border border-border border-dashed bg-muted p-4">
           <div className="flex items-start gap-3">
             <div className="rounded-xl bg-white p-2 text-muted-fg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -409,8 +409,8 @@ export default function MembersIndex({
               </svg>
             </div>
             <div>
-              <p className="text-sm font-semibold text-fg">Bantuan cepat</p>
-              <p className="mt-1 text-xs leading-6 text-muted-fg">
+              <p className="font-semibold text-fg text-sm">Bantuan cepat</p>
+              <p className="mt-1 text-muted-fg text-xs leading-6">
                 Daftarkan member baru dari halaman ini atau langsung dari POS. Untuk upgrade
                 pelanggan biasa menjadi member, gunakan tombol upgrade di detail pelanggan atau
                 picker pelanggan di POS.

@@ -55,8 +55,8 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
 
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">Loyalty Settings</h1>
-          <p className="text-sm text-muted-fg">
+          <h1 className="font-bold text-2xl text-fg">Loyalty Settings</h1>
+          <p className="text-muted-fg text-sm">
             Atur earn rate, redeem value, dan threshold tier member.
           </p>
         </div>
@@ -71,8 +71,8 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                       <IconGift size={22} />
                     </div>
                     <div>
-                      <h2 className="text-lg font-semibold text-fg">Earn &amp; Redeem</h2>
-                      <p className="text-sm text-muted-fg">
+                      <h2 className="font-semibold text-fg text-lg">Earn &amp; Redeem</h2>
+                      <p className="text-muted-fg text-sm">
                         Kontrol perolehan dan penggunaan poin.
                       </p>
                     </div>
@@ -99,7 +99,7 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                     </label>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Nominal belanja untuk 1 poin
                       </label>
                       <input
@@ -107,15 +107,15 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                         min="1"
                         value={data.earn_rate_amount}
                         onChange={(e) => setData("earn_rate_amount", e.target.value)}
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.earn_rate_amount && (
-                        <p className="mt-1 text-xs text-danger">{errors.earn_rate_amount}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.earn_rate_amount}</p>
                       )}
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Nilai rupiah per 1 poin redeem
                       </label>
                       <input
@@ -123,10 +123,10 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                         min="1"
                         value={data.redeem_point_value}
                         onChange={(e) => setData("redeem_point_value", e.target.value)}
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.redeem_point_value && (
-                        <p className="mt-1 text-xs text-danger">{errors.redeem_point_value}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.redeem_point_value}</p>
                       )}
                     </div>
                   </div>
@@ -138,8 +138,8 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                       <IconMedal size={22} />
                     </div>
                     <div>
-                      <h2 className="text-lg font-semibold text-fg">Threshold Tier</h2>
-                      <p className="text-sm text-muted-fg">
+                      <h2 className="font-semibold text-fg text-lg">Threshold Tier</h2>
+                      <p className="text-muted-fg text-sm">
                         Threshold ini akan menentukan upgrade dan downgrade tier.
                       </p>
                     </div>
@@ -148,7 +148,7 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                   <div className="grid gap-4 sm:grid-cols-2">
                     {tiers.map((tier) => (
                       <div key={tier.key}>
-                        <label className="mb-2 block text-sm font-medium text-fg">
+                        <label className="mb-2 block font-medium text-fg text-sm">
                           {tier.label}
                         </label>
                         <input
@@ -161,16 +161,16 @@ export default function Loyalty({ settings: loyaltySettings }: LoyaltyProps) {
                               [tier.key]: e.target.value,
                             })
                           }
-                          className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                          className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                         />
                       </div>
                     ))}
                   </div>
-                  {errors.tiers && <p className="mt-3 text-xs text-danger">{errors.tiers}</p>}
+                  {errors.tiers && <p className="mt-3 text-danger text-xs">{errors.tiers}</p>}
                 </section>
               </div>
 
-              <div className="flex justify-end border-t border-border pt-4">
+              <div className="flex justify-end border-border border-t pt-4">
                 <button
                   type="submit"
                   disabled={processing}

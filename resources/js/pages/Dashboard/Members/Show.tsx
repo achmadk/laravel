@@ -122,13 +122,13 @@ export default function Show({
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <div className="mb-2 flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-fg">{member.name}</h1>
-                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg">
+                <h1 className="font-bold text-2xl text-fg">{member.name}</h1>
+                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                   <IconCrown size={14} />
                   {member.loyalty_tier || "regular"}
                 </span>
                 <span
-                  className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
+                  className={`inline-flex rounded-full px-3 py-1 font-semibold text-xs ${
                     member.is_loyalty_member
                       ? "bg-success-100 text-success-700 dark:bg-success-950/30 dark:text-success-400"
                       : "bg-muted text-muted-fg"
@@ -137,22 +137,22 @@ export default function Show({
                   {member.is_loyalty_member ? "Aktif" : "Nonaktif"}
                 </span>
               </div>
-              <p className="text-sm text-muted-fg">
+              <p className="text-muted-fg text-sm">
                 {member.no_telp || "-"} {member.address ? `• ${member.address}` : ""}
               </p>
-              <p className="mt-1 text-sm text-muted-fg">
+              <p className="mt-1 text-muted-fg text-sm">
                 Nomor Anggota: {member.member_code || "-"}
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950/40 dark:text-primary-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1 font-semibold text-primary-700 text-xs dark:bg-primary-950/40 dark:text-primary-300">
                 <IconCoins size={14} />
                 {member.loyalty_points || 0} poin
               </span>
               <Link
                 href={members.edit(member.id).url}
-                className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-semibold text-fg transition hover:border-primary hover:text-primary"
+                className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 font-semibold text-fg text-sm transition hover:border-primary hover:text-primary"
               >
                 <IconPencil size={16} />
                 Edit Member
@@ -164,23 +164,23 @@ export default function Show({
         <div className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
           <div className="space-y-6">
             <section className="rounded-2xl border border-border bg-bg p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Ringkasan Member</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Ringkasan Member</h2>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <div className="rounded-2xl bg-muted p-4">
                   <p className="text-xs uppercase tracking-widetext-muted-fg">Total Transaksi</p>
-                  <p className="mt-2 text-2xl font-bold text-fg">
+                  <p className="mt-2 font-bold text-2xl text-fg">
                     {stats?.total_transactions || 0}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
                   <p className="text-xs uppercase tracking-widetext-muted-fg">Total Belanja</p>
-                  <p className="mt-2 text-lg font-bold text-fg">
+                  <p className="mt-2 font-bold text-fg text-lg">
                     {formatPrice(stats?.total_spent || 0)}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
                   <p className="text-xs uppercase tracking-widetext-muted-fg">Member Sejak</p>
-                  <p className="mt-2 text-sm font-semibold text-fg">
+                  <p className="mt-2 font-semibold text-fg text-sm">
                     {member.loyalty_member_since
                       ? new Date(member.loyalty_member_since).toLocaleDateString("id-ID")
                       : "-"}
@@ -188,7 +188,7 @@ export default function Show({
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
                   <p className="text-xs uppercase tracking-widetext-muted-fg">Kunjungan Terakhir</p>
-                  <p className="mt-2 text-sm font-semibold text-fg">
+                  <p className="mt-2 font-semibold text-fg text-sm">
                     {stats?.last_visit
                       ? new Date(stats.last_visit).toLocaleDateString("id-ID")
                       : "-"}
@@ -200,7 +200,7 @@ export default function Show({
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
                 <IconReceipt size={18} className="text-primary-500" />
-                <h2 className="text-lg font-semibold text-fg">Transaksi Member</h2>
+                <h2 className="font-semibold text-fg text-lg">Transaksi Member</h2>
               </div>
               {hasRecentTransactions ? (
                 <div className="space-y-3">
@@ -210,10 +210,10 @@ export default function Show({
                       className="flex items-center justify-between rounded-2xl bg-muted px-4 py-3"
                     >
                       <div>
-                        <p className="text-sm font-semibold text-fg">{transaction.invoice}</p>
-                        <p className="text-xs text-muted-fg">{formatDateTime(transaction.date)}</p>
+                        <p className="font-semibold text-fg text-sm">{transaction.invoice}</p>
+                        <p className="text-muted-fg text-xs">{formatDateTime(transaction.date)}</p>
                       </div>
-                      <p className="text-sm font-bold text-primary-600 dark:text-primary-300">
+                      <p className="font-bold text-primary-600 text-sm dark:text-primary-300">
                         {formatPrice(transaction.total)}
                       </p>
                     </div>
@@ -222,7 +222,7 @@ export default function Show({
               ) : (
                 <div className="rounded-2xl bg-muted px-4 py-8 text-center">
                   <IconDatabaseOff size={28} className="mx-auto mb-3 text-muted-fg" />
-                  <p className="text-sm text-muted-fg">Belum ada transaksi member.</p>
+                  <p className="text-muted-fg text-sm">Belum ada transaksi member.</p>
                 </div>
               )}
             </section>
@@ -230,7 +230,7 @@ export default function Show({
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
                 <IconGift size={18} className="text-primary-500" />
-                <h2 className="text-lg font-semibold text-fg">Histori Reward</h2>
+                <h2 className="font-semibold text-fg text-lg">Histori Reward</h2>
               </div>
               {hasRewardHistory ? (
                 <div className="space-y-3">
@@ -238,14 +238,14 @@ export default function Show({
                     <div key={history.id} className="rounded-2xl bg-muted px-4 py-3">
                       <div className="flex items-center justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-fg">
+                          <p className="font-semibold text-fg text-sm">
                             {history.reference || history.type}
                           </p>
-                          <p className="text-xs text-muted-fg">{history.notes}</p>
+                          <p className="text-muted-fg text-xs">{history.notes}</p>
                         </div>
                         <div className="text-right">
                           <p
-                            className={`text-sm font-bold ${
+                            className={`font-bold text-sm ${
                               history.points_delta >= 0
                                 ? "text-emerald-600 dark:text-emerald-300"
                                 : "text-rose-600 dark:text-rose-300"
@@ -254,7 +254,7 @@ export default function Show({
                             {history.points_delta >= 0 ? "+" : ""}
                             {history.points_delta} poin
                           </p>
-                          <p className="text-xs text-muted-fg">
+                          <p className="text-muted-fg text-xs">
                             {formatDateTime(history.created_at)}
                           </p>
                         </div>
@@ -265,7 +265,7 @@ export default function Show({
               ) : (
                 <div className="rounded-2xl bg-muted px-4 py-8 text-center">
                   <IconDatabaseOff size={28} className="mx-auto mb-3 text-muted-fg" />
-                  <p className="text-sm text-muted-fg">Belum ada histori reward.</p>
+                  <p className="text-muted-fg text-sm">Belum ada histori reward.</p>
                 </div>
               )}
             </section>
@@ -273,8 +273,8 @@ export default function Show({
 
           <div className="space-y-6">
             <section className="rounded-2xl border border-border bg-bg p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Informasi Member</h2>
-              <div className="space-y-3 text-sm text-muted-fg">
+              <h2 className="mb-4 font-semibold text-fg text-lg">Informasi Member</h2>
+              <div className="space-y-3 text-muted-fg text-sm">
                 <div className="rounded-xl border border-border bg-muted p-4">
                   <p className="text-xs uppercase tracking-widetext-muted-fg">Tier Loyalty</p>
                   <p className="mt-1 font-semibold text-fg">{member.loyalty_tier || "regular"}</p>
@@ -297,14 +297,14 @@ export default function Show({
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
                 <IconTags size={18} className="text-primary-500" />
-                <h2 className="text-lg font-semibold text-fg">Segment Terkait</h2>
+                <h2 className="font-semibold text-fg text-lg">Segment Terkait</h2>
               </div>
               {hasSegments ? (
                 <div className="flex flex-wrap gap-2">
                   {segments.map((segment) => (
                     <span
                       key={segment.id}
-                      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${
+                      className={`inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold text-xs ${
                         segment.source === "manual"
                           ? "bg-primary-100 text-primary-700 dark:bg-primary-950/40 dark:text-primary-300"
                           : "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
@@ -320,19 +320,19 @@ export default function Show({
               ) : (
                 <div className="rounded-2xl bg-muted px-4 py-8 text-center">
                   <IconDatabaseOff size={28} className="mx-auto mb-3 text-muted-fg" />
-                  <p className="text-sm text-muted-fg">Belum ada segment untuk member ini.</p>
+                  <p className="text-muted-fg text-sm">Belum ada segment untuk member ini.</p>
                 </div>
               )}
             </section>
 
             <section className="rounded-2xl border border-border bg-bg p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Produk Favorit</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Produk Favorit</h2>
               {hasFrequentProducts ? (
                 <div className="flex flex-wrap gap-2">
                   {frequentProducts.map((product) => (
                     <span
                       key={product.id}
-                      className="inline-flex rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950/40 dark:text-primary-300"
+                      className="inline-flex rounded-full bg-primary-100 px-3 py-1 font-semibold text-primary-700 text-xs dark:bg-primary-950/40 dark:text-primary-300"
                     >
                       {product.title} x{product.total_qty}
                     </span>
@@ -341,23 +341,23 @@ export default function Show({
               ) : (
                 <div className="rounded-2xl bg-muted px-4 py-8 text-center">
                   <IconDatabaseOff size={28} className="mx-auto mb-3 text-muted-fg" />
-                  <p className="text-sm text-muted-fg">Belum ada data produk favorit.</p>
+                  <p className="text-muted-fg text-sm">Belum ada data produk favorit.</p>
                 </div>
               )}
             </section>
 
             <section className="rounded-2xl border border-border bg-bg p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Voucher Member</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Voucher Member</h2>
               {hasVouchers ? (
                 <div className="space-y-3">
                   {vouchers.map((voucher) => (
                     <div key={voucher.id} className="rounded-2xl border border-border p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-fg">{voucher.code}</p>
-                          <p className="text-xs text-muted-fg">{voucher.name}</p>
+                          <p className="font-semibold text-fg text-sm">{voucher.code}</p>
+                          <p className="text-muted-fg text-xs">{voucher.name}</p>
                         </div>
-                        <span className="text-xs font-medium text-primary-600 dark:text-primary-300">
+                        <span className="font-medium text-primary-600 text-xs dark:text-primary-300">
                           {voucher.discount_type === "percentage"
                             ? `${voucher.discount_value}%`
                             : formatPrice(voucher.discount_value)}
@@ -369,7 +369,7 @@ export default function Show({
               ) : (
                 <div className="rounded-2xl bg-muted px-4 py-8 text-center">
                   <IconDatabaseOff size={28} className="mx-auto mb-3 text-muted-fg" />
-                  <p className="text-sm text-muted-fg">Belum ada voucher untuk member ini.</p>
+                  <p className="text-muted-fg text-sm">Belum ada voucher untuk member ini.</p>
                 </div>
               )}
             </section>

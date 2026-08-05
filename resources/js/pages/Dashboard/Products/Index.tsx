@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {
   IconCirclePlus,
-  IconDatabaseOff,
   IconPencilCog,
   IconTrash,
   IconLayoutGrid,
@@ -86,43 +85,43 @@ function ProductCard({
   const outOfStock = product.stock === 0;
 
   return (
-    <div className="group bg-bg rounded-2xl border border-border overflow-hidden hover:shadow-lg hover:border-muted-fg/30 transition-all duration-200">
-      <div className="relative aspect-square bg-muted overflow-hidden">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+      <div className="relative aspect-square overflow-hidden bg-muted">
         {product.image ? (
           <img
             src={imageUrl(product.image) ?? ""}
             alt={product.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <IconPhoto size={48} className="text-muted-fg" strokeWidth={1} />
           </div>
         )}
 
         <div className="absolute top-2 right-2">
           {outOfStock ? (
-            <span className="px-2 py-1 text-xs font-semibold bg-danger text-white rounded-full">
+            <span className="rounded-full bg-danger px-2 py-1 font-semibold text-white text-xs">
               Habis
             </span>
           ) : lowStock ? (
-            <span className="px-2 py-1 text-xs font-semibold bg-warning text-white rounded-full">
+            <span className="rounded-full bg-warning px-2 py-1 font-semibold text-white text-xs">
               Stok: {product.stock}
             </span>
           ) : (
-            <span className="px-2 py-1 text-xs font-medium bg-fg/60 text-bg rounded-full">
+            <span className="rounded-full bg-fg/60 px-2 py-1 font-medium text-bg text-xs">
               Stok: {product.stock}
             </span>
           )}
         </div>
 
         {(canUpdate || canDelete) && (
-          <div className="absolute inset-0 bg-fg/0 group-hover:bg-fg/40 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center gap-2 bg-fg/0 opacity-0 transition-all group-hover:bg-fg/40 group-hover:opacity-100">
             {canUpdate && (
               <Link
                 href={products.edit.url({ product: product.id })}
-                className="p-2.5 rounded-xl bg-bg text-warning hover:bg-warning-subtle shadow-lg transition-colors"
+                className="rounded-xl bg-bg p-2.5 text-warning shadow-lg transition-colors hover:bg-warning-subtle"
               >
                 <IconPencilCog size={18} />
               </Link>
@@ -130,7 +129,7 @@ function ProductCard({
             {canDelete && (
               <button
                 onClick={() => onDelete(products.destroy.url({ product: product.id }))}
-                className="p-2.5 rounded-xl bg-bg text-danger hover:bg-danger-subtle shadow-lg transition-colors"
+                className="rounded-xl bg-bg p-2.5 text-danger shadow-lg transition-colors hover:bg-danger-subtle"
               >
                 <IconTrash size={18} />
               </button>
@@ -140,29 +139,29 @@ function ProductCard({
       </div>
 
       <div className="p-3 sm:p-4">
-        <div className="flex items-start justify-between gap-2 mb-2">
+        <div className="mb-2 flex items-start justify-between gap-2">
           <StatusBadge variant="info" label={product.category?.name || "Kategori"} />
         </div>
-        <h3 className="text-sm font-semibold text-fg line-clamp-2 mb-1">{product.title}</h3>
+        <h3 className="mb-1 line-clamp-2 font-semibold text-fg text-sm">{product.title}</h3>
         {(product.barcode || product.sku) && (
-          <div className="space-y-0.5 mb-2">
+          <div className="mb-2 space-y-0.5">
             {product.barcode && (
-              <p className="text-xs text-muted-fg line-clamp-1">Barcode: {product.barcode}</p>
+              <p className="line-clamp-1 text-muted-fg text-xs">Barcode: {product.barcode}</p>
             )}
             {product.sku && (
-              <p className="text-xs text-muted-fg line-clamp-1">SKU: {product.sku}</p>
+              <p className="line-clamp-1 text-muted-fg text-xs">SKU: {product.sku}</p>
             )}
           </div>
         )}
 
-        <div className="mt-2 pt-2 border-t border-border">
-          <p className="text-base sm:text-lg font-bold text-primary">
+        <div className="mt-2 border-border border-t pt-2">
+          <p className="font-bold text-base text-primary sm:text-lg">
             {formatCurrency(product.sell_price)}
           </p>
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-xs text-muted-fg">Modal: {formatCurrency(product.buy_price)}</p>
+          <div className="mt-1 flex items-center justify-between">
+            <p className="text-muted-fg text-xs">Modal: {formatCurrency(product.buy_price)}</p>
             {product.sell_price > product.buy_price && (
-              <span className="text-xs font-medium text-success">
+              <span className="font-medium text-success text-xs">
                 +{formatCurrency(product.sell_price - product.buy_price)}
               </span>
             )}
@@ -248,7 +247,7 @@ export default function Index({ products: data }: IndexProps) {
 
       {data.data.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {data.data.map((product) => (
               <ProductCard
                 key={product.id}
@@ -262,16 +261,16 @@ export default function Index({ products: data }: IndexProps) {
         ) : (
           <Card>
             <CardContent className="p-0">
-              <div className="p-4 border-b border-border">
-                <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+              <div className="border-border border-b p-4">
+                <div className="flex items-center gap-2 font-semibold text-fg text-sm">
                   Data Produk
                 </div>
               </div>
               <div className="w-full overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="border-b bg-muted border-border">
+                  <thead className="border-border border-b bg-muted">
                     <tr>
-                      <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg w-10">
+                      <th className="h-12 w-10 px-4 text-left align-middle font-medium text-muted-fg">
                         No
                       </th>
                       <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
@@ -294,29 +293,29 @@ export default function Index({ products: data }: IndexProps) {
                   </thead>
                   <tbody className="divide-y divide-border bg-bg">
                     {data.data.map((product, i) => (
-                      <tr key={product.id} className="hover:bg-muted transition-colors">
-                        <td className="whitespace-nowrap p-4 align-middle text-muted-fg text-center">
+                      <tr key={product.id} className="transition-colors hover:bg-muted">
+                        <td className="whitespace-nowrap p-4 text-center align-middle text-muted-fg">
                           {i + 1 + (data.current_page - 1) * data.per_page}
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden flex-shrink-0">
+                            <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
                               {product.image ? (
                                 <img
                                   src={imageUrl(product.image) ?? ""}
                                   alt={product.title}
-                                  className="w-full h-full object-cover"
+                                  className="h-full w-full object-cover"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center">
+                                <div className="flex h-full w-full items-center justify-center">
                                   <IconPackage size={16} className="text-muted-fg" />
                                 </div>
                               )}
                             </div>
                             <div>
-                              <p className="text-sm font-medium text-fg">{product.title}</p>
+                              <p className="font-medium text-fg text-sm">{product.title}</p>
                               {(product.barcode || product.sku) && (
-                                <div className="text-xs text-muted-fg space-y-0.5">
+                                <div className="space-y-0.5 text-muted-fg text-xs">
                                   {product.barcode && <p>Barcode: {product.barcode}</p>}
                                   {product.sku && <p>SKU: {product.sku}</p>}
                                 </div>
@@ -400,7 +399,7 @@ export default function Index({ products: data }: IndexProps) {
             <ModalTitle>Konfirmasi Hapus</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            <p className="text-sm text-muted-fg">Data yang dihapus tidak dapat dikembalikan!</p>
+            <p className="text-muted-fg text-sm">Data yang dihapus tidak dapat dikembalikan!</p>
           </ModalBody>
           <ModalFooter>
             <ModalClose>Batal</ModalClose>

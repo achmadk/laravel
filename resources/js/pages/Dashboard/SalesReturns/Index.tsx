@@ -102,32 +102,32 @@ export default function Index({ salesReturns, filters }: IndexProps) {
           value={form.code}
           onChange={(e) => setForm((prev) => ({ ...prev, code: e.target.value }))}
           placeholder="Kode retur"
-          className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg placeholder:text-muted-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg"
         />
         <input
           type="text"
           value={form.invoice}
           onChange={(e) => setForm((prev) => ({ ...prev, invoice: e.target.value }))}
           placeholder="Invoice transaksi"
-          className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg placeholder:text-muted-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg"
         />
         <input
           type="date"
           value={form.date_from}
           onChange={(e) => setForm((prev) => ({ ...prev, date_from: e.target.value }))}
-          className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm"
         />
         <input
           type="date"
           value={form.date_to}
           onChange={(e) => setForm((prev) => ({ ...prev, date_to: e.target.value }))}
-          className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm"
         />
         <div className="flex gap-2">
           <select
             value={form.return_type}
             onChange={(e) => setForm((prev) => ({ ...prev, return_type: e.target.value }))}
-            className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-sm text-fg"
+            className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-fg text-sm"
           >
             <option value="">Semua metode</option>
             <option value="refund_cash">Refund Tunai</option>
@@ -143,7 +143,7 @@ export default function Index({ salesReturns, filters }: IndexProps) {
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-border bg-muted">
+              <thead className="border-border border-b bg-muted">
                 <tr>
                   <th className="px-4 py-3 text-left font-medium text-muted-fg">Kode</th>
                   <th className="px-4 py-3 text-left font-medium text-muted-fg">Invoice</th>
@@ -158,7 +158,7 @@ export default function Index({ salesReturns, filters }: IndexProps) {
               <tbody className="divide-y divide-border">
                 {rows.length > 0 ? (
                   rows.map((item) => (
-                    <tr key={item.id} className="hover:bg-muted transition-colors">
+                    <tr key={item.id} className="transition-colors hover:bg-muted">
                       <td className="px-4 py-4 font-medium text-fg">{item.code}</td>
                       <td className="px-4 py-4 text-muted-fg">
                         {item.transaction?.invoice || "-"}

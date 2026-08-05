@@ -102,7 +102,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
           <IconBuildingStore size={26} className="text-primary" />
           Supplier
         </Heading>
-        <p className="text-sm text-muted-fg mt-0.5">Data pemasok untuk pencatatan hutang.</p>
+        <p className="mt-0.5 text-muted-fg text-sm">Data pemasok untuk pencatatan hutang.</p>
       </div>
 
       {canManageSuppliers && (
@@ -114,9 +114,9 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={submit} className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <form onSubmit={submit} className="grid grid-cols-1 gap-3 md:grid-cols-4">
               <div className="md:col-span-1">
-                <label className="text-sm font-semibold text-muted-fg mb-1 block">Nama</label>
+                <label className="mb-1 block font-semibold text-muted-fg text-sm">Nama</label>
                 <Input
                   value={data.name}
                   onChange={(e) => setData("name", e.target.value)}
@@ -125,7 +125,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold text-muted-fg mb-1 block">Telepon</label>
+                <label className="mb-1 block font-semibold text-muted-fg text-sm">Telepon</label>
                 <Input
                   value={data.phone}
                   onChange={(e) => setData("phone", e.target.value)}
@@ -133,7 +133,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
                 />
               </div>
               <div>
-                <label className="text-sm font-semibold text-muted-fg mb-1 block">Email</label>
+                <label className="mb-1 block font-semibold text-muted-fg text-sm">Email</label>
                 <Input
                   value={data.email}
                   onChange={(e) => setData("email", e.target.value)}
@@ -142,16 +142,16 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
                 />
               </div>
               <div className="md:col-span-1">
-                <label className="text-sm font-semibold text-muted-fg mb-1 block">Alamat</label>
+                <label className="mb-1 block font-semibold text-muted-fg text-sm">Alamat</label>
                 <textarea
                   rows={3}
-                  className="relative block w-full appearance-none rounded-lg bg-(--control-bg,transparent) px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] text-base/6 text-fg placeholder:text-muted-fg sm:text-sm/6 border border-input enabled:hover:border-muted-fg/30 outline-hidden focus:border-ring/70 focus:ring-3 focus:ring-ring/20 focus:enabled:hover:border-ring/80 in-disabled:bg-muted dark:scheme-dark"
+                  className="dark:scheme-dark relative block w-full appearance-none rounded-lg border border-input bg-(--control-bg,transparent) in-disabled:bg-muted px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-fg outline-hidden placeholder:text-muted-fg focus:border-ring/70 focus:ring-3 focus:ring-ring/20 enabled:hover:border-muted-fg/30 focus:enabled:hover:border-ring/80 sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6"
                   value={data.address}
                   onChange={(e) => setData("address", e.target.value)}
                   placeholder="Alamat"
                 />
               </div>
-              <div className="md:col-span-4 flex gap-2">
+              <div className="flex gap-2 md:col-span-4">
                 <Button type="submit" isDisabled={processing} intent="primary">
                   {editing ? "Update" : "Simpan"}
                 </Button>
@@ -170,13 +170,13 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
         <CardContent className="divide-y divide-border p-0">
           {supplierData.length ? (
             supplierData.map((sup) => (
-              <div key={sup.id} className="p-4 flex items-center justify-between">
+              <div key={sup.id} className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm font-semibold text-fg">{sup.name}</p>
-                  <p className="text-xs text-muted-fg">
+                  <p className="font-semibold text-fg text-sm">{sup.name}</p>
+                  <p className="text-muted-fg text-xs">
                     {sup.phone || "-"} &bull; {sup.email || "-"}
                   </p>
-                  {sup.address && <p className="text-xs text-muted-fg">{sup.address}</p>}
+                  {sup.address && <p className="text-muted-fg text-xs">{sup.address}</p>}
                 </div>
                 <div className="flex items-center gap-2">
                   {canManageSuppliers && (
@@ -204,7 +204,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
             <ModalTitle>Konfirmasi Hapus</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            <p className="text-sm text-muted-fg">Hapus supplier ini?</p>
+            <p className="text-muted-fg text-sm">Hapus supplier ini?</p>
           </ModalBody>
           <ModalFooter>
             <ModalClose>Batal</ModalClose>

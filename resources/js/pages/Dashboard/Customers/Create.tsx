@@ -97,7 +97,7 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
       <div className="mb-6">
         <Link
           href={customers.index.url()}
-          className="inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary mb-3"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke Pelanggan
@@ -112,9 +112,9 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
         <div className="max-w-3xl">
           <Card>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                  <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                     Nama Pelanggan
                   </label>
                   <Input
@@ -125,10 +125,10 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     // @ts-expect-error
                     isInvalid={!!errors.name}
                   />
-                  {errors.name && <p className="mt-1 text-xs text-danger">{errors.name}</p>}
+                  {errors.name && <p className="mt-1 text-danger text-xs">{errors.name}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                  <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                     No. Handphone
                   </label>
                   <Input
@@ -139,19 +139,19 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     // @ts-expect-error
                     isInvalid={!!errors.no_telp}
                   />
-                  {errors.no_telp && <p className="mt-1 text-xs text-danger">{errors.no_telp}</p>}
+                  {errors.no_telp && <p className="mt-1 text-danger text-xs">{errors.no_telp}</p>}
                 </div>
               </div>
 
               <div className="rounded-2xl border border-primary-subtle-fg/20 bg-primary-subtle/50 p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-fg">Aktivasi Loyalty Member</p>
-                    <p className="text-xs text-muted-fg">
+                    <p className="font-semibold text-fg text-sm">Aktivasi Loyalty Member</p>
+                    <p className="text-muted-fg text-xs">
                       Member mendapat poin, voucher, dan harga khusus.
                     </p>
                   </div>
-                  <label className="inline-flex items-center gap-2 text-sm font-medium text-muted-fg cursor-pointer">
+                  <label className="inline-flex cursor-pointer items-center gap-2 font-medium text-muted-fg text-sm">
                     <input
                       type="checkbox"
                       checked={data.is_loyalty_member}
@@ -164,11 +164,11 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
 
                 {data.is_loyalty_member && (
                   <div className="mt-4">
-                    <label className="text-sm font-medium text-muted-fg">Tier Awal</label>
+                    <label className="font-medium text-muted-fg text-sm">Tier Awal</label>
                     <select
                       value={data.loyalty_tier}
                       onChange={(e) => setData("loyalty_tier", e.target.value)}
-                      className="mt-2 w-full h-11 rounded-xl border border-input bg-bg px-3 text-sm text-fg"
+                      className="mt-2 h-11 w-full rounded-xl border border-input bg-bg px-3 text-fg text-sm"
                     >
                       {tierOptions.map((tier) => (
                         <option key={tier.value} value={tier.value}>
@@ -180,13 +180,13 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="text-sm font-medium text-muted-fg">Provinsi</label>
+                  <label className="font-medium text-muted-fg text-sm">Provinsi</label>
                   <select
                     value={data.province_id}
                     onChange={(e) => setData("province_id", e.target.value)}
-                    className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                   >
                     <option value="">Pilih Provinsi</option>
                     {provinces.map((prov) => (
@@ -196,15 +196,15 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     ))}
                   </select>
                   {errors.province_id && (
-                    <p className="text-xs text-danger mt-1">{errors.province_id}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.province_id}</p>
                   )}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-fg">Kota/Kabupaten</label>
+                  <label className="font-medium text-muted-fg text-sm">Kota/Kabupaten</label>
                   <select
                     value={data.regency_id}
                     onChange={(e) => setData("regency_id", e.target.value)}
-                    className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                     disabled={!data.province_id}
                   >
                     <option value="">Pilih Kota/Kabupaten</option>
@@ -215,18 +215,18 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     ))}
                   </select>
                   {errors.regency_id && (
-                    <p className="text-xs text-danger mt-1">{errors.regency_id}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.regency_id}</p>
                   )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                  <label className="text-sm font-medium text-muted-fg">Kecamatan</label>
+                  <label className="font-medium text-muted-fg text-sm">Kecamatan</label>
                   <select
                     value={data.district_id}
                     onChange={(e) => setData("district_id", e.target.value)}
-                    className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                     disabled={!data.regency_id}
                   >
                     <option value="">Pilih Kecamatan</option>
@@ -237,15 +237,15 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     ))}
                   </select>
                   {errors.district_id && (
-                    <p className="text-xs text-danger mt-1">{errors.district_id}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.district_id}</p>
                   )}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-fg">Kelurahan</label>
+                  <label className="font-medium text-muted-fg text-sm">Kelurahan</label>
                   <select
                     value={data.village_id}
                     onChange={(e) => setData("village_id", e.target.value)}
-                    className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                     disabled={!data.district_id}
                   >
                     <option value="">Pilih Kelurahan</option>
@@ -256,13 +256,13 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                     ))}
                   </select>
                   {errors.village_id && (
-                    <p className="text-xs text-danger mt-1">{errors.village_id}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.village_id}</p>
                   )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                   Alamat Detail
                 </label>
                 <textarea
@@ -270,14 +270,14 @@ export default function Create({ provinces = [], tierOptions = [] }: CreateProps
                   onChange={(e) => setData("address", e.target.value)}
                   placeholder="Alamat lengkap pelanggan"
                   rows={3}
-                  className="relative block w-full appearance-none rounded-lg bg-(--control-bg,transparent) px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] text-base/6 text-fg placeholder:text-muted-fg sm:text-sm/6 border border-input enabled:hover:border-muted-fg/30 outline-hidden focus:border-ring/70 focus:ring-3 focus:ring-ring/20 focus:enabled:hover:border-ring/80 in-disabled:bg-muted dark:scheme-dark"
+                  className="dark:scheme-dark relative block w-full appearance-none rounded-lg border border-input bg-(--control-bg,transparent) in-disabled:bg-muted px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-fg outline-hidden placeholder:text-muted-fg focus:border-ring/70 focus:ring-3 focus:ring-ring/20 enabled:hover:border-muted-fg/30 focus:enabled:hover:border-ring/80 sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6"
                 />
-                {errors.address && <p className="mt-1 text-xs text-danger">{errors.address}</p>}
+                {errors.address && <p className="mt-1 text-danger text-xs">{errors.address}</p>}
               </div>
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-border">
+          <div className="mt-6 flex justify-end gap-3 border-border border-t pt-6">
             <Link href={customers.index.url()}>
               <Button intent="outline">Batal</Button>
             </Link>

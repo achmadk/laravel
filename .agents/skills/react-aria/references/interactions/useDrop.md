@@ -437,26 +437,26 @@ function DropTarget() {
 
 ### DropOptions
 
-| Name                       | Type                                                                                              | Description |
+| Name | Type | Description |
 | -------------------------- | ------------------------------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ref` \*                   | `RefObject<FocusableElement                                                                       | null>`      | A ref for the droppable element.                                                                                                                                                                                  |
-| `getDropOperation`         | `((types: IDragTypes, allowedOperations: DropOperation[]) => DropOperation)                       | undefined`  | A function returning the drop operation to be performed when items matching the given types are dropped on the drop target.                                                                                       |
-| `getDropOperationForPoint` | `((types: IDragTypes, allowedOperations: DropOperation[], x: number, y: number) => DropOperation) | undefined`  | A function that returns the drop operation for a specific point within the target.                                                                                                                                |
-| `onDropEnter`              | `((e: DropEnterEvent) => void)                                                                    | undefined`  | Handler that is called when a valid drag enters the drop target.                                                                                                                                                  |
-| `onDropMove`               | `((e: DropMoveEvent) => void)                                                                     | undefined`  | Handler that is called when a valid drag is moved within the drop target.                                                                                                                                         |
-| `onDropActivate`           | `((e: DropActivateEvent) => void)                                                                 | undefined`  | Handler that is called after a valid drag is held over the drop target for a period of time. This typically opens the item so that the user can drop within it.                                                   |
-| `onDropExit`               | `((e: DropExitEvent) => void)                                                                     | undefined`  | Handler that is called when a valid drag exits the drop target.                                                                                                                                                   |
-| `onDrop`                   | `((e: DropEvent) => void)                                                                         | undefined`  | Handler that is called when a valid drag is dropped on the drop target.                                                                                                                                           |
-| `hasDropButton`            | `boolean                                                                                          | undefined`  | Whether the item has an explicit focusable drop affordance to initiate accessible drag and drop mode. If true, the dropProps will omit these event handlers, and they will be applied to dropButtonProps instead. |
-| `isDisabled`               | `boolean                                                                                          | undefined`  | Whether the drop target is disabled. If true, the drop target will not accept any drops.                                                                                                                          |
+| `ref` \* | `RefObject<FocusableElement                                                                       | null>` | A ref for the droppable element. |
+| `getDropOperation` | `((types: IDragTypes, allowedOperations: DropOperation[]) => DropOperation)                       | undefined` | A function returning the drop operation to be performed when items matching the given types are dropped on the drop target. |
+| `getDropOperationForPoint` | `((types: IDragTypes, allowedOperations: DropOperation[], x: number, y: number) => DropOperation) | undefined` | A function that returns the drop operation for a specific point within the target. |
+| `onDropEnter` | `((e: DropEnterEvent) => void)                                                                    | undefined` | Handler that is called when a valid drag enters the drop target. |
+| `onDropMove` | `((e: DropMoveEvent) => void)                                                                     | undefined` | Handler that is called when a valid drag is moved within the drop target. |
+| `onDropActivate` | `((e: DropActivateEvent) => void)                                                                 | undefined` | Handler that is called after a valid drag is held over the drop target for a period of time. This typically opens the item so that the user can drop within it. |
+| `onDropExit` | `((e: DropExitEvent) => void)                                                                     | undefined` | Handler that is called when a valid drag exits the drop target. |
+| `onDrop` | `((e: DropEvent) => void)                                                                         | undefined` | Handler that is called when a valid drag is dropped on the drop target. |
+| `hasDropButton` | `boolean                                                                                          | undefined` | Whether the item has an explicit focusable drop affordance to initiate accessible drag and drop mode. If true, the dropProps will omit these event handlers, and they will be applied to dropButtonProps instead. |
+| `isDisabled` | `boolean                                                                                          | undefined` | Whether the drop target is disabled. If true, the drop target will not accept any drops. |
 
 ### DropResult
 
-| Name              | Type                              | Description                                              |
+| Name | Type | Description |
 | ----------------- | --------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ |
-| `dropProps` \*    | `DOMAttributes<FocusableElement>` | Props for the droppable element.                         |
-| `isDropTarget` \* | `boolean`                         | Whether the drop target is currently focused or hovered. |
-| `dropButtonProps` | `AriaButtonProps<"button">        | undefined`                                               | Props for the explicit drop button affordance, if any. |
+| `dropProps` \* | `DOMAttributes<FocusableElement>` | Props for the droppable element. |
+| `isDropTarget` \* | `boolean` | Whether the drop target is currently focused or hovered. |
+| `dropButtonProps` | `AriaButtonProps<"button">        | undefined` | Props for the explicit drop button affordance, if any. |
 
 ## Related Types
 

@@ -61,26 +61,26 @@ function ContactPicker(props) {
 
 ### AriaFieldProps
 
-| Name                 | Type                              | Default                               | Description                                                                                    |
+| Name | Type | Default | Description |
 | -------------------- | --------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `labelElementType`   | `ElementType                      | undefined`                            | 'label'                                                                                        | The HTML element used to render the label, e.g. 'label', or 'span'.                                                 |
-| `label`              | `ReactNode`                       | —                                     | The content to display as the label.                                                           |
-| `id`                 | `string                           | undefined`                            | —                                                                                              | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id). |
-| `aria-label`         | `string                           | undefined`                            | —                                                                                              | Defines a string value that labels the current element.                                                             |
-| `aria-labelledby`    | `string                           | undefined`                            | —                                                                                              | Identifies the element (or elements) that labels the current element.                                               |
-| `aria-describedby`   | `string                           | undefined`                            | —                                                                                              | Identifies the element (or elements) that describes the object.                                                     |
-| `aria-details`       | `string                           | undefined`                            | —                                                                                              | Identifies the element (or elements) that provide a detailed, extended description for the object.                  |
-| `description`        | `ReactNode`                       | —                                     | A description for the field. Provides a hint such as specific requirements for what to choose. |
-| `errorMessage`       | `ReactNode                        | ((v: ValidationResult) => ReactNode)` | —                                                                                              | An error message for the field.                                                                                     |
-| `isInvalid`          | `boolean                          | undefined`                            | —                                                                                              | Whether the input value is invalid.                                                                                 |
-| `validationBehavior` | `"aria"                           | "native"                              | undefined`                                                                                     | 'aria'                                                                                                              | Whether to use native HTML form validation to prevent form submission when the value is missing or invalid, or mark the field as required or invalid via ARIA. |
-| `validate`           | `((value: any) => ValidationError | true                                  | null                                                                                           | undefined)                                                                                                          | undefined`                                                                                                                                                     | —   | A function that returns an error message if a given value is invalid. Validation errors are displayed to the user when the form is submitted if `validationBehavior="native"`. For realtime validation, use the `isInvalid` prop instead. |
+| `labelElementType` | `ElementType                      | undefined` | 'label' | The HTML element used to render the label, e.g. 'label', or 'span'. |
+| `label` | `ReactNode` | — | The content to display as the label. |
+| `id` | `string                           | undefined` | — | The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id). |
+| `aria-label` | `string                           | undefined` | — | Defines a string value that labels the current element. |
+| `aria-labelledby` | `string                           | undefined` | — | Identifies the element (or elements) that labels the current element. |
+| `aria-describedby` | `string                           | undefined` | — | Identifies the element (or elements) that describes the object. |
+| `aria-details` | `string                           | undefined` | — | Identifies the element (or elements) that provide a detailed, extended description for the object. |
+| `description` | `ReactNode` | — | A description for the field. Provides a hint such as specific requirements for what to choose. |
+| `errorMessage` | `ReactNode                        | ((v: ValidationResult) => ReactNode)` | — | An error message for the field. |
+| `isInvalid` | `boolean                          | undefined` | — | Whether the input value is invalid. |
+| `validationBehavior` | `"aria"                           | "native"                              | undefined` | 'aria' | Whether to use native HTML form validation to prevent form submission when the value is missing or invalid, or mark the field as required or invalid via ARIA. |
+| `validate` | `((value: any) => ValidationError | true                                  | null                                                                                           | undefined)                                                                                                          | undefined` | — | A function that returns an error message if a given value is invalid. Validation errors are displayed to the user when the form is submitted if `validationBehavior="native"`. For realtime validation, use the `isInvalid` prop instead. |
 
 ### FieldAria
 
-| Name                   | Type                              | Description                                                  |
+| Name | Type | Description |
 | ---------------------- | --------------------------------- | ------------------------------------------------------------ | ---------------------------------------------- |
-| `descriptionProps` \*  | `DOMAttributes<FocusableElement>` | Props for the description element, if any.                   |
-| `errorMessageProps` \* | `DOMAttributes<FocusableElement>` | Props for the error message element, if any.                 |
-| `labelProps` \*        | `DOMAttributes<FocusableElement>  | LabelHTMLAttributes<HTMLLabelElement>`                       | Props to apply to the label container element. |
-| `fieldProps` \*        | `AriaLabelingProps & DOMProps`    | Props to apply to the field container element being labeled. |
+| `descriptionProps` \* | `DOMAttributes<FocusableElement>` | Props for the description element, if any. |
+| `errorMessageProps` \* | `DOMAttributes<FocusableElement>` | Props for the error message element, if any. |
+| `labelProps` \* | `DOMAttributes<FocusableElement>  | LabelHTMLAttributes<HTMLLabelElement>` | Props to apply to the label container element. |
+| `fieldProps` \* | `AriaLabelingProps & DOMProps` | Props to apply to the field container element being labeled. |

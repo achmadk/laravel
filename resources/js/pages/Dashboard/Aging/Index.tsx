@@ -107,107 +107,107 @@ export default function AgingIndex() {
           icon={<IconChartBar size={20} />}
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <Card>
             <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-lg bg-danger/10">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-lg bg-danger/10 p-2">
                   <IconTruck size={20} className="text-danger" />
                 </div>
-                <p className="text-xs font-semibold text-muted-fg uppercase tracking-wide">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Total Hutang
                 </p>
               </div>
-              <p className="text-2xl font-bold text-fg">
+              <p className="font-bold text-2xl text-fg">
                 {formatCurrency(payableTotalOutstanding)}
               </p>
-              <p className="text-xs text-muted-fg mt-1">{payablesDueSoon} akan jatuh tempo</p>
+              <p className="mt-1 text-muted-fg text-xs">{payablesDueSoon} akan jatuh tempo</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-lg bg-primary/10">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-lg bg-primary/10 p-2">
                   <IconReceipt size={20} className="text-primary" />
                 </div>
-                <p className="text-xs font-semibold text-muted-fg uppercase tracking-wide">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Total Piutang
                 </p>
               </div>
-              <p className="text-2xl font-bold text-fg">
+              <p className="font-bold text-2xl text-fg">
                 {formatCurrency(receivableTotalOutstanding)}
               </p>
-              <p className="text-xs text-muted-fg mt-1">{receivablesDueSoon} akan jatuh tempo</p>
+              <p className="mt-1 text-muted-fg text-xs">{receivablesDueSoon} akan jatuh tempo</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-lg bg-warning/10">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-lg bg-warning/10 p-2">
                   <IconAlertTriangle size={20} className="text-warning" />
                 </div>
-                <p className="text-xs font-semibold text-muted-fg uppercase tracking-wide">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Hutang Overdue
                 </p>
               </div>
-              <p className="text-2xl font-bold text-warning">{formatCurrency(payableOverdue)}</p>
-              <p className="text-xs text-muted-fg mt-1">61+ hari</p>
+              <p className="font-bold text-2xl text-warning">{formatCurrency(payableOverdue)}</p>
+              <p className="mt-1 text-muted-fg text-xs">61+ hari</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-lg bg-danger/10">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="rounded-lg bg-danger/10 p-2">
                   <IconReceipt size={20} className="text-danger" />
                 </div>
-                <p className="text-xs font-semibold text-muted-fg uppercase tracking-wide">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Piutang Overdue
                 </p>
               </div>
-              <p className="text-2xl font-bold text-danger">{formatCurrency(receivableOverdue)}</p>
-              <p className="text-xs text-muted-fg mt-1">61+ hari</p>
+              <p className="font-bold text-2xl text-danger">{formatCurrency(receivableOverdue)}</p>
+              <p className="mt-1 text-muted-fg text-xs">61+ hari</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card>
             <CardContent className="p-0">
-              <div className="px-5 py-4 border-b border-border">
-                <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
+              <div className="border-border border-b px-5 py-4">
+                <h2 className="flex items-center gap-2 font-semibold text-fg text-lg">
                   <IconTruck size={20} className="text-danger" />
                   Aging Hutang Supplier
                 </h2>
               </div>
               <div className="p-5">
-                <div className="space-y-3 mb-6">
+                <div className="mb-6 space-y-3">
                   {payableAgingSummary.length > 0 ? (
                     payableAgingSummary.map((bucket) => (
                       <div key={bucket.bucket} className="flex items-center justify-between">
                         <span
-                          className={`px-2.5 py-1 rounded-full text-xs font-semibold ${agingBucketClass(bucket.bucket)}`}
+                          className={`rounded-full px-2.5 py-1 font-semibold text-xs ${agingBucketClass(bucket.bucket)}`}
                         >
                           {agingBucketLabel(bucket.bucket)}
                         </span>
                         <div className="text-right">
-                          <p className="text-sm font-bold text-fg">
+                          <p className="font-bold text-fg text-sm">
                             {formatCurrency(bucket.remaining)}
                           </p>
-                          <p className="text-xs text-muted-fg">{bucket.count} nota</p>
+                          <p className="text-muted-fg text-xs">{bucket.count} nota</p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-muted-fg text-center py-4">Belum ada data hutang.</p>
+                    <p className="py-4 text-center text-muted-fg text-sm">Belum ada data hutang.</p>
                   )}
                 </div>
 
                 {payableNotifications.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-1.5">
+                    <h3 className="mb-3 flex items-center gap-1.5 font-semibold text-fg text-sm">
                       <IconClock size={16} className="text-warning" />
                       Akan Jatuh Tempo
                     </h3>
@@ -216,14 +216,14 @@ export default function AgingIndex() {
                         <Link
                           key={item.id}
                           href={payables.show.url({ payable: item.id })}
-                          className="flex items-center justify-between p-3 rounded-xl border border-border hover:bg-muted transition-colors"
+                          className="flex items-center justify-between rounded-xl border border-border p-3 transition-colors hover:bg-muted"
                         >
                           <div>
-                            <p className="text-sm font-medium text-fg">{item.title}</p>
-                            <p className="text-xs text-muted-fg">{item.time}</p>
+                            <p className="font-medium text-fg text-sm">{item.title}</p>
+                            <p className="text-muted-fg text-xs">{item.time}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-semibold text-warning">{item.subtitle}</p>
+                            <p className="font-semibold text-sm text-warning">{item.subtitle}</p>
                           </div>
                         </Link>
                       ))}
@@ -236,32 +236,32 @@ export default function AgingIndex() {
 
           <Card>
             <CardContent className="p-0">
-              <div className="px-5 py-4 border-b border-border">
-                <h2 className="text-lg font-semibold text-fg flex items-center gap-2">
+              <div className="border-border border-b px-5 py-4">
+                <h2 className="flex items-center gap-2 font-semibold text-fg text-lg">
                   <IconReceipt size={20} className="text-primary" />
                   Aging Piutang Pelanggan
                 </h2>
               </div>
               <div className="p-5">
-                <div className="space-y-3 mb-6">
+                <div className="mb-6 space-y-3">
                   {receivableAgingSummary.length > 0 ? (
                     receivableAgingSummary.map((bucket) => (
                       <div key={bucket.bucket} className="flex items-center justify-between">
                         <span
-                          className={`px-2.5 py-1 rounded-full text-xs font-semibold ${agingBucketClass(bucket.bucket)}`}
+                          className={`rounded-full px-2.5 py-1 font-semibold text-xs ${agingBucketClass(bucket.bucket)}`}
                         >
                           {agingBucketLabel(bucket.bucket)}
                         </span>
                         <div className="text-right">
-                          <p className="text-sm font-bold text-fg">
+                          <p className="font-bold text-fg text-sm">
                             {formatCurrency(bucket.remaining)}
                           </p>
-                          <p className="text-xs text-muted-fg">{bucket.count} nota</p>
+                          <p className="text-muted-fg text-xs">{bucket.count} nota</p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-muted-fg text-center py-4">
+                    <p className="py-4 text-center text-muted-fg text-sm">
                       Belum ada data piutang.
                     </p>
                   )}
@@ -269,7 +269,7 @@ export default function AgingIndex() {
 
                 {receivableNotifications.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-semibold text-fg mb-3 flex items-center gap-1.5">
+                    <h3 className="mb-3 flex items-center gap-1.5 font-semibold text-fg text-sm">
                       <IconClock size={16} className="text-warning" />
                       Akan Jatuh Tempo
                     </h3>
@@ -278,14 +278,14 @@ export default function AgingIndex() {
                         <Link
                           key={item.id}
                           href={receivables.show.url({ receivable: item.id })}
-                          className="flex items-center justify-between p-3 rounded-xl border border-border hover:bg-muted transition-colors"
+                          className="flex items-center justify-between rounded-xl border border-border p-3 transition-colors hover:bg-muted"
                         >
                           <div>
-                            <p className="text-sm font-medium text-fg">{item.title}</p>
-                            <p className="text-xs text-muted-fg">{item.time}</p>
+                            <p className="font-medium text-fg text-sm">{item.title}</p>
+                            <p className="text-muted-fg text-xs">{item.time}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-sm font-semibold text-warning">{item.subtitle}</p>
+                            <p className="font-semibold text-sm text-warning">{item.subtitle}</p>
                           </div>
                         </Link>
                       ))}

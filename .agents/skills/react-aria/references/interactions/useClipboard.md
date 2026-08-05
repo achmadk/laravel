@@ -460,13 +460,13 @@ function Pasteable() {
 
 ### ClipboardProps
 
-| Name         | Type                           | Description               |
+| Name | Type | Description |
 | ------------ | ------------------------------ | ------------------------- | ------------------------------------------------------------------ | ------------------------------------------ |
-| `getItems`   | `((details: { action: "cut"    | "copy"; }) => DragItem[]) | undefined`                                                         | A function that returns the items to copy. |
-| `onCopy`     | `(() => void)                  | undefined`                | Handler that is called when the user triggers a copy interaction.  |
-| `onCut`      | `(() => void)                  | undefined`                | Handler that is called when the user triggers a cut interaction.   |
-| `onPaste`    | `((items: DropItem[]) => void) | undefined`                | Handler that is called when the user triggers a paste interaction. |
-| `isDisabled` | `boolean                       | undefined`                | Whether the clipboard is disabled.                                 |
+| `getItems` | `((details: { action: "cut"    | "copy"; }) => DragItem[]) | undefined` | A function that returns the items to copy. |
+| `onCopy` | `(() => void)                  | undefined` | Handler that is called when the user triggers a copy interaction. |
+| `onCut` | `(() => void)                  | undefined` | Handler that is called when the user triggers a cut interaction. |
+| `onPaste` | `((items: DropItem[]) => void) | undefined` | Handler that is called when the user triggers a paste interaction. |
+| `isDisabled` | `boolean                       | undefined` | Whether the clipboard is disabled. |
 
 ### ClipboardResult
 
@@ -483,13 +483,13 @@ function Pasteable() {
 Handles clipboard interactions for a focusable element. Supports items of multiple
 data types, and integrates with the operating system native clipboard.
 
-| Name         | Type                           | Description               |
+| Name | Type | Description |
 | ------------ | ------------------------------ | ------------------------- | ------------------------------------------------------------------ | ------------------------------------------ |
-| `getItems`   | `((details: { action: "cut"    | "copy"; }) => DragItem[]) | undefined`                                                         | A function that returns the items to copy. |
-| `onCopy`     | `(() => void)                  | undefined`                | Handler that is called when the user triggers a copy interaction.  |
-| `onCut`      | `(() => void)                  | undefined`                | Handler that is called when the user triggers a cut interaction.   |
-| `onPaste`    | `((items: DropItem[]) => void) | undefined`                | Handler that is called when the user triggers a paste interaction. |
-| `isDisabled` | `boolean                       | undefined`                | Whether the clipboard is disabled.                                 |
+| `getItems` | `((details: { action: "cut"    | "copy"; }) => DragItem[]) | undefined` | A function that returns the items to copy. |
+| `onCopy` | `(() => void)                  | undefined` | Handler that is called when the user triggers a copy interaction. |
+| `onCut` | `(() => void)                  | undefined` | Handler that is called when the user triggers a cut interaction. |
+| `onPaste` | `((items: DropItem[]) => void) | undefined` | Handler that is called when the user triggers a paste interaction. |
+| `isDisabled` | `boolean                       | undefined` | Whether the clipboard is disabled. |
 
 ### TextDropItem
 

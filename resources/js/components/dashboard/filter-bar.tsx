@@ -11,7 +11,7 @@ export function FilterBar({ onSubmit, children, className }: FilterBarProps) {
     <form
       onSubmit={onSubmit}
       className={twMerge(
-        "mb-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3",
+        "mb-4 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center",
         className,
       )}
     >

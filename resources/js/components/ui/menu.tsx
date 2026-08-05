@@ -141,7 +141,7 @@ const MenuItem = ({ className, intent, children, ...props }: MenuItemProps) => {
           {values.hasSubmenu && (
             <ChevronRightIcon
               data-slot="chevron"
-              className="-translate-y-1/2 absolute end-0 size-4"
+              className="absolute end-0 size-4 -translate-y-1/2"
               style={{
                 top: "calc(var(--spacing) * 3)",
               }}

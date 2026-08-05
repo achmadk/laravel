@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <Sidebar sidebarOpen={sidebarOpen} onClose={closeSidebar} collapsed={sidebarCollapsed} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-bg px-4 md:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-border border-b bg-bg px-4 md:px-6">
           <div className="flex items-center gap-4">
             <Button
               onPress={toggleSidebar}
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </Button>
 
             <div className="hidden h-6 w-px bg-border md:block" />
-            <h1 className="hidden text-base font-semibold text-fg md:block">Point of Sales</h1>
+            <h1 className="hidden font-semibold text-base text-fg md:block">Point of Sales</h1>
           </div>
 
           <div className="flex items-center gap-2">
@@ -77,12 +77,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             <Link
               href="/notifications"
-              className="relative flex p-2.5 rounded-xl text-muted-fg hover:text-fg hover:bg-muted transition-colors"
+              className="relative flex rounded-xl p-2.5 text-muted-fg transition-colors hover:bg-muted hover:text-fg"
               aria-label="Notifications"
             >
               <IconBell className="size-5" />
               {notificationCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">
+                <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-danger font-bold text-[10px] text-white">
                   {notificationCount > 9 ? "9+" : notificationCount}
                 </span>
               )}
@@ -91,9 +91,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {lowStockCount > 0 && (
               <Link
                 href="/products"
-                className="hidden sm:flex items-center gap-1.5 rounded-lg bg-danger/10 px-3 py-1.5 text-xs font-medium text-danger"
+                className="hidden items-center gap-1.5 rounded-lg bg-danger/10 px-3 py-1.5 font-medium text-danger text-xs sm:flex"
               >
-                <span className="size-1.5 rounded-full bg-danger animate-pulse" />
+                <span className="size-1.5 animate-pulse rounded-full bg-danger" />
                 {lowStockCount} stok habis
               </Link>
             )}

@@ -79,8 +79,8 @@ function InfoCard({ label, value }: { label: string; value: string }) {
   return (
     <Card>
       <CardContent className="p-4">
-        <p className="text-xs font-medium uppercase tracking-wide text-muted-fg">{label}</p>
-        <p className="mt-2 text-lg font-semibold text-fg">{value}</p>
+        <p className="font-medium text-muted-fg text-xs uppercase tracking-wide">{label}</p>
+        <p className="mt-2 font-semibold text-fg text-lg">{value}</p>
       </CardContent>
     </Card>
   );
@@ -264,13 +264,13 @@ export default function SalesReturnForm({
           <div>
             <Link
               href={salesReturn ? salesReturns.index.url() : transactions.history.url()}
-              className="mb-3 inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+              className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
             >
               <IconArrowLeft size={16} />
               {salesReturn ? "Kembali ke daftar retur" : "Kembali ke riwayat transaksi"}
             </Link>
-            <h1 className="text-2xl font-bold text-fg">{title}</h1>
-            <p className="mt-1 text-sm text-muted-fg">
+            <h1 className="font-bold text-2xl text-fg">{title}</h1>
+            <p className="mt-1 text-muted-fg text-sm">
               Invoice {transaction.invoice} &bull; {formatDateTime(transaction.created_at)}
             </p>
           </div>
@@ -282,7 +282,7 @@ export default function SalesReturnForm({
                 label={salesReturn.status === "completed" ? "Completed" : "Draft"}
               />
               {salesReturn.completed_at && (
-                <span className="text-xs text-muted-fg">
+                <span className="text-muted-fg text-xs">
                   {formatDateTime(salesReturn.completed_at)}
                 </span>
               )}
@@ -304,7 +304,7 @@ export default function SalesReturnForm({
           <Card>
             <CardContent className="p-5">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-fg">Item Retur</h2>
+                <h2 className="font-semibold text-fg text-lg">Item Retur</h2>
                 {canEdit && (
                   <Button type="submit" isDisabled={form.processing} intent="primary">
                     <IconDeviceFloppy size={18} />
@@ -317,7 +317,7 @@ export default function SalesReturnForm({
                 <table className="w-full text-sm">
                   <thead className="border-b bg-muted">
                     <tr>
-                      <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg min-w-[180px]">
+                      <th className="h-12 min-w-[180px] px-4 text-left align-middle font-medium text-muted-fg">
                         Produk
                       </th>
                       <th className="h-12 px-4 text-center align-middle font-medium text-muted-fg">
@@ -332,7 +332,7 @@ export default function SalesReturnForm({
                       <th className="h-12 px-4 text-center align-middle font-medium text-muted-fg">
                         Qty Retur
                       </th>
-                      <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg min-w-[160px]">
+                      <th className="h-12 min-w-[160px] px-4 text-left align-middle font-medium text-muted-fg">
                         Alasan
                       </th>
                       <th className="h-12 px-4 text-center align-middle font-medium text-muted-fg">
@@ -345,11 +345,11 @@ export default function SalesReturnForm({
                   </thead>
                   <tbody className="divide-y bg-bg">
                     {itemStates.map((item) => (
-                      <tr key={item.id} className="hover:bg-muted transition-colors">
+                      <tr key={item.id} className="transition-colors hover:bg-muted">
                         <td className="whitespace-nowrap p-4 align-middle">
                           <div>
                             <p className="font-medium text-fg">{item.product?.title || "-"}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               {item.product?.barcode || item.product?.sku || "-"}
                             </p>
                           </div>
@@ -371,7 +371,7 @@ export default function SalesReturnForm({
                             value={item.qty_return}
                             disabled={!canEdit}
                             onChange={(e) => updateItem(item.id, "qty_return", e.target.value)}
-                            className="h-10 w-24 rounded-lg border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                            className="h-10 w-24 rounded-lg border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                           />
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle">
@@ -381,7 +381,7 @@ export default function SalesReturnForm({
                             disabled={!canEdit}
                             onChange={(e) => updateItem(item.id, "return_reason", e.target.value)}
                             placeholder="Alasan retur"
-                            className="h-10 min-w-48 rounded-lg border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60 placeholder:text-muted-fg"
+                            className="h-10 min-w-48 rounded-lg border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                           />
                         </td>
                         <td className="whitespace-nowrap p-4 text-center align-middle">
@@ -405,7 +405,7 @@ export default function SalesReturnForm({
               </div>
 
               {form.errors.items && (
-                <p className="mt-3 text-sm text-danger">{form.errors.items as string}</p>
+                <p className="mt-3 text-danger text-sm">{form.errors.items as string}</p>
               )}
             </CardContent>
           </Card>
@@ -413,18 +413,18 @@ export default function SalesReturnForm({
           <div className="space-y-6">
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Penyelesaian Retur</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Penyelesaian Retur</h2>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-fg">
+                    <label className="mb-2 block font-medium text-fg text-sm">
                       Metode Penyelesaian
                     </label>
                     <select
                       value={form.data.return_type}
                       disabled={!canEdit || !transaction.customer}
                       onChange={(e) => form.setData("return_type", e.target.value)}
-                      className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       <option value="refund_cash">Refund Tunai</option>
                       {transaction.customer && (
@@ -432,20 +432,20 @@ export default function SalesReturnForm({
                       )}
                     </select>
                     {!transaction.customer && (
-                      <p className="mt-2 text-xs text-muted-fg">
+                      <p className="mt-2 text-muted-fg text-xs">
                         Transaksi tanpa pelanggan hanya dapat memakai refund tunai.
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-fg">Catatan</label>
+                    <label className="mb-2 block font-medium text-fg text-sm">Catatan</label>
                     <textarea
                       rows={4}
                       value={form.data.notes}
                       disabled={!canEdit}
                       onChange={(e) => form.setData("notes", e.target.value)}
-                      className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60 placeholder:text-muted-fg"
+                      className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                       placeholder="Catatan retur"
                     />
                   </div>
@@ -455,9 +455,9 @@ export default function SalesReturnForm({
 
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Preview Dampak</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Preview Dampak</h2>
 
-                <div className="space-y-3 text-sm text-muted-fg">
+                <div className="space-y-3 text-muted-fg text-sm">
                   <PreviewRow label="Item dipilih" value={`${summary.selectedItemsCount} produk`} />
                   <PreviewRow label="Total qty retur" value={`${summary.totalItems} item`} />
                   <PreviewRow label="Stok kembali" value={`${summary.restockQty} item`} />
@@ -495,7 +495,7 @@ export default function SalesReturnForm({
                       Selesaikan Retur
                     </Button>
                     {form.isDirty && (
-                      <p className="mt-2 text-xs text-warning">
+                      <p className="mt-2 text-warning text-xs">
                         Simpan draft terlebih dulu sebelum menyelesaikan retur.
                       </p>
                     )}

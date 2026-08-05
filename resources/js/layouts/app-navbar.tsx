@@ -28,7 +28,7 @@ import { Link } from "@/components/ui/link";
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 import { logout } from "@/routes";
 
-const navigations = [
+const defaultNavigations = [
   {
     name: "Home",
     textValue: "Home",
@@ -36,16 +36,25 @@ const navigations = [
   },
 ];
 
+const authNavigations = [
+  {
+    name: "Home",
+    textValue: "Home",
+    href: "/home",
+  },
+];
+
 export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Navbar>) {
   const page = usePage();
   const { auth } = usePage<SharedData>().props;
   const [isOpen, setIsOpen] = useState(false);
+  const navigations = auth.user ? authNavigations : defaultNavigations;
   useEffect(() => setIsOpen(false), [page.url]);
   return (
     <NavbarProvider isOpen={isOpen} onOpenChange={setIsOpen}>
       <Navbar {...props}>
         <NavbarStart>
-          <Link href="/" aria-label="Goto homepage">
+          <Link href={auth.user ? "/home" : "/"} aria-label="Goto homepage">
             <Logo />
           </Link>
         </NavbarStart>

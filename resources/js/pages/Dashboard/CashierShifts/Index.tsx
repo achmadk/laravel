@@ -159,31 +159,31 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
           <Card>
             <CardContent className="p-5">
               <div className="mb-4">
-                <h2 className="text-lg font-semibold text-fg">Buka Shift Baru</h2>
-                <p className="text-sm text-muted-fg">
+                <h2 className="font-semibold text-fg text-lg">Buka Shift Baru</h2>
+                <p className="text-muted-fg text-sm">
                   Shift aktif diperlukan sebelum kasir dapat memproses transaksi.
                 </p>
               </div>
 
               <form onSubmit={handleOpenShift} className="grid gap-4 md:grid-cols-3">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-fg">Modal Awal</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Modal Awal</label>
                   <input
                     type="number"
                     min="0"
                     value={openingCash}
                     onChange={(e) => setOpeningCash(e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     placeholder="0"
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="mb-2 block text-sm font-medium text-fg">Catatan</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Catatan</label>
                   <input
                     type="text"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     placeholder="Opsional"
                   />
                 </div>
@@ -201,38 +201,38 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
         {activeShift && (
           <div className="grid gap-4 md:grid-cols-4">
             <div className="rounded-2xl border border-success/30 bg-success/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-success">
+              <p className="font-semibold text-success text-xs uppercase tracking-wide">
                 Shift Aktif
               </p>
-              <p className="mt-2 text-lg font-semibold text-fg">{activeShift.user?.name}</p>
-              <p className="mt-1 text-sm text-muted-fg">{formatDateTime(activeShift.opened_at)}</p>
+              <p className="mt-2 font-semibold text-fg text-lg">{activeShift.user?.name}</p>
+              <p className="mt-1 text-muted-fg text-sm">{formatDateTime(activeShift.opened_at)}</p>
             </div>
             <Card>
               <CardContent className="p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Modal Awal
                 </p>
-                <p className="mt-2 text-lg font-semibold text-fg">
+                <p className="mt-2 font-semibold text-fg text-lg">
                   {formatCurrency(activeShift.opening_cash)}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Expected Cash
                 </p>
-                <p className="mt-2 text-lg font-semibold text-fg">
+                <p className="mt-2 font-semibold text-fg text-lg">
                   {formatCurrency(activeShift.expected_cash)}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-fg">
+                <p className="font-semibold text-muted-fg text-xs uppercase tracking-wide">
                   Total Transaksi
                 </p>
-                <p className="mt-2 text-lg font-semibold text-fg">
+                <p className="mt-2 font-semibold text-fg text-lg">
                   {activeShift.transactions_count}
                 </p>
               </CardContent>
@@ -240,12 +240,12 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-3 bg-bg border border-border rounded-2xl p-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-4">
           {cashiers.length > 1 ? (
             <select
               value={currentFilters.cashier_id}
               onChange={(e) => handleFilterChange("cashier_id", e.target.value)}
-              className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+              className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
             >
               <option value="">Semua Kasir</option>
               {cashiers.map((cashier) => (
@@ -255,7 +255,7 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
               ))}
             </select>
           ) : (
-            <div className="flex h-11 items-center rounded-xl border border-input bg-muted px-4 text-sm text-muted-fg">
+            <div className="flex h-11 items-center rounded-xl border border-input bg-muted px-4 text-muted-fg text-sm">
               <IconHistory size={18} className="mr-2" />
               {cashiers[0]?.name}
             </div>
@@ -263,7 +263,7 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
           <select
             value={currentFilters.status}
             onChange={(e) => handleFilterChange("status", e.target.value)}
-            className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+            className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
           >
             <option value="">Semua Status</option>
             <option value="open">Open</option>
@@ -274,20 +274,20 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
             type="date"
             value={currentFilters.opened_from}
             onChange={(e) => handleFilterChange("opened_from", e.target.value)}
-            className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+            className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
           />
           <input
             type="date"
             value={currentFilters.opened_to}
             onChange={(e) => handleFilterChange("opened_to", e.target.value)}
-            className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+            className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
           />
         </div>
 
         <Card>
           <CardContent className="p-0">
-            <div className="px-5 py-4 border-b border-border">
-              <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+            <div className="border-border border-b px-5 py-4">
+              <div className="flex items-center gap-2 font-semibold text-fg text-sm">
                 Histori Shift Kasir
               </div>
             </div>
@@ -313,7 +313,7 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
                       Selisih
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-muted-fg w-24">
+                    <th className="h-12 w-24 px-4 text-center align-middle font-medium text-muted-fg">
                       Aksi
                     </th>
                   </tr>
@@ -321,11 +321,11 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
                 <tbody className="divide-y bg-bg">
                   {shifts.data.length > 0 ? (
                     shifts.data.map((shift) => (
-                      <tr key={shift.id} className="hover:bg-muted transition-colors">
+                      <tr key={shift.id} className="transition-colors hover:bg-muted">
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
                           <div>
                             <p className="font-semibold text-fg">{shift.user?.name || "-"}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               Modal {formatCurrency(shift.opening_cash)}
                             </p>
                           </div>
@@ -347,7 +347,7 @@ export default function Index({ shifts, filters, cashiers = [], activeShift }: I
                             ? "-"
                             : formatCurrency(shift.cash_difference)}
                         </td>
-                        <td className="whitespace-nowrap p-4 align-middle text-center">
+                        <td className="whitespace-nowrap p-4 text-center align-middle">
                           <Link
                             href={cashierShifts.show.url({ cashierShift: shift.id })}
                             className="inline-flex rounded-xl border border-border bg-muted p-2 text-muted-fg transition hover:border-primary/30 hover:text-primary"

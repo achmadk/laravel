@@ -88,14 +88,14 @@ For an example of landmarks in use, see the [useToastRegion](Toast/useToast.md#a
 
 ### AriaLandmarkProps
 
-| Name               | Type                    | Description          |
+| Name | Type | Description |
 | ------------------ | ----------------------- | -------------------- | -------------------------------------------------------------------------------------------------- | --- |
-| `role` \*          | `AriaLandmarkRole`      | —                    |
-| `focus`            | `((direction: "forward" | "backward") => void) | undefined`                                                                                         | —   |
-| `aria-label`       | `string                 | undefined`           | Defines a string value that labels the current element.                                            |
-| `aria-labelledby`  | `string                 | undefined`           | Identifies the element (or elements) that labels the current element.                              |
-| `aria-describedby` | `string                 | undefined`           | Identifies the element (or elements) that describes the object.                                    |
-| `aria-details`     | `string                 | undefined`           | Identifies the element (or elements) that provide a detailed, extended description for the object. |
+| `role` \* | `AriaLandmarkRole` | — |
+| `focus` | `((direction: "forward" | "backward") => void) | undefined` | — |
+| `aria-label` | `string                 | undefined` | Defines a string value that labels the current element. |
+| `aria-labelledby` | `string                 | undefined` | Identifies the element (or elements) that labels the current element. |
+| `aria-describedby` | `string                 | undefined` | Identifies the element (or elements) that describes the object. |
+| `aria-details` | `string                 | undefined` | Identifies the element (or elements) that provide a detailed, extended description for the object. |
 
 ### LandmarkAria
 

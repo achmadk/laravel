@@ -27,19 +27,19 @@ export default function VerifyEmail({ status, botGuard }: VerifyEmailProps) {
       <Head title="Verifikasi Email" />
 
       {status === "verification-link-sent" && (
-        <div className="animate-fade-up stagger-1 mb-6 rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+        <div className="stagger-1 mb-6 animate-fade-up rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
           Link verifikasi baru sudah dikirim ke email Anda.
         </div>
       )}
 
-      <div className="animate-fade-up stagger-1 rounded-[20px] border border-[var(--border)] bg-white p-6 dark:bg-[var(--overlay)]">
+      <div className="stagger-1 animate-fade-up rounded-[20px] border border-[var(--border)] bg-white p-6 dark:bg-[var(--overlay)]">
         {/* Spam check tip */}
-        <div className="mb-5 rounded-xl bg-[var(--muted)] p-4 text-sm text-[var(--muted-fg)]">
+        <div className="mb-5 rounded-xl bg-[var(--muted)] p-4 text-[var(--muted-fg)] text-sm">
           Pastikan juga memeriksa folder spam atau promotion jika email belum terlihat di inbox.
         </div>
 
         {errors.human && (
-          <div className="mb-5 rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="mb-5 rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
             {errors.human}
           </div>
         )}
@@ -55,7 +55,7 @@ export default function VerifyEmail({ status, botGuard }: VerifyEmailProps) {
           <button
             type="submit"
             disabled={processing}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 active:scale-[0.985] focus:ring-3 focus:ring-[var(--primary-subtle)] disabled:opacity-50"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 focus:ring-3 focus:ring-[var(--primary-subtle)] active:scale-[0.985] disabled:opacity-50"
           >
             {processing ? (
               <>
@@ -95,14 +95,14 @@ VerifyEmail.layout = (page: React.ReactNode) => (
         <div className="mx-auto mb-8 flex size-24 items-center justify-center rounded-2xl bg-white/20">
           <IconMailCheck size={48} />
         </div>
-        <h2 className="mb-4 text-3xl font-bold">Aktivasi Akun Lebih Aman</h2>
+        <h2 className="mb-4 font-bold text-3xl">Aktivasi Akun Lebih Aman</h2>
         <p className="text-lg opacity-90">
           Verifikasi email membantu memastikan hanya akun yang valid yang dapat mengakses dashboard
           dan data operasional toko.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {["Akses Terverifikasi", "Perlindungan Akun", "Dashboard Aman"].map((item, index) => (
-            <span key={index} className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium">
+            <span key={index} className="rounded-full bg-white/20 px-4 py-2 font-medium text-sm">
               {item}
             </span>
           ))}

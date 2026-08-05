@@ -97,14 +97,14 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
           }
         />
 
-        <div className="grid grid-cols-1 gap-3 bg-bg border border-border rounded-2xl p-4 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-4">
           <div className="relative md:col-span-2">
             <input
               type="text"
               value={filters?.search || ""}
               onChange={(e) => handleFilterChange("search", e.target.value)}
               placeholder="Cari kode sesi atau catatan..."
-              className="h-11 w-full rounded-xl border border-input bg-muted px-4 pr-11 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-4 pr-11 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
             />
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-muted-fg">
               <IconSearch size={18} />
@@ -114,7 +114,7 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
           <select
             value={filters?.status || ""}
             onChange={(e) => handleFilterChange("status", e.target.value)}
-            className="h-11 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+            className="h-11 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
           >
             <option value="">Semua Status</option>
             <option value="draft">Draft</option>
@@ -126,21 +126,21 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
               type="date"
               value={filters?.date_from || ""}
               onChange={(e) => handleFilterChange("date_from", e.target.value)}
-              className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+              className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
             />
             <input
               type="date"
               value={filters?.date_to || ""}
               onChange={(e) => handleFilterChange("date_to", e.target.value)}
-              className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+              className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
             />
           </div>
         </div>
 
         <Card>
           <CardContent className="p-0">
-            <div className="px-5 py-4 border-b border-border">
-              <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+            <div className="border-border border-b px-5 py-4">
+              <div className="flex items-center gap-2 font-semibold text-fg text-sm">
                 Daftar Sesi Stock Opname
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
                       Finalized
                     </th>
-                    <th className="h-12 px-4 text-center align-middle font-medium text-muted-fg w-24">
+                    <th className="h-12 w-24 px-4 text-center align-middle font-medium text-muted-fg">
                       Aksi
                     </th>
                   </tr>
@@ -171,11 +171,11 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
                 <tbody className="divide-y bg-bg">
                   {data.data.length > 0 ? (
                     data.data.map((stockOpname) => (
-                      <tr key={stockOpname.id} className="hover:bg-muted transition-colors">
+                      <tr key={stockOpname.id} className="transition-colors hover:bg-muted">
                         <td className="whitespace-nowrap p-4 align-middle">
                           <div>
                             <p className="font-semibold text-fg">{stockOpname.code}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               {stockOpname.notes || "Tanpa catatan"}
                             </p>
                           </div>
@@ -194,7 +194,7 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
                             ? `${stockOpname.finalizer?.name || "-"} • ${formatDateTime(stockOpname.finalized_at)}`
                             : "-"}
                         </td>
-                        <td className="whitespace-nowrap p-4 align-middle text-center">
+                        <td className="whitespace-nowrap p-4 text-center align-middle">
                           <Link
                             href={stockOpnames.show.url({ stockOpname: stockOpname.id })}
                             className="inline-flex rounded-xl border border-border bg-muted p-2 text-muted-fg transition hover:border-primary/30 hover:text-primary"

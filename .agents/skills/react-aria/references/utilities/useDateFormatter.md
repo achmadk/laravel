@@ -46,27 +46,27 @@ function CurrentDate() {
 
 ### DateFormatterOptions
 
-| Name                     | Type        | Description |
+| Name | Type | Description |
 | ------------------------ | ----------- | ----------- | ------------- | ------------ | -------------- | ------------- | ---------- | --- |
-| `calendar`               | `string     | undefined`  | —             |
-| `localeMatcher`          | `"best fit" | "lookup"    | undefined`    | —            |
-| `weekday`                | `"long"     | "short"     | "narrow"      | undefined`   | —              |
-| `era`                    | `"long"     | "short"     | "narrow"      | undefined`   | —              |
-| `year`                   | `"numeric"  | "2-digit"   | undefined`    | —            |
-| `month`                  | `"long"     | "short"     | "narrow"      | "numeric"    | "2-digit"      | undefined`    | —          |
-| `day`                    | `"numeric"  | "2-digit"   | undefined`    | —            |
-| `hour`                   | `"numeric"  | "2-digit"   | undefined`    | —            |
-| `minute`                 | `"numeric"  | "2-digit"   | undefined`    | —            |
-| `second`                 | `"numeric"  | "2-digit"   | undefined`    | —            |
-| `timeZoneName`           | `"long"     | "short"     | "shortOffset" | "longOffset" | "shortGeneric" | "longGeneric" | undefined` | —   |
-| `formatMatcher`          | `"best fit" | "basic"     | undefined`    | —            |
-| `hour12`                 | `boolean    | undefined`  | —             |
-| `timeZone`               | `string     | undefined`  | —             |
-| `dayPeriod`              | `"long"     | "short"     | "narrow"      | undefined`   | —              |
-| `numberingSystem`        | `string     | undefined`  | —             |
-| `dateStyle`              | `"long"     | "short"     | "full"        | "medium"     | undefined`     | —             |
-| `timeStyle`              | `"long"     | "short"     | "full"        | "medium"     | undefined`     | —             |
-| `hourCycle`              | `"h11"      | "h12"       | "h23"         | "h24"        | undefined`     | —             |
-| `fractionalSecondDigits` | `1          | 2           | 3             | undefined`   | —              |
+| `calendar` | `string     | undefined` | — |
+| `localeMatcher` | `"best fit" | "lookup"    | undefined` | — |
+| `weekday` | `"long"     | "short"     | "narrow"      | undefined` | — |
+| `era` | `"long"     | "short"     | "narrow"      | undefined` | — |
+| `year` | `"numeric"  | "2-digit"   | undefined` | — |
+| `month` | `"long"     | "short"     | "narrow"      | "numeric"    | "2-digit"      | undefined` | — |
+| `day` | `"numeric"  | "2-digit"   | undefined` | — |
+| `hour` | `"numeric"  | "2-digit"   | undefined` | — |
+| `minute` | `"numeric"  | "2-digit"   | undefined` | — |
+| `second` | `"numeric"  | "2-digit"   | undefined` | — |
+| `timeZoneName` | `"long"     | "short"     | "shortOffset" | "longOffset" | "shortGeneric" | "longGeneric" | undefined` | — |
+| `formatMatcher` | `"best fit" | "basic"     | undefined` | — |
+| `hour12` | `boolean    | undefined` | — |
+| `timeZone` | `string     | undefined` | — |
+| `dayPeriod` | `"long"     | "short"     | "narrow"      | undefined` | — |
+| `numberingSystem` | `string     | undefined` | — |
+| `dateStyle` | `"long"     | "short"     | "full"        | "medium"     | undefined` | — |
+| `timeStyle` | `"long"     | "short"     | "full"        | "medium"     | undefined` | — |
+| `hourCycle` | `"h11"      | "h12"       | "h23"         | "h24"        | undefined` | — |
+| `fractionalSecondDigits` | `1          | 2           | 3             | undefined` | — |
 
 ### DateFormatter

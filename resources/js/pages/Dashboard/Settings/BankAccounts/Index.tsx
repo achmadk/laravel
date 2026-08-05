@@ -50,21 +50,21 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
       <Head title="Pengaturan Rekening Bank" />
 
       <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-fg">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
           <IconBuildingBank size={28} className="text-primary-500" />
           Rekening Bank
         </h1>
-        <p className="mt-1 text-sm text-muted-fg">Kelola rekening bank untuk pembayaran transfer</p>
+        <p className="mt-1 text-muted-fg text-sm">Kelola rekening bank untuk pembayaran transfer</p>
       </div>
 
       <div className="max-w-3xl space-y-6">
         <div className="overflow-hidden rounded-2xl border border-border bg-bg">
-          <div className="flex items-center justify-between border-b border-border p-4">
+          <div className="flex items-center justify-between border-border border-b p-4">
             <h3 className="font-semibold text-fg">Daftar Rekening ({bankAccounts.length})</h3>
             {canUpdatePaymentSettings && (
               <Link
                 href={settings.bankAccounts.create.url()}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-600"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-3 py-2 font-medium text-sm text-white transition-colors hover:bg-primary-600"
               >
                 <IconPlus size={18} />
                 Tambah Bank
@@ -95,7 +95,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-fg">{bank.bank_name}</p>
-                    <p className="text-sm text-muted-fg">
+                    <p className="text-muted-fg text-sm">
                       {bank.account_number} &bull; {bank.account_name}
                     </p>
                   </div>
@@ -104,7 +104,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
                       <>
                         <button
                           onClick={() => handleToggle(bank)}
-                          className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                          className={`rounded-lg px-3 py-1.5 font-medium text-xs transition-colors ${
                             bank.is_active
                               ? "bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400"
                               : "bg-muted text-muted-fg"

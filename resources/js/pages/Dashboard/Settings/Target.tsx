@@ -41,8 +41,8 @@ export default function Target({ settings: targetSettings }: TargetProps) {
 
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">Target Penjualan</h1>
-          <p className="text-sm text-muted-fg">Atur target penjualan bulanan untuk bisnis Anda</p>
+          <h1 className="font-bold text-2xl text-fg">Target Penjualan</h1>
+          <p className="text-muted-fg text-sm">Atur target penjualan bulanan untuk bisnis Anda</p>
         </div>
 
         <Card>
@@ -53,11 +53,11 @@ export default function Target({ settings: targetSettings }: TargetProps) {
                   <IconTarget size={24} className="text-primary" />
                 </div>
                 <div className="flex-1">
-                  <label className="mb-2 block text-sm font-medium text-fg">
+                  <label className="mb-2 block font-medium text-fg text-sm">
                     Target Penjualan Bulanan
                   </label>
                   <div className="relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-fg">
+                    <div className="absolute top-1/2 left-4 -translate-y-1/2 text-muted-fg">
                       <IconCoin size={20} />
                     </div>
                     <input
@@ -65,21 +65,21 @@ export default function Target({ settings: targetSettings }: TargetProps) {
                       value={data.monthly_sales_target}
                       onChange={(e) => setData("monthly_sales_target", e.target.value)}
                       placeholder="Contoh: 50000000"
-                      className="h-12 w-full rounded-xl border-2 border-border bg-bg pl-12 pr-4 text-fg placeholder-muted-fg transition-all focus:border-ring focus:ring-4 focus:ring-ring/20"
+                      className="h-12 w-full rounded-xl border-2 border-border bg-bg pr-4 pl-12 text-fg placeholder-muted-fg transition-all focus:border-ring focus:ring-4 focus:ring-ring/20"
                     />
                   </div>
                   {Number(data.monthly_sales_target) > 0 && (
-                    <p className="mt-2 text-sm text-muted-fg">
+                    <p className="mt-2 text-muted-fg text-sm">
                       Target: {formatCurrency(Number(data.monthly_sales_target))}
                     </p>
                   )}
                   {errors.monthly_sales_target && (
-                    <p className="mt-1 text-sm text-danger">{errors.monthly_sales_target}</p>
+                    <p className="mt-1 text-danger text-sm">{errors.monthly_sales_target}</p>
                   )}
                 </div>
               </div>
 
-              <div className="flex justify-end border-t border-border pt-4">
+              <div className="flex justify-end border-border border-t pt-4">
                 <button
                   type="submit"
                   disabled={processing}
@@ -94,7 +94,7 @@ export default function Target({ settings: targetSettings }: TargetProps) {
         </Card>
 
         <div className="rounded-xl border border-primary/30 bg-primary/5 p-4">
-          <p className="text-sm text-primary">
+          <p className="text-primary text-sm">
             <strong>Tip:</strong> Target penjualan akan ditampilkan di Dashboard sebagai progress
             bar untuk memantau pencapaian bulanan Anda.
           </p>

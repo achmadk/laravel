@@ -59,7 +59,7 @@ export default function Create({ categories }: CreateProps) {
       <div className="mb-6">
         <Link
           href={products.index.url()}
-          className="inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary mb-3"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke Produk
@@ -71,7 +71,7 @@ export default function Create({ categories }: CreateProps) {
       </div>
 
       <form onSubmit={submit} encType="multipart/form-data">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
@@ -81,13 +81,13 @@ export default function Create({ categories }: CreateProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="aspect-square rounded-xl bg-muted border-2 border-dashed border-border flex items-center justify-center overflow-hidden mb-4">
+                <div className="mb-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl border-2 border-border border-dashed bg-muted">
                   {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
                   ) : (
-                    <div className="text-center p-6">
-                      <IconPhoto size={48} className="mx-auto text-muted-fg mb-2" strokeWidth={1} />
-                      <p className="text-sm text-muted-fg">Belum ada gambar</p>
+                    <div className="p-6 text-center">
+                      <IconPhoto size={48} className="mx-auto mb-2 text-muted-fg" strokeWidth={1} />
+                      <p className="text-muted-fg text-sm">Belum ada gambar</p>
                     </div>
                   )}
                 </div>
@@ -95,14 +95,14 @@ export default function Create({ categories }: CreateProps) {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-muted-fg file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-fg hover:file:brightness-110 cursor-pointer"
+                  className="block w-full cursor-pointer text-muted-fg text-sm file:mr-4 file:rounded-xl file:border-0 file:bg-primary file:px-4 file:py-2 file:font-medium file:text-primary-fg file:text-sm hover:file:brightness-110"
                 />
-                {errors.image && <p className="mt-1 text-xs text-danger">{errors.image}</p>}
+                {errors.image && <p className="mt-1 text-danger text-xs">{errors.image}</p>}
               </CardContent>
             </Card>
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6 lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-sm">
@@ -111,15 +111,15 @@ export default function Create({ categories }: CreateProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Kategori
                     </label>
                     <select
                       value={data.category_id}
                       onChange={(e) => setData("category_id", e.target.value)}
-                      className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                     >
                       <option value="">Pilih kategori</option>
                       {categories.map((cat) => (
@@ -129,12 +129,12 @@ export default function Create({ categories }: CreateProps) {
                       ))}
                     </select>
                     {errors.category_id && (
-                      <p className="mt-1 text-xs text-danger">{errors.category_id}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.category_id}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Barcode
                     </label>
                     <Input
@@ -145,10 +145,10 @@ export default function Create({ categories }: CreateProps) {
                       // @ts-expect-error
                       isInvalid={!!errors.barcode}
                     />
-                    {errors.barcode && <p className="mt-1 text-xs text-danger">{errors.barcode}</p>}
+                    {errors.barcode && <p className="mt-1 text-danger text-xs">{errors.barcode}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">SKU</label>
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">SKU</label>
                     <Input
                       type="text"
                       value={data.sku}
@@ -157,10 +157,10 @@ export default function Create({ categories }: CreateProps) {
                       // @ts-expect-error
                       isInvalid={!!errors.sku}
                     />
-                    {errors.sku && <p className="mt-1 text-xs text-danger">{errors.sku}</p>}
+                    {errors.sku && <p className="mt-1 text-danger text-xs">{errors.sku}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Nama Produk
                     </label>
                     <Input
@@ -171,10 +171,10 @@ export default function Create({ categories }: CreateProps) {
                       // @ts-expect-error
                       isInvalid={!!errors.title}
                     />
-                    {errors.title && <p className="mt-1 text-xs text-danger">{errors.title}</p>}
+                    {errors.title && <p className="mt-1 text-danger text-xs">{errors.title}</p>}
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Deskripsi
                     </label>
                     <textarea
@@ -182,10 +182,10 @@ export default function Create({ categories }: CreateProps) {
                       onChange={(e) => setData("description", e.target.value)}
                       placeholder="Deskripsi produk (opsional)"
                       rows={3}
-                      className="relative block w-full appearance-none rounded-lg bg-(--control-bg,transparent) px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] text-base/6 text-fg placeholder:text-muted-fg sm:text-sm/6 border border-input enabled:hover:border-muted-fg/30 outline-hidden focus:border-ring/70 focus:ring-3 focus:ring-ring/20 focus:enabled:hover:border-ring/80 in-disabled:bg-muted dark:scheme-dark"
+                      className="dark:scheme-dark relative block w-full appearance-none rounded-lg border border-input bg-(--control-bg,transparent) in-disabled:bg-muted px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-fg outline-hidden placeholder:text-muted-fg focus:border-ring/70 focus:ring-3 focus:ring-ring/20 enabled:hover:border-muted-fg/30 focus:enabled:hover:border-ring/80 sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6"
                     />
                     {errors.description && (
-                      <p className="mt-1 text-xs text-danger">{errors.description}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.description}</p>
                     )}
                   </div>
                 </div>
@@ -200,9 +200,9 @@ export default function Create({ categories }: CreateProps) {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Harga Beli
                     </label>
                     <Input
@@ -214,11 +214,11 @@ export default function Create({ categories }: CreateProps) {
                       isInvalid={!!errors.buy_price}
                     />
                     {errors.buy_price && (
-                      <p className="mt-1 text-xs text-danger">{errors.buy_price}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.buy_price}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Harga Jual
                     </label>
                     <Input
@@ -230,11 +230,11 @@ export default function Create({ categories }: CreateProps) {
                       isInvalid={!!errors.sell_price}
                     />
                     {errors.sell_price && (
-                      <p className="mt-1 text-xs text-danger">{errors.sell_price}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.sell_price}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-fg mb-1.5">
+                    <label className="mb-1.5 block font-medium text-muted-fg text-sm">
                       Stok Awal
                     </label>
                     <Input
@@ -245,7 +245,7 @@ export default function Create({ categories }: CreateProps) {
                       // @ts-expect-error
                       isInvalid={!!errors.stock}
                     />
-                    {errors.stock && <p className="mt-1 text-xs text-danger">{errors.stock}</p>}
+                    {errors.stock && <p className="mt-1 text-danger text-xs">{errors.stock}</p>}
                   </div>
                 </div>
 
@@ -253,8 +253,8 @@ export default function Create({ categories }: CreateProps) {
                   <div className="mt-4 rounded-2xl border border-success/30 bg-success-subtle/50 p-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-success font-medium">Estimasi Profit per Item</p>
-                        <p className="text-2xl font-bold text-success mt-1">
+                        <p className="font-medium text-sm text-success">Estimasi Profit per Item</p>
+                        <p className="mt-1 font-bold text-2xl text-success">
                           + Rp{" "}
                           {(Number(data.sell_price) - Number(data.buy_price)).toLocaleString(
                             "id-ID",
@@ -262,8 +262,8 @@ export default function Create({ categories }: CreateProps) {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-success font-medium">Margin</p>
-                        <p className="text-xl font-bold text-success mt-1">
+                        <p className="font-medium text-sm text-success">Margin</p>
+                        <p className="mt-1 font-bold text-success text-xl">
                           {(
                             ((Number(data.sell_price) - Number(data.buy_price)) /
                               Number(data.buy_price)) *

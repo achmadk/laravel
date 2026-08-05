@@ -1,6 +1,10 @@
-import { PropsWithChildren } from "react";
-import { Head, Link, usePage } from "@inertiajs/react";
-import { IconArrowLeft, IconShoppingCart } from "@tabler/icons-react";
+import { type PropsWithChildren, useState } from "react";
+import { Head, Link, usePage, router } from "@inertiajs/react";
+import { IconArrowLeft, IconShoppingCart, IconX } from "@tabler/icons-react";
+import toast from "react-hot-toast";
+import NumpadModal from "@/components/pos/NumpadModal";
+
+type OpenShiftStep = "numpad" | "confirm";
 
 export default function POSLayout({ children }: PropsWithChildren) {
   const { props, component } = usePage();
@@ -12,12 +16,65 @@ export default function POSLayout({ children }: PropsWithChildren) {
     address: string | null;
     phone: string | null;
   } | null;
-  const activeCashierShift = (props as Record<string, unknown>).activeCashierShift as {
+  const activeCashierShift = (props as Record<string, unknown>).cashierShift as {
     id: number;
-    cashier_id: number;
+    cashier_id?: number;
     opened_at: string;
-    initial_balance: number;
+    opening_balance: number | null;
   } | null;
+  console.log("POS layout children", props);
+
+  const [showOpenShiftModal, setShowOpenShiftModal] = useState(false);
+  const [step, setStep] = useState<OpenShiftStep>("numpad");
+  const [openingCash, setOpeningCash] = useState(0);
+  const [shiftNotes, setShiftNotes] = useState("");
+  const [isOpening, setIsOpening] = useState(false);
+
+  const handleOpenShift = () => {
+    setIsOpening(true);
+    router.post(
+      "/dashboard/cashier-shifts",
+      {
+        opening_cash: openingCash,
+        notes: shiftNotes || null,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Shift berhasil dibuka");
+          closeModal();
+          router.reload();
+        },
+        onError: (errors) => {
+          toast.error(errors.message || "Gagal membuka shift");
+          setIsOpening(false);
+        },
+      },
+    );
+  };
+
+  const openModal = () => {
+    setOpeningCash(0);
+    setShiftNotes("");
+    setStep("confirm");
+    setShowOpenShiftModal(true);
+  };
+
+  const closeModal = () => {
+    setShowOpenShiftModal(false);
+    setOpeningCash(0);
+    setShiftNotes("");
+    setStep("numpad");
+    setIsOpening(false);
+  };
+
+  const handleNumpadConfirm = (value: number) => {
+    setOpeningCash(value);
+    setStep("confirm");
+  };
+
+  const handleBackToNumpad = () => {
+    setStep("numpad");
+  };
 
   const pageTitle =
     typeof component === "string" ? component.replace("Dashboard/", "").replace("/", " - ") : "POS";
@@ -26,12 +83,12 @@ export default function POSLayout({ children }: PropsWithChildren) {
     <>
       <Head title={`${pageTitle} - ${storeProfile?.name || "POS"}`} />
 
-      <div className="h-screen flex flex-col bg-slate-100 dark:bg-slate-950 overflow-hidden">
-        <header className="flex items-center justify-between px-4 py-2 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
+      <div className="flex h-screen flex-col overflow-hidden bg-slate-100 dark:bg-slate-950">
+        <header className="flex flex-shrink-0 items-center justify-between border-slate-200 border-b bg-white px-4 py-2 dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard"
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="rounded-lg p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <IconArrowLeft size={20} className="text-slate-500 dark:text-slate-400" />
             </Link>
@@ -39,11 +96,11 @@ export default function POSLayout({ children }: PropsWithChildren) {
             <div className="flex items-center gap-2">
               <IconShoppingCart size={20} className="text-primary-500" />
               <div>
-                <h1 className="text-sm font-semibold text-slate-800 dark:text-white leading-tight">
+                <h1 className="font-semibold text-slate-800 text-sm leading-tight dark:text-white">
                   {storeProfile?.name || "POS"}
                 </h1>
-                {activeCashierShift && (
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
+                {activeCashierShift && activeCashierShift?.opened_at && (
+                  <p className="text-[11px] text-slate-500 leading-tight dark:text-slate-400">
                     Shift aktif · Buka{" "}
                     {new Date(activeCashierShift.opened_at).toLocaleTimeString("id-ID", {
                       hour: "2-digit",
@@ -57,22 +114,22 @@ export default function POSLayout({ children }: PropsWithChildren) {
 
           <div className="flex items-center gap-2">
             {activeCashierShift ? (
-              <span className="px-2.5 py-1 rounded-full bg-success-100 dark:bg-success-900/50 text-success-700 dark:text-success-400 text-xs font-medium flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-success-500 animate-pulse" />
+              <span className="flex items-center gap-1.5 rounded-full bg-success-100 px-2.5 py-1 font-medium text-success-700 text-xs dark:bg-success-900/50 dark:text-success-400">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success-500" />
                 Shift Aktif
               </span>
             ) : (
-              <Link
-                href="/apps/cashier-shifts/create"
-                className="px-3 py-1.5 rounded-lg bg-warning-100 dark:bg-warning-900/50 text-warning-700 dark:text-warning-400 text-xs font-medium hover:bg-warning-200 dark:hover:bg-warning-900 transition-colors"
+              <button
+                onClick={openModal}
+                className="rounded-lg bg-warning-100 px-3 py-1.5 font-medium text-warning-700 text-xs transition-colors hover:bg-warning-200 dark:bg-warning-900/50 dark:text-warning-400 dark:hover:bg-warning-900"
               >
                 Buka Shift
-              </Link>
+              </button>
             )}
 
             <Link
               href={route("profile.edit")}
-              className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 font-semibold text-slate-600 text-xs transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
             >
               {auth.user.data?.name?.charAt(0)?.toUpperCase() ?? "-"}
             </Link>
@@ -81,6 +138,85 @@ export default function POSLayout({ children }: PropsWithChildren) {
 
         <main className="flex-1 overflow-hidden">{children}</main>
       </div>
+
+      <NumpadModal
+        isOpen={showOpenShiftModal && step === "numpad"}
+        onClose={closeModal}
+        onConfirm={handleNumpadConfirm}
+        title="Buka Shift Baru"
+        initialValue={0}
+        minValue={0}
+        isCurrency={true}
+      />
+
+      {showOpenShiftModal && step === "confirm" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={closeModal} />
+          <div className="relative w-full max-w-sm animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
+            <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
+              <h3 className="font-semibold text-lg text-slate-800 dark:text-white">
+                Buka Shift Baru
+              </h3>
+              <button
+                onClick={closeModal}
+                className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+              >
+                <IconX size={20} />
+              </button>
+            </div>
+
+            <div className="space-y-4 p-5">
+              <div>
+                <label className="mb-2 block font-medium text-slate-700 text-sm dark:text-slate-300">
+                  Modal Awal
+                </label>
+                <button
+                  onClick={handleBackToNumpad}
+                  className="flex h-14 w-full items-center justify-center rounded-xl bg-slate-100 font-bold font-mono text-2xl text-slate-800 transition-colors hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+                >
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                    minimumFractionDigits: 0,
+                  }).format(openingCash)}
+                </button>
+                <p className="mt-1 text-center text-slate-500 text-xs dark:text-slate-400">
+                  Klik untuk mengubah
+                </p>
+              </div>
+
+              <div>
+                <label className="mb-2 block font-medium text-slate-700 text-sm dark:text-slate-300">
+                  Catatan (opsional)
+                </label>
+                <input
+                  type="text"
+                  value={shiftNotes}
+                  onChange={(e) => setShiftNotes(e.target.value)}
+                  placeholder="Tambahkan catatan..."
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-800 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={closeModal}
+                  className="h-12 flex-1 rounded-xl border border-slate-200 font-medium text-slate-600 text-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleOpenShift}
+                  disabled={isOpening}
+                  className="h-12 flex-1 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 font-semibold text-sm text-white transition-all hover:shadow-lg hover:shadow-primary-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isOpening ? "Membuka..." : "Buka Shift"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

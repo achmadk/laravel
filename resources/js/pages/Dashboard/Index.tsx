@@ -63,7 +63,7 @@ function calcGrowth(
 function StatCard({ title, value, subtitle, icon: Icon, gradient, growth }: any) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br ${gradient} text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
     >
       <div className="absolute top-0 right-0 size-32 opacity-20">
         <Icon size={128} strokeWidth={0.5} className="translate-x-8 -translate-y-8" />
@@ -73,9 +73,9 @@ function StatCard({ title, value, subtitle, icon: Icon, gradient, growth }: any)
           <div className="rounded-xl bg-white/20 p-2">
             <Icon size={20} strokeWidth={1.5} />
           </div>
-          <span className="text-sm font-medium opacity-90">{title}</span>
+          <span className="font-medium text-sm opacity-90">{title}</span>
         </div>
-        <p className="text-3xl font-bold">{value}</p>
+        <p className="font-bold text-3xl">{value}</p>
         {growth && (
           <p className="mt-2 flex items-center gap-1 text-xs opacity-80">
             {growth.direction === "up" && <IconArrowUpRight size={14} />}
@@ -99,7 +99,7 @@ function TargetCard({ title, current, target, icon: Icon }: any) {
   const isAchieved = percentage >= 100;
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 p-5 text-white shadow-lg">
-      <div className="absolute right-0 top-0 size-32 opacity-20">
+      <div className="absolute top-0 right-0 size-32 opacity-20">
         <Icon size={128} strokeWidth={0.5} className="translate-x-8 -translate-y-8" />
       </div>
       <div className="relative z-10">
@@ -107,9 +107,9 @@ function TargetCard({ title, current, target, icon: Icon }: any) {
           <div className="rounded-xl bg-white/20 p-2">
             <Icon size={20} strokeWidth={1.5} />
           </div>
-          <span className="text-sm font-medium opacity-90">{title}</span>
+          <span className="font-medium text-sm opacity-90">{title}</span>
         </div>
-        <p className="text-2xl font-bold">{percentage.toFixed(0)}%</p>
+        <p className="font-bold text-2xl">{percentage.toFixed(0)}%</p>
         <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/30">
           <div
             className={`h-full rounded-full transition-all duration-500 ${isAchieved ? "bg-green-400" : "bg-white"}`}
@@ -129,8 +129,8 @@ function InfoCard({ title, value, icon: Icon }: any) {
     <div className="rounded-2xl border border-border bg-bg p-5 transition-all hover:shadow-md">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-muted-fg">{title}</p>
-          <p className="mt-2 text-2xl font-bold text-fg">{value}</p>
+          <p className="text-muted-fg text-sm">{title}</p>
+          <p className="mt-2 font-bold text-2xl text-fg">{value}</p>
         </div>
         <div className="rounded-xl bg-muted p-3">
           <Icon size={24} className="text-muted-fg" strokeWidth={1.5} />
@@ -143,20 +143,20 @@ function InfoCard({ title, value, icon: Icon }: any) {
 function ListCard({ title, subtitle, icon: Icon, children, emptyMessage, action }: any) {
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-bg">
-      <div className="border-b border-border p-5">
+      <div className="border-border border-b p-5">
         <div className="flex items-center gap-2">
           <div className="rounded-lg bg-primary/10 p-2">
             <Icon size={18} className="text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-fg">{title}</h3>
-            {subtitle && <p className="text-xs text-muted-fg">{subtitle}</p>}
+            <h3 className="font-semibold text-fg text-sm">{title}</h3>
+            {subtitle && <p className="text-muted-fg text-xs">{subtitle}</p>}
           </div>
         </div>
       </div>
       <div className="p-5">
         {children || (
-          <div className="flex flex-col items-center justify-center gap-3 py-6 text-sm text-muted-fg">
+          <div className="flex flex-col items-center justify-center gap-3 py-6 text-muted-fg text-sm">
             <div className="rounded-full bg-muted p-3">
               <Icon size={20} className="text-muted-fg/50" />
             </div>
@@ -164,7 +164,7 @@ function ListCard({ title, subtitle, icon: Icon, children, emptyMessage, action 
             {action && (
               <Link
                 href={action.url}
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80"
+                className="inline-flex items-center gap-1.5 font-medium text-primary text-xs hover:text-primary/80"
               >
                 <IconPlus size={14} />
                 {action.label}
@@ -300,12 +300,12 @@ export default function Dashboard({
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-fg">Dashboard</h1>
-          <p className="text-sm text-muted-fg">Ringkasan aktivitas bisnis Anda</p>
+          <h1 className="font-bold text-2xl text-fg">Dashboard</h1>
+          <p className="text-muted-fg text-sm">Ringkasan aktivitas bisnis Anda</p>
         </div>
         <Link
           href={transactions.index.url()}
-          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
         >
           <IconShoppingCart size={18} />
           <span>Transaksi Baru</span>
@@ -314,10 +314,10 @@ export default function Dashboard({
 
       {isSuper && (
         <div className="rounded-2xl border border-border bg-bg px-6 py-4">
-          <p className="text-lg font-semibold text-fg">
+          <p className="font-semibold text-fg text-lg">
             Selamat {getGreeting()}, {userName}!
           </p>
-          <p className="mt-0.5 text-sm text-muted-fg">{formattedDate}</p>
+          <p className="mt-0.5 text-muted-fg text-sm">{formattedDate}</p>
         </div>
       )}
 
@@ -377,14 +377,14 @@ export default function Dashboard({
 
       {/* Revenue chart */}
       <div className="overflow-hidden rounded-2xl border border-border bg-bg">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-border border-b p-5">
           <div className="flex items-center gap-2">
             <div className="rounded-lg bg-primary/10 p-2">
               <IconChartBar size={18} className="text-primary" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-fg">Tren Pendapatan</h3>
-              <p className="text-xs text-muted-fg">
+              <h3 className="font-semibold text-fg text-sm">Tren Pendapatan</h3>
+              <p className="text-muted-fg text-xs">
                 {isSuper ? `${period} data terakhir` : "Riwayat pendapatan"}
               </p>
             </div>
@@ -398,7 +398,7 @@ export default function Dashboard({
                   <button
                     key={d}
                     onClick={() => setPeriod(count)}
-                    className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+                    className={`rounded-md px-3 py-1.5 font-medium text-xs transition-colors ${
                       period === count ? "bg-bg text-fg shadow-sm" : "text-muted-fg hover:text-fg"
                     }`}
                   >
@@ -415,7 +415,7 @@ export default function Dashboard({
               <canvas ref={chartRef} />
             </div>
           ) : (
-            <div className="flex h-48 items-center justify-center text-sm text-muted-fg">
+            <div className="flex h-48 items-center justify-center text-muted-fg text-sm">
               Belum ada data pendapatan
             </div>
           )}
@@ -438,10 +438,10 @@ export default function Dashboard({
                   className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-fg">{shift.user?.name || "-"}</p>
-                    <p className="text-xs text-muted-fg">{shift.transactions_count} transaksi</p>
+                    <p className="font-semibold text-fg text-sm">{shift.user?.name || "-"}</p>
+                    <p className="text-muted-fg text-xs">{shift.transactions_count} transaksi</p>
                   </div>
-                  <span className="text-xs font-medium text-success">
+                  <span className="font-medium text-success text-xs">
                     {formatCurrency(shift.expected_cash)}
                   </span>
                 </div>
@@ -464,19 +464,19 @@ export default function Dashboard({
                   className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                    <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary text-sm">
                       {index + 1}
                     </span>
                     <div className="space-y-1">
-                      <p className="line-clamp-1 text-sm font-semibold text-fg">{product.name}</p>
-                      <p className="text-xs text-muted-fg">SKU: {product.sku || "-"}</p>
+                      <p className="line-clamp-1 font-semibold text-fg text-sm">{product.name}</p>
+                      <p className="text-muted-fg text-xs">SKU: {product.sku || "-"}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-base font-semibold leading-tight text-primary">
+                    <p className="font-semibold text-base text-primary leading-tight">
                       {product.qty}x
                     </p>
-                    <p className="text-[11px] uppercase tracking-wide text-muted-fg">Terjual</p>
+                    <p className="text-[11px] text-muted-fg uppercase tracking-wide">Terjual</p>
                   </div>
                 </div>
               ))}
@@ -498,12 +498,12 @@ export default function Dashboard({
                   className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="flex size-7 items-center justify-center rounded-full bg-warning/10 text-xs font-semibold text-warning">
+                    <span className="flex size-7 items-center justify-center rounded-full bg-warning/10 font-semibold text-warning text-xs">
                       {index + 1}
                     </span>
-                    <span className="max-w-[120px] truncate text-sm text-fg">{product.name}</span>
+                    <span className="max-w-[120px] truncate text-fg text-sm">{product.name}</span>
                   </div>
-                  <span className="text-xs font-semibold text-warning">{product.stock} pcs</span>
+                  <span className="font-semibold text-warning text-xs">{product.stock} pcs</span>
                 </li>
               ))}
             </ul>
@@ -524,12 +524,12 @@ export default function Dashboard({
                   className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="flex size-7 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-fg">
+                    <span className="flex size-7 items-center justify-center rounded-full bg-muted font-semibold text-muted-fg text-sm">
                       {index + 1}
                     </span>
-                    <span className="text-sm text-fg">{customer.name}</span>
+                    <span className="text-fg text-sm">{customer.name}</span>
                   </div>
-                  <span className="text-xs font-semibold text-muted-fg">{customer.orders}x</span>
+                  <span className="font-semibold text-muted-fg text-xs">{customer.orders}x</span>
                 </li>
               ))}
             </ul>
@@ -553,11 +553,11 @@ export default function Dashboard({
                   className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-fg">{trx.invoice}</p>
-                    <p className="mt-0.5 text-xs text-muted-fg">{trx.date}</p>
+                    <p className="truncate font-semibold text-fg text-sm">{trx.invoice}</p>
+                    <p className="mt-0.5 text-muted-fg text-xs">{trx.date}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-primary">{formatCurrency(trx.total)}</p>
+                    <p className="font-bold text-primary text-sm">{formatCurrency(trx.total)}</p>
                     <p className="text-[11px] text-muted-fg">{trx.cashier}</p>
                   </div>
                 </div>
@@ -581,12 +581,12 @@ export default function Dashboard({
                     className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                      <span className="flex size-7 items-center justify-center rounded-full bg-primary/10 font-semibold text-primary text-xs">
                         {index + 1}
                       </span>
-                      <span className="text-sm text-fg">{loc.name}</span>
+                      <span className="text-fg text-sm">{loc.name}</span>
                     </div>
-                    <span className="text-xs font-semibold text-muted-fg">{loc.orders}x</span>
+                    <span className="font-semibold text-muted-fg text-xs">{loc.orders}x</span>
                   </li>
                 ))}
               </ul>
@@ -609,14 +609,14 @@ export default function Dashboard({
                   className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="flex size-7 items-center justify-center rounded-full bg-danger/10 text-xs font-semibold text-danger">
+                    <span className="flex size-7 items-center justify-center rounded-full bg-danger/10 font-semibold text-danger text-xs">
                       {index + 1}
                     </span>
-                    <span className="max-w-[140px] truncate text-sm font-semibold text-fg">
+                    <span className="max-w-[140px] truncate font-semibold text-fg text-sm">
                       {product.name}
                     </span>
                   </div>
-                  <span className="text-xs font-semibold text-danger">{product.stock} pcs</span>
+                  <span className="font-semibold text-danger text-xs">{product.stock} pcs</span>
                 </div>
               ))}
             </div>

@@ -32,21 +32,32 @@ class CustomerController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // get customers
-        $customers = Customer::when(request()->search, function ($customers) {
-            $search = request()->search;
-            $customers = $customers->where(function ($query) use ($search) {
+        // get customers, optionally filtered by search on name, phone, or member code
+        $customersQuery = Customer::when($request->search, function ($customers) use ($request) {
+            $search = $request->search;
+            $customers->where(function ($query) use ($search) {
                 $query
                     ->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('no_telp', 'like', '%'.$search.'%')
                     ->orWhere('member_code', 'like', '%'.$search.'%');
             });
-        })->latest()->paginate(5);
+        })->latest();
+
+        // Return a flat JSON array for non-Inertia JSON requests (e.g. the POS
+        // customer search modal). Inertia's own XHR visits also send an
+        // Accept: application/json header, so the X-Inertia header must be
+        // absent for this branch to avoid hijacking normal navigation.
+        if ($request->wantsJson() && ! $request->header('X-Inertia')) {
+            return response()->json(
+                $customersQuery->limit(20)->get()
+            );
+        }
 
         // return inertia
         return Inertia::render('Dashboard/Customers/Index', [
-            'customers' => $customers,
+            'customers' => $customersQuery->paginate(5),
         ]);
     }
 

@@ -11,7 +11,6 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import toast from "react-hot-toast";
 import payables from "@/routes/payables";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 
@@ -143,14 +142,14 @@ export default function PayablesIndex({
 
         <form
           onSubmit={submitCreate}
-          className="bg-bg border border-border rounded-2xl p-4 grid grid-cols-1 md:grid-cols-5 gap-3"
+          className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-5"
         >
           <div>
-            <label className="text-sm font-semibold text-muted-fg">Supplier</label>
+            <label className="font-semibold text-muted-fg text-sm">Supplier</label>
             <select
               value={formData.supplier_id}
               onChange={(e) => setData("supplier_id", e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
             >
               <option value="">Umum</option>
               {suppliers.map((s) => (
@@ -161,48 +160,48 @@ export default function PayablesIndex({
             </select>
           </div>
           <div>
-            <label className="text-sm font-semibold text-muted-fg">Nomor Dokumen</label>
+            <label className="font-semibold text-muted-fg text-sm">Nomor Dokumen</label>
             <input
               value={formData.document_number}
               onChange={(e) => setData("document_number", e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg placeholder:text-muted-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm placeholder:text-muted-fg"
               placeholder="Opsional"
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-muted-fg">Total</label>
+            <label className="font-semibold text-muted-fg text-sm">Total</label>
             <input
               type="number"
               min="1"
               value={formData.total}
               onChange={(e) => setData("total", e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
               required
             />
-            {errors.total && <p className="text-xs text-danger">{errors.total}</p>}
+            {errors.total && <p className="text-danger text-xs">{errors.total}</p>}
           </div>
           <div>
-            <label className="text-sm font-semibold text-muted-fg">Jatuh Tempo</label>
+            <label className="font-semibold text-muted-fg text-sm">Jatuh Tempo</label>
             <input
               type="date"
               value={formData.due_date}
               onChange={(e) => setData("due_date", e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
             />
           </div>
           <div className="flex items-end">
-            <Button type="submit" isDisabled={processing} intent="primary" className="w-full h-11">
+            <Button type="submit" isDisabled={processing} intent="primary" className="h-11 w-full">
               <IconPlus size={16} />
               Simpan
             </Button>
           </div>
           <div className="md:col-span-5">
-            <label className="text-sm font-semibold text-muted-fg">Catatan</label>
+            <label className="font-semibold text-muted-fg text-sm">Catatan</label>
             <textarea
               rows={2}
               value={formData.note}
               onChange={(e) => setData("note", e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-input bg-muted text-sm text-fg placeholder:text-muted-fg"
+              className="w-full rounded-xl border border-input bg-muted px-3 py-2 text-fg text-sm placeholder:text-muted-fg"
               placeholder="Catatan tambahan (opsional)"
             />
           </div>
@@ -210,25 +209,25 @@ export default function PayablesIndex({
 
         <form
           onSubmit={applyFilter}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end bg-bg border border-border rounded-2xl p-4"
+          className="grid grid-cols-1 items-end gap-3 rounded-2xl border border-border bg-bg p-4 sm:grid-cols-2 lg:grid-cols-4"
         >
           <div className="relative w-full">
             <IconSearch
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-fg"
+              className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-fg"
             />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari nomor dokumen"
-              className="w-full h-11 pl-10 pr-3 rounded-xl border border-input bg-muted text-sm text-fg placeholder:text-muted-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted pr-3 pl-10 text-fg text-sm placeholder:text-muted-fg"
             />
           </div>
           <div className="w-full">
             <select
               value={supplierId}
               onChange={(e) => setSupplierId(e.target.value)}
-              className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
             >
               <option value="">Semua Supplier</option>
               {suppliers.map((s) => (
@@ -241,12 +240,12 @@ export default function PayablesIndex({
           <div className="relative w-full">
             <IconCalendar
               size={18}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-fg"
+              className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-fg"
             />
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full h-11 pl-10 pr-3 rounded-xl border border-input bg-muted text-sm text-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted pr-3 pl-10 text-fg text-sm"
             >
               <option value="">Semua Status</option>
               <option value="unpaid">Belum Lunas</option>
@@ -260,37 +259,37 @@ export default function PayablesIndex({
           </Button>
         </form>
 
-        <div className="bg-transparent border-0 shadow-none rounded-2xl sm:bg-bg sm:border sm:border-border sm:overflow-hidden">
-          <div className="w-full overflow-x-auto hidden sm:block">
+        <div className="rounded-2xl border-0 bg-transparent shadow-none sm:overflow-hidden sm:border sm:border-border sm:bg-bg">
+          <div className="hidden w-full overflow-x-auto sm:block">
             <div className="min-w-[720px]">
-              <div className="grid grid-cols-12 px-3 sm:px-4 py-3 text-xs font-semibold text-muted-fg uppercase tracking-wider border-b border-border">
+              <div className="grid grid-cols-12 border-border border-b px-3 py-3 font-semibold text-muted-fg text-xs uppercase tracking-wider sm:px-4">
                 <div className="col-span-2">Dokumen</div>
                 <div className="col-span-2">Supplier</div>
                 <div className="col-span-2 text-right">Total</div>
                 <div className="col-span-2 text-right">Sisa</div>
                 <div className="col-span-2 text-right">Jatuh Tempo</div>
-                <div className="col-span-2 text-center min-w-[140px]">Status</div>
+                <div className="col-span-2 min-w-[140px] text-center">Status</div>
               </div>
               {rows.length > 0 ? (
                 rows.map((item) => (
                   <Link
                     key={item.id}
                     href={payables.show.url({ payable: item.id })}
-                    className="grid grid-cols-12 gap-2 px-3 sm:px-4 py-3 items-center border-b border-border hover:bg-muted transition-colors"
+                    className="grid grid-cols-12 items-center gap-2 border-border border-b px-3 py-3 transition-colors hover:bg-muted sm:px-4"
                   >
                     <div className="col-span-2">
-                      <p className="text-sm font-semibold text-fg">{item.document_number}</p>
+                      <p className="font-semibold text-fg text-sm">{item.document_number}</p>
                     </div>
                     <div className="col-span-2">
-                      <p className="text-sm text-muted-fg">{item.supplier?.name || "-"}</p>
+                      <p className="text-muted-fg text-sm">{item.supplier?.name || "-"}</p>
                     </div>
-                    <div className="col-span-2 text-right text-sm font-semibold text-fg">
+                    <div className="col-span-2 text-right font-semibold text-fg text-sm">
                       {formatCurrency(item.total)}
                     </div>
-                    <div className="col-span-2 text-right text-sm font-semibold text-primary">
+                    <div className="col-span-2 text-right font-semibold text-primary text-sm">
                       {formatCurrency(item.remaining)}
                     </div>
-                    <div className="col-span-2 text-right text-sm text-muted-fg">
+                    <div className="col-span-2 text-right text-muted-fg text-sm">
                       {formatDate(item.due_date)}
                     </div>
                     <div className="col-span-2 flex justify-center whitespace-nowrap">
@@ -307,44 +306,44 @@ export default function PayablesIndex({
             </div>
           </div>
 
-          <div className="sm:hidden flex flex-col gap-3 px-1">
+          <div className="flex flex-col gap-3 px-1 sm:hidden">
             {rows.length > 0 ? (
               rows.map((item) => (
                 <Link
                   key={item.id}
                   href={payables.show.url({ payable: item.id })}
-                  className="p-4 space-y-3 bg-bg border border-border rounded-xl shadow-sm"
+                  className="space-y-3 rounded-xl border border-border bg-bg p-4 shadow-sm"
                 >
                   <div className="flex items-start justify-between">
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-fg">Dokumen</p>
-                      <p className="text-base font-semibold text-fg">
+                      <p className="text-muted-fg text-xs">Dokumen</p>
+                      <p className="font-semibold text-base text-fg">
                         {item.document_number || "-"}
                       </p>
-                      <p className="text-xs text-muted-fg">
+                      <p className="text-muted-fg text-xs">
                         Jatuh tempo: {formatDate(item.due_date)}
                       </p>
                     </div>
-                    <div className="text-right space-y-2">
+                    <div className="space-y-2 text-right">
                       <PayablesBadge value={item.status} />
-                      <p className="text-sm font-semibold text-fg">{formatCurrency(item.total)}</p>
-                      <p className="text-xs text-primary">Sisa {formatCurrency(item.remaining)}</p>
+                      <p className="font-semibold text-fg text-sm">{formatCurrency(item.total)}</p>
+                      <p className="text-primary text-xs">Sisa {formatCurrency(item.remaining)}</p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-sm text-muted-fg">
+                  <div className="grid grid-cols-2 gap-2 text-muted-fg text-sm">
                     <div>
-                      <p className="text-xs text-muted-fg">Supplier</p>
+                      <p className="text-muted-fg text-xs">Supplier</p>
                       <p className="font-medium text-fg">{item.supplier?.name || "-"}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-muted-fg">Status</p>
+                      <p className="text-muted-fg text-xs">Status</p>
                       <p className="font-medium text-fg capitalize">{item.status}</p>
                     </div>
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="p-6 text-center text-muted-fg bg-bg border border-border rounded-xl">
+              <div className="rounded-xl border border-border bg-bg p-6 text-center text-muted-fg">
                 <IconAlertCircle size={28} className="mx-auto mb-2 text-muted-fg" />
                 Belum ada data hutang.
               </div>

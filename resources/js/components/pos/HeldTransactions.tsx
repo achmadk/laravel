@@ -44,7 +44,7 @@ export default function HeldTransactions({
     setResumingId(holdId);
 
     // Dynamic Wayfinder route import or fallback
-    const url = `/apps/transactions/resume/${holdId}`;
+    const url = `/dashboard/transactions/${holdId}/resume`;
 
     router.post(
       url,
@@ -69,7 +69,7 @@ export default function HeldTransactions({
 
     setDeletingId(holdId);
 
-    const url = `/apps/transactions/clear-hold/${holdId}`;
+    const url = `/dashboard/transactions/${holdId}/clearHold`;
 
     router.delete(url, {
       preserveScroll: true,
@@ -90,16 +90,16 @@ export default function HeldTransactions({
     return (
       <button
         onClick={() => setIsExpanded(true)}
-        className="w-full px-3 py-2 flex items-center justify-between bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800/50 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors"
+        className="flex w-full items-center justify-between border-amber-200 border-b bg-amber-50 px-3 py-2 transition-colors hover:bg-amber-100 dark:border-amber-800/50 dark:bg-amber-950/30 dark:hover:bg-amber-900/40"
       >
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center text-white text-xs font-bold">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-500 font-bold text-white text-xs">
             {heldCarts.length}
           </div>
-          <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
+          <span className="font-medium text-amber-700 text-sm dark:text-amber-300">
             Transaksi Ditahan
           </span>
-          <span className="text-xs text-amber-600 dark:text-amber-400">
+          <span className="text-amber-600 text-xs dark:text-amber-400">
             • {formatPrice(totalHeldAmount)}
           </span>
         </div>
@@ -109,19 +109,19 @@ export default function HeldTransactions({
   }
 
   return (
-    <div className="border-b border-amber-200 dark:border-amber-800/50 bg-amber-50 dark:bg-amber-950/30">
-      <div className="flex items-center justify-between px-3 py-2 border-b border-amber-200/50 dark:border-amber-800/30">
+    <div className="border-amber-200 border-b bg-amber-50 dark:border-amber-800/50 dark:bg-amber-950/30">
+      <div className="flex items-center justify-between border-amber-200/50 border-b px-3 py-2 dark:border-amber-800/30">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-amber-500 flex items-center justify-center text-white text-xs font-bold">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-amber-500 font-bold text-white text-xs">
             {heldCarts.length}
           </div>
-          <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
+          <span className="font-medium text-amber-700 text-sm dark:text-amber-300">
             Transaksi Ditahan
           </span>
         </div>
         <button
           onClick={() => setIsExpanded(false)}
-          className="w-6 h-6 rounded flex items-center justify-center hover:bg-amber-200 dark:hover:bg-amber-900/50"
+          className="flex h-6 w-6 items-center justify-center rounded hover:bg-amber-200 dark:hover:bg-amber-900/50"
         >
           <IconChevronUp size={16} className="text-amber-600" />
         </button>
@@ -131,13 +131,13 @@ export default function HeldTransactions({
         {heldCarts.map((hold) => (
           <div
             key={hold.hold_id}
-            className="px-3 py-2 border-b border-amber-100/50 dark:border-amber-900/30 last:border-0 flex items-center justify-between gap-2"
+            className="flex items-center justify-between gap-2 border-amber-100/50 border-b px-3 py-2 last:border-0 dark:border-amber-900/30"
           >
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-amber-800 dark:text-amber-200 truncate">
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-medium text-amber-800 text-xs dark:text-amber-200">
                 {hold.label}
               </p>
-              <p className="text-xs text-amber-600 dark:text-amber-400">
+              <p className="text-amber-600 text-xs dark:text-amber-400">
                 {hold.items_count} item • {formatPrice(hold.total)}
               </p>
             </div>
@@ -145,11 +145,11 @@ export default function HeldTransactions({
               <button
                 onClick={() => handleResume(hold.hold_id)}
                 disabled={resumingId === hold.hold_id || hasActiveCart}
-                className="px-2 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium disabled:opacity-50 flex items-center gap-1"
+                className="flex items-center gap-1 rounded bg-amber-500 px-2 py-1 font-medium text-white text-xs hover:bg-amber-600 disabled:opacity-50"
                 title={hasActiveCart ? "Kosongkan keranjang dulu" : "Lanjutkan"}
               >
                 {resumingId === hold.hold_id ? (
-                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="h-3 w-3 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                 ) : (
                   <IconPlayerPlay size={12} />
                 )}
@@ -157,7 +157,7 @@ export default function HeldTransactions({
               <button
                 onClick={() => handleDelete(hold.hold_id)}
                 disabled={deletingId === hold.hold_id}
-                className="p-1 rounded hover:bg-amber-200 dark:hover:bg-amber-900/50 text-amber-600 disabled:opacity-50"
+                className="rounded p-1 text-amber-600 hover:bg-amber-200 disabled:opacity-50 dark:hover:bg-amber-900/50"
               >
                 <IconTrash size={12} />
               </button>
@@ -195,7 +195,7 @@ export function HoldButton({ hasItems = false, onHold, isHolding = false }: Hold
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           placeholder="Label (opsional)"
-          className="flex-1 h-8 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm"
+          className="h-8 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm dark:border-slate-700 dark:bg-slate-900"
           autoFocus
           onKeyDown={(e) => {
             if (e.key === "Enter") handleHold();
@@ -205,13 +205,13 @@ export function HoldButton({ hasItems = false, onHold, isHolding = false }: Hold
         <button
           onClick={handleHold}
           disabled={isHolding}
-          className="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold disabled:opacity-50"
+          className="rounded-lg bg-amber-500 px-3 py-1.5 font-semibold text-white text-xs hover:bg-amber-600 disabled:opacity-50"
         >
           {isHolding ? "..." : "OK"}
         </button>
         <button
           onClick={() => setShowLabelInput(false)}
-          className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+          className="rounded-lg p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
         >
           <IconX size={14} className="text-slate-500" />
         </button>
@@ -222,7 +222,7 @@ export function HoldButton({ hasItems = false, onHold, isHolding = false }: Hold
   return (
     <button
       onClick={() => setShowLabelInput(true)}
-      className="flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-lg border border-dashed border-amber-400 dark:border-amber-700 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 text-xs font-medium transition-colors"
+      className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-amber-400 border-dashed px-3 py-2 font-medium text-amber-600 text-xs transition-colors hover:bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-950/30"
     >
       <IconClock size={14} />
       Tahan

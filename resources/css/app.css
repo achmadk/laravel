@@ -423,3 +423,34 @@
         color: var(--fg);
     }
 }
+
+/* ── Landing page (Welcome) ── */
+html {
+    overflow-x: clip;
+}
+
+body {
+    overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-marquee {
+        animation: none;
+    }
+}
+
+/* Keyboard focus ring for landing-page anchors (gate 26: focus-visible state) */
+@layer base {
+    a:focus-visible {
+        outline: 2px solid var(--color-ring);
+        outline-offset: 2px;
+        border-radius: 0.25rem;
+    }
+}

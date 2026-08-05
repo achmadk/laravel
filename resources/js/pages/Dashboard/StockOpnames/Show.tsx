@@ -74,8 +74,8 @@ function SummaryCard({
 
   return (
     <div className={`rounded-2xl border p-4 ${toneClasses[tone]}`}>
-      <p className="text-xs font-medium uppercase tracking-wide opacity-80">{label}</p>
-      <p className="mt-2 text-2xl font-bold">{value}</p>
+      <p className="font-medium text-xs uppercase tracking-wide opacity-80">{label}</p>
+      <p className="mt-2 font-bold text-2xl">{value}</p>
     </div>
   );
 }
@@ -251,7 +251,7 @@ export default function Show({
       <div className="mb-6">
         <Link
           href={stockOpnames.index.url()}
-          className="mb-3 inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke daftar stock opname
@@ -260,21 +260,21 @@ export default function Show({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-fg">{stockOpname.code}</h1>
+              <h1 className="font-bold text-2xl text-fg">{stockOpname.code}</h1>
               <span
-                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                   isDraft ? "bg-warning/10 text-warning" : "bg-success/10 text-success"
                 }`}
               >
                 {isDraft ? "Draft" : "Finalized"}
               </span>
             </div>
-            <p className="text-sm text-muted-fg">
+            <p className="text-muted-fg text-sm">
               Dibuat oleh {stockOpname.creator?.name || "-"} &bull;{" "}
               {formatDateTime(stockOpname.created_at)}
             </p>
             {!isDraft && (
-              <p className="mt-1 text-sm text-muted-fg">
+              <p className="mt-1 text-muted-fg text-sm">
                 Difinalisasi oleh {stockOpname.finalizer?.name || "-"} &bull;{" "}
                 {formatDateTime(stockOpname.finalized_at)}
               </p>
@@ -286,7 +286,7 @@ export default function Show({
               type="button"
               onClick={finalize}
               disabled={localItems.length === 0 || summary.hasMissingReasons}
-              className="inline-flex items-center gap-2 rounded-xl bg-success px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-success/20 transition-colors hover:bg-success/90 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-success px-5 py-2.5 font-medium text-sm text-white shadow-lg shadow-success/20 transition-colors hover:bg-success/90 disabled:opacity-50"
             >
               <IconCheck size={18} />
               Finalize Stock Opname
@@ -312,12 +312,12 @@ export default function Show({
         <div className="space-y-6">
           <div className="rounded-2xl border border-border bg-bg p-5">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-fg">Item Stock Opname</h2>
+              <h2 className="font-semibold text-fg text-lg">Item Stock Opname</h2>
               {canManageDraft && (
                 <button
                   type="button"
                   onClick={() => setShowProductModal(true)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-primary/90"
                 >
                   <IconPlus size={18} />
                   Tambah Produk
@@ -327,14 +327,14 @@ export default function Show({
 
             <div className="w-full overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-border">
+                <thead className="border-border border-b">
                   <tr>
                     <th className="px-4 py-3 text-left font-medium text-muted-fg">Produk</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-fg">Stok Sistem</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-fg">Stok Fisik</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-fg">Selisih</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-fg">Alasan</th>
-                    <th className="px-4 py-3 text-center font-medium text-muted-fg w-24">Simpan</th>
+                    <th className="w-24 px-4 py-3 text-center font-medium text-muted-fg">Simpan</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -347,7 +347,7 @@ export default function Show({
                         <tr key={item.id} className="transition-colors hover:bg-muted">
                           <td className="px-4 py-4 align-middle">
                             <p className="font-medium text-fg">{item.product.title}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               {item.product.category?.name || "-"} &bull;{" "}
                               {item.product.barcode || item.product.sku || "-"}
                             </p>
@@ -364,12 +364,12 @@ export default function Show({
                               onChange={(event) =>
                                 setItemField(item.id, "physical_stock", event.target.value)
                               }
-                              className="h-10 w-24 rounded-lg border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-10 w-24 rounded-lg border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                             />
                           </td>
                           <td className="px-4 py-4 align-middle">
                             <span
-                              className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                              className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                                 item.physical_stock === null
                                   ? "bg-muted text-muted-fg"
                                   : difference === 0
@@ -393,10 +393,10 @@ export default function Show({
                                 setItemField(item.id, "adjustment_reason", event.target.value)
                               }
                               placeholder={isDifferent ? "Wajib isi alasan" : "Tidak perlu"}
-                              className="h-10 w-full min-w-48 rounded-lg border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                              className="h-10 w-full min-w-48 rounded-lg border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                             />
                           </td>
-                          <td className="px-4 py-4 align-middle text-center">
+                          <td className="px-4 py-4 text-center align-middle">
                             {canManageDraft ? (
                               <button
                                 type="button"
@@ -419,7 +419,7 @@ export default function Show({
                         <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                           <IconPackage size={28} className="text-muted-fg" />
                         </div>
-                        <p className="text-sm text-muted-fg">Belum ada produk pada sesi ini.</p>
+                        <p className="text-muted-fg text-sm">Belum ada produk pada sesi ini.</p>
                       </td>
                     </tr>
                   )}
@@ -431,20 +431,20 @@ export default function Show({
 
         <div className="space-y-6">
           <form onSubmit={saveNotes} className="rounded-2xl border border-border bg-bg p-5">
-            <h2 className="mb-4 text-lg font-semibold text-fg">Catatan Sesi</h2>
+            <h2 className="mb-4 font-semibold text-fg text-lg">Catatan Sesi</h2>
             <textarea
               value={notesForm.data.notes}
               disabled={!canManageDraft}
               onChange={(event) => notesForm.setData("notes", event.target.value)}
               rows={4}
-              className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
               placeholder="Catatan sesi stock opname"
             />
             {canManageDraft && (
               <div className="mt-4 flex justify-end">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-primary/90"
                 >
                   <IconDeviceFloppy size={18} />
                   Simpan Catatan
@@ -454,8 +454,8 @@ export default function Show({
           </form>
 
           <div className="rounded-2xl border border-border bg-bg p-5">
-            <h2 className="mb-4 text-lg font-semibold text-fg">Informasi Sesi</h2>
-            <div className="space-y-3 text-sm text-muted-fg">
+            <h2 className="mb-4 font-semibold text-fg text-lg">Informasi Sesi</h2>
+            <div className="space-y-3 text-muted-fg text-sm">
               <div className="rounded-xl border border-border bg-muted p-4">
                 <p className="font-medium text-fg">Cara penggunaan</p>
                 <ul className="mt-2 space-y-2">
@@ -476,7 +476,7 @@ export default function Show({
           <div className="relative z-10 w-full max-w-2xl rounded-2xl border border-border bg-bg p-6 shadow-xl">
             <div className="mb-4 flex items-center gap-2">
               <IconClipboardCheck size={18} />
-              <h2 className="text-lg font-semibold text-fg">Cari Produk untuk Stock Opname</h2>
+              <h2 className="font-semibold text-fg text-lg">Cari Produk untuk Stock Opname</h2>
             </div>
             <div className="space-y-4">
               <div className="relative">
@@ -486,7 +486,7 @@ export default function Show({
                   value={productSearchInput}
                   onChange={(event) => setProductSearchInput(event.target.value)}
                   placeholder="Cari nama produk, barcode, atau SKU..."
-                  className="h-12 w-full rounded-xl border border-input bg-muted px-4 pr-11 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-12 w-full rounded-xl border border-input bg-muted px-4 pr-11 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-muted-fg">
                   <IconSearch size={18} />
@@ -494,7 +494,7 @@ export default function Show({
               </div>
 
               {isWaitingSearch ? (
-                <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-fg">
+                <div className="rounded-xl border border-border border-dashed p-6 text-center text-muted-fg text-sm">
                   Menunggu input selesai, pencarian akan dijalankan dalam 1-2 detik.
                 </div>
               ) : filters.product_search ? (
@@ -509,25 +509,25 @@ export default function Show({
                       >
                         <div>
                           <p className="font-medium text-fg">{product.title}</p>
-                          <p className="mt-1 text-xs text-muted-fg">
+                          <p className="mt-1 text-muted-fg text-xs">
                             {product.category?.name || "-"} &bull;{" "}
                             {product.barcode || product.sku || "-"}
                           </p>
-                          <p className="mt-1 text-xs text-muted-fg">Stok sistem: {product.stock}</p>
+                          <p className="mt-1 text-muted-fg text-xs">Stok sistem: {product.stock}</p>
                         </div>
-                        <span className="inline-flex rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white">
+                        <span className="inline-flex rounded-lg bg-primary px-3 py-2 font-semibold text-white text-xs">
                           Tambah
                         </span>
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-fg">
+                  <div className="rounded-xl border border-border border-dashed p-6 text-center text-muted-fg text-sm">
                     Tidak ada produk yang cocok dengan kata kunci pencarian.
                   </div>
                 )
               ) : (
-                <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-fg">
+                <div className="rounded-xl border border-border border-dashed p-6 text-center text-muted-fg text-sm">
                   Ketik kata kunci, lalu tunggu sebentar untuk menampilkan hasil pencarian produk.
                 </div>
               )}

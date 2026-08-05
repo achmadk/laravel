@@ -75,8 +75,9 @@ class TransactionController extends Controller
             })
             ->values();
 
-        // get all customers
-        $customers = Customer::latest()->get();
+        // Customer discovery is on-demand via the customer search modal; the
+        // POS page does not preload the full customer list.
+        $customers = [];
 
         // get all products with categories for product grid
         $products = Product::with('category:id,name')

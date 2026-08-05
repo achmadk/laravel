@@ -67,12 +67,12 @@ To handle focus events on only the target element, and not descendants, see [use
 
 ### FocusWithinProps
 
-| Name                  | Type                                | Description |
+| Name | Type | Description |
 | --------------------- | ----------------------------------- | ----------- | ------------------------------------------------------------------------------ |
-| `isDisabled`          | `boolean                            | undefined`  | Whether the focus within events should be disabled.                            |
-| `onFocusWithin`       | `((e: FocusEvent) => void)          | undefined`  | Handler that is called when the target element or a descendant receives focus. |
-| `onBlurWithin`        | `((e: FocusEvent) => void)          | undefined`  | Handler that is called when the target element and all descendants lose focus. |
-| `onFocusWithinChange` | `((isFocusWithin: boolean) => void) | undefined`  | Handler that is called when the the focus within state changes.                |
+| `isDisabled` | `boolean                            | undefined` | Whether the focus within events should be disabled. |
+| `onFocusWithin` | `((e: FocusEvent) => void)          | undefined` | Handler that is called when the target element or a descendant receives focus. |
+| `onBlurWithin` | `((e: FocusEvent) => void)          | undefined` | Handler that is called when the target element and all descendants lose focus. |
+| `onFocusWithinChange` | `((isFocusWithin: boolean) => void) | undefined` | Handler that is called when the the focus within state changes. |
 
 ### FocusWithinResult
 

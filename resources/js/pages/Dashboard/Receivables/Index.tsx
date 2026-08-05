@@ -199,47 +199,47 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
           <div className="space-y-6">
             {loadingAging ? (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <div className="h-8 w-8 animate-spin rounded-full border-primary border-b-2"></div>
               </div>
             ) : agingData ? (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <Card>
                     <CardContent className="p-5">
-                      <p className="text-xs font-medium text-muted-fg uppercase tracking-wide">
+                      <p className="font-medium text-muted-fg text-xs uppercase tracking-wide">
                         Total Piutang
                       </p>
-                      <p className="mt-2 text-2xl font-bold text-fg">
+                      <p className="mt-2 font-bold text-2xl text-fg">
                         {formatCurrency(agingData.collection_rate?.total_receivables_amount || 0)}
                       </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-5">
-                      <p className="text-xs font-medium text-muted-fg uppercase tracking-wide">
+                      <p className="font-medium text-muted-fg text-xs uppercase tracking-wide">
                         Sudah Dibayar
                       </p>
-                      <p className="mt-2 text-2xl font-bold text-success">
+                      <p className="mt-2 font-bold text-2xl text-success">
                         {formatCurrency(agingData.collection_rate?.total_paid_amount || 0)}
                       </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-5">
-                      <p className="text-xs font-medium text-muted-fg uppercase tracking-wide">
+                      <p className="font-medium text-muted-fg text-xs uppercase tracking-wide">
                         Collection Rate
                       </p>
-                      <p className="mt-2 text-2xl font-bold text-primary">
+                      <p className="mt-2 font-bold text-2xl text-primary">
                         {agingData.collection_rate?.collection_rate || 0}%
                       </p>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-5">
-                      <p className="text-xs font-medium text-muted-fg uppercase tracking-wide">
+                      <p className="font-medium text-muted-fg text-xs uppercase tracking-wide">
                         Lunas / Total
                       </p>
-                      <p className="mt-2 text-2xl font-bold text-fg">
+                      <p className="mt-2 font-bold text-2xl text-fg">
                         {agingData.collection_rate?.paid_count || 0} /{" "}
                         {agingData.collection_rate?.total_count || 0}
                       </p>
@@ -247,24 +247,24 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                   </Card>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
                   <div className="md:col-span-2">
                     <Card>
                       <CardContent className="p-5">
-                        <h3 className="text-lg font-semibold text-fg mb-4">Aging Piutang</h3>
+                        <h3 className="mb-4 font-semibold text-fg text-lg">Aging Piutang</h3>
                         <div className="space-y-3">
                           {agingData.aging_summary?.map((bucket) => (
                             <div key={bucket.bucket} className="flex items-center justify-between">
                               <span
-                                className={`px-2.5 py-1 rounded-full text-xs font-semibold ${bucketClasses[bucket.bucket] || "bg-muted text-muted-fg"}`}
+                                className={`rounded-full px-2.5 py-1 font-semibold text-xs ${bucketClasses[bucket.bucket] || "bg-muted text-muted-fg"}`}
                               >
                                 {bucketLabels[bucket.bucket] || bucket.bucket}
                               </span>
                               <div className="text-right">
-                                <p className="text-sm font-bold text-fg">
+                                <p className="font-bold text-fg text-sm">
                                   {formatCurrency(bucket.remaining)}
                                 </p>
-                                <p className="text-xs text-muted-fg">{bucket.count} nota</p>
+                                <p className="text-muted-fg text-xs">{bucket.count} nota</p>
                               </div>
                             </div>
                           ))}
@@ -276,7 +276,7 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                   <div className="md:col-span-3">
                     <Card>
                       <CardContent className="p-5">
-                        <h3 className="flex items-center gap-2 text-lg font-semibold text-fg mb-4">
+                        <h3 className="mb-4 flex items-center gap-2 font-semibold text-fg text-lg">
                           <IconUsers size={20} />
                           Pelanggan Terbesar
                         </h3>
@@ -285,24 +285,24 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                             agingData.top_customers.map((customer) => (
                               <div
                                 key={customer.id}
-                                className="flex items-center justify-between py-2 border-b border-border last:border-0"
+                                className="flex items-center justify-between border-border border-b py-2 last:border-0"
                               >
                                 <div>
                                   <p className="font-medium text-fg">{customer.name}</p>
-                                  <p className="text-xs text-muted-fg">Piutang</p>
+                                  <p className="text-muted-fg text-xs">Piutang</p>
                                 </div>
                                 <div className="text-right">
                                   <p className="font-semibold text-warning">
                                     {formatCurrency(customer.remaining)}
                                   </p>
-                                  <p className="text-xs text-muted-fg">
+                                  <p className="text-muted-fg text-xs">
                                     Total: {formatCurrency(customer.total_receivable)}
                                   </p>
                                 </div>
                               </div>
                             ))
                           ) : (
-                            <p className="text-sm text-muted-fg text-center py-4">
+                            <p className="py-4 text-center text-muted-fg text-sm">
                               Belum ada data piutang.
                             </p>
                           )}
@@ -318,29 +318,29 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
           <>
             <form
               onSubmit={applyFilter}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end bg-bg border border-border rounded-2xl p-4"
+              className="grid grid-cols-1 items-end gap-3 rounded-2xl border border-border bg-bg p-4 sm:grid-cols-2 lg:grid-cols-4"
             >
               <div className="relative w-full">
                 <IconSearch
                   size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-fg"
+                  className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-fg"
                 />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Cari invoice / nomor nota"
-                  className="w-full h-11 pl-10 pr-3 rounded-xl border border-input bg-muted text-sm text-fg placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted pr-3 pl-10 text-fg text-sm placeholder:text-muted-fg"
                 />
               </div>
               <div className="relative w-full">
                 <IconCalendar
                   size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-fg"
+                  className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-fg"
                 />
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full h-11 pl-10 pr-3 rounded-xl border border-input bg-muted text-sm text-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted pr-3 pl-10 text-fg text-sm"
                 >
                   <option value="">Semua Status</option>
                   <option value="unpaid">Belum Lunas</option>
@@ -358,7 +358,7 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
               <CardContent className="p-0">
                 <div className="w-full overflow-x-auto">
                   <div className="min-w-[720px]">
-                    <div className="grid grid-cols-12 px-4 py-3 text-xs font-semibold text-muted-fg uppercase tracking-wider border-b border-border">
+                    <div className="grid grid-cols-12 border-border border-b px-4 py-3 font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       <div className="col-span-2">Invoice</div>
                       <div className="col-span-2">Pelanggan</div>
                       <div className="col-span-2 text-right">Total</div>
@@ -371,10 +371,10 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                         <Link
                           key={item.id}
                           href={receivables.show.url({ receivable: item.id })}
-                          className="grid grid-cols-12 gap-2 px-4 py-3 items-center border-b border-border hover:bg-muted transition-colors"
+                          className="grid grid-cols-12 items-center gap-2 border-border border-b px-4 py-3 transition-colors hover:bg-muted"
                         >
                           <div className="col-span-2">
-                            <p className="text-sm font-semibold text-fg">{item.invoice}</p>
+                            <p className="font-semibold text-fg text-sm">{item.invoice}</p>
                             {item.transaction_id && (
                               <p className="text-[11px] text-muted-fg">
                                 POS #{item.transaction_id}
@@ -382,15 +382,15 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                             )}
                           </div>
                           <div className="col-span-2">
-                            <p className="text-sm text-muted-fg">{item.customer?.name || "Umum"}</p>
+                            <p className="text-muted-fg text-sm">{item.customer?.name || "Umum"}</p>
                           </div>
-                          <div className="col-span-2 text-right text-sm font-semibold text-fg">
+                          <div className="col-span-2 text-right font-semibold text-fg text-sm">
                             {formatCurrency(item.total)}
                           </div>
-                          <div className="col-span-2 text-right text-sm font-semibold text-primary">
+                          <div className="col-span-2 text-right font-semibold text-primary text-sm">
                             {formatCurrency(item.remaining)}
                           </div>
-                          <div className="col-span-2 text-right text-sm text-muted-fg">
+                          <div className="col-span-2 text-right text-muted-fg text-sm">
                             {formatDate(item.due_date)}
                           </div>
                           <div className="col-span-2 flex justify-center">

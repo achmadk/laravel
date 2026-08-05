@@ -69,8 +69,8 @@ function AccessPage() {
       <Head title="Akses" />
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">Pilih Akses</h1>
-          <p className="text-sm text-muted-fg">
+          <h1 className="font-bold text-2xl text-fg">Pilih Akses</h1>
+          <p className="text-muted-fg text-sm">
             Halaman ini muncul ketika Anda tidak memiliki akses dashboard.
           </p>
         </div>
@@ -81,14 +81,14 @@ function AccessPage() {
               <Link
                 key={card.title}
                 href={card.href}
-                className="group bg-bg border border-border rounded-2xl p-4 flex items-start gap-3 hover:border-primary transition-colors shadow-sm"
+                className="group flex items-start gap-3 rounded-2xl border border-border bg-bg p-4 shadow-sm transition-colors hover:border-primary"
               >
-                <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
                   {card.icon}
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-semibold text-fg">{card.title}</h3>
-                  <p className="text-sm text-muted-fg">{card.desc}</p>
+                  <p className="text-muted-fg text-sm">{card.desc}</p>
                 </div>
               </Link>
             ))

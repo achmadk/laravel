@@ -2,7 +2,7 @@ import { tv } from "tailwind-variants";
 import { twMerge } from "tailwind-merge";
 
 const badgeStyles = tv({
-  base: "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+  base: "inline-flex items-center rounded-full px-2.5 py-0.5 font-medium text-xs",
   variants: {
     variant: {
       success: "bg-success-subtle text-success",

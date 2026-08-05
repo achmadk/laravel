@@ -21,7 +21,7 @@ information via [useLocale](useLocale.md).
 
 ### I18nProvider
 
-| Name       | Type              | Default    | Description                                   |
+| Name | Type | Default | Description |
 | ---------- | ----------------- | ---------- | --------------------------------------------- | ------------------------------------ |
-| `children` | `React.ReactNode` | —          | Contents that should have the locale applied. |
-| `locale`   | `string           | undefined` | —                                             | The locale to apply to the children. |
+| `children` | `React.ReactNode` | — | Contents that should have the locale applied. |
+| `locale` | `string           | undefined` | — | The locale to apply to the children. |

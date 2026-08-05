@@ -12,6 +12,7 @@ import {
   IconAlertCircle,
 } from "@tabler/icons-react";
 import { useAuthorization } from "@/lib/auth";
+import transactions from "@/routes/transactions";
 
 const formatPrice = (price = 0) =>
   Number(price || 0).toLocaleString("id-ID", {
@@ -90,9 +91,9 @@ function SimpleBarcode({ value }: { value: string }) {
   const scale = totalWidth ? Math.min(2.2, targetWidth / totalWidth) : 1;
 
   return (
-    <div className="flex items-end gap-[2px] mt-4">
+    <div className="mt-4 flex items-end gap-[2px]">
       {bars.map((w, i) => (
-        <span key={i} style={{ width: `${w * scale}px` }} className="h-10 sm:h-14 bg-fg block" />
+        <span key={i} style={{ width: `${w * scale}px` }} className="block h-10 bg-fg sm:h-14" />
       ))}
     </div>
   );
@@ -182,61 +183,61 @@ export default function Print({ transaction }: PrintProps) {
     <>
       <Head title="Invoice Penjualan" />
 
-      <div className="min-h-screen bg-muted print:bg-bg print:p-0 py-8 px-4">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <div className="min-h-screen bg-muted px-4 py-8 print:bg-bg print:p-0">
+        <div className="mx-auto max-w-4xl space-y-6">
           <div className="flex flex-wrap items-start justify-between gap-3 print:hidden">
             <Link
-              href="/apps/transactions"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-bg text-sm font-medium text-muted-fg hover:bg-muted transition-colors"
+              href={transactions.index.url()}
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-bg px-4 py-2.5 font-medium text-muted-fg text-sm transition-colors hover:bg-muted"
             >
               <IconArrowLeft size={18} />
               Kembali ke kasir
             </Link>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-              <div className="flex bg-muted rounded-xl p-1 w-full sm:w-auto">
+            <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
+              <div className="flex w-full rounded-xl bg-muted p-1 sm:w-auto">
                 <button
                   onClick={() => setPrintMode("invoice")}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
                     printMode === "invoice"
                       ? "bg-bg text-fg shadow-sm"
                       : "text-muted-fg hover:text-fg"
                   }`}
                 >
-                  <IconFileInvoice size={16} className="inline mr-1" />
+                  <IconFileInvoice size={16} className="mr-1 inline" />
                   Invoice
                 </button>
                 <button
                   onClick={() => setPrintMode("thermal80")}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
                     printMode === "thermal80"
                       ? "bg-bg text-fg shadow-sm"
                       : "text-muted-fg hover:text-fg"
                   }`}
                 >
-                  <IconReceipt size={16} className="inline mr-1" />
+                  <IconReceipt size={16} className="mr-1 inline" />
                   Struk 80mm
                 </button>
                 <button
                   onClick={() => setPrintMode("thermal58")}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
                     printMode === "thermal58"
                       ? "bg-bg text-fg shadow-sm"
                       : "text-muted-fg hover:text-fg"
                   }`}
                 >
-                  <IconReceipt size={16} className="inline mr-1" />
+                  <IconReceipt size={16} className="mr-1 inline" />
                   Struk 58mm
                 </button>
                 <button
                   onClick={() => setPrintMode("shipping")}
-                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
                     printMode === "shipping"
                       ? "bg-bg text-fg shadow-sm"
                       : "text-muted-fg hover:text-fg"
                   }`}
                 >
-                  <IconTruck size={16} className="inline mr-1" />
+                  <IconTruck size={16} className="mr-1 inline" />
                   Resi
                 </button>
               </div>
@@ -246,7 +247,7 @@ export default function Print({ transaction }: PrintProps) {
                   href={transaction.payment_url!}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-primary/30 text-sm font-semibold text-primary hover:bg-primary/5 transition-colors w-full sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/30 px-4 py-2.5 font-semibold text-primary text-sm transition-colors hover:bg-primary/5 sm:w-auto"
                 >
                   <IconExternalLink size={18} />
                   Pembayaran
@@ -258,7 +259,7 @@ export default function Print({ transaction }: PrintProps) {
                 canConfirmPayment && (
                   <button
                     onClick={() => setShowConfirmModal(true)}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-success hover:bg-success/90 text-sm font-semibold text-white transition-colors w-full sm:w-auto"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-success px-4 py-2.5 font-semibold text-sm text-white transition-colors hover:bg-success/90 sm:w-auto"
                   >
                     <IconCheck size={18} />
                     Konfirmasi Bayar
@@ -270,7 +271,7 @@ export default function Print({ transaction }: PrintProps) {
                   href={`/pdf/transactions/invoice/${transaction.invoice}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-sm font-semibold text-white shadow-lg shadow-primary/30 transition-colors w-full sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 sm:w-auto"
                 >
                   <IconPrinter size={18} />
                   PDF Invoice
@@ -282,7 +283,7 @@ export default function Print({ transaction }: PrintProps) {
                   href={`/pdf/transactions/receipt/${transaction.invoice}?size=${printMode === "thermal58" ? "58" : "80"}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-fg hover:bg-fg/90 text-sm font-semibold text-bg transition-colors w-full sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-fg px-4 py-2.5 font-semibold text-bg text-sm transition-colors hover:bg-fg/90 sm:w-auto"
                 >
                   <IconPrinter size={18} />
                   PDF Struk {printMode === "thermal58" ? "58mm" : "80mm"}
@@ -294,7 +295,7 @@ export default function Print({ transaction }: PrintProps) {
                   href={`/pdf/transactions/shipping/${transaction.invoice}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-success hover:bg-success/90 text-sm font-semibold text-white transition-colors w-full sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-success px-4 py-2.5 font-semibold text-sm text-white transition-colors hover:bg-success/90 sm:w-auto"
                 >
                   <IconPrinter size={18} />
                   PDF Resi
@@ -305,24 +306,24 @@ export default function Print({ transaction }: PrintProps) {
 
           {/* Invoice View */}
           {printMode === "invoice" && (
-            <div className="bg-bg rounded-2xl border border-border overflow-hidden shadow-xl print:shadow-none print:border-border">
-              <div className="bg-gradient-to-r from-primary to-primary/80 px-4 sm:px-6 py-5 sm:py-6 text-white print:bg-muted print:text-fg">
-                <div className="flex flex-col items-center text-center gap-4 sm:gap-5 sm:grid sm:grid-cols-[1.4fr,1fr] sm:text-left sm:items-start">
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 min-w-0">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center p-1 flex-shrink-0">
-                      <span className="text-lg font-bold text-white print:text-fg">
+            <div className="overflow-hidden rounded-2xl border border-border bg-bg shadow-xl print:border-border print:shadow-none">
+              <div className="bg-gradient-to-r from-primary to-primary/80 px-4 py-5 text-white sm:px-6 sm:py-6 print:bg-muted print:text-fg">
+                <div className="flex flex-col items-center gap-4 text-center sm:grid sm:grid-cols-[1.4fr,1fr] sm:items-start sm:gap-5 sm:text-left">
+                  <div className="flex min-w-0 flex-col items-center gap-2 sm:flex-row sm:items-start sm:gap-3">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center p-1 sm:h-14 sm:w-14">
+                      <span className="font-bold text-lg text-white print:text-fg">
                         {store.name.charAt(0)}
                       </span>
                     </div>
-                    <div className="text-white print:text-fg space-y-1 min-w-0 text-center sm:text-left">
-                      <p className="text-base sm:text-lg font-bold leading-tight">{store.name}</p>
+                    <div className="min-w-0 space-y-1 text-center text-white sm:text-left print:text-fg">
+                      <p className="font-bold text-base leading-tight sm:text-lg">{store.name}</p>
                       {store.address && (
-                        <p className="text-[11px] sm:text-xs opacity-90 leading-snug break-words">
+                        <p className="break-words text-[11px] leading-snug opacity-90 sm:text-xs">
                           {store.address}
                         </p>
                       )}
                       {(store.phone || store.email || store.website) && (
-                        <p className="text-[11px] sm:text-xs opacity-90 space-x-2 leading-snug flex flex-wrap justify-center sm:justify-start gap-x-2 gap-y-1">
+                        <p className="flex flex-wrap justify-center gap-x-2 gap-y-1 space-x-2 text-[11px] leading-snug opacity-90 sm:justify-start sm:text-xs">
                           {store.phone && <span>Telp: {store.phone}</span>}
                           {store.email && <span>Email: {store.email}</span>}
                           {store.website && <span>{store.website}</span>}
@@ -332,17 +333,17 @@ export default function Print({ transaction }: PrintProps) {
                   </div>
 
                   <div className="text-center sm:text-right">
-                    <div className="inline-flex flex-col items-center sm:items-end bg-white/10 print:bg-transparent rounded-xl px-3 py-2 sm:px-4 sm:py-3 min-w-[180px] sm:min-w-[200px]">
-                      <div className="flex items-center gap-2 mb-1 justify-center sm:justify-end">
-                        <IconReceipt size={20} className="sm:w-6 sm:h-6" />
-                        <span className="text-xs sm:text-sm font-medium opacity-90 print:opacity-100">
+                    <div className="inline-flex min-w-[180px] flex-col items-center rounded-xl bg-white/10 px-3 py-2 sm:min-w-[200px] sm:items-end sm:px-4 sm:py-3 print:bg-transparent">
+                      <div className="mb-1 flex items-center justify-center gap-2 sm:justify-end">
+                        <IconReceipt size={20} className="sm:h-6 sm:w-6" />
+                        <span className="font-medium text-xs opacity-90 sm:text-sm print:opacity-100">
                           INVOICE
                         </span>
                       </div>
-                      <p className="text-lg sm:text-2xl font-bold leading-tight">
+                      <p className="font-bold text-lg leading-tight sm:text-2xl">
                         {transaction.invoice}
                       </p>
-                      <p className="text-xs sm:text-sm opacity-80 print:opacity-100 mt-1">
+                      <p className="mt-1 text-xs opacity-80 sm:text-sm print:opacity-100">
                         {formatDateTime(transaction.created_at)}
                       </p>
                     </div>
@@ -350,33 +351,33 @@ export default function Print({ transaction }: PrintProps) {
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-6 border-b border-border">
-                <div className="bg-muted/60 rounded-xl p-3 sm:p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-fg mb-2">
+              <div className="grid gap-4 border-border border-b px-4 py-4 sm:gap-6 sm:px-6 sm:py-6 md:grid-cols-2">
+                <div className="rounded-xl bg-muted/60 p-3 sm:p-4">
+                  <p className="mb-2 font-semibold text-muted-fg text-xs uppercase tracking-wider">
                     Pelanggan
                   </p>
-                  <p className="text-base font-semibold text-fg">
+                  <p className="font-semibold text-base text-fg">
                     {transaction.customer?.name ?? "Umum"}
                   </p>
                   {transaction.customer?.address && (
-                    <p className="text-sm text-muted-fg">{transaction.customer.address}</p>
+                    <p className="text-muted-fg text-sm">{transaction.customer.address}</p>
                   )}
                 </div>
-                <div className="bg-muted/60 rounded-xl p-3 sm:p-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-fg mb-2">
+                <div className="rounded-xl bg-muted/60 p-3 sm:p-4">
+                  <p className="mb-2 font-semibold text-muted-fg text-xs uppercase tracking-wider">
                     Kasir
                   </p>
                   <div className="flex items-start justify-between gap-3">
-                    <p className="text-base font-semibold text-fg">
+                    <p className="font-semibold text-base text-fg">
                       {transaction.cashier?.name ?? "-"}
                     </p>
-                    <div className="flex flex-wrap gap-2 justify-end">
+                    <div className="flex flex-wrap justify-end gap-2">
                       <span
-                        className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${paymentStatusColor}`}
+                        className={`inline-block rounded-full px-3 py-1 font-semibold text-xs ${paymentStatusColor}`}
                       >
                         {paymentStatusLabel}
                       </span>
-                      <span className="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-muted text-muted-fg">
+                      <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                         {paymentMethodLabel}
                       </span>
                     </div>
@@ -385,35 +386,35 @@ export default function Print({ transaction }: PrintProps) {
               </div>
 
               {paymentMethodKey === "bank_transfer" && transaction.bank_account && (
-                <div className="mx-6 mb-6 p-4 rounded-xl bg-muted border border-border">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-fg mb-2">
+                <div className="mx-6 mb-6 rounded-xl border border-border bg-muted p-4">
+                  <p className="mb-2 font-semibold text-muted-fg text-xs uppercase tracking-wider">
                     Silakan Transfer ke Rekening
                   </p>
-                  <p className="text-lg font-bold text-fg">{transaction.bank_account.bank_name}</p>
-                  <p className="text-base font-semibold text-primary">
+                  <p className="font-bold text-fg text-lg">{transaction.bank_account.bank_name}</p>
+                  <p className="font-semibold text-base text-primary">
                     {transaction.bank_account.account_number}
                   </p>
-                  <p className="text-sm text-muted-fg">
+                  <p className="text-muted-fg text-sm">
                     a.n. {transaction.bank_account.account_name}
                   </p>
                 </div>
               )}
 
-              <div className="px-4 sm:px-6 py-6">
+              <div className="px-4 py-6 sm:px-6">
                 <div className="w-full overflow-x-auto">
                   <table className="w-full min-w-[620px] text-sm">
                     <thead>
-                      <tr className="border-b border-border">
-                        <th className="pb-3 text-left text-xs font-semibold uppercase tracking-wider text-muted-fg">
+                      <tr className="border-border border-b">
+                        <th className="pb-3 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                           Produk
                         </th>
-                        <th className="pb-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-fg">
+                        <th className="pb-3 text-right font-semibold text-muted-fg text-xs uppercase tracking-wider">
                           Harga
                         </th>
-                        <th className="pb-3 text-center text-xs font-semibold uppercase tracking-wider text-muted-fg">
+                        <th className="pb-3 text-center font-semibold text-muted-fg text-xs uppercase tracking-wider">
                           Qty
                         </th>
-                        <th className="pb-3 text-right text-xs font-semibold uppercase tracking-wider text-muted-fg">
+                        <th className="pb-3 text-right font-semibold text-muted-fg text-xs uppercase tracking-wider">
                           Subtotal
                         </th>
                       </tr>
@@ -435,7 +436,7 @@ export default function Print({ transaction }: PrintProps) {
                             <td className="py-3">
                               <p className="font-medium text-fg">{item.product?.title}</p>
                               {hasPromo && (
-                                <p className="text-xs font-medium text-danger">
+                                <p className="font-medium text-danger text-xs">
                                   {item.pricing_group_label ||
                                     item.pricing_rule_name ||
                                     "Promo aktif"}
@@ -445,7 +446,7 @@ export default function Print({ transaction }: PrintProps) {
                             <td className="py-3 text-right text-muted-fg">
                               <div>
                                 {hasPromo && (
-                                  <p className="text-xs text-muted-fg line-through">
+                                  <p className="text-muted-fg text-xs line-through">
                                     {formatPrice(baseUnitPrice)}
                                   </p>
                                 )}
@@ -465,7 +466,7 @@ export default function Print({ transaction }: PrintProps) {
               </div>
 
               <div className="bg-muted/50 px-6 py-6">
-                <div className="max-w-xs ml-auto space-y-2 text-sm">
+                <div className="ml-auto max-w-xs space-y-2 text-sm">
                   <div className="flex justify-between text-muted-fg">
                     <span>Subtotal</span>
                     <span>{formatPrice(baseSubtotal)}</span>
@@ -486,17 +487,17 @@ export default function Print({ transaction }: PrintProps) {
                       <span>+ {formatPrice(transaction.shipping_cost)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-lg font-bold text-fg pt-2 border-t border-border">
+                  <div className="flex justify-between border-border border-t pt-2 font-bold text-fg text-lg">
                     <span>Total</span>
                     <span>{formatPrice(transaction.grand_total)}</span>
                   </div>
                   {paymentMethodKey === "cash" && (
                     <>
-                      <div className="flex justify-between text-muted-fg pt-2">
+                      <div className="flex justify-between pt-2 text-muted-fg">
                         <span>Tunai</span>
                         <span>{formatPrice(transaction.cash)}</span>
                       </div>
-                      <div className="flex justify-between text-success font-medium">
+                      <div className="flex justify-between font-medium text-success">
                         <span>Kembali</span>
                         <span>{formatPrice(transaction.change)}</span>
                       </div>
@@ -505,11 +506,11 @@ export default function Print({ transaction }: PrintProps) {
                 </div>
               </div>
 
-              <div className="px-6 py-4 border-t border-border">
-                <p className="text-xs text-muted-fg">Invoice: {transaction.invoice}</p>
+              <div className="border-border border-t px-6 py-4">
+                <p className="text-muted-fg text-xs">Invoice: {transaction.invoice}</p>
                 <SimpleBarcode value={transaction.invoice} />
-                <div className="text-center mt-4">
-                  <p className="text-xs text-muted-fg uppercase tracking-widest">
+                <div className="mt-4 text-center">
+                  <p className="text-muted-fg text-xs uppercase tracking-widest">
                     Terima kasih telah berbelanja
                   </p>
                 </div>
@@ -519,20 +520,20 @@ export default function Print({ transaction }: PrintProps) {
 
           {printMode === "thermal80" && (
             <div className="flex justify-center print:block">
-              <div className="bg-bg rounded-2xl border border-border shadow-xl p-4 print:shadow-none print:border-0 print:p-0 print:rounded-none">
-                <div className="max-w-[80mm] mx-auto text-sm space-y-2 p-2 font-mono">
-                  <div className="text-center border-b border-dashed border-border pb-3 mb-3">
-                    <p className="text-base font-bold text-fg">{store.name}</p>
-                    {store.address && <p className="text-xs text-muted-fg">{store.address}</p>}
-                    {store.phone && <p className="text-xs text-muted-fg">Telp: {store.phone}</p>}
+              <div className="rounded-2xl border border-border bg-bg p-4 shadow-xl print:rounded-none print:border-0 print:p-0 print:shadow-none">
+                <div className="mx-auto max-w-[80mm] space-y-2 p-2 font-mono text-sm">
+                  <div className="mb-3 border-border border-b border-dashed pb-3 text-center">
+                    <p className="font-bold text-base text-fg">{store.name}</p>
+                    {store.address && <p className="text-muted-fg text-xs">{store.address}</p>}
+                    {store.phone && <p className="text-muted-fg text-xs">Telp: {store.phone}</p>}
                   </div>
-                  <div className="flex justify-between text-xs text-muted-fg">
+                  <div className="flex justify-between text-muted-fg text-xs">
                     <span>{transaction.invoice}</span>
                     <span>{formatDateTime(transaction.created_at)}</span>
                   </div>
-                  <div className="border-t border-dashed border-border pt-2 mt-2" />
+                  <div className="mt-2 border-border border-t border-dashed pt-2" />
                   {items.map((item: TransactionDetail) => (
-                    <div key={item.id} className="text-xs text-fg">
+                    <div key={item.id} className="text-fg text-xs">
                       <p className="font-medium">{item.product?.title}</p>
                       <div className="flex justify-between">
                         <span>
@@ -546,24 +547,24 @@ export default function Print({ transaction }: PrintProps) {
                       </div>
                     </div>
                   ))}
-                  <div className="border-t border-dashed border-border pt-2 mt-2" />
-                  <div className="flex justify-between text-sm font-bold text-fg">
+                  <div className="mt-2 border-border border-t border-dashed pt-2" />
+                  <div className="flex justify-between font-bold text-fg text-sm">
                     <span>Total</span>
                     <span>{formatPrice(transaction.grand_total)}</span>
                   </div>
                   {Number(transaction.cash) > 0 && (
                     <>
-                      <div className="flex justify-between text-xs text-muted-fg">
+                      <div className="flex justify-between text-muted-fg text-xs">
                         <span>Tunai</span>
                         <span>{formatPrice(transaction.cash)}</span>
                       </div>
-                      <div className="flex justify-between text-xs text-success">
+                      <div className="flex justify-between text-success text-xs">
                         <span>Kembali</span>
                         <span>{formatPrice(transaction.change)}</span>
                       </div>
                     </>
                   )}
-                  <div className="text-center text-xs text-muted-fg mt-4 pt-3 border-t border-dashed border-border">
+                  <div className="mt-4 border-border border-t border-dashed pt-3 text-center text-muted-fg text-xs">
                     <p>Terima kasih telah berbelanja</p>
                   </div>
                 </div>
@@ -573,10 +574,10 @@ export default function Print({ transaction }: PrintProps) {
 
           {printMode === "thermal58" && (
             <div className="flex justify-center print:block">
-              <div className="bg-bg rounded-2xl border border-border shadow-xl p-4 print:shadow-none print:border-0 print:p-0 print:rounded-none">
-                <div className="max-w-[58mm] mx-auto text-xs space-y-1.5 p-1 font-mono">
-                  <div className="text-center border-b border-dashed border-border pb-2 mb-2">
-                    <p className="text-sm font-bold text-fg">{store.name}</p>
+              <div className="rounded-2xl border border-border bg-bg p-4 shadow-xl print:rounded-none print:border-0 print:p-0 print:shadow-none">
+                <div className="mx-auto max-w-[58mm] space-y-1.5 p-1 font-mono text-xs">
+                  <div className="mb-2 border-border border-b border-dashed pb-2 text-center">
+                    <p className="font-bold text-fg text-sm">{store.name}</p>
                     {store.address && <p className="text-[10px] text-muted-fg">{store.address}</p>}
                     {store.phone && (
                       <p className="text-[10px] text-muted-fg">Telp: {store.phone}</p>
@@ -586,7 +587,7 @@ export default function Print({ transaction }: PrintProps) {
                     <span>{transaction.invoice}</span>
                     <span>{formatDateTime(transaction.created_at)}</span>
                   </div>
-                  <div className="border-t border-dashed border-border pt-1.5 mt-1.5" />
+                  <div className="mt-1.5 border-border border-t border-dashed pt-1.5" />
                   {items.map((item: TransactionDetail) => (
                     <div key={item.id} className="text-[10px] text-fg">
                       <p className="font-medium">{item.product?.title}</p>
@@ -602,8 +603,8 @@ export default function Print({ transaction }: PrintProps) {
                       </div>
                     </div>
                   ))}
-                  <div className="border-t border-dashed border-border pt-1.5 mt-1.5" />
-                  <div className="flex justify-between text-xs font-bold text-fg">
+                  <div className="mt-1.5 border-border border-t border-dashed pt-1.5" />
+                  <div className="flex justify-between font-bold text-fg text-xs">
                     <span>Total</span>
                     <span>{formatPrice(transaction.grand_total)}</span>
                   </div>
@@ -619,7 +620,7 @@ export default function Print({ transaction }: PrintProps) {
                       </div>
                     </>
                   )}
-                  <div className="text-center text-[10px] text-muted-fg mt-3 pt-2 border-t border-dashed border-border">
+                  <div className="mt-3 border-border border-t border-dashed pt-2 text-center text-[10px] text-muted-fg">
                     <p>Terima kasih</p>
                   </div>
                 </div>
@@ -628,46 +629,46 @@ export default function Print({ transaction }: PrintProps) {
           )}
 
           {printMode === "shipping" && (
-            <div className="flex justify-center items-center py-10 print:py-0 print:block">
-              <div className="w-full max-w-[150mm] mx-auto bg-bg rounded-2xl border border-border shadow-xl p-6 print:shadow-none print:border-0">
-                <div className="text-center border-b border-border pb-4 mb-4">
-                  <p className="text-lg font-bold text-fg">{store.name}</p>
-                  {store.address && <p className="text-xs text-muted-fg">{store.address}</p>}
-                  {store.phone && <p className="text-xs text-muted-fg">Telp: {store.phone}</p>}
+            <div className="flex items-center justify-center py-10 print:block print:py-0">
+              <div className="mx-auto w-full max-w-[150mm] rounded-2xl border border-border bg-bg p-6 shadow-xl print:border-0 print:shadow-none">
+                <div className="mb-4 border-border border-b pb-4 text-center">
+                  <p className="font-bold text-fg text-lg">{store.name}</p>
+                  {store.address && <p className="text-muted-fg text-xs">{store.address}</p>}
+                  {store.phone && <p className="text-muted-fg text-xs">Telp: {store.phone}</p>}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-xs text-muted-fg">Pengirim</p>
+                    <p className="text-muted-fg text-xs">Pengirim</p>
                     <p className="font-medium text-fg">{store.name}</p>
-                    {store.address && <p className="text-xs text-muted-fg">{store.address}</p>}
-                    {store.phone && <p className="text-xs text-muted-fg">{store.phone}</p>}
+                    {store.address && <p className="text-muted-fg text-xs">{store.address}</p>}
+                    {store.phone && <p className="text-muted-fg text-xs">{store.phone}</p>}
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-muted-fg">Penerima</p>
+                    <p className="text-muted-fg text-xs">Penerima</p>
                     <p className="font-medium text-fg">{transaction.customer?.name || "-"}</p>
                     {transaction.customer?.address && (
-                      <p className="text-xs text-muted-fg">{transaction.customer.address}</p>
+                      <p className="text-muted-fg text-xs">{transaction.customer.address}</p>
                     )}
                   </div>
                 </div>
 
-                <div className="border-t border-border pt-4">
-                  <div className="flex justify-between text-sm font-bold text-fg">
+                <div className="border-border border-t pt-4">
+                  <div className="flex justify-between font-bold text-fg text-sm">
                     <span>{transaction.invoice}</span>
                     <span>{formatPrice(transaction.grand_total)}</span>
                   </div>
-                  <p className="text-xs text-muted-fg mt-1">
+                  <p className="mt-1 text-muted-fg text-xs">
                     {formatDateTime(transaction.created_at)}
                   </p>
                 </div>
 
-                <div className="border-t border-border mt-4 pt-4">
+                <div className="mt-4 border-border border-t pt-4">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="border-b border-border">
-                        <th className="text-left pb-1 text-muted-fg">Produk</th>
-                        <th className="text-center pb-1 text-muted-fg">Qty</th>
+                      <tr className="border-border border-b">
+                        <th className="pb-1 text-left text-muted-fg">Produk</th>
+                        <th className="pb-1 text-center text-muted-fg">Qty</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -681,7 +682,7 @@ export default function Print({ transaction }: PrintProps) {
                   </table>
                 </div>
 
-                <div className="text-center text-xs text-muted-fg mt-6 pt-4 border-t border-border">
+                <div className="mt-6 border-border border-t pt-4 text-center text-muted-fg text-xs">
                   <SimpleBarcode value={transaction.invoice} />
                 </div>
               </div>
@@ -696,49 +697,49 @@ export default function Print({ transaction }: PrintProps) {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => !isConfirming && setShowConfirmModal(false)}
           />
-          <div className="relative bg-bg rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+          <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-bg shadow-2xl">
             <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-5 text-white">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
                   <IconBuildingBank size={24} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold">Konfirmasi Pembayaran</h3>
+                  <h3 className="font-bold text-lg">Konfirmasi Pembayaran</h3>
                   <p className="text-sm opacity-90">Transfer Bank</p>
                 </div>
               </div>
             </div>
-            <div className="p-6 space-y-4">
-              <div className="bg-muted rounded-xl p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-muted-fg">Invoice</span>
-                  <span className="text-sm font-bold text-fg">{transaction.invoice}</span>
+            <div className="space-y-4 p-6">
+              <div className="rounded-xl bg-muted p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-muted-fg text-sm">Invoice</span>
+                  <span className="font-bold text-fg text-sm">{transaction.invoice}</span>
                 </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-muted-fg">Pelanggan</span>
-                  <span className="text-sm font-medium text-muted-fg">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-muted-fg text-sm">Pelanggan</span>
+                  <span className="font-medium text-muted-fg text-sm">
                     {transaction.customer?.name ?? "Umum"}
                   </span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-fg">Total</span>
-                  <span className="text-lg font-bold text-primary">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-fg text-sm">Total</span>
+                  <span className="font-bold text-lg text-primary">
                     {formatPrice(transaction.grand_total ?? 0)}
                   </span>
                 </div>
               </div>
-              <div className="flex items-start gap-3 p-4 bg-warning/10 rounded-xl border border-warning/30">
-                <IconAlertCircle size={20} className="text-warning flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 rounded-xl border border-warning/30 bg-warning/10 p-4">
+                <IconAlertCircle size={20} className="mt-0.5 flex-shrink-0 text-warning" />
                 <p className="text-sm text-warning">
                   Pastikan dana sudah diterima sebelum mengkonfirmasi pembayaran ini.
                 </p>
               </div>
             </div>
-            <div className="px-6 pb-6 flex gap-3">
+            <div className="flex gap-3 px-6 pb-6">
               <button
                 onClick={() => setShowConfirmModal(false)}
                 disabled={isConfirming}
-                className="flex-1 px-4 py-3 rounded-xl border border-border text-muted-fg font-medium hover:bg-muted disabled:opacity-50"
+                className="flex-1 rounded-xl border border-border px-4 py-3 font-medium text-muted-fg hover:bg-muted disabled:opacity-50"
               >
                 Batal
               </button>
@@ -746,7 +747,7 @@ export default function Print({ transaction }: PrintProps) {
                 onClick={() => {
                   setIsConfirming(true);
                   router.patch(
-                    `/apps/transactions/confirm-payment/${transaction.id}`,
+                    transactions.confirmPayment.url(transaction.id),
                     {},
                     {
                       onSuccess: () => {
@@ -760,11 +761,11 @@ export default function Print({ transaction }: PrintProps) {
                   );
                 }}
                 disabled={isConfirming}
-                className="flex-1 px-4 py-3 rounded-xl bg-success hover:bg-success/90 text-white font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-success px-4 py-3 font-medium text-white hover:bg-success/90 disabled:opacity-50"
               >
                 {isConfirming ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{" "}
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />{" "}
                     Memproses...
                   </>
                 ) : (

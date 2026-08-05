@@ -120,7 +120,7 @@ export default function Index({ returns, filters, suppliers }: IndexProps) {
         <select
           value={filters.status || ""}
           onChange={(e) => handleFilterChange("status", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Status</option>
           <option value="draft">Draft</option>
@@ -130,7 +130,7 @@ export default function Index({ returns, filters, suppliers }: IndexProps) {
         <select
           value={filters.supplier || ""}
           onChange={(e) => handleFilterChange("supplier", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Supplier</option>
           {suppliers.map((s) => (
@@ -143,11 +143,11 @@ export default function Index({ returns, filters, suppliers }: IndexProps) {
 
       <Card>
         <CardContent className="p-5">
-          <h2 className="mb-4 text-lg font-semibold text-fg">Daftar Retur Supplier</h2>
+          <h2 className="mb-4 font-semibold text-fg text-lg">Daftar Retur Supplier</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Dokumen</th>
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Supplier</th>
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Status</th>
@@ -162,24 +162,24 @@ export default function Index({ returns, filters, suppliers }: IndexProps) {
                   returns.data.map((ret) => (
                     <tr
                       key={ret.id}
-                      className="border-b border-border transition-colors hover:bg-muted"
+                      className="border-border border-b transition-colors hover:bg-muted"
                     >
                       <td className="px-3 py-3">
                         <p className="font-semibold text-fg">{ret.document_number}</p>
-                        <p className="text-xs text-muted-fg">{ret.created_at?.split("T")[0]}</p>
+                        <p className="text-muted-fg text-xs">{ret.created_at?.split("T")[0]}</p>
                       </td>
-                      <td className="px-3 py-3 text-sm text-fg">{ret.supplier?.name || "-"}</td>
+                      <td className="px-3 py-3 text-fg text-sm">{ret.supplier?.name || "-"}</td>
                       <td className="px-3 py-3">
                         <StatusBadge
                           variant={statusVariant(ret.status)}
                           label={statusLabels[ret.status] || ret.status}
                         />
                       </td>
-                      <td className="px-3 py-3 text-sm text-fg">{ret.items_count}</td>
-                      <td className="px-3 py-3 text-sm text-fg">
+                      <td className="px-3 py-3 text-fg text-sm">{ret.items_count}</td>
+                      <td className="px-3 py-3 text-fg text-sm">
                         {formatDateTime(ret.returned_at || ret.created_at)}
                       </td>
-                      <td className="px-3 py-3 text-sm text-fg">{ret.creator?.name || "-"}</td>
+                      <td className="px-3 py-3 text-fg text-sm">{ret.creator?.name || "-"}</td>
                       <td className="px-3 py-3 text-center">
                         <Link href={supplierReturns.show.url({ supplierReturn: ret.id })}>
                           <Button intent="plain" size="sq-sm">

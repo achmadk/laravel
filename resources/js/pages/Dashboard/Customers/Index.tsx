@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import {
   IconCirclePlus,
-  IconDatabaseOff,
   IconPencilCog,
   IconTrash,
   IconLayoutGrid,
@@ -74,22 +73,22 @@ function CustomerCard({
   canDelete: boolean;
 }) {
   return (
-    <div className="group bg-bg rounded-2xl border border-border p-5 hover:shadow-lg hover:border-muted-fg/30 transition-all duration-200">
-      <div className="flex items-start justify-between mb-4">
+    <div className="group rounded-2xl border border-border bg-bg p-5 transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+      <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
           {customer.avatar ? (
             <img
               src={customer.avatar}
               alt={customer.name}
-              className="w-12 h-12 rounded-full object-cover border border-border flex-shrink-0"
+              className="h-12 w-12 flex-shrink-0 rounded-full border border-border object-cover"
             />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white text-lg font-semibold flex-shrink-0">
+            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-400 to-accent-600 font-semibold text-lg text-white">
               {customer.name.charAt(0).toUpperCase()}
             </div>
           )}
           <div>
-            <h3 className="text-base font-semibold text-fg">
+            <h3 className="font-semibold text-base text-fg">
               <Link
                 href={customers.show.url({ customer: customer.id })}
                 className="hover:text-primary"
@@ -108,23 +107,23 @@ function CustomerCard({
         </div>
       </div>
 
-      <div className="space-y-2 mb-4">
+      <div className="mb-4 space-y-2">
         {customer.no_telp && (
-          <div className="flex items-center gap-2 text-sm text-muted-fg">
+          <div className="flex items-center gap-2 text-muted-fg text-sm">
             <IconPhone size={16} />
             <span>{customer.no_telp}</span>
           </div>
         )}
         {customer.address && (
-          <div className="flex items-start gap-2 text-sm text-muted-fg">
-            <IconMapPin size={16} className="flex-shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2 text-muted-fg text-sm">
+            <IconMapPin size={16} className="mt-0.5 flex-shrink-0" />
             <span className="line-clamp-2">{customer.address}</span>
           </div>
         )}
       </div>
 
       {(canUpdate || canDelete) && (
-        <div className="flex gap-2 pt-3 border-t border-border">
+        <div className="flex gap-2 border-border border-t pt-3">
           {canUpdate && (
             <Link href={customers.edit.url({ customer: customer.id })} className="flex-1">
               <Button intent="warning" className="w-full">
@@ -224,7 +223,7 @@ export default function Index({ customers: data }: IndexProps) {
 
       {data.data.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {data.data.map((customer) => (
               <CustomerCard
                 key={customer.id}
@@ -238,17 +237,17 @@ export default function Index({ customers: data }: IndexProps) {
         ) : (
           <Card>
             <CardContent className="p-0">
-              <div className="p-4 border-b border-border">
-                <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+              <div className="border-border border-b p-4">
+                <div className="flex items-center gap-2 font-semibold text-fg text-sm">
                   <IconUser size={16} />
                   Data Pelanggan
                 </div>
               </div>
               <div className="w-full overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="border-b bg-muted border-border">
+                  <thead className="border-border border-b bg-muted">
                     <tr>
-                      <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg w-10">
+                      <th className="h-12 w-10 px-4 text-left align-middle font-medium text-muted-fg">
                         No
                       </th>
                       <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
@@ -268,8 +267,8 @@ export default function Index({ customers: data }: IndexProps) {
                   </thead>
                   <tbody className="divide-y divide-border bg-bg">
                     {data.data.map((customer, i) => (
-                      <tr key={customer.id} className="hover:bg-muted transition-colors">
-                        <td className="whitespace-nowrap p-4 align-middle text-muted-fg text-center">
+                      <tr key={customer.id} className="transition-colors hover:bg-muted">
+                        <td className="whitespace-nowrap p-4 text-center align-middle text-muted-fg">
                           {i + 1 + (data.current_page - 1) * data.per_page}
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
@@ -278,14 +277,14 @@ export default function Index({ customers: data }: IndexProps) {
                               <img
                                 src={customer.avatar}
                                 alt={customer.name}
-                                className="w-10 h-10 rounded-full object-cover border border-border flex-shrink-0"
+                                className="h-10 w-10 flex-shrink-0 rounded-full border border-border object-cover"
                               />
                             ) : (
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-400 to-accent-600 font-semibold text-sm text-white">
                                 {customer.name.charAt(0).toUpperCase()}
                               </div>
                             )}
-                            <p className="text-sm font-medium text-fg">
+                            <p className="font-medium text-fg text-sm">
                               <Link
                                 href={customers.show.url({ customer: customer.id })}
                                 className="hover:text-primary"
@@ -305,16 +304,16 @@ export default function Index({ customers: data }: IndexProps) {
                                   : "non-member"
                               }
                             />
-                            <span className="text-xs text-muted-fg">
+                            <span className="text-muted-fg text-xs">
                               {customer.loyalty_points || 0} poin
                             </span>
                           </div>
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
-                          <span className="text-sm text-muted-fg">{customer.no_telp || "-"}</span>
+                          <span className="text-muted-fg text-sm">{customer.no_telp || "-"}</span>
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
-                          <p className="text-sm text-muted-fg line-clamp-1">
+                          <p className="line-clamp-1 text-muted-fg text-sm">
                             {customer.address || "-"}
                           </p>
                         </td>
@@ -375,7 +374,7 @@ export default function Index({ customers: data }: IndexProps) {
             <ModalTitle>Konfirmasi Hapus</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            <p className="text-sm text-muted-fg">Data yang dihapus tidak dapat dikembalikan!</p>
+            <p className="text-muted-fg text-sm">Data yang dihapus tidak dapat dikembalikan!</p>
           </ModalBody>
           <ModalFooter>
             <ModalClose>Batal</ModalClose>

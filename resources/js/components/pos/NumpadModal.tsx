@@ -111,32 +111,32 @@ export default function NumpadModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden animate-slide-up">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{title}</h3>
+      <div className="relative w-full max-w-sm animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
+          <h3 className="font-semibold text-lg text-slate-800 dark:text-white">{title}</h3>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
           >
             <IconX size={20} />
           </button>
         </div>
 
-        <div className="px-5 py-6 bg-slate-50 dark:bg-slate-800/50">
+        <div className="bg-slate-50 px-5 py-6 dark:bg-slate-800/50">
           <div className="text-right">
-            <p className="text-3xl font-bold text-slate-900 dark:text-white font-mono">
+            <p className="font-bold font-mono text-3xl text-slate-900 dark:text-white">
               {formatDisplay(value)}
             </p>
           </div>
         </div>
 
         {isCurrency && (
-          <div className="grid grid-cols-4 gap-2 px-5 py-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="grid grid-cols-4 gap-2 border-slate-100 border-b px-5 py-3 dark:border-slate-800">
             {[10000, 20000, 50000, 100000].map((amount) => (
               <button
                 key={amount}
                 onClick={() => handleQuickAmount(amount)}
-                className="py-2 px-2 text-xs font-medium rounded-xl bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
+                className="rounded-xl bg-primary-50 px-2 py-2 font-medium text-primary-700 text-xs transition-colors hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-400 dark:hover:bg-primary-900/50"
               >
                 +{amount / 1000}rb
               </button>
@@ -144,12 +144,12 @@ export default function NumpadModal({
           </div>
         )}
 
-        <div className="p-5 grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-3 p-5">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <button
               key={num}
               onClick={() => handleDigit(String(num))}
-              className="h-14 text-2xl font-semibold rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all"
+              className="h-14 rounded-2xl bg-slate-100 font-semibold text-2xl text-slate-800 transition-all hover:bg-slate-200 active:scale-95 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               {num}
             </button>
@@ -157,21 +157,21 @@ export default function NumpadModal({
 
           <button
             onClick={handleClear}
-            className="h-14 text-sm font-semibold rounded-2xl bg-warning-100 dark:bg-warning-900/50 text-warning-700 dark:text-warning-400 hover:bg-warning-200 dark:hover:bg-warning-900 active:scale-95 transition-all"
+            className="h-14 rounded-2xl bg-warning-100 font-semibold text-sm text-warning-700 transition-all hover:bg-warning-200 active:scale-95 dark:bg-warning-900/50 dark:text-warning-400 dark:hover:bg-warning-900"
           >
             C
           </button>
 
           <button
             onClick={() => handleDigit("0")}
-            className="h-14 text-2xl font-semibold rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all"
+            className="h-14 rounded-2xl bg-slate-100 font-semibold text-2xl text-slate-800 transition-all hover:bg-slate-200 active:scale-95 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
           >
             0
           </button>
 
           <button
             onClick={handleBackspace}
-            className="h-14 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-95 transition-all"
+            className="flex h-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-600 transition-all hover:bg-slate-200 active:scale-95 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
           >
             <IconBackspace size={24} />
           </button>
@@ -181,10 +181,10 @@ export default function NumpadModal({
           <button
             onClick={handleConfirm}
             disabled={!isValid}
-            className={`w-full h-14 flex items-center justify-center gap-2 text-lg font-semibold rounded-2xl transition-all ${
+            className={`flex h-14 w-full items-center justify-center gap-2 rounded-2xl font-semibold text-lg transition-all ${
               isValid
                 ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 hover:shadow-xl active:scale-[0.98]"
-                : "bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed"
+                : "cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-700"
             }`}
           >
             <IconCheck size={22} />

@@ -48,33 +48,30 @@ function CartItemComponent({
 
   return (
     <div
-      className={`group flex gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50
-        border border-transparent hover:border-slate-200 dark:hover:border-slate-700
-        transition-all duration-200 animate-slide-up
-        ${isRemoving ? "opacity-50 scale-95" : ""}`}
+      className={`group flex animate-slide-up gap-3 rounded-xl border border-transparent bg-slate-50 p-3 transition-all duration-200 hover:border-slate-200 dark:bg-slate-800/50 dark:hover:border-slate-700 ${isRemoving ? "scale-95 opacity-50" : ""}`}
     >
-      <div className="w-14 h-14 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden flex-shrink-0">
+      <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-700">
         {item.product?.image ? (
           <img
             src={imageUrl(item.product.image) || ""}
             alt={item.product.title}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <IconShoppingCart size={20} className="text-slate-400" />
           </div>
         )}
       </div>
 
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">
+      <div className="min-w-0 flex-1">
+        <h4 className="truncate font-medium text-slate-800 text-sm dark:text-slate-200">
           {item.product?.title || "Produk"}
         </h4>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <p className="mt-0.5 text-slate-500 text-xs dark:text-slate-400">
           {formatPrice(unitPrice)} × {item.qty}
         </p>
-        <p className="text-sm font-semibold text-primary-600 dark:text-primary-400 mt-1">
+        <p className="mt-1 font-semibold text-primary-600 text-sm dark:text-primary-400">
           {formatPrice(subtotal)}
         </p>
       </div>
@@ -83,7 +80,7 @@ function CartItemComponent({
         <button
           onClick={() => onRemove(item.id)}
           disabled={isRemoving}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-danger-500 hover:bg-danger-50 dark:hover:bg-danger-950/50 transition-colors opacity-0 group-hover:opacity-100"
+          className="rounded-lg p-1.5 text-slate-400 opacity-0 transition-colors hover:bg-danger-50 hover:text-danger-500 group-hover:opacity-100 dark:hover:bg-danger-950/50"
         >
           <IconTrash size={16} />
         </button>
@@ -92,16 +89,16 @@ function CartItemComponent({
           <button
             onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}
             disabled={item.qty <= 1}
-            className="w-7 h-7 rounded-lg flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           >
             <IconMinus size={14} />
           </button>
-          <span className="w-8 text-center text-sm font-medium text-slate-700 dark:text-slate-300">
+          <span className="w-8 text-center font-medium text-slate-700 text-sm dark:text-slate-300">
             {item.qty}
           </span>
           <button
             onClick={() => onUpdateQty(item.id, item.qty + 1)}
-            className="w-7 h-7 rounded-lg flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           >
             <IconPlus size={14} />
           </button>
@@ -113,12 +110,12 @@ function CartItemComponent({
 
 function EmptyCart() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-      <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+    <div className="flex flex-1 flex-col items-center justify-center p-6 text-center">
+      <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
         <IconShoppingCart size={32} className="text-slate-400 dark:text-slate-600" />
       </div>
-      <h3 className="text-base font-medium text-slate-600 dark:text-slate-400">Keranjang Kosong</h3>
-      <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">
+      <h3 className="font-medium text-base text-slate-600 dark:text-slate-400">Keranjang Kosong</h3>
+      <p className="mt-1 text-slate-400 text-sm dark:text-slate-500">
         Klik produk untuk menambahkan
       </p>
     </div>
@@ -136,14 +133,14 @@ export default function CartPanel({
   const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0), 0);
 
   return (
-    <div className={`flex flex-col h-full ${className}`}>
-      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800">
+    <div className={`flex h-full flex-col ${className}`}>
+      <div className="flex items-center justify-between border-slate-200 border-b p-4 dark:border-slate-800">
         <div className="flex items-center gap-2">
           <IconShoppingCart size={20} className="text-slate-600 dark:text-slate-400" />
-          <h2 className="text-base font-semibold text-slate-800 dark:text-white">Keranjang</h2>
+          <h2 className="font-semibold text-base text-slate-800 dark:text-white">Keranjang</h2>
         </div>
         {totalItems > 0 && (
-          <span className="px-2.5 py-0.5 text-xs font-bold bg-primary-100 text-primary-700 dark:bg-primary-900/50 dark:text-primary-300 rounded-full">
+          <span className="rounded-full bg-primary-100 px-2.5 py-0.5 font-bold text-primary-700 text-xs dark:bg-primary-900/50 dark:text-primary-300">
             {totalItems} item
           </span>
         )}
@@ -151,7 +148,7 @@ export default function CartPanel({
 
       {items.length > 0 ? (
         <div
-          className="flex-1 overflow-y-auto p-3 space-y-2"
+          className="flex-1 space-y-2 overflow-y-auto p-3"
           style={{ maxHeight: "300px", minHeight: "150px" }}
         >
           {items.map((item) => (
@@ -169,10 +166,10 @@ export default function CartPanel({
       )}
 
       {items.length > 0 && (
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+        <div className="border-slate-200 border-t bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/50">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-600 dark:text-slate-400">Subtotal</span>
-            <span className="text-lg font-bold text-slate-900 dark:text-white">
+            <span className="text-slate-600 text-sm dark:text-slate-400">Subtotal</span>
+            <span className="font-bold text-lg text-slate-900 dark:text-white">
               {formatPrice(subtotal)}
             </span>
           </div>

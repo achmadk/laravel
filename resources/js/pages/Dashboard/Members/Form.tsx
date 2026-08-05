@@ -182,10 +182,10 @@ export default function Form({ mode = "create", member = null }: FormProps) {
             <IconArrowLeft size={16} />
             Kembali ke Member
           </Link>
-          <h1 className="text-2xl font-bold text-fg">
+          <h1 className="font-bold text-2xl text-fg">
             {isEdit ? "Edit Member" : "Daftarkan Member Baru"}
           </h1>
-          <p className="text-sm text-muted-fg">
+          <p className="text-muted-fg text-sm">
             {isEdit
               ? "Kelola status, tier, dan data dasar member tanpa memutus histori transaksi maupun reward."
               : "Daftarkan pelanggan sebagai member agar langsung mendapatkan poin, benefit harga member, dan voucher personal."}
@@ -199,8 +199,8 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                 <IconInfoCircle size={18} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-fg">Cara kerja member</p>
-                <p className="mt-1 text-xs leading-6 text-fg">
+                <p className="font-semibold text-fg text-sm">Cara kerja member</p>
+                <p className="mt-1 text-fg text-xs leading-6">
                   Member otomatis memakai pricing khusus member, earn/redeem poin dari loyalty
                   settings, dan bisa menerima voucher personal di CRM.
                 </p>
@@ -214,8 +214,8 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                 <IconCrown size={22} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-fg">Profil Member</h2>
-                <p className="text-sm text-muted-fg">
+                <h2 className="font-semibold text-fg text-lg">Profil Member</h2>
+                <p className="text-muted-fg text-sm">
                   Lengkapi identitas dasar member untuk pencarian dan histori CRM.
                 </p>
               </div>
@@ -223,38 +223,38 @@ export default function Form({ mode = "create", member = null }: FormProps) {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">Nama Member</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Nama Member</label>
                 <input
                   type="text"
                   placeholder="Masukkan nama lengkap"
                   value={data.name}
                   onChange={(e) => setData("name", e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.name && <p className="mt-1 text-xs text-rose-500">{errors.name}</p>}
+                {errors.name && <p className="mt-1 text-rose-500 text-xs">{errors.name}</p>}
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">No. Handphone</label>
+                <label className="mb-2 block font-medium text-fg text-sm">No. Handphone</label>
                 <input
                   type="text"
                   placeholder="08xxxxxxxxxx"
                   value={data.no_telp}
                   onChange={(e) => setData("no_telp", e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.no_telp && <p className="mt-1 text-xs text-rose-500">{errors.no_telp}</p>}
+                {errors.no_telp && <p className="mt-1 text-rose-500 text-xs">{errors.no_telp}</p>}
               </div>
             </div>
 
             <div className="mt-4 rounded-2xl border border-primary/20 bg-primary/5 p-4">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-semibold text-fg">Status Member</p>
-                  <p className="text-xs text-muted-fg">
+                  <p className="font-semibold text-fg text-sm">Status Member</p>
+                  <p className="text-muted-fg text-xs">
                     Nonaktifkan member jika benefit member perlu dihentikan tanpa menghapus histori.
                   </p>
                 </div>
-                <label className="inline-flex items-center gap-2 text-sm font-medium text-fg">
+                <label className="inline-flex items-center gap-2 font-medium text-fg text-sm">
                   <input
                     type="checkbox"
                     checked={data.is_loyalty_member}
@@ -266,11 +266,11 @@ export default function Form({ mode = "create", member = null }: FormProps) {
               </div>
 
               <div className="mt-4">
-                <label className="text-sm font-medium text-fg">Tier Member</label>
+                <label className="font-medium text-fg text-sm">Tier Member</label>
                 <select
                   value={data.loyalty_tier}
                   onChange={(e) => setData("loyalty_tier", e.target.value)}
-                  className="mt-2 h-11 w-full rounded-xl border border-input bg-bg px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                  className="mt-2 h-11 w-full rounded-xl border border-input bg-bg px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                 >
                   {tierOptions.map((tier: TierOption) => (
                     <option key={tier.value} value={tier.value}>
@@ -279,22 +279,22 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                   ))}
                 </select>
                 {errors.loyalty_tier && (
-                  <p className="mt-1 text-xs text-rose-500">{errors.loyalty_tier}</p>
+                  <p className="mt-1 text-rose-500 text-xs">{errors.loyalty_tier}</p>
                 )}
               </div>
             </div>
           </div>
 
           <div className="rounded-2xl border border-border bg-bg p-6">
-            <h2 className="mb-4 text-lg font-semibold text-fg">Wilayah & Alamat</h2>
+            <h2 className="mb-4 font-semibold text-fg text-lg">Wilayah & Alamat</h2>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="text-sm font-medium text-fg">Provinsi</label>
+                <label className="font-medium text-fg text-sm">Provinsi</label>
                 <select
                   value={data.province_id}
                   onChange={(e) => setData("province_id", e.target.value)}
-                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 >
                   <option value="">Pilih Provinsi</option>
                   {provinces.map((province: Region) => (
@@ -304,17 +304,17 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                   ))}
                 </select>
                 {errors.province_id && (
-                  <p className="mt-1 text-xs text-rose-500">{errors.province_id}</p>
+                  <p className="mt-1 text-rose-500 text-xs">{errors.province_id}</p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-fg">Kota/Kabupaten</label>
+                <label className="font-medium text-fg text-sm">Kota/Kabupaten</label>
                 <select
                   value={data.regency_id}
                   onChange={(e) => setData("regency_id", e.target.value)}
                   disabled={!data.province_id}
-                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <option value="">Pilih Kota/Kabupaten</option>
                   {regencyList.map((regency: Region) => (
@@ -324,19 +324,19 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                   ))}
                 </select>
                 {errors.regency_id && (
-                  <p className="mt-1 text-xs text-rose-500">{errors.regency_id}</p>
+                  <p className="mt-1 text-rose-500 text-xs">{errors.regency_id}</p>
                 )}
               </div>
             </div>
 
             <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="text-sm font-medium text-fg">Kecamatan</label>
+                <label className="font-medium text-fg text-sm">Kecamatan</label>
                 <select
                   value={data.district_id}
                   onChange={(e) => setData("district_id", e.target.value)}
                   disabled={!data.regency_id}
-                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <option value="">Pilih Kecamatan</option>
                   {districtList.map((district: Region) => (
@@ -346,17 +346,17 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                   ))}
                 </select>
                 {errors.district_id && (
-                  <p className="mt-1 text-xs text-rose-500">{errors.district_id}</p>
+                  <p className="mt-1 text-rose-500 text-xs">{errors.district_id}</p>
                 )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-fg">Kelurahan</label>
+                <label className="font-medium text-fg text-sm">Kelurahan</label>
                 <select
                   value={data.village_id}
                   onChange={(e) => setData("village_id", e.target.value)}
                   disabled={!data.district_id}
-                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <option value="">Pilih Kelurahan</option>
                   {villageList.map((village: Region) => (
@@ -366,25 +366,25 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                   ))}
                 </select>
                 {errors.village_id && (
-                  <p className="mt-1 text-xs text-rose-500">{errors.village_id}</p>
+                  <p className="mt-1 text-rose-500 text-xs">{errors.village_id}</p>
                 )}
               </div>
             </div>
 
             <div className="mt-4">
-              <label className="mb-2 block text-sm font-medium text-fg">Alamat Detail</label>
+              <label className="mb-2 block font-medium text-fg text-sm">Alamat Detail</label>
               <textarea
                 rows={3}
                 placeholder="Alamat lengkap member"
                 value={data.address}
                 onChange={(e) => setData("address", e.target.value)}
-                className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
               />
-              {errors.address && <p className="mt-1 text-xs text-rose-500">{errors.address}</p>}
+              {errors.address && <p className="mt-1 text-rose-500 text-xs">{errors.address}</p>}
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-border pt-6">
+          <div className="flex justify-end gap-3 border-border border-t pt-6">
             <Link
               href={index().url}
               className="rounded-xl border border-input px-5 py-2.5 font-medium text-muted-fg transition-colors hover:bg-muted"

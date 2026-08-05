@@ -144,18 +144,18 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
     <>
       <Head title={`Nota ${receivable.invoice}`} />
       <div className="space-y-6">
-        <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <Link
               href={receivables.index.url()}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-muted text-muted-fg hover:bg-muted/80 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-muted px-3 py-2 text-muted-fg transition-colors hover:bg-muted/80"
             >
               <IconArrowLeft size={18} />
               Kembali
             </Link>
             <div>
-              <p className="text-xs text-muted-fg">Invoice</p>
-              <h1 className="text-2xl font-bold text-fg">{receivable.invoice}</h1>
+              <p className="text-muted-fg text-xs">Invoice</p>
+              <h1 className="font-bold text-2xl text-fg">{receivable.invoice}</h1>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                 href={receivables.shareCampaign.url({ receivable: receivable.id })}
                 method="post"
                 as="button"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-3 py-2 font-semibold text-sm text-white transition-colors hover:bg-primary/90"
               >
                 <IconBrandWhatsapp size={18} />
                 Campaign WA
@@ -174,7 +174,7 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
               href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-success px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-success/90"
+              className="inline-flex items-center gap-2 rounded-xl bg-success px-3 py-2 font-semibold text-sm text-white transition-colors hover:bg-success/90"
             >
               <IconBrandWhatsapp size={18} />
               Share WhatsApp
@@ -183,17 +183,17 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           <div
             ref={printRef}
-            className="lg:col-span-2 bg-bg border border-border rounded-2xl p-4 space-y-4 print:border-0 print:shadow-none"
+            className="space-y-4 rounded-2xl border border-border bg-bg p-4 lg:col-span-2 print:border-0 print:shadow-none"
           >
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-muted-fg">Pelanggan</p>
                 <p className="font-semibold text-fg">{receivable.customer?.name || "Umum"}</p>
                 {receivable.customer?.phone && (
-                  <p className="text-xs text-muted-fg">{receivable.customer.phone}</p>
+                  <p className="text-muted-fg text-xs">{receivable.customer.phone}</p>
                 )}
               </div>
               <div className="text-right">
@@ -202,23 +202,23 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
-              <div className="p-3 rounded-xl bg-muted border border-border">
-                <p className="text-xs text-muted-fg">Total</p>
-                <p className="text-lg font-bold text-fg">{formatCurrency(receivable.total)}</p>
+              <div className="rounded-xl border border-border bg-muted p-3">
+                <p className="text-muted-fg text-xs">Total</p>
+                <p className="font-bold text-fg text-lg">{formatCurrency(receivable.total)}</p>
               </div>
-              <div className="p-3 rounded-xl bg-muted border border-border">
-                <p className="text-xs text-muted-fg">Terbayar</p>
-                <p className="text-lg font-bold text-success">{formatCurrency(receivable.paid)}</p>
+              <div className="rounded-xl border border-border bg-muted p-3">
+                <p className="text-muted-fg text-xs">Terbayar</p>
+                <p className="font-bold text-lg text-success">{formatCurrency(receivable.paid)}</p>
               </div>
-              <div className="p-3 rounded-xl bg-warning/10 border border-warning/30">
-                <p className="text-xs text-warning">Sisa</p>
-                <p className="text-lg font-bold text-warning">
+              <div className="rounded-xl border border-warning/30 bg-warning/10 p-3">
+                <p className="text-warning text-xs">Sisa</p>
+                <p className="font-bold text-lg text-warning">
                   {formatCurrency(receivable.remaining)}
                 </p>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-fg">Riwayat Pembayaran</p>
+              <p className="font-semibold text-fg text-sm">Riwayat Pembayaran</p>
               {receivable.status !== "paid" && canPayReceivable && (
                 <Button intent="primary" onPress={() => setShowForm(!showForm)}>
                   Tambah Pembayaran
@@ -231,29 +231,29 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                 receivable.payments.map((pay) => (
                   <div
                     key={pay.id}
-                    className="flex items-center justify-between p-3 rounded-xl border border-border bg-muted"
+                    className="flex items-center justify-between rounded-xl border border-border bg-muted p-3"
                   >
                     <div>
-                      <p className="text-sm font-semibold text-fg">{formatCurrency(pay.amount)}</p>
-                      <p className="text-xs text-muted-fg">
+                      <p className="font-semibold text-fg text-sm">{formatCurrency(pay.amount)}</p>
+                      <p className="text-muted-fg text-xs">
                         {pay.paid_at || "-"} &bull; {pay.method || "metode"}
                         {pay.bank_account && ` • ${pay.bank_account.bank_name}`}
                       </p>
-                      {pay.note && <p className="text-xs text-muted-fg mt-1">{pay.note}</p>}
+                      {pay.note && <p className="mt-1 text-muted-fg text-xs">{pay.note}</p>}
                     </div>
-                    <span className="text-xs text-muted-fg">{pay.user?.name || "-"}</span>
+                    <span className="text-muted-fg text-xs">{pay.user?.name || "-"}</span>
                   </div>
                 ))
               ) : (
-                <div className="text-sm text-muted-fg">Belum ada pembayaran.</div>
+                <div className="text-muted-fg text-sm">Belum ada pembayaran.</div>
               )}
             </div>
           </div>
 
-          <div className="bg-bg border border-border rounded-2xl p-4 print:hidden space-y-4">
+          <div className="space-y-4 rounded-2xl border border-border bg-bg p-4 print:hidden">
             <div>
-              <p className="mb-3 text-sm font-semibold text-fg">Detail Nota</p>
-              <div className="space-y-2 text-sm text-muted-fg">
+              <p className="mb-3 font-semibold text-fg text-sm">Detail Nota</p>
+              <div className="space-y-2 text-muted-fg text-sm">
                 <div className="flex justify-between">
                   <span>Invoice</span>
                   <span className="font-semibold text-fg">{receivable.invoice}</span>
@@ -278,25 +278,25 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
             </div>
 
             <form onSubmit={submitCollectionNotes} className="space-y-3">
-              <label className="text-sm font-semibold text-fg">Catatan Penagihan</label>
+              <label className="font-semibold text-fg text-sm">Catatan Penagihan</label>
               <textarea
                 rows={3}
                 value={collectionNotesForm.data.collection_notes}
                 onChange={(e) => collectionNotesForm.setData("collection_notes", e.target.value)}
-                className="w-full rounded-xl border border-input bg-muted px-3 py-2 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                className="w-full rounded-xl border border-input bg-muted px-3 py-2 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 placeholder="Catatan proses penagihan..."
               />
               {collectionNotesForm.errors.collection_notes && (
-                <p className="text-xs text-danger">{collectionNotesForm.errors.collection_notes}</p>
+                <p className="text-danger text-xs">{collectionNotesForm.errors.collection_notes}</p>
               )}
               {collectionNotesForm.wasSuccessful && (
-                <p className="text-xs text-success">Tersimpan!</p>
+                <p className="text-success text-xs">Tersimpan!</p>
               )}
               <Button
                 type="submit"
                 isDisabled={collectionNotesForm.processing}
                 intent="secondary"
-                className="w-full h-10"
+                className="h-10 w-full"
               >
                 {collectionNotesForm.processing ? "Menyimpan..." : "Simpan Catatan"}
               </Button>
@@ -305,24 +305,24 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
             {showForm && canPayReceivable && (
               <form onSubmit={submitPayment} className="space-y-3">
                 <div>
-                  <label className="text-sm font-medium text-fg">Nominal</label>
+                  <label className="font-medium text-fg text-sm">Nominal</label>
                   <input
                     type="number"
                     min="1"
                     value={data.amount}
                     onChange={(e) => setData("amount", e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg focus:ring-2 focus:ring-ring focus:border-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     required
                   />
-                  {errors.amount && <p className="text-xs text-danger mt-1">{errors.amount}</p>}
+                  {errors.amount && <p className="mt-1 text-danger text-xs">{errors.amount}</p>}
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-fg">Tanggal Bayar</label>
+                  <label className="font-medium text-fg text-sm">Tanggal Bayar</label>
                   <input
                     type="date"
                     value={data.paid_at}
                     onChange={(e) => setData("paid_at", e.target.value)}
-                    className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg focus:ring-2 focus:ring-ring focus:border-ring"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm focus:border-ring focus:ring-2 focus:ring-ring"
                     required
                   />
                 </div>
@@ -330,7 +330,7 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   <button
                     type="button"
                     onClick={() => setData("method", "cash")}
-                    className={`h-11 rounded-xl border-2 flex items-center justify-center gap-2 text-sm font-semibold ${
+                    className={`flex h-11 items-center justify-center gap-2 rounded-xl border-2 font-semibold text-sm ${
                       data.method === "cash"
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-border text-muted-fg"
@@ -342,7 +342,7 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   <button
                     type="button"
                     onClick={() => setData("method", "bank_transfer")}
-                    className={`h-11 rounded-xl border-2 flex items-center justify-center gap-2 text-sm font-semibold ${
+                    className={`flex h-11 items-center justify-center gap-2 rounded-xl border-2 font-semibold text-sm ${
                       data.method === "bank_transfer"
                         ? "border-primary bg-primary/10 text-primary"
                         : "border-border text-muted-fg"
@@ -354,11 +354,11 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                 </div>
                 {data.method === "bank_transfer" && (
                   <div>
-                    <label className="text-sm font-medium text-fg">Rekening</label>
+                    <label className="font-medium text-fg text-sm">Rekening</label>
                     <select
                       value={data.bank_account_id}
                       onChange={(e) => setData("bank_account_id", e.target.value)}
-                      className="w-full h-11 px-3 rounded-xl border border-input bg-muted text-sm text-fg"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
                     >
                       <option value="">Pilih rekening</option>
                       {bankAccounts.map((bank) => (
@@ -370,12 +370,12 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   </div>
                 )}
                 <div>
-                  <label className="text-sm font-medium text-fg">Catatan (opsional)</label>
+                  <label className="font-medium text-fg text-sm">Catatan (opsional)</label>
                   <textarea
                     rows={2}
                     value={data.note}
                     onChange={(e) => setData("note", e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-input bg-muted text-sm text-fg placeholder:text-muted-fg"
+                    className="w-full rounded-xl border border-input bg-muted px-3 py-2 text-fg text-sm placeholder:text-muted-fg"
                     placeholder="Catatan pembayaran"
                   />
                 </div>
@@ -383,14 +383,14 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   type="submit"
                   isDisabled={processing}
                   intent="primary"
-                  className="w-full h-11"
+                  className="h-11 w-full"
                 >
                   Simpan Pembayaran
                 </Button>
               </form>
             )}
 
-            <Button intent="secondary" className="w-full h-11" onPress={() => setShowPreview(true)}>
+            <Button intent="secondary" className="h-11 w-full" onPress={() => setShowPreview(true)}>
               <IconPrinter size={18} />
               Preview / PDF
             </Button>
@@ -400,18 +400,18 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
 
       {showPreview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-fg/60 p-4">
-          <div className="bg-bg rounded-2xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+          <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-bg shadow-2xl">
+            <div className="flex items-center justify-between border-border border-b px-4 py-3">
               <div>
-                <p className="text-xs text-muted-fg">Preview Nota Barang</p>
-                <p className="text-sm font-semibold text-fg">{receivable.invoice}</p>
+                <p className="text-muted-fg text-xs">Preview Nota Barang</p>
+                <p className="font-semibold text-fg text-sm">{receivable.invoice}</p>
               </div>
               <div className="flex items-center gap-2">
                 <a
                   href={pdf.receivables.show.url({ receivable: receivable.id })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-primary/90"
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 font-semibold text-sm text-white hover:bg-primary/90"
                 >
                   <IconPrinter size={16} />
                   PDF / Cetak
@@ -421,16 +421,16 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                 </Button>
               </div>
             </div>
-            <div className="p-6 bg-muted">
-              <div className="bg-bg rounded-2xl border border-border p-6 print-area">
+            <div className="bg-muted p-6">
+              <div className="print-area rounded-2xl border border-border bg-bg p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 border border-border rounded-md flex items-center justify-center overflow-hidden">
+                    <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-md border border-border">
                       {storeProfile?.logo ? (
                         <img
                           src={storeProfile.logo}
                           alt={storeProfile.name}
-                          className="max-w-full max-h-full object-contain"
+                          className="max-h-full max-w-full object-contain"
                         />
                       ) : (
                         <span className="font-bold text-primary">
@@ -439,27 +439,27 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                       )}
                     </div>
                     <div>
-                      <p className="text-lg font-bold text-fg">{storeProfile?.name}</p>
+                      <p className="font-bold text-fg text-lg">{storeProfile?.name}</p>
                       {storeProfile?.address && (
-                        <p className="text-xs text-muted-fg">{storeProfile.address}</p>
+                        <p className="text-muted-fg text-xs">{storeProfile.address}</p>
                       )}
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-muted-fg">Invoice</p>
-                    <p className="text-lg font-bold text-fg">{receivable.invoice}</p>
-                    <p className="text-xs text-muted-fg">
+                    <p className="text-muted-fg text-xs">Invoice</p>
+                    <p className="font-bold text-fg text-lg">{receivable.invoice}</p>
+                    <p className="text-muted-fg text-xs">
                       Jatuh tempo: {formatDate(receivable.due_date)}
                     </p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm mt-4">
+                <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <p className="text-muted-fg">Pelanggan</p>
                     <p className="font-semibold text-fg">{receivable.customer?.name || "Umum"}</p>
                     {receivable.customer?.phone && (
-                      <p className="text-xs text-muted-fg">{receivable.customer.phone}</p>
+                      <p className="text-muted-fg text-xs">{receivable.customer.phone}</p>
                     )}
                   </div>
                   <div className="text-right">
@@ -468,46 +468,46 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 mt-4">
-                  <div className="p-3 rounded-xl bg-muted border border-border">
-                    <p className="text-xs text-muted-fg">Total</p>
-                    <p className="text-lg font-bold text-fg">{formatCurrency(receivable.total)}</p>
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                  <div className="rounded-xl border border-border bg-muted p-3">
+                    <p className="text-muted-fg text-xs">Total</p>
+                    <p className="font-bold text-fg text-lg">{formatCurrency(receivable.total)}</p>
                   </div>
-                  <div className="p-3 rounded-xl bg-muted border border-border">
-                    <p className="text-xs text-muted-fg">Terbayar</p>
-                    <p className="text-lg font-bold text-success">
+                  <div className="rounded-xl border border-border bg-muted p-3">
+                    <p className="text-muted-fg text-xs">Terbayar</p>
+                    <p className="font-bold text-lg text-success">
                       {formatCurrency(receivable.paid)}
                     </p>
                   </div>
-                  <div className="p-3 rounded-xl bg-warning/10 border border-warning/30">
-                    <p className="text-xs text-warning">Sisa</p>
-                    <p className="text-lg font-bold text-warning">
+                  <div className="rounded-xl border border-warning/30 bg-warning/10 p-3">
+                    <p className="text-warning text-xs">Sisa</p>
+                    <p className="font-bold text-lg text-warning">
                       {formatCurrency(receivable.remaining)}
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-4">
-                  <p className="mb-2 text-sm font-semibold text-fg">Riwayat Pembayaran</p>
+                  <p className="mb-2 font-semibold text-fg text-sm">Riwayat Pembayaran</p>
                   <div className="space-y-2 text-sm">
                     {receivable.payments?.length ? (
                       receivable.payments.map((pay) => (
                         <div
                           key={pay.id}
-                          className="flex items-center justify-between p-3 rounded-xl bg-muted border border-border"
+                          className="flex items-center justify-between rounded-xl border border-border bg-muted p-3"
                         >
                           <div>
                             <p className="font-semibold text-fg">{formatCurrency(pay.amount)}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               {formatDate(pay.paid_at)} &bull; {pay.method || "metode"}
                               {pay.bank_account && ` • ${pay.bank_account.bank_name}`}
                             </p>
                           </div>
-                          <span className="text-xs text-muted-fg">{pay.user?.name || "-"}</span>
+                          <span className="text-muted-fg text-xs">{pay.user?.name || "-"}</span>
                         </div>
                       ))
                     ) : (
-                      <div className="text-xs text-muted-fg">Belum ada pembayaran.</div>
+                      <div className="text-muted-fg text-xs">Belum ada pembayaran.</div>
                     )}
                   </div>
                 </div>

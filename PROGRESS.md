@@ -1,31 +1,32 @@
 # Porting Progress: `pos-reference` → `rtos`
 
-> **Generated**: 2026-06-22
+> **Generated**: 2026-07-20
 > **Source**: `../pos-reference` (Laravel 12, Inertia v2, React 18, Tailwind v3, JSX)
-> **Target**: `rtos` (Laravel, Inertia v3, React 19, Tailwind v4, TypeScript, Justd/IntentUI)
+> **Target**: `rtos` (Laravel 12, Inertia v3, React 19, Tailwind v4, TypeScript, Justd/IntentUI)
 > **OpenSpec Changes**:
 >
 > - `port-pos-reference-backend` (created 2026-06-18)
 > - `port-frontend-remaining-pages` (created 2026-06-19)
+> - `repurpose-to-zoo-eticket` (created 2026-06-25) — active repurposing effort
 
 ---
 
 ## 1. Executive Summary
 
-| Category                   | Source (pos-ref) | Target (rtos)                       | Status                                    |
-| -------------------------- | ---------------- | ----------------------------------- | ----------------------------------------- |
-| PHP Backend Files          | ~120 files       | ~120 files                          | ✅ **100% Ported**                        |
-| Database Migrations        | 56 files         | 56 files                            | ✅ **100% Ported**                        |
-| Database Seeders           | 8 files          | 8 files                             | ✅ **100% Ported**                        |
-| Form Requests              | 12 files         | 13 files (1 IntentUI extra)         | ✅ **100% Ported**                        |
-| Config Files               | 14 config dirs   | 15 config dirs                      | ✅ **100% Ported**                        |
-| Frontend Pages (Dashboard) | 80 JSX pages     | 79 TSX pages (missing `Access.jsx`) | ✅ **~99% Ported**                        |
-| Frontend Components        | 49 files         | 41 files                            | ✅ **Adapted** (Justd replaces custom UI) |
-| Tests                      | 22 PHPUnit files | 12 Pest files                       | 🔴 **~55% Ported (11 missing)**           |
-| OpenSpec Specs             | —                | 30 specs authored                   | ✅ **Coverage Complete**                  |
+| Category                   | Source (pos-ref) | Target (rtos)               | Status                                    |
+| -------------------------- | ---------------- | --------------------------- | ----------------------------------------- |
+| PHP Backend Files          | ~120 files       | ~120 files                  | ✅ **100% Ported**                        |
+| Database Migrations        | 56 files         | 56 files                    | ✅ **100% Ported**                        |
+| Database Seeders           | 8 files          | 8 files                     | ✅ **100% Ported**                        |
+| Form Requests              | 12 files         | 13 files (1 IntentUI extra) | ✅ **100% Ported**                        |
+| Config Files               | 14 config dirs   | 15 config dirs              | ✅ **100% Ported**                        |
+| Frontend Pages (Dashboard) | 80 JSX pages     | 80 TSX pages                | ✅ **100% Ported**                        |
+| Frontend Components        | 49 files         | 41 files                    | ✅ **Adapted** (Justd replaces custom UI) |
+| Tests                      | 22 PHPUnit files | 12 Pest files               | 🔴 **~55% Ported (11 missing)**           |
+| OpenSpec Specs             | —                | 30 specs authored           | ✅ **Coverage Complete**                  |
 
 **Overall Backend**: ✅ Complete (100%)
-**Overall Frontend**: ✅ Complete (~99%, 1 minor page missing)
+**Overall Frontend**: ✅ Complete (100%, all 80 pages ported)
 **Tests**: 🔴 11 test suites need PHPUnit→Pest migration
 
 ---
@@ -78,23 +79,23 @@ StockMutationService, SupplierReturnService
 
 All controller files ported. rtos has extras:
 
-| Group                         | Source | Target | Status          |
-| ----------------------------- | ------ | ------ | --------------- |
-| `Auth/` (9 controllers)       | ✅     | ✅     | Identical       |
-| `Apps/` (26 controllers)      | ✅     | ✅     | Identical       |
-| `Api/` (PaymentWebhook)       | ✅     | ✅     | Identical       |
-| `Reports/` (3 controllers)    | ✅     | ✅     | Identical       |
-| `DashboardController`         | ✅     | ✅     | Identical       |
-| `DocumentController`          | ✅     | ✅     | Identical       |
-| `NotificationController`      | ✅     | ✅     | Identical       |
-| `PermissionController`        | ✅     | ✅     | Identical       |
-| `ProfileController`           | ✅     | ✅     | Identical       |
-| `RegionController`            | ✅     | ✅     | Identical       |
-| `RoleController`              | ✅     | ✅     | Identical       |
-| `UserController`              | ✅     | ✅     | Identical       |
-| `Settings/` (4 rtos-only)     | —      | ✅     | IntentUI extras |
-| `AboutController` (rtos-only) | —      | ✅     | IntentUI extras |
-| `HomeController` (rtos-only)  | —      | ✅     | IntentUI extras |
+| Group                         | Source | Target | Status                                                     |
+| ----------------------------- | ------ | ------ | ---------------------------------------------------------- |
+| `Auth/` (9 controllers)       | ✅     | ✅     | Identical                                                  |
+| `Apps/` (26 controllers)      | ✅     | ✅     | Identical                                                  |
+| `Api/` (PaymentWebhook)       | ✅     | ✅     | Identical                                                  |
+| `Reports/` (3 controllers)    | ✅     | ✅     | Identical                                                  |
+| `DashboardController`         | ✅     | ✅     | Identical                                                  |
+| `DocumentController`          | ✅     | ✅     | Identical                                                  |
+| `NotificationController`      | ✅     | ✅     | Identical                                                  |
+| `PermissionController`        | ✅     | ✅     | Identical                                                  |
+| `ProfileController`           | ✅     | ✅     | Identical                                                  |
+| `RegionController`            | ✅     | ✅     | Identical                                                  |
+| `RoleController`              | ✅     | ✅     | Identical                                                  |
+| `UserController`              | ✅     | ✅     | Identical                                                  |
+| `Settings/` (4 rtos-only)     | —      | ✅     | IntentUI extras                                            |
+| `AboutController` (rtos-only) | —      | ✅     | IntentUI extras                                            |
+| `HomeController` (rtos-only)  | —      | ✅     | IntentUI extras (now serves `/home` authenticated landing) |
 
 ### 2.5 Form Requests — ✅ COMPLETE
 
@@ -116,13 +117,13 @@ All controller files ported. rtos has extras:
 
 ### 2.6 Routes — ✅ COMPLETE
 
-| Route File            | Source    | Target    | Status                                                           |
-| --------------------- | --------- | --------- | ---------------------------------------------------------------- |
-| `routes/web.php`      | 288 lines | 289 lines | ~99% identical (rtos adds `settings.php` require)                |
-| `routes/auth.php`     | 63 lines  | 63 lines  | ✅ Identical (includes bot guard, registration toggle, throttle) |
-| `routes/api.php`      | same      | same      | ✅ Identical                                                     |
-| `routes/console.php`  | same      | same      | ✅ Identical                                                     |
-| `routes/settings.php` | —         | 17 lines  | ➕ Extra (IntentUI profile/password/appearance)                  |
+| Route File            | Source    | Target     | Status                                                            |
+| --------------------- | --------- | ---------- | ----------------------------------------------------------------- |
+| `routes/web.php`      | 288 lines | ~295 lines | ~95% identical (rtos adds `settings.php` require + `/home` route) |
+| `routes/auth.php`     | 63 lines  | 63 lines   | ✅ Identical (includes bot guard, registration toggle, throttle)  |
+| `routes/api.php`      | same      | same       | ✅ Identical                                                      |
+| `routes/console.php`  | same      | same       | ✅ Identical                                                      |
+| `routes/settings.php` | —         | 17 lines   | ➕ Extra (IntentUI profile/password/appearance)                   |
 
 All 50+ dashboard routes confirmed active via `php artisan route:list`.
 
@@ -201,14 +202,15 @@ PaymentGatewayException.php  ✅
 | Confirm Password | `Auth/ConfirmPassword.jsx` | `auth/confirm-password.tsx` | ✅     |
 | Verify Email     | `Auth/VerifyEmail.jsx`     | `auth/verify-email.tsx`     | ✅     |
 
-#### Core Pages (4/4 ✅)
+#### Core Pages (5/5 ✅)
 
-| Page             | Source                 | Target                | Status                                           |
-| ---------------- | ---------------------- | --------------------- | ------------------------------------------------ |
-| Welcome          | `Welcome.jsx`          | `Welcome.tsx`         | ✅                                               |
-| Error            | `Error.jsx`            | `Error.tsx`           | ✅                                               |
-| Dashboard        | `Dashboard/Index.jsx`  | `Dashboard/Index.tsx` | ✅                                               |
-| Dashboard/Access | `Dashboard/Access.jsx` | —                     | 🔴 **Missing** (standalone "access denied" page) |
+| Page                 | Source                 | Target                 | Status                               |
+| -------------------- | ---------------------- | ---------------------- | ------------------------------------ |
+| Welcome              | `Welcome.jsx`          | `Welcome.tsx`          | ✅                                   |
+| Error                | `Error.jsx`            | `Error.tsx`            | ✅                                   |
+| Dashboard            | `Dashboard/Index.jsx`  | `Dashboard/Index.tsx`  | ✅                                   |
+| Dashboard/Access     | `Dashboard/Access.jsx` | `Dashboard/Access.tsx` | ✅                                   |
+| Home (authenticated) | — (new)                | `Home.tsx`             | ✅ (authenticated user landing page) |     |
 
 #### Customer Pages (4/4 ✅)
 
@@ -358,11 +360,7 @@ PaymentGatewayException.php  ✅
 
 ### 3.4 Remaining Gaps
 
-**Minor (1 page missing):**
-
-```
-dashboard/access/   → Not ported (simple "access denied" static page from Access.jsx)
-```
+**All pages ported. No missing pages.**
 
 **Casing inconsistency** — directory naming is mixed PascalCase and kebab-case:
 
@@ -517,6 +515,7 @@ pos-reference (source)                       rtos (target)
 | **Inertia Version**      | v2 helpers                                 | v3 API                                                     | `useForm`, `router`, deferred props APIs differ            |
 | **Auth Guard**           | Bot guard + registration toggle + throttle | Same + `HandleTheme`                                       | rtos has richer middleware stack                           |
 | **User Settings**        | Part of Dashboard routes                   | Separate `routes/settings.php` (IntentUI standard)         | rtos has IntentUI-native profile/password/appearance pages |
+| **Auth Landing**         | Authenticated `/` → `/dashboard`           | Authenticated `/` → `/home` (user-specific landing)        | rtos has authenticated home with user greeting + stats     |
 | **TypeScript**           | None (plain JSX)                           | Strict TypeScript                                          | All pages type definitions                                 |
 | **Linting**              | None/ESLint                                | Biome                                                      | Format/lint differs                                        |
 
@@ -606,13 +605,15 @@ All 9 specs have been implemented. Tasks in `tasks.md` need to be marked complet
 
 ### 8.1 Verification & Cleanup
 
-| Task                                                     | Status      |
-| -------------------------------------------------------- | ----------- |
-| Mark `port-frontend-remaining-pages` tasks as complete   | ⏳ Pending  |
-| `lsp_diagnostics` on all new TSX files                   | ⏳ Pending  |
-| `vp check --fix` (230 files have formatting issues)      | ⏳ Pending  |
-| Fix casing inconsistency (PascalCase vs kebab-case dirs) | ❓ Optional |
-| Port `Access.jsx` (standalone access denied page)        | 🔴 Missing  |
+| Task                                                     | Status               |
+| -------------------------------------------------------- | -------------------- |
+| Mark `port-frontend-remaining-pages` tasks as complete   | ⏳ Pending           |
+| `lsp_diagnostics` on all new TSX files                   | ⏳ Pending           |
+| `vp check --fix` (230 files have formatting issues)      | ✅ Resolved          |
+| Fix casing inconsistency (PascalCase vs kebab-case dirs) | ❓ Optional          |
+| Port `Access.jsx` (standalone access denied page)        | ✅ Done              |
+| Implement authenticated `/home` landing page             | ✅ Done (2026-07-20) |
+| Rewrite README.md as Nightdays POS documentation         | ✅ Done (2026-07-20) |
 
 ### 8.2 Test Migration (🔴 11-15 suites)
 
@@ -716,7 +717,7 @@ resources/js/
 ├── pages/
 │   ├── auth/                 6 files
 │   ├── Dashboard/            28 subdirectories, 79 TSX files (inc. Access)
-│   ├── home/                 1 file (EXTRA)
+│   ├── Home.tsx              (authenticated landing — replaces old placeholder)
 │   ├── settings/             IntentUI profile/password pages (EXTRA)
 │   └── + Welcome, Error, dashboard
 ├── components/               41 files (pos/ 9, ui/ 16, misc 16)
@@ -738,8 +739,8 @@ tests/                        12 Pest files (mostly scaffold)
 | Metric                             | Value        |
 | ---------------------------------- | ------------ |
 | Source JSX files                   | 80           |
-| Target TSX files                   | 79           |
-| Pages ported                       | 79/80 (~99%) |
+| Target TSX files                   | 80           |
+| Pages ported                       | 80/80 (100%) |
 | Backend controllers ported         | 54/54 (100%) |
 | Models ported                      | 41/41 (100%) |
 | Services ported                    | 15/15 (100%) |
@@ -749,7 +750,7 @@ tests/                        12 Pest files (mostly scaffold)
 | Test suites ported                 | ~5/20 (25%)  |
 | OpenSpec specs authored            | 30           |
 | Total TSX ported (remaining pages) | 5,324 lines  |
-| Biome formatting issues            | 230 files    |
+| Biome formatting issues            | 0 (resolved) |
 
 ---
 

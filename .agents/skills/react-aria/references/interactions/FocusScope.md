@@ -101,12 +101,12 @@ function ToolbarButton(props) {
 
 ### FocusScope
 
-| Name           | Type              | Default    | Description                      |
+| Name | Type | Default | Description |
 | -------------- | ----------------- | ---------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `autoFocus`    | `boolean          | undefined` | —                                | Whether to auto focus the first focusable element in the focus scope on mount.                                              |
-| `children`     | `React.ReactNode` | —          | The contents of the focus scope. |
-| `contain`      | `boolean          | undefined` | —                                | Whether to contain focus inside the scope, so users cannot move focus outside, for example in a modal dialog.               |
-| `restoreFocus` | `boolean          | undefined` | —                                | Whether to restore focus back to the element that was focused when the focus scope mounted, after the focus scope unmounts. |
+| `autoFocus` | `boolean          | undefined` | — | Whether to auto focus the first focusable element in the focus scope on mount. |
+| `children` | `React.ReactNode` | — | The contents of the focus scope. |
+| `contain` | `boolean          | undefined` | — | Whether to contain focus inside the scope, so users cannot move focus outside, for example in a modal dialog. |
+| `restoreFocus` | `boolean          | undefined` | — | Whether to restore focus back to the element that was focused when the focus scope mounted, after the focus scope unmounts. |
 
 ### FocusManager Interface
 

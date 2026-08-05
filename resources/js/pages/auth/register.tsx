@@ -54,16 +54,16 @@ export default function Register({ botGuard }: RegisterProps) {
         />
 
         {errors.human && (
-          <div className="animate-fade-up stagger-1 rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
             {errors.human}
           </div>
         )}
 
         {/* Name */}
-        <div className="animate-fade-up stagger-1">
-          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Nama Lengkap</label>
+        <div className="stagger-1 animate-fade-up">
+          <label className="mb-1.5 block font-medium text-[var(--fg)] text-xs">Nama Lengkap</label>
           <div className="relative">
-            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+            <div className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted-fg)]">
               <IconUser size={18} />
             </div>
             <input
@@ -71,7 +71,7 @@ export default function Register({ botGuard }: RegisterProps) {
               value={data.name}
               onChange={(e) => setData("name", e.target.value)}
               placeholder="Nama Anda"
-              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-4 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+              className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.name
                   ? "border-danger-500"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
@@ -80,14 +80,14 @@ export default function Register({ botGuard }: RegisterProps) {
               autoFocus
             />
           </div>
-          {errors.name && <p className="mt-1 text-xs text-danger-500">{errors.name}</p>}
+          {errors.name && <p className="mt-1 text-danger-500 text-xs">{errors.name}</p>}
         </div>
 
         {/* Email */}
-        <div className="animate-fade-up stagger-2">
-          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Email</label>
+        <div className="stagger-2 animate-fade-up">
+          <label className="mb-1.5 block font-medium text-[var(--fg)] text-xs">Email</label>
           <div className="relative">
-            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+            <div className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted-fg)]">
               <IconMail size={18} />
             </div>
             <input
@@ -95,7 +95,7 @@ export default function Register({ botGuard }: RegisterProps) {
               value={data.email}
               onChange={(e) => setData("email", e.target.value)}
               placeholder="nama@email.com"
-              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-4 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+              className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.email
                   ? "border-danger-500"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
@@ -103,14 +103,14 @@ export default function Register({ botGuard }: RegisterProps) {
               autoComplete="username"
             />
           </div>
-          {errors.email && <p className="mt-1 text-xs text-danger-500">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-danger-500 text-xs">{errors.email}</p>}
         </div>
 
         {/* Password */}
-        <div className="animate-fade-up stagger-3">
-          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">Password</label>
+        <div className="stagger-3 animate-fade-up">
+          <label className="mb-1.5 block font-medium text-[var(--fg)] text-xs">Password</label>
           <div className="relative">
-            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+            <div className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted-fg)]">
               <IconLock size={18} />
             </div>
             <input
@@ -118,7 +118,7 @@ export default function Register({ botGuard }: RegisterProps) {
               value={data.password}
               onChange={(e) => setData("password", e.target.value)}
               placeholder="Minimal 8 karakter"
-              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-11 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+              className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password
                   ? "border-danger-500"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
@@ -128,22 +128,22 @@ export default function Register({ botGuard }: RegisterProps) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--fg)]"
+              className="absolute top-1/2 right-3.5 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--fg)]"
               tabIndex={-1}
             >
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1 text-xs text-danger-500">{errors.password}</p>}
+          {errors.password && <p className="mt-1 text-danger-500 text-xs">{errors.password}</p>}
         </div>
 
         {/* Confirm Password */}
-        <div className="animate-fade-up stagger-4">
-          <label className="mb-1.5 block text-xs font-medium text-[var(--fg)]">
+        <div className="stagger-4 animate-fade-up">
+          <label className="mb-1.5 block font-medium text-[var(--fg)] text-xs">
             Konfirmasi Password
           </label>
           <div className="relative">
-            <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)]">
+            <div className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted-fg)]">
               <IconLock size={18} />
             </div>
             <input
@@ -151,7 +151,7 @@ export default function Register({ botGuard }: RegisterProps) {
               value={data.password_confirmation}
               onChange={(e) => setData("password_confirmation", e.target.value)}
               placeholder="Ulangi password"
-              className={`h-11 w-full rounded-xl border bg-white pl-10 pr-11 text-sm text-[var(--fg)] placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
+              className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password_confirmation
                   ? "border-danger-500"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
@@ -161,23 +161,23 @@ export default function Register({ botGuard }: RegisterProps) {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--fg)]"
+              className="absolute top-1/2 right-3.5 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--fg)]"
               tabIndex={-1}
             >
               {showConfirmPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
           {errors.password_confirmation && (
-            <p className="mt-1 text-xs text-danger-500">{errors.password_confirmation}</p>
+            <p className="mt-1 text-danger-500 text-xs">{errors.password_confirmation}</p>
           )}
         </div>
 
         {/* Submit */}
-        <div className="animate-fade-up stagger-5">
+        <div className="stagger-5 animate-fade-up">
           <button
             type="submit"
             disabled={processing}
-            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 active:scale-[0.985] focus:ring-3 focus:ring-[var(--primary-subtle)] disabled:opacity-50"
+            className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] font-semibold text-[var(--primary-fg)] transition-all hover:opacity-90 focus:ring-3 focus:ring-[var(--primary-subtle)] active:scale-[0.985] disabled:opacity-50"
           >
             {processing ? (
               <>
@@ -191,7 +191,7 @@ export default function Register({ botGuard }: RegisterProps) {
         </div>
 
         {/* Login Link */}
-        <p className="animate-fade-up stagger-6 text-center text-sm text-[var(--muted-fg)]">
+        <p className="stagger-6 animate-fade-up text-center text-[var(--muted-fg)] text-sm">
           Sudah punya akun?{" "}
           <Link
             href="/login"
@@ -211,7 +211,7 @@ Register.layout = (page: React.ReactNode) => (
     description="Daftarkan bisnis Anda sekarang"
     hero={
       <div className="max-w-sm text-white">
-        <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.08] px-3 py-1 text-[0.75rem] font-medium text-white/[0.85]">
+        <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-white/[0.1] bg-white/[0.08] px-3 py-1 font-medium text-[0.75rem] text-white/[0.85]">
           <svg
             width="12"
             height="12"
@@ -227,13 +227,13 @@ Register.layout = (page: React.ReactNode) => (
           Mulai Gratis
         </div>
 
-        <h2 className="mb-4 text-[1.75rem] font-semibold leading-tight tracking-tight text-white">
+        <h2 className="mb-4 font-semibold text-[1.75rem] text-white leading-tight tracking-tight">
           Bergabung Bersama Kami
           <br />
           dan kelola bisnis dengan mudah
         </h2>
 
-        <p className="mb-8 text-[0.9375rem] leading-relaxed text-white/75">
+        <p className="mb-8 text-[0.9375rem] text-white/75 leading-relaxed">
           Daftar sekarang dan nikmati kemudahan mengelola penjualan, stok, dan laporan bisnis dalam
           satu platform terintegrasi.
         </p>

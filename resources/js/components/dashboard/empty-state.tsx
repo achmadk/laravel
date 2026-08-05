@@ -13,15 +13,15 @@ export function EmptyState({ icon, title, description, action, className }: Empt
   return (
     <div
       className={twMerge(
-        "flex flex-col items-center justify-center py-16 bg-bg rounded-2xl border border-border",
+        "flex flex-col items-center justify-center rounded-2xl border border-border bg-bg py-16",
         className,
       )}
     >
-      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
         {icon ?? <IconDatabaseOff size={32} className="text-muted-fg" strokeWidth={1.5} />}
       </div>
-      <h3 className="text-lg font-medium text-fg mb-1">{title}</h3>
-      {description && <p className="text-sm text-muted-fg mb-4">{description}</p>}
+      <h3 className="mb-1 font-medium text-fg text-lg">{title}</h3>
+      {description && <p className="mb-4 text-muted-fg text-sm">{description}</p>}
       {action && <div>{action}</div>}
     </div>
   );

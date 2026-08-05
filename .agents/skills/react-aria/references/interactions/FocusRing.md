@@ -28,11 +28,11 @@ If CSS classes are not being used for styling, see [useFocusRing](useFocusRing.m
 
 ### FocusRing
 
-| Name             | Type                                | Default                            | Description |
+| Name | Type | Default | Description |
 | ---------------- | ----------------------------------- | ---------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `autoFocus`      | `boolean                            | undefined`                         | —           | Whether the element will be auto focused.                                                                                                       |
-| `children`       | `React.ReactElement<unknown, string | React.JSXElementConstructor<any>>` | —           | Child element to apply CSS classes to.                                                                                                          |
-| `focusClass`     | `string                             | undefined`                         | —           | CSS class to apply when the element is focused.                                                                                                 |
-| `focusRingClass` | `string                             | undefined`                         | —           | CSS class to apply when the element has keyboard focus.                                                                                         |
-| `isTextInput`    | `boolean                            | undefined`                         | —           | Whether the element is a text input.                                                                                                            |
-| `within`         | `boolean                            | undefined`                         | false       | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |
+| `autoFocus` | `boolean                            | undefined` | — | Whether the element will be auto focused. |
+| `children` | `React.ReactElement<unknown, string | React.JSXElementConstructor<any>>` | — | Child element to apply CSS classes to. |
+| `focusClass` | `string                             | undefined` | — | CSS class to apply when the element is focused. |
+| `focusRingClass` | `string                             | undefined` | — | CSS class to apply when the element has keyboard focus. |
+| `isTextInput` | `boolean                            | undefined` | — | Whether the element is a text input. |
+| `within` | `boolean                            | undefined` | false | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |

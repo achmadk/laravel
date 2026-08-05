@@ -51,11 +51,11 @@ If CSS classes are being used for styling, see the [FocusRing](FocusRing.md) com
 
 ### AriaFocusRingProps
 
-| Name          | Type     | Default    | Description |
+| Name | Type | Default | Description |
 | ------------- | -------- | ---------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `within`      | `boolean | undefined` | 'false'     | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |
-| `isTextInput` | `boolean | undefined` | —           | Whether the element is a text input.                                                                                                            |
-| `autoFocus`   | `boolean | undefined` | —           | Whether the element will be auto focused.                                                                                                       |
+| `within` | `boolean | undefined` | 'false' | Whether to show the focus ring when something inside the container element has focus (true), or only if the container itself has focus (false). |
+| `isTextInput` | `boolean | undefined` | — | Whether the element is a text input. |
+| `autoFocus` | `boolean | undefined` | — | Whether the element will be auto focused. |
 
 ### FocusRingAria
 

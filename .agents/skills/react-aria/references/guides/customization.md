@@ -169,18 +169,8 @@ import { InputContext } from "react-aria-components/Input";
 
 <Provider
     values={[
-        [
-            ButtonContext,
-            {
-                /* ... */
-            },
-        ],
-        [
-            InputContext,
-            {
-                /* ... */
-            },
-        ],
+        [ButtonContext, {/* ... */}],
+        [InputContext, {/* ... */}],
     ]}
 >
     {/* ... */}
@@ -190,22 +180,8 @@ import { InputContext } from "react-aria-components/Input";
 This is equivalent to:
 
 ```tsx
-<ButtonContext.Provider
-    value={
-        {
-            /* ... */
-        }
-    }
->
-    <InputContext.Provider
-        value={
-            {
-                /* ... */
-            }
-        }
-    >
-        {/* ... */}
-    </InputContext.Provider>
+<ButtonContext.Provider value={{/* ... */}}>
+    <InputContext.Provider value={{/* ... */}}>{/* ... */}</InputContext.Provider>
 </ButtonContext.Provider>
 ```
 

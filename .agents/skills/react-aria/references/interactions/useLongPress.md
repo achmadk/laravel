@@ -80,14 +80,14 @@ A long press is triggered when a user presses and holds their pointer over a tar
 
 ### LongPressProps
 
-| Name                       | Type                           | Default    | Description |
+| Name | Type | Default | Description |
 | -------------------------- | ------------------------------ | ---------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `isDisabled`               | `boolean                       | undefined` | —           | Whether long press events should be disabled.                                                                                 |
-| `onLongPressStart`         | `((e: LongPressEvent) => void) | undefined` | —           | Handler that is called when a long press interaction starts.                                                                  |
-| `onLongPressEnd`           | `((e: LongPressEvent) => void) | undefined` | —           | Handler that is called when a long press interaction ends, either over the target or when the pointer leaves the target.      |
-| `onLongPress`              | `((e: LongPressEvent) => void) | undefined` | —           | Handler that is called when the threshold time is met while the press is over the target.                                     |
-| `threshold`                | `number                        | undefined` | 500ms       | The amount of time in milliseconds to wait before triggering a long press.                                                    |
-| `accessibilityDescription` | `string                        | undefined` | —           | A description for assistive techology users indicating that a long press action is available, e.g. "Long press to open menu". |
+| `isDisabled` | `boolean                       | undefined` | — | Whether long press events should be disabled. |
+| `onLongPressStart` | `((e: LongPressEvent) => void) | undefined` | — | Handler that is called when a long press interaction starts. |
+| `onLongPressEnd` | `((e: LongPressEvent) => void) | undefined` | — | Handler that is called when a long press interaction ends, either over the target or when the pointer leaves the target. |
+| `onLongPress` | `((e: LongPressEvent) => void) | undefined` | — | Handler that is called when the threshold time is met while the press is over the target. |
+| `threshold` | `number                        | undefined` | 500ms | The amount of time in milliseconds to wait before triggering a long press. |
+| `accessibilityDescription` | `string                        | undefined` | — | A description for assistive techology users indicating that a long press action is available, e.g. "Long press to open menu". |
 
 ### LongPressResult
 

@@ -9,7 +9,6 @@ import {
   IconPackage,
   IconReceipt2,
   IconSearch,
-  IconTrendingDown,
   IconTrendingUp,
   IconUsers,
   IconX,
@@ -348,16 +347,16 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br ${gradient} text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
     >
       <div className="relative z-10">
         <div className="mb-2 flex items-center gap-2">
           <div className="rounded-xl bg-white/20 p-2">
             <Icon size={18} />
           </div>
-          <span className="text-sm font-medium opacity-90">{title}</span>
+          <span className="font-medium text-sm opacity-90">{title}</span>
         </div>
-        <p className="text-2xl font-bold">{value}</p>
+        <p className="font-bold text-2xl">{value}</p>
         <p className="mt-1 text-sm opacity-80">{description}</p>
       </div>
     </div>
@@ -371,7 +370,7 @@ function EmptyState({ message }: { message: string }) {
         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-muted">
           <IconDatabaseOff size={24} className="text-muted-fg" />
         </div>
-        <p className="text-sm text-muted-fg">{message}</p>
+        <p className="text-muted-fg text-sm">{message}</p>
       </div>
     </div>
   );
@@ -391,8 +390,8 @@ function ChartCard({
   return (
     <div className="rounded-2xl border border-border bg-bg p-5">
       <div className="mb-4">
-        <h2 className="text-lg font-semibold text-fg">{title}</h2>
-        <p className="text-sm text-muted-fg">{subtitle}</p>
+        <h2 className="font-semibold text-fg text-lg">{title}</h2>
+        <p className="text-muted-fg text-sm">{subtitle}</p>
       </div>
       {hasData ? (
         <div className="h-72">
@@ -407,14 +406,14 @@ function ChartCard({
 
 function Th({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <th className={`px-4 py-4 text-left text-xs font-semibold uppercasetext-muted-fg ${className}`}>
+    <th className={`uppercasetext-muted-fg px-4 py-4 text-left font-semibold text-xs ${className}`}>
       {children}
     </th>
   );
 }
 
 function Td({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <td className={`px-4 py-4 text-sm text-fg ${className}`}>{children}</td>;
+  return <td className={`px-4 py-4 text-fg text-sm ${className}`}>{children}</td>;
 }
 
 export default function Insights({
@@ -588,18 +587,18 @@ export default function Insights({
       <div className="space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="flex items-center gap-2 text-2xl font-bold text-fg">
+            <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
               <IconChartBar size={28} className="text-primary-500" />
               Advanced Sales Insights
             </h1>
-            <p className="text-sm text-muted-fg">
+            <p className="text-muted-fg text-sm">
               Insight operasional penjualan, margin, produk, dan performa kasir dalam satu
               dashboard.
             </p>
           </div>
           <button
             onClick={() => setShowFilters((v) => !v)}
-            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
+            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 font-medium text-sm transition-colors ${
               showFilters || hasActiveFilters
                 ? "border-primary/30 bg-primary/10 text-primary"
                 : "border-border bg-bg text-fg hover:bg-muted"
@@ -646,29 +645,29 @@ export default function Insights({
             <form onSubmit={applyFilters}>
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-fg">Tanggal Mulai</label>
+                  <label className="mb-1 block font-medium text-fg text-sm">Tanggal Mulai</label>
                   <input
                     type="date"
                     value={filterData.start_date}
                     onChange={(e) => handleChange("start_date", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-fg">Tanggal Akhir</label>
+                  <label className="mb-1 block font-medium text-fg text-sm">Tanggal Akhir</label>
                   <input
                     type="date"
                     value={filterData.end_date}
                     onChange={(e) => handleChange("end_date", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-fg">Kasir</label>
+                  <label className="mb-1 block font-medium text-fg text-sm">Kasir</label>
                   <select
                     value={filterData.cashier_id}
                     onChange={(e) => handleChange("cashier_id", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Semua kasir</option>
                     {cashiers.map((c) => (
@@ -679,11 +678,11 @@ export default function Insights({
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-fg">Pelanggan</label>
+                  <label className="mb-1 block font-medium text-fg text-sm">Pelanggan</label>
                   <select
                     value={filterData.customer_id}
                     onChange={(e) => handleChange("customer_id", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Semua pelanggan</option>
                     {customers.map((c) => (
@@ -694,11 +693,11 @@ export default function Insights({
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-fg">Kategori</label>
+                  <label className="mb-1 block font-medium text-fg text-sm">Kategori</label>
                   <select
                     value={filterData.category_id}
                     onChange={(e) => handleChange("category_id", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Semua kategori</option>
                     {categories.map((c) => (
@@ -780,13 +779,13 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">Top Selling Products</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">Top Selling Products</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <Th>Produk</Th>
                   <Th>Kategori</Th>
                   <Th className="text-right">Qty</Th>
@@ -797,11 +796,11 @@ export default function Insights({
               <tbody className="divide-y divide-border">
                 {topSellingProducts.length > 0 ? (
                   topSellingProducts.map((item) => (
-                    <tr key={item.product_id} className="hover:bg-muted ">
+                    <tr key={item.product_id} className="hover:bg-muted">
                       <Td>
                         <div>
                           <p className="font-semibold text-fg">{item.product_title}</p>
-                          <p className="text-xs text-muted-fg">{item.product_sku || "-"}</p>
+                          <p className="text-muted-fg text-xs">{item.product_sku || "-"}</p>
                         </div>
                       </Td>
                       <Td>{item.category_name || "-"}</Td>
@@ -827,13 +826,13 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">Low Performing Products</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">Low Performing Products</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <Th>Produk</Th>
                   <Th>Stok</Th>
                   <Th className="text-right">Qty Sold</Th>
@@ -844,11 +843,11 @@ export default function Insights({
               <tbody className="divide-y divide-border">
                 {lowPerformingProducts.length > 0 ? (
                   lowPerformingProducts.map((item) => (
-                    <tr key={item.product_id} className="hover:bg-muted ">
+                    <tr key={item.product_id} className="hover:bg-muted">
                       <Td>
                         <div>
                           <p className="font-semibold text-fg">{item.product_title}</p>
-                          <p className="text-xs text-muted-fg">{item.category_name || "-"}</p>
+                          <p className="text-muted-fg text-xs">{item.category_name || "-"}</p>
                         </div>
                       </Td>
                       <Td>{item.current_stock}</Td>
@@ -872,16 +871,16 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 border-border border-b p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-fg">Margin per Produk / Kategori</h2>
-              <p className="text-sm text-muted-fg">Perbandingan omzet, profit, dan margin kotor.</p>
+              <h2 className="font-semibold text-fg text-lg">Margin per Produk / Kategori</h2>
+              <p className="text-muted-fg text-sm">Perbandingan omzet, profit, dan margin kotor.</p>
             </div>
             <div className="inline-flex rounded-xl bg-muted p-1">
               <button
                 type="button"
                 onClick={() => setMarginView("product")}
-                className={`rounded-lg px-3 py-2 text-sm font-medium ${
+                className={`rounded-lg px-3 py-2 font-medium text-sm ${
                   marginView === "product" ? "bg-bg text-primary shadow" : "text-fg"
                 }`}
               >
@@ -890,7 +889,7 @@ export default function Insights({
               <button
                 type="button"
                 onClick={() => setMarginView("category")}
-                className={`rounded-lg px-3 py-2 text-sm font-medium ${
+                className={`rounded-lg px-3 py-2 font-medium text-sm ${
                   marginView === "category" ? "bg-bg text-primary shadow" : "text-fg"
                 }`}
               >
@@ -901,7 +900,7 @@ export default function Insights({
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <Th>{marginView === "product" ? "Produk" : "Kategori"}</Th>
                   <Th className="text-right">Qty</Th>
                   <Th className="text-right">Omzet</Th>
@@ -912,7 +911,7 @@ export default function Insights({
               <tbody className="divide-y divide-border">
                 {marginRows.length > 0 ? (
                   marginRows.map((item, index) => (
-                    <tr key={`${marginView}-${index}`} className="hover:bg-muted ">
+                    <tr key={`${marginView}-${index}`} className="hover:bg-muted">
                       <Td>{marginView === "product" ? item.product_title : item.category_name}</Td>
                       <Td className="text-right">{item.qty_sold}</Td>
                       <Td className="text-right font-medium text-fg">
@@ -937,13 +936,13 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">Cashier Performance</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">Cashier Performance</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <Th>Kasir</Th>
                   <Th className="text-right">Transaksi</Th>
                   <Th className="text-right">Items Sold</Th>
@@ -955,7 +954,7 @@ export default function Insights({
               <tbody className="divide-y divide-border">
                 {cashierPerformance.length > 0 ? (
                   cashierPerformance.map((item) => (
-                    <tr key={item.cashier_id} className="hover:bg-muted ">
+                    <tr key={item.cashier_id} className="hover:bg-muted">
                       <Td className="font-medium text-fg">{item.cashier_name}</Td>
                       <Td className="text-right">{item.orders_count}</Td>
                       <Td className="text-right">{item.items_sold}</Td>
@@ -983,26 +982,26 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">Repeat Customer Metrics</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">Repeat Customer Metrics</h2>
           </div>
           <div className="p-5">
             <div className="mb-4 grid gap-3 md:grid-cols-3">
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Repeat Revenue</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Repeat Revenue</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {formatCurrency(repeatSummary.repeat_revenue_total ?? 0)}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Revenue Member</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Revenue Member</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {formatCurrency(repeatSummary.member_revenue_total ?? 0)}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Revenue Non-Member</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Revenue Non-Member</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {formatCurrency(repeatSummary.non_member_revenue_total ?? 0)}
                 </p>
               </div>
@@ -1010,7 +1009,7 @@ export default function Insights({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border">
+                  <tr className="border-border border-b">
                     <Th>Pelanggan</Th>
                     <Th>Status</Th>
                     <Th className="text-right">Transaksi</Th>
@@ -1022,11 +1021,11 @@ export default function Insights({
                 <tbody className="divide-y divide-border">
                   {topRepeatCustomers.length > 0 ? (
                     topRepeatCustomers.map((item) => (
-                      <tr key={item.customer_id} className="hover:bg-muted ">
+                      <tr key={item.customer_id} className="hover:bg-muted">
                         <Td>
                           <div>
                             <p className="font-semibold text-fg">{item.customer_name}</p>
-                            <p className="text-xs text-muted-fg">
+                            <p className="text-muted-fg text-xs">
                               {item.loyalty_tier
                                 ? item.loyalty_tier.replace("_", " ").toUpperCase()
                                 : "Non-member"}
@@ -1035,10 +1034,10 @@ export default function Insights({
                         </Td>
                         <Td>
                           <span
-                            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                            className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                               item.is_loyalty_member
                                 ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300"
-                                : "bg-muted text-muted-fg "
+                                : "bg-muted text-muted-fg"
                             }`}
                           >
                             {item.is_loyalty_member ? "Member" : "Non-member"}
@@ -1068,32 +1067,32 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">Stock Coverage Analysis</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">Stock Coverage Analysis</h2>
           </div>
           <div className="p-5">
             <div className="mb-4 grid gap-3 md:grid-cols-4">
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Stok Kritis</p>
-                <p className="mt-2 text-xl font-semibold text-danger">
+                <p className="text-muted-fg text-sm">Stok Kritis</p>
+                <p className="mt-2 font-semibold text-danger text-xl">
                   {(stockCoverageSummary.critical ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Stok Rendah</p>
-                <p className="mt-2 text-xl font-semibold text-warning">
+                <p className="text-muted-fg text-sm">Stok Rendah</p>
+                <p className="mt-2 font-semibold text-warning text-xl">
                   {(stockCoverageSummary.low ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Stok Sehat</p>
-                <p className="mt-2 text-xl font-semibold text-success">
+                <p className="text-muted-fg text-sm">Stok Sehat</p>
+                <p className="mt-2 font-semibold text-success text-xl">
                   {(stockCoverageSummary.healthy ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Tidak Bergerak</p>
-                <p className="mt-2 text-xl font-semibold text-muted-fg">
+                <p className="text-muted-fg text-sm">Tidak Bergerak</p>
+                <p className="mt-2 font-semibold text-muted-fg text-xl">
                   {(stockCoverageSummary.no_movement ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
@@ -1101,7 +1100,7 @@ export default function Insights({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border">
+                  <tr className="border-border border-b">
                     <Th>Produk</Th>
                     <Th>Status</Th>
                     <Th className="text-right">Stok</Th>
@@ -1119,16 +1118,16 @@ export default function Insights({
                         coverageStatusConfig.no_movement;
 
                       return (
-                        <tr key={item.product_id} className="hover:bg-muted ">
+                        <tr key={item.product_id} className="hover:bg-muted">
                           <Td>
                             <div>
                               <p className="font-semibold text-fg">{item.product_title}</p>
-                              <p className="text-xs text-muted-fg">{item.category_name || "-"}</p>
+                              <p className="text-muted-fg text-xs">{item.category_name || "-"}</p>
                             </div>
                           </Td>
                           <Td>
                             <span
-                              className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusCfg.className}`}
+                              className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${statusCfg.className}`}
                             >
                               {statusCfg.label}
                             </span>
@@ -1160,20 +1159,20 @@ export default function Insights({
 
         <div className="grid gap-6 xl:grid-cols-2">
           <div className="rounded-2xl border border-border bg-bg">
-            <div className="border-b border-border px-5 py-4">
-              <h2 className="text-lg font-semibold text-fg">Promo Active Monitor</h2>
+            <div className="border-border border-b px-5 py-4">
+              <h2 className="font-semibold text-fg text-lg">Promo Active Monitor</h2>
             </div>
             <div className="p-5">
               <div className="mb-4 grid gap-3 md:grid-cols-2">
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Promo Aktif</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Promo Aktif</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(promoSummary.active ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Promo Terjadwal</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Promo Terjadwal</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(promoSummary.scheduled ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
@@ -1182,7 +1181,7 @@ export default function Insights({
                 {Object.entries(promoSummary.by_kind ?? {}).map(([key, count]) => (
                   <span
                     key={key}
-                    className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg "
+                    className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs"
                   >
                     {promoKindLabel[key] || key}: {Number(count).toLocaleString("id-ID")}
                   </span>
@@ -1191,7 +1190,7 @@ export default function Insights({
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-border">
+                    <tr className="border-border border-b">
                       <Th>Rule</Th>
                       <Th>Tipe</Th>
                       <Th>Status</Th>
@@ -1205,11 +1204,11 @@ export default function Insights({
                           promoStatusConfig[item.status_label] ?? promoStatusConfig.inactive;
 
                         return (
-                          <tr key={`${item.status_label}-${item.id}`} className="hover:bg-muted ">
+                          <tr key={`${item.status_label}-${item.id}`} className="hover:bg-muted">
                             <Td>
                               <div>
                                 <p className="font-semibold text-fg">{item.name}</p>
-                                <p className="text-xs text-muted-fg">
+                                <p className="text-muted-fg text-xs">
                                   {item.product_title ?? item.category_name ?? item.target_type}
                                 </p>
                               </div>
@@ -1217,13 +1216,13 @@ export default function Insights({
                             <Td>{promoKindLabel[item.kind] || item.kind}</Td>
                             <Td>
                               <span
-                                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${statusCfg.className}`}
+                                className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${statusCfg.className}`}
                               >
                                 {statusCfg.label}
                               </span>
                             </Td>
                             <Td>
-                              <div className="text-sm text-fg">
+                              <div className="text-fg text-sm">
                                 <div>{formatDateTime(item.starts_at)}</div>
                                 <div>{formatDateTime(item.ends_at)}</div>
                               </div>
@@ -1242,50 +1241,50 @@ export default function Insights({
                 </table>
               </div>
               <div className="mt-4 space-y-2">
-                <h3 className="text-sm font-semibold text-fg">Audit Promo Terbaru</h3>
+                <h3 className="font-semibold text-fg text-sm">Audit Promo Terbaru</h3>
                 {promoRecentAudits.length > 0 ? (
                   promoRecentAudits.map((audit) => (
                     <div key={audit.id} className="rounded-2xl bg-muted p-3 text-sm">
                       <p className="font-medium text-fg">{audit.description}</p>
-                      <p className="mt-1 text-xs text-muted-fg">
+                      <p className="mt-1 text-muted-fg text-xs">
                         {audit.event} &bull; {formatDateTime(audit.created_at)}
                       </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-muted-fg">Belum ada audit promo terbaru.</p>
+                  <p className="text-muted-fg text-sm">Belum ada audit promo terbaru.</p>
                 )}
               </div>
             </div>
           </div>
 
           <div className="rounded-2xl border border-border bg-bg">
-            <div className="border-b border-border px-5 py-4">
-              <h2 className="text-lg font-semibold text-fg">Loyalty Performance Summary</h2>
+            <div className="border-border border-b px-5 py-4">
+              <h2 className="font-semibold text-fg text-lg">Loyalty Performance Summary</h2>
             </div>
             <div className="p-5">
               <div className="mb-4 grid gap-3 md:grid-cols-2">
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Total Member</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Total Member</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.total_members ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Saldo Poin</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Saldo Poin</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.points_balance_total ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Poin Earned</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Poin Earned</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.points_earned ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Poin Redeemed</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Poin Redeemed</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.points_redeemed ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
@@ -1294,7 +1293,7 @@ export default function Insights({
                 {Object.entries(loyaltySummary.tier_distribution ?? {}).map(([tier, count]) => (
                   <span
                     key={tier}
-                    className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg "
+                    className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs"
                   >
                     {tier.toUpperCase()}: {Number(count).toLocaleString("id-ID")}
                   </span>
@@ -1302,20 +1301,20 @@ export default function Insights({
               </div>
               <div className="mb-4 grid gap-3 md:grid-cols-3">
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Voucher Aktif</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Voucher Aktif</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.voucher_summary?.active ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Voucher Digunakan</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Voucher Digunakan</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {(loyaltySummary.voucher_summary?.used ?? 0).toLocaleString("id-ID")}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-muted p-4">
-                  <p className="text-sm text-muted-fg">Nominal Voucher</p>
-                  <p className="mt-2 text-xl font-semibold text-fg">
+                  <p className="text-muted-fg text-sm">Nominal Voucher</p>
+                  <p className="mt-2 font-semibold text-fg text-xl">
                     {formatCurrency(loyaltySummary.voucher_discount_total ?? 0)}
                   </p>
                 </div>
@@ -1323,7 +1322,7 @@ export default function Insights({
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-border">
+                    <tr className="border-border border-b">
                       <Th>Member</Th>
                       <Th>Tier</Th>
                       <Th className="text-right">Poin</Th>
@@ -1333,7 +1332,7 @@ export default function Insights({
                   <tbody className="divide-y divide-border">
                     {loyaltyTopMembers.length > 0 ? (
                       loyaltyTopMembers.map((member) => (
-                        <tr key={member.id} className="hover:bg-muted ">
+                        <tr key={member.id} className="hover:bg-muted">
                           <Td className="font-medium text-fg">{member.name}</Td>
                           <Td>{(member.loyalty_tier || "-").replace("_", " ").toUpperCase()}</Td>
                           <Td className="text-right">
@@ -1359,49 +1358,49 @@ export default function Insights({
         </div>
 
         <div className="rounded-2xl border border-border bg-bg">
-          <div className="border-b border-border px-5 py-4">
-            <h2 className="text-lg font-semibold text-fg">CRM Operational Snapshot</h2>
+          <div className="border-border border-b px-5 py-4">
+            <h2 className="font-semibold text-fg text-lg">CRM Operational Snapshot</h2>
           </div>
           <div className="p-5">
             <div className="mb-4 grid gap-3 md:grid-cols-4">
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Segment Aktif</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Segment Aktif</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {(crmSummary.segments_active ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Campaign Draft/Ready</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Campaign Draft/Ready</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {(
                     (crmSummary.campaigns_draft ?? 0) + (crmSummary.campaigns_ready ?? 0)
                   ).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Queue Ready</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Queue Ready</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {(crmSummary.queue_ready_to_send ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="rounded-2xl bg-muted p-4">
-                <p className="text-sm text-muted-fg">Queue Sent</p>
-                <p className="mt-2 text-xl font-semibold text-fg">
+                <p className="text-muted-fg text-sm">Queue Sent</p>
+                <p className="mt-2 font-semibold text-fg text-xl">
                   {(crmSummary.queue_sent ?? 0).toLocaleString("id-ID")}
                 </p>
               </div>
             </div>
             <div className="mb-4 flex flex-wrap gap-2">
-              <span className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg ">
+              <span className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                 Manual Segment: {Number(crmSummary.segments_manual ?? 0).toLocaleString("id-ID")}
               </span>
-              <span className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg ">
+              <span className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                 Auto Segment: {Number(crmSummary.segments_auto ?? 0).toLocaleString("id-ID")}
               </span>
-              <span className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg ">
+              <span className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                 Memberships: {Number(crmSummary.memberships_total ?? 0).toLocaleString("id-ID")}
               </span>
-              <span className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-fg ">
+              <span className="inline-flex rounded-full bg-muted px-3 py-1 font-semibold text-muted-fg text-xs">
                 Campaign Processed:{" "}
                 {Number(crmSummary.campaigns_processed ?? 0).toLocaleString("id-ID")}
               </span>
@@ -1409,7 +1408,7 @@ export default function Insights({
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border">
+                  <tr className="border-border border-b">
                     <Th>Campaign</Th>
                     <Th>Tipe</Th>
                     <Th>Status</Th>
@@ -1420,7 +1419,7 @@ export default function Insights({
                 <tbody className="divide-y divide-border">
                   {crmRecentCampaigns.length > 0 ? (
                     crmRecentCampaigns.map((campaign) => (
-                      <tr key={campaign.id} className="hover:bg-muted ">
+                      <tr key={campaign.id} className="hover:bg-muted">
                         <Td className="font-medium text-fg">{campaign.name}</Td>
                         <Td>{crmCampaignTypeLabel[campaign.type] || campaign.type}</Td>
                         <Td>{campaign.status}</Td>

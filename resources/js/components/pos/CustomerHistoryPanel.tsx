@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconHistory, IconRefresh, IconChevronRight, IconX } from "@tabler/icons-react";
 import axios from "axios";
+import customers from "@/routes/customers";
 import type { POSCustomer } from "@/types/pos";
 
 const formatPrice = (value = 0) =>
@@ -37,7 +38,9 @@ export default function CustomerHistoryPanel({
     if (!customer) return;
     setIsLoading(true);
     try {
-      const response = await axios.get(`/apps/customers/${customer.id}/history`);
+      const response = await axios.get(customers.history.url(customer.id), {
+        headers: { Accept: "application/json" },
+      });
       setHistory(response.data.data || response.data || []);
       setHasLoaded(true);
     } catch {
@@ -72,7 +75,7 @@ export default function CustomerHistoryPanel({
       return (
         <button
           onClick={handleOpen}
-          className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          className="flex items-center gap-2 text-slate-500 text-sm transition-colors hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400"
         >
           <IconHistory size={16} />
           Riwayat
@@ -85,50 +88,50 @@ export default function CustomerHistoryPanel({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-slide-up">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-          <div className="flex items-center gap-2 min-w-0">
-            <IconHistory size={20} className="text-primary-500 flex-shrink-0" />
+      <div className="relative mx-4 w-full max-w-lg animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
+          <div className="flex min-w-0 items-center gap-2">
+            <IconHistory size={20} className="flex-shrink-0 text-primary-500" />
             <div className="min-w-0">
-              <h3 className="text-lg font-semibold text-slate-800 dark:text-white truncate">
+              <h3 className="truncate font-semibold text-lg text-slate-800 dark:text-white">
                 {customer?.name || "Riwayat"}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">{customer?.no_telp}</p>
+              <p className="text-slate-500 text-xs dark:text-slate-400">{customer?.no_telp}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={fetchHistory}
               disabled={isLoading}
-              className="p-2 rounded-xl text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950/30 transition-colors"
+              className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950/30"
             >
               <IconRefresh size={18} className={isLoading ? "animate-spin" : ""} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
             >
               <IconX size={20} />
             </button>
           </div>
         </div>
 
-        <div className="max-h-[350px] overflow-y-auto p-4 space-y-2">
+        <div className="max-h-[350px] space-y-2 overflow-y-auto p-4">
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
-              <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
             </div>
           ) : history.length > 0 ? (
             history.map((tx) => (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="flex items-center justify-between rounded-xl bg-slate-50 p-3 transition-colors hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800"
               >
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-medium text-slate-700 text-sm dark:text-slate-300">
                     {tx.code}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  <p className="mt-0.5 text-slate-500 text-xs dark:text-slate-400">
                     {new Date(tx.created_at).toLocaleDateString("id-ID", {
                       year: "numeric",
                       month: "short",
@@ -138,29 +141,29 @@ export default function CustomerHistoryPanel({
                     })}
                   </p>
                 </div>
-                <div className="text-right flex-shrink-0 ml-3">
-                  <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                <div className="ml-3 flex-shrink-0 text-right">
+                  <p className="font-semibold text-slate-800 text-sm dark:text-slate-200">
                     {formatPrice(tx.grand_total)}
                   </p>
                   <span
-                    className={`inline-block px-2 py-0.5 text-[11px] font-medium rounded-md mt-0.5 ${getStatusBadge(tx.payment_status)}`}
+                    className={`mt-0.5 inline-block rounded-md px-2 py-0.5 font-medium text-[11px] ${getStatusBadge(tx.payment_status)}`}
                   >
                     {tx.payment_status}
                   </span>
                 </div>
-                <IconChevronRight size={16} className="text-slate-300 ml-2 flex-shrink-0" />
+                <IconChevronRight size={16} className="ml-2 flex-shrink-0 text-slate-300" />
               </div>
             ))
           ) : hasLoaded ? (
-            <div className="text-center py-10">
-              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-3">
+            <div className="py-10 text-center">
+              <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 <IconHistory size={24} className="text-slate-400" />
               </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Belum ada transaksi</p>
+              <p className="text-slate-500 text-sm dark:text-slate-400">Belum ada transaksi</p>
             </div>
           ) : (
-            <div className="text-center py-10">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+            <div className="py-10 text-center">
+              <p className="text-slate-500 text-sm dark:text-slate-400">
                 Klik refresh untuk memuat riwayat
               </p>
             </div>

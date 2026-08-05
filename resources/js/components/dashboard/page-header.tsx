@@ -1,5 +1,5 @@
 import { Heading } from "@/components/ui/heading";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface PageHeaderProps {
@@ -14,22 +14,22 @@ export function PageHeader({ title, description, icon, actions, className }: Pag
   return (
     <div
       className={twMerge(
-        "mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4",
+        "mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center",
         className,
       )}
     >
       <div className="flex items-center gap-3">
         {icon && (
-          <div className="hidden sm:flex items-center justify-center size-10 rounded-xl bg-primary-subtle text-primary">
+          <div className="hidden size-10 items-center justify-center rounded-xl bg-primary-subtle text-primary sm:flex">
             {icon}
           </div>
         )}
         <div>
           <Heading level={1}>{title}</Heading>
-          {description && <p className="text-sm text-muted-fg mt-0.5">{description}</p>}
+          {description && <p className="mt-0.5 text-muted-fg text-sm">{description}</p>}
         </div>
       </div>
-      {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
     </div>
   );
 }

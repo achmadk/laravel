@@ -88,9 +88,9 @@ export default function SearchBar({
   return (
     <div className="relative">
       <div className="relative">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <div className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2">
           {isSearching ? (
-            <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
           ) : (
             <IconSearch size={20} className="text-slate-400" />
           )}
@@ -106,16 +106,10 @@ export default function SearchBar({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="w-full h-14 pl-12 pr-24 rounded-2xl
-            border-2 border-slate-200 dark:border-slate-700
-            bg-white dark:bg-slate-900
-            text-slate-800 dark:text-slate-200 text-lg
-            placeholder-slate-400 dark:placeholder-slate-500
-            focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-500
-            transition-all"
+          className="h-14 w-full rounded-2xl border-2 border-slate-200 bg-white pr-24 pl-12 text-lg text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
         />
 
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+        <div className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center gap-2">
           {value && (
             <button
               type="button"
@@ -123,24 +117,20 @@ export default function SearchBar({
                 onChange("");
                 inputRef.current?.focus();
               }}
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="rounded-lg p-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <IconX size={18} className="text-slate-400" />
             </button>
           )}
-          <div className="w-px h-6 bg-slate-200 dark:bg-slate-700" />
-          <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
+          <div className="rounded-lg bg-slate-100 p-2 dark:bg-slate-800">
             <IconBarcode size={18} className="text-slate-500 dark:text-slate-400" />
           </div>
         </div>
       </div>
 
       {showSuggestions && (
-        <div
-          className="absolute top-full left-0 right-0 mt-2 py-2 rounded-xl
-            bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700
-            shadow-xl max-h-80 overflow-y-auto z-50 animate-slide-up"
-        >
+        <div className="absolute top-full right-0 left-0 z-50 mt-2 max-h-80 animate-slide-up overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
           <ul ref={listRef}>
             {suggestions.map((product, index) => (
               <li key={product.id}>
@@ -150,41 +140,41 @@ export default function SearchBar({
                     onSelect?.(product);
                     setIsFocused(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                  className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
                     index === selectedIndex
                       ? "bg-primary-50 dark:bg-primary-950/30"
                       : "hover:bg-slate-50 dark:hover:bg-slate-800"
                   }`}
                 >
-                  <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0">
+                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
                     {product.image ? (
                       <img
                         src={imageUrl(product.image) || ""}
                         alt={product.title}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="flex h-full w-full items-center justify-center">
                         <IconBarcode size={20} className="text-slate-400" />
                       </div>
                     )}
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-medium text-slate-800 text-sm dark:text-slate-200">
                       {product.title}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-slate-500 text-xs dark:text-slate-400">
                       {product.barcode} • Stok: {product.stock}
                     </p>
                   </div>
 
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                  <div className="flex-shrink-0 text-right">
+                    <p className="font-semibold text-primary-600 text-sm dark:text-primary-400">
                       {formatPrice(product.sell_price)}
                     </p>
                     {product.stock <= 0 && (
-                      <span className="text-xs text-danger-500 font-medium">Habis</span>
+                      <span className="font-medium text-danger-500 text-xs">Habis</span>
                     )}
                   </div>
                 </button>

@@ -51,34 +51,34 @@ export default function Edit() {
       <div className="mb-6">
         <Link
           href={users.index.url()}
-          className="inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary mb-3"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke Pengguna
         </Link>
-        <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
           <IconUserEdit size={28} className="text-primary" />
           Edit Pengguna
         </h1>
-        <p className="text-sm text-muted-fg mt-1">
+        <p className="mt-1 text-muted-fg text-sm">
           {user.name} &bull; {user.email}
         </p>
       </div>
 
       <form onSubmit={submit}>
         <div className="max-w-2xl space-y-6">
-          <div className="bg-bg rounded-2xl border border-border p-6">
-            <h3 className="text-sm font-semibold text-fg mb-4">Informasi Akun</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-2xl border border-border bg-bg p-6">
+            <h3 className="mb-4 font-semibold text-fg text-sm">Informasi Akun</h3>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-fg mb-2">Avatar</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Avatar</label>
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-full bg-muted overflow-hidden flex items-center justify-center text-muted-fg font-semibold">
+                  <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-muted font-semibold text-muted-fg">
                     {avatarPreview ? (
                       <img
                         src={avatarPreview}
                         alt="Preview"
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
                       <span>{user.name ? user.name.charAt(0).toUpperCase() : "?"}</span>
@@ -94,50 +94,50 @@ export default function Edit() {
                         setAvatarPreview(URL.createObjectURL(file));
                       }
                     }}
-                    className="block w-full text-sm text-muted-fg file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                    className="block w-full text-muted-fg text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:font-medium file:text-primary file:text-sm hover:file:bg-primary/20"
                   />
                 </div>
-                {errors.avatar && <p className="text-xs text-danger mt-1">{errors.avatar}</p>}
+                {errors.avatar && <p className="mt-1 text-danger text-xs">{errors.avatar}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-fg mb-2">Nama Lengkap</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Nama Lengkap</label>
                 <input
                   type="text"
                   placeholder="Nama pengguna"
                   value={data.name}
                   onChange={(e) => setData("name", e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.name && <p className="text-xs text-danger mt-1">{errors.name}</p>}
+                {errors.name && <p className="mt-1 text-danger text-xs">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-fg mb-2">Email</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Email</label>
                 <input
                   type="email"
                   value={data.email}
                   onChange={(e) => setData("email", e.target.value)}
                   disabled
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring opacity-60"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm opacity-60 outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.email && <p className="text-xs text-danger mt-1">{errors.email}</p>}
+                {errors.email && <p className="mt-1 text-danger text-xs">{errors.email}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-fg mb-2">Kata Sandi Baru</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Kata Sandi Baru</label>
                 <input
                   type="password"
                   placeholder="Kosongkan jika tidak diubah"
                   value={data.password}
                   onChange={(e) => setData("password", e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.password && <p className="text-xs text-danger mt-1">{errors.password}</p>}
+                {errors.password && <p className="mt-1 text-danger text-xs">{errors.password}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-fg mb-2">
+                <label className="mb-2 block font-medium text-fg text-sm">
                   Konfirmasi Kata Sandi
                 </label>
                 <input
@@ -145,17 +145,17 @@ export default function Edit() {
                   placeholder="Ulangi kata sandi baru"
                   value={data.password_confirmation}
                   onChange={(e) => setData("password_confirmation", e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
                 {errors.password_confirmation && (
-                  <p className="text-xs text-danger mt-1">{errors.password_confirmation}</p>
+                  <p className="mt-1 text-danger text-xs">{errors.password_confirmation}</p>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="bg-bg rounded-2xl border border-border p-6">
-            <h3 className="text-sm font-semibold text-fg mb-4 flex items-center gap-2">
+          <div className="rounded-2xl border border-border bg-bg p-6">
+            <h3 className="mb-4 flex items-center gap-2 font-semibold text-fg text-sm">
               <IconShield size={16} />
               Akses Group
             </h3>
@@ -163,7 +163,7 @@ export default function Edit() {
               {roles.map((role, i) => (
                 <label
                   key={i}
-                  className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border cursor-pointer transition-all ${
+                  className={`flex cursor-pointer items-center gap-2.5 rounded-xl border px-4 py-3 transition-all ${
                     data.selectedRoles.includes(role.name)
                       ? "border-primary bg-primary/5"
                       : "border-border hover:border-primary"
@@ -176,26 +176,26 @@ export default function Edit() {
                     checked={data.selectedRoles.includes(role.name)}
                     className="rounded border-border text-primary focus:ring-ring"
                   />
-                  <span className="text-sm font-medium text-fg capitalize">{role.name}</span>
+                  <span className="font-medium text-fg text-sm capitalize">{role.name}</span>
                 </label>
               ))}
             </div>
             {errors.selectedRoles && (
-              <p className="text-xs text-danger mt-3">{errors.selectedRoles}</p>
+              <p className="mt-3 text-danger text-xs">{errors.selectedRoles}</p>
             )}
           </div>
 
           <div className="flex justify-end gap-3">
             <Link
               href={users.index.url()}
-              className="px-5 py-2.5 rounded-xl border border-border text-muted-fg hover:bg-muted font-medium transition-colors"
+              className="rounded-xl border border-border px-5 py-2.5 font-medium text-muted-fg transition-colors hover:bg-muted"
             >
               Batal
             </Link>
             <button
               type="submit"
               disabled={processing}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium transition-colors disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
             >
               <IconDeviceFloppy size={18} />
               {processing ? "Menyimpan..." : "Simpan Perubahan"}

@@ -67,27 +67,27 @@ function CategoryCard({
   canDelete: boolean;
 }) {
   return (
-    <div className="group bg-bg rounded-2xl border border-border overflow-hidden hover:shadow-lg hover:border-muted-fg/30 transition-all duration-200">
-      <div className="relative aspect-[3/2] bg-muted overflow-hidden">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+      <div className="relative aspect-[3/2] overflow-hidden bg-muted">
         {category.image ? (
           <img
             src={imageUrl(category.image) ?? ""}
             alt={category.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <IconCategory size={48} className="text-muted-fg" strokeWidth={1} />
           </div>
         )}
 
         {(canUpdate || canDelete) && (
-          <div className="absolute inset-0 bg-fg/0 group-hover:bg-fg/40 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center gap-2 bg-fg/0 opacity-0 transition-all group-hover:bg-fg/40 group-hover:opacity-100">
             {canUpdate && (
               <Link
                 href={categories.edit.url({ category: category.id })}
-                className="p-2.5 rounded-xl bg-bg text-warning hover:bg-warning-subtle shadow-lg transition-colors"
+                className="rounded-xl bg-bg p-2.5 text-warning shadow-lg transition-colors hover:bg-warning-subtle"
               >
                 <IconPencilCog size={18} />
               </Link>
@@ -95,7 +95,7 @@ function CategoryCard({
             {canDelete && (
               <button
                 onClick={() => onDelete(categories.destroy.url({ category: category.id }))}
-                className="p-2.5 rounded-xl bg-bg text-danger hover:bg-danger-subtle shadow-lg transition-colors"
+                className="rounded-xl bg-bg p-2.5 text-danger shadow-lg transition-colors hover:bg-danger-subtle"
               >
                 <IconTrash size={18} />
               </button>
@@ -105,9 +105,9 @@ function CategoryCard({
       </div>
 
       <div className="p-4">
-        <h3 className="text-base font-semibold text-fg mb-1">{category.name}</h3>
+        <h3 className="mb-1 font-semibold text-base text-fg">{category.name}</h3>
         {category.description && (
-          <p className="text-sm text-muted-fg line-clamp-2">{category.description}</p>
+          <p className="line-clamp-2 text-muted-fg text-sm">{category.description}</p>
         )}
       </div>
     </div>
@@ -189,7 +189,7 @@ export default function Index({ categories: data }: IndexProps) {
 
       {data.data.length > 0 ? (
         viewMode === "grid" ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {data.data.map((category) => (
               <CategoryCard
                 key={category.id}
@@ -203,17 +203,17 @@ export default function Index({ categories: data }: IndexProps) {
         ) : (
           <Card>
             <CardContent className="p-0">
-              <div className="p-4 border-b border-border">
-                <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+              <div className="border-border border-b p-4">
+                <div className="flex items-center gap-2 font-semibold text-fg text-sm">
                   <IconCategory size={16} />
                   Data Kategori
                 </div>
               </div>
               <div className="w-full overflow-x-auto">
                 <table className="w-full text-sm">
-                  <thead className="border-b bg-muted border-border">
+                  <thead className="border-border border-b bg-muted">
                     <tr>
-                      <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg w-10">
+                      <th className="h-12 w-10 px-4 text-left align-middle font-medium text-muted-fg">
                         No
                       </th>
                       <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
@@ -227,30 +227,30 @@ export default function Index({ categories: data }: IndexProps) {
                   </thead>
                   <tbody className="divide-y divide-border bg-bg">
                     {data.data.map((category, i) => (
-                      <tr key={category.id} className="hover:bg-muted transition-colors">
-                        <td className="whitespace-nowrap p-4 align-middle text-muted-fg text-center">
+                      <tr key={category.id} className="transition-colors hover:bg-muted">
+                        <td className="whitespace-nowrap p-4 text-center align-middle text-muted-fg">
                           {i + 1 + (data.current_page - 1) * data.per_page}
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
                           <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-xl bg-muted overflow-hidden flex-shrink-0">
+                            <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
                               {category.image ? (
                                 <img
                                   src={imageUrl(category.image) ?? ""}
                                   alt={category.name}
-                                  className="w-full h-full object-cover"
+                                  className="h-full w-full object-cover"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center">
+                                <div className="flex h-full w-full items-center justify-center">
                                   <IconCategory size={20} className="text-muted-fg" />
                                 </div>
                               )}
                             </div>
-                            <p className="text-sm font-medium text-fg">{category.name}</p>
+                            <p className="font-medium text-fg text-sm">{category.name}</p>
                           </div>
                         </td>
                         <td className="whitespace-nowrap p-4 align-middle text-muted-fg">
-                          <p className="text-sm text-muted-fg line-clamp-2">
+                          <p className="line-clamp-2 text-muted-fg text-sm">
                             {category.description || "-"}
                           </p>
                         </td>
@@ -311,7 +311,7 @@ export default function Index({ categories: data }: IndexProps) {
             <ModalTitle>Konfirmasi Hapus</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            <p className="text-sm text-muted-fg">Data yang dihapus tidak dapat dikembalikan!</p>
+            <p className="text-muted-fg text-sm">Data yang dihapus tidak dapat dikembalikan!</p>
           </ModalBody>
           <ModalFooter>
             <ModalClose>Batal</ModalClose>

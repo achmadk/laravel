@@ -4,7 +4,6 @@ import {
   IconCheck,
   IconCircleX,
   IconPackage,
-  IconShoppingCart,
   IconTruckDelivery,
 } from "@tabler/icons-react";
 import { toast } from "sonner";
@@ -13,7 +12,6 @@ import { useAuthorization } from "@/lib/auth";
 import purchaseOrders from "@/routes/purchase-orders";
 import goodsReceivings from "@/routes/goods-receivings";
 import payables from "@/routes/payables";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface Product {
@@ -136,7 +134,7 @@ export default function Show({ order }: ShowProps) {
       <div className="mb-6">
         <Link
           href={purchaseOrders.index.url()}
-          className="mb-3 inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke daftar PO
@@ -144,15 +142,15 @@ export default function Show({ order }: ShowProps) {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="mb-2 flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-fg">{order.document_number}</h1>
+              <h1 className="font-bold text-2xl text-fg">{order.document_number}</h1>
               {statusBadge(order.status)}
             </div>
-            <p className="text-sm text-muted-fg">
+            <p className="text-muted-fg text-sm">
               Supplier: {order.supplier?.name || "-"} &bull; Dibuat oleh{" "}
               {order.creator?.name || "-"} &bull; {formatDateTime(order.created_at)}
             </p>
             {order.ordered_at && (
-              <p className="text-sm text-muted-fg">Dipesan: {formatDateTime(order.ordered_at)}</p>
+              <p className="text-muted-fg text-sm">Dipesan: {formatDateTime(order.ordered_at)}</p>
             )}
           </div>
           <div className="flex gap-2">
@@ -160,7 +158,7 @@ export default function Show({ order }: ShowProps) {
               <button
                 type="button"
                 onClick={placeOrder}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-semibold text-sm text-white hover:bg-primary/90"
               >
                 <IconCheck size={18} />
                 Pesan ke Supplier
@@ -170,7 +168,7 @@ export default function Show({ order }: ShowProps) {
               <button
                 type="button"
                 onClick={cancelOrder}
-                className="inline-flex items-center gap-2 rounded-xl bg-danger px-4 py-2 text-sm font-semibold text-white hover:bg-danger/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-danger px-4 py-2 font-semibold text-sm text-white hover:bg-danger/90"
               >
                 <IconCircleX size={18} />
                 Batalkan PO
@@ -180,7 +178,7 @@ export default function Show({ order }: ShowProps) {
               <Link
                 // @ts-expect-error
                 href={goodsReceivings.create(order.id).url}
-                className="inline-flex items-center gap-2 rounded-xl bg-success px-4 py-2 text-sm font-semibold text-white hover:bg-success/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-success px-4 py-2 font-semibold text-sm text-white hover:bg-success/90"
               >
                 <IconTruckDelivery size={18} />
                 Terima Barang
@@ -194,11 +192,11 @@ export default function Show({ order }: ShowProps) {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Item Purchase Order</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Item Purchase Order</h2>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border">
+                    <tr className="border-border border-b">
                       <th className="px-3 py-2 text-left font-semibold text-muted-fg">Produk</th>
                       <th className="px-3 py-2 text-right font-semibold text-muted-fg">
                         Qty Dipesan
@@ -220,13 +218,13 @@ export default function Show({ order }: ShowProps) {
                         return (
                           <tr
                             key={item.id}
-                            className="border-b border-border transition-colors hover:bg-muted"
+                            className="border-border border-b transition-colors hover:bg-muted"
                           >
                             <td className="px-3 py-3">
                               <p className="font-medium text-fg">
                                 {item.product?.title || "Produk #" + item.product_id}
                               </p>
-                              <p className="text-xs text-muted-fg">{item.product?.sku || "-"}</p>
+                              <p className="text-muted-fg text-xs">{item.product?.sku || "-"}</p>
                             </td>
                             <td className="px-3 py-3 text-right text-fg">{item.qty_ordered}</td>
                             <td className="px-3 py-3 text-right text-fg">{item.qty_received}</td>
@@ -267,11 +265,11 @@ export default function Show({ order }: ShowProps) {
           {order.goods_receivings?.length > 0 && (
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Riwayat Penerimaan Barang</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Riwayat Penerimaan Barang</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-border">
+                      <tr className="border-border border-b">
                         <th className="px-3 py-2 text-left font-semibold text-muted-fg">Dokumen</th>
                         <th className="px-3 py-2 text-left font-semibold text-muted-fg">
                           Tanggal Terima
@@ -284,17 +282,17 @@ export default function Show({ order }: ShowProps) {
                       {order.goods_receivings.map((gr) => (
                         <tr
                           key={gr.id}
-                          className="border-b border-border transition-colors hover:bg-muted"
+                          className="border-border border-b transition-colors hover:bg-muted"
                         >
                           <td className="px-3 py-3 font-medium text-fg">{gr.document_number}</td>
-                          <td className="px-3 py-3 text-sm text-fg">
+                          <td className="px-3 py-3 text-fg text-sm">
                             {formatDateTime(gr.received_at)}
                           </td>
-                          <td className="px-3 py-3 text-sm text-fg">{gr.items?.length || 0}</td>
+                          <td className="px-3 py-3 text-fg text-sm">{gr.items?.length || 0}</td>
                           <td className="px-3 py-3">
                             <Link
                               href={goodsReceivings.show.url({ goodsReceiving: gr.id })}
-                              className="text-sm font-medium text-primary hover:text-primary/80"
+                              className="font-medium text-primary text-sm hover:text-primary/80"
                             >
                               Detail
                             </Link>
@@ -313,8 +311,8 @@ export default function Show({ order }: ShowProps) {
           {order.notes && (
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-3 text-lg font-semibold text-fg">Catatan</h2>
-                <p className="text-sm text-muted-fg">{order.notes}</p>
+                <h2 className="mb-3 font-semibold text-fg text-lg">Catatan</h2>
+                <p className="text-muted-fg text-sm">{order.notes}</p>
               </CardContent>
             </Card>
           )}
@@ -322,7 +320,7 @@ export default function Show({ order }: ShowProps) {
           {order.payable && (
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-3 text-lg font-semibold text-fg">Hutang Supplier</h2>
+                <h2 className="mb-3 font-semibold text-fg text-lg">Hutang Supplier</h2>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-fg">Dokumen</span>
@@ -338,7 +336,7 @@ export default function Show({ order }: ShowProps) {
                   </div>
                   <Link
                     href={payables.show.url({ payable: order.payable.id })}
-                    className="mt-3 inline-flex text-sm font-medium text-primary hover:text-primary/80"
+                    className="mt-3 inline-flex font-medium text-primary text-sm hover:text-primary/80"
                   >
                     Lihat Detail Hutang &rarr;
                   </Link>
@@ -349,8 +347,8 @@ export default function Show({ order }: ShowProps) {
 
           <Card>
             <CardContent className="p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Informasi</h2>
-              <div className="space-y-3 text-sm text-muted-fg">
+              <h2 className="mb-4 font-semibold text-fg text-lg">Informasi</h2>
+              <div className="space-y-3 text-muted-fg text-sm">
                 <div className="rounded-xl border border-border bg-muted p-4">
                   <p className="font-medium text-fg">Alur PO</p>
                   <ul className="mt-2 space-y-2">

@@ -103,18 +103,18 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br ${gradient} text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
     >
-      <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-        <div className="transform translate-x-4 -translate-y-4">{icon}</div>
+      <div className="absolute top-0 right-0 h-24 w-24 opacity-20">
+        <div className="translate-x-4 -translate-y-4 transform">{icon}</div>
       </div>
       <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="p-2 rounded-xl bg-white/20">{icon}</div>
-          <span className="text-sm font-medium opacity-90">{title}</span>
+        <div className="mb-2 flex items-center gap-2">
+          <div className="rounded-xl bg-white/20 p-2">{icon}</div>
+          <span className="font-medium text-sm opacity-90">{title}</span>
         </div>
-        <p className="text-2xl font-bold">{value}</p>
-        <p className="text-sm opacity-80 mt-1">{description}</p>
+        <p className="font-bold text-2xl">{value}</p>
+        <p className="mt-1 text-sm opacity-80">{description}</p>
       </div>
     </div>
   );
@@ -254,25 +254,25 @@ export default function Sales({
       <Head title="Laporan Penjualan" />
 
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
+            <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
               <IconTrendingUp size={28} className="text-primary" />
               Laporan Penjualan
             </h1>
-            <p className="text-sm text-muted-fg">Analisis dan ringkasan penjualan</p>
+            <p className="text-muted-fg text-sm">Analisis dan ringkasan penjualan</p>
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
+            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 font-medium text-sm transition-colors ${
               showFilters || hasActiveFilters
-                ? "bg-primary/10 border-primary/20 text-primary"
-                : "bg-bg border-border text-muted-fg hover:bg-muted"
+                ? "border-primary/20 bg-primary/10 text-primary"
+                : "border-border bg-bg text-muted-fg hover:bg-muted"
             }`}
           >
             <IconFilter size={18} />
             <span>Filter</span>
-            {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-primary" />}
+            {hasActiveFilters && <span className="h-2 w-2 rounded-full bg-primary" />}
           </button>
         </div>
 
@@ -283,43 +283,43 @@ export default function Sales({
         </div>
 
         {showFilters && (
-          <div className="bg-bg rounded-2xl border border-border p-5">
+          <div className="rounded-2xl border border-border bg-bg p-5">
             <form onSubmit={applyFilters}>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
                 <div>
-                  <label className="block text-sm font-medium text-fg mb-2">Tanggal Mulai</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Tanggal Mulai</label>
                   <input
                     type="date"
                     value={filterData.start_date}
                     onChange={(e) => handleChange("start_date", e.target.value)}
-                    className="w-full h-11 px-4 rounded-xl border border-input bg-muted text-fg focus:border-ring focus:ring-2 focus:ring-ring transition-all"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-fg mb-2">Tanggal Akhir</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Tanggal Akhir</label>
                   <input
                     type="date"
                     value={filterData.end_date}
                     onChange={(e) => handleChange("end_date", e.target.value)}
-                    className="w-full h-11 px-4 rounded-xl border border-input bg-muted text-fg focus:border-ring focus:ring-2 focus:ring-ring transition-all"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-fg mb-2">Invoice</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Invoice</label>
                   <input
                     type="text"
                     placeholder="TRX-..."
                     value={filterData.invoice}
                     onChange={(e) => handleChange("invoice", e.target.value)}
-                    className="w-full h-11 px-4 rounded-xl border border-input bg-muted text-fg placeholder-muted-fg focus:border-ring focus:ring-2 focus:ring-ring transition-all"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg placeholder-muted-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-fg mb-2">Kasir</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Kasir</label>
                   <select
                     value={filterData.cashier_id}
                     onChange={(e) => handleChange("cashier_id", e.target.value)}
-                    className="w-full h-11 px-4 rounded-xl border border-input bg-muted text-fg focus:border-ring focus:ring-2 focus:ring-ring transition-all"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Semua kasir</option>
                     {cashiers.map((c) => (
@@ -330,11 +330,11 @@ export default function Sales({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-fg mb-2">Pelanggan</label>
+                  <label className="mb-2 block font-medium text-fg text-sm">Pelanggan</label>
                   <select
                     value={filterData.customer_id}
                     onChange={(e) => handleChange("customer_id", e.target.value)}
-                    className="w-full h-11 px-4 rounded-xl border border-input bg-muted text-fg focus:border-ring focus:ring-2 focus:ring-ring transition-all"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Semua pelanggan</option>
                     {customers.map((c) => (
@@ -345,19 +345,19 @@ export default function Sales({
                   </select>
                 </div>
               </div>
-              <div className="flex justify-end gap-2 mt-4">
+              <div className="mt-4 flex justify-end gap-2">
                 {hasActiveFilters && (
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="px-4 py-2.5 rounded-xl border border-border text-muted-fg hover:bg-muted transition-colors"
+                    className="rounded-xl border border-border px-4 py-2.5 text-muted-fg transition-colors hover:bg-muted"
                   >
                     <IconX size={18} />
                   </button>
                 )}
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium transition-colors"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary/90"
                 >
                   <IconSearch size={18} />
                   Terapkan
@@ -368,60 +368,60 @@ export default function Sales({
         )}
 
         {rows.length > 0 ? (
-          <div className="bg-bg rounded-2xl border border-border overflow-hidden">
+          <div className="overflow-hidden rounded-2xl border border-border bg-bg">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-border">
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                  <tr className="border-border border-b">
+                    <th className="px-4 py-4 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       No
                     </th>
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Invoice
                     </th>
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Tanggal
                     </th>
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Pelanggan
                     </th>
-                    <th className="px-4 py-4 text-left text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Kasir
                     </th>
-                    <th className="px-4 py-4 text-center text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-center font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Item
                     </th>
-                    <th className="px-4 py-4 text-right text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-right font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Total
                     </th>
-                    <th className="px-4 py-4 text-right text-xs font-semibold text-muted-fg uppercase tracking-wider">
+                    <th className="px-4 py-4 text-right font-semibold text-muted-fg text-xs uppercase tracking-wider">
                       Profit
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {rows.map((trx, i) => (
-                    <tr key={trx.id} className="hover:bg-muted transition-colors">
-                      <td className="px-4 py-4 text-sm text-muted-fg">
+                    <tr key={trx.id} className="transition-colors hover:bg-muted">
+                      <td className="px-4 py-4 text-muted-fg text-sm">
                         {i + 1 + (currentPage - 1) * perPage}
                       </td>
-                      <td className="px-4 py-4 text-sm font-semibold text-fg">{trx.invoice}</td>
-                      <td className="px-4 py-4 text-sm text-muted-fg">{trx.created_at}</td>
-                      <td className="px-4 py-4 text-sm text-muted-fg">
+                      <td className="px-4 py-4 font-semibold text-fg text-sm">{trx.invoice}</td>
+                      <td className="px-4 py-4 text-muted-fg text-sm">{trx.created_at}</td>
+                      <td className="px-4 py-4 text-muted-fg text-sm">
                         {trx.customer?.name ?? "-"}
                       </td>
-                      <td className="px-4 py-4 text-sm text-muted-fg">
+                      <td className="px-4 py-4 text-muted-fg text-sm">
                         {trx.cashier?.name ?? "-"}
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="px-2 py-0.5 text-xs font-medium bg-primary/10 text-primary rounded-full">
+                        <span className="rounded-full bg-primary/10 px-2 py-0.5 font-medium text-primary text-xs">
                           {trx.total_items ?? 0}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-right text-sm font-semibold text-fg">
+                      <td className="px-4 py-4 text-right font-semibold text-fg text-sm">
                         {formatCurrency(trx.grand_total ?? 0)}
                       </td>
-                      <td className="px-4 py-4 text-right text-sm font-semibold text-success">
+                      <td className="px-4 py-4 text-right font-semibold text-sm text-success">
                         {formatCurrency(trx.total_profit ?? 0)}
                       </td>
                     </tr>

@@ -59,8 +59,8 @@ export default function Store({ settings: storeSettings }: StoreProps) {
 
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-fg">Pengaturan Toko</h1>
-          <p className="text-sm text-muted-fg">
+          <h1 className="font-bold text-2xl text-fg">Pengaturan Toko</h1>
+          <p className="text-muted-fg text-sm">
             Atur identitas toko yang muncul di struk dan laporan.
           </p>
         </div>
@@ -70,11 +70,11 @@ export default function Store({ settings: storeSettings }: StoreProps) {
             <form onSubmit={submit} className="space-y-6">
               <div className="flex flex-col gap-6 lg:flex-row">
                 <div className="lg:w-1/3">
-                  <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-fg">
+                  <label className="mb-3 flex items-center gap-2 font-semibold text-fg text-sm">
                     <IconPhoto size={18} />
                     Logo Toko
                   </label>
-                  <div className="mb-3 flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-border bg-muted">
+                  <div className="mb-3 flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border-2 border-border border-dashed bg-muted">
                     {logoPreview ? (
                       <img
                         src={
@@ -99,101 +99,101 @@ export default function Store({ settings: storeSettings }: StoreProps) {
                         setLogoPreview(URL.createObjectURL(file));
                       }
                     }}
-                    className="w-full text-sm text-muted-fg file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary hover:file:bg-primary/20"
+                    className="w-full text-muted-fg text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:font-medium file:text-primary file:text-sm hover:file:bg-primary/20"
                   />
                   {errors.store_logo && (
-                    <p className="mt-1 text-xs text-danger">{errors.store_logo}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.store_logo}</p>
                   )}
                 </div>
 
                 <div className="space-y-4 lg:flex-1">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-fg">Nama Toko</label>
+                    <label className="mb-2 block font-medium text-fg text-sm">Nama Toko</label>
                     <input
                       value={data.store_name}
                       onChange={(e) => setData("store_name", e.target.value)}
                       placeholder="Nama toko"
-                      className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     />
                     {errors.store_name && (
-                      <p className="mt-1 text-xs text-danger">{errors.store_name}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.store_name}</p>
                     )}
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-fg">Alamat Lengkap</label>
+                    <label className="mb-2 block font-medium text-fg text-sm">Alamat Lengkap</label>
                     <textarea
                       value={data.store_address}
                       onChange={(e) => setData("store_address", e.target.value)}
                       rows={3}
-                      className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                      className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     />
                     {errors.store_address && (
-                      <p className="mt-1 text-xs text-danger">{errors.store_address}</p>
+                      <p className="mt-1 text-danger text-xs">{errors.store_address}</p>
                     )}
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Kota/Kabupaten
                       </label>
                       <input
                         value={data.store_city}
                         onChange={(e) => setData("store_city", e.target.value)}
                         placeholder="contoh: Surabaya"
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.store_city && (
-                        <p className="mt-1 text-xs text-danger">{errors.store_city}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.store_city}</p>
                       )}
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Nomor Telepon
                       </label>
                       <input
                         value={data.store_phone}
                         onChange={(e) => setData("store_phone", e.target.value)}
                         placeholder="0812xxxxxxx"
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.store_phone && (
-                        <p className="mt-1 text-xs text-danger">{errors.store_phone}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.store_phone}</p>
                       )}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">Email</label>
+                      <label className="mb-2 block font-medium text-fg text-sm">Email</label>
                       <input
                         type="email"
                         value={data.store_email}
                         onChange={(e) => setData("store_email", e.target.value)}
                         placeholder="email@toko.com"
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.store_email && (
-                        <p className="mt-1 text-xs text-danger">{errors.store_email}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.store_email}</p>
                       )}
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-fg">
+                      <label className="mb-2 block font-medium text-fg text-sm">
                         Website / Sosial Media
                       </label>
                       <input
                         value={data.store_website}
                         onChange={(e) => setData("store_website", e.target.value)}
                         placeholder="https://"
-                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                       />
                       {errors.store_website && (
-                        <p className="mt-1 text-xs text-danger">{errors.store_website}</p>
+                        <p className="mt-1 text-danger text-xs">{errors.store_website}</p>
                       )}
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-end border-t border-border pt-4">
+              <div className="flex justify-end border-border border-t pt-4">
                 <button
                   type="submit"
                   disabled={processing}

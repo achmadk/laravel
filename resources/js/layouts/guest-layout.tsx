@@ -23,24 +23,24 @@ export default function GuestLayout({
         <div className="w-full max-w-md">
           {/* Brand */}
           <Link href="/" className="mb-6 inline-flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-[10px] bg-gradient-to-br from-primary to-[oklch(0.48_0.24_264)] text-xs font-bold text-white">
+            <div className="flex size-8 items-center justify-center rounded-[10px] bg-gradient-to-br from-primary to-[oklch(0.48_0.24_264)] font-bold text-white text-xs">
               R
             </div>
-            <span className="text-[0.9375rem] font-semibold tracking-tight text-[var(--fg)]">
+            <span className="font-semibold text-[0.9375rem] text-[var(--fg)] tracking-tight">
               Nightday RTOS
             </span>
           </Link>
 
           {/* Title */}
           {header && (
-            <h1 className="animate-fade-up stagger-1 text-[1.375rem] font-semibold tracking-tight text-[var(--fg)]">
+            <h1 className="stagger-1 animate-fade-up font-semibold text-[1.375rem] text-[var(--fg)] tracking-tight">
               {header}
             </h1>
           )}
 
           {/* Description */}
           {description && (
-            <p className="animate-fade-up stagger-2 mt-1 text-sm text-[var(--muted-fg)]">
+            <p className="stagger-2 mt-1 animate-fade-up text-[var(--muted-fg)] text-sm">
               {description}
             </p>
           )}
@@ -73,7 +73,7 @@ export default function GuestLayout({
             }}
           />
           {/* Glow orbs */}
-          <div className="absolute right-10 top-10 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.15),transparent_70%)] blur-[60px]" />
+          <div className="absolute top-10 right-10 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.15),transparent_70%)] blur-[60px]" />
           <div className="absolute bottom-20 left-20 size-[360px] rounded-full bg-[radial-gradient(circle,rgba(129,140,248,0.1),transparent_70%)] blur-[80px]" />
           {/* Content */}
           <div className="relative z-10 max-w-md">{hero}</div>

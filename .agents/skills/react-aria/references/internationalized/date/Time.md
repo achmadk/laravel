@@ -190,12 +190,12 @@ Parses an ISO 8601 time string.
 
 Represents an amount of time, for use whe performing arithmetic.
 
-| Name           | Type    | Description |
+| Name | Type | Description |
 | -------------- | ------- | ----------- | ---------------------------------------------- |
-| `hours`        | `number | undefined`  | The number of hours to add or subtract.        |
-| `minutes`      | `number | undefined`  | The number of minutes to add or subtract.      |
-| `seconds`      | `number | undefined`  | The number of seconds to add or subtract.      |
-| `milliseconds` | `number | undefined`  | The number of milliseconds to add or subtract. |
+| `hours` | `number | undefined` | The number of hours to add or subtract. |
+| `minutes` | `number | undefined` | The number of minutes to add or subtract. |
+| `seconds` | `number | undefined` | The number of seconds to add or subtract. |
+| `milliseconds` | `number | undefined` | The number of milliseconds to add or subtract. |
 
 ### parseDuration
 
@@ -207,16 +207,16 @@ Parses an ISO 8601 duration string (e.g. "P3Y6M6W4DT12H30M5S").
 
 Represents an amount of time with both date and time components, for use when performing arithmetic.
 
-| Name           | Type    | Description |
+| Name | Type | Description |
 | -------------- | ------- | ----------- | ---------------------------------------------- |
-| `years`        | `number | undefined`  | The number of years to add or subtract.        |
-| `months`       | `number | undefined`  | The number of months to add or subtract.       |
-| `weeks`        | `number | undefined`  | The number of weeks to add or subtract.        |
-| `days`         | `number | undefined`  | The number of days to add or subtract.         |
-| `hours`        | `number | undefined`  | The number of hours to add or subtract.        |
-| `minutes`      | `number | undefined`  | The number of minutes to add or subtract.      |
-| `seconds`      | `number | undefined`  | The number of seconds to add or subtract.      |
-| `milliseconds` | `number | undefined`  | The number of milliseconds to add or subtract. |
+| `years` | `number | undefined` | The number of years to add or subtract. |
+| `months` | `number | undefined` | The number of months to add or subtract. |
+| `weeks` | `number | undefined` | The number of weeks to add or subtract. |
+| `days` | `number | undefined` | The number of days to add or subtract. |
+| `hours` | `number | undefined` | The number of hours to add or subtract. |
+| `minutes` | `number | undefined` | The number of minutes to add or subtract. |
+| `seconds` | `number | undefined` | The number of seconds to add or subtract. |
+| `milliseconds` | `number | undefined` | The number of milliseconds to add or subtract. |
 
 ### toCalendarDateTime
 

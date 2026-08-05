@@ -161,11 +161,11 @@ export default function Show({ return: ret }: ShowProps) {
           <div className="space-y-6">
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Item Retur</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Item Retur</h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-border">
+                      <tr className="border-border border-b">
                         <th className="px-3 py-2 text-left font-semibold text-muted-fg">Produk</th>
                         <th className="px-3 py-2 text-right font-semibold text-muted-fg">
                           Qty Retur
@@ -182,13 +182,13 @@ export default function Show({ return: ret }: ShowProps) {
                         ret.items.map((item) => (
                           <tr
                             key={item.id}
-                            className="border-b border-border hover:bg-muted transition-colors"
+                            className="border-border border-b transition-colors hover:bg-muted"
                           >
                             <td className="px-3 py-3">
                               <p className="font-medium text-fg">
                                 {item.product?.title || "Produk #" + item.product_id}
                               </p>
-                              <p className="text-xs text-muted-fg">{item.product?.sku || "-"}</p>
+                              <p className="text-muted-fg text-xs">{item.product?.sku || "-"}</p>
                             </td>
                             <td className="px-3 py-3 text-right font-semibold text-fg">
                               {item.qty_returned}
@@ -199,7 +199,7 @@ export default function Show({ return: ret }: ShowProps) {
                             <td className="px-3 py-3 text-right font-semibold text-fg">
                               {formatPrice(item.qty_returned * item.unit_price)}
                             </td>
-                            <td className="px-3 py-3 text-xs text-muted-fg">
+                            <td className="px-3 py-3 text-muted-fg text-xs">
                               {item.reason || "-"}
                             </td>
                           </tr>
@@ -218,10 +218,10 @@ export default function Show({ return: ret }: ShowProps) {
                   </table>
                 </div>
                 {ret.items?.length > 0 && (
-                  <div className="mt-4 flex justify-end border-t border-border pt-4">
+                  <div className="mt-4 flex justify-end border-border border-t pt-4">
                     <div className="text-right">
-                      <p className="text-sm font-semibold text-muted-fg">Total Retur</p>
-                      <p className="text-xl font-bold text-danger">{formatPrice(total)}</p>
+                      <p className="font-semibold text-muted-fg text-sm">Total Retur</p>
+                      <p className="font-bold text-danger text-xl">{formatPrice(total)}</p>
                     </div>
                   </div>
                 )}
@@ -233,15 +233,15 @@ export default function Show({ return: ret }: ShowProps) {
             {ret.notes && (
               <Card>
                 <CardContent className="p-5">
-                  <h2 className="mb-3 text-lg font-semibold text-fg">Catatan</h2>
-                  <p className="text-sm text-muted-fg">{ret.notes}</p>
+                  <h2 className="mb-3 font-semibold text-fg text-lg">Catatan</h2>
+                  <p className="text-muted-fg text-sm">{ret.notes}</p>
                 </CardContent>
               </Card>
             )}
 
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-3 text-lg font-semibold text-fg">Informasi</h2>
+                <h2 className="mb-3 font-semibold text-fg text-lg">Informasi</h2>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-fg">Dokumen</span>

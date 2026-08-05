@@ -114,12 +114,12 @@ export default function Create({ suppliers, products }: CreateProps) {
       <div className="mb-6">
         <Link
           href={purchaseOrders.index.url()}
-          className="mb-3 inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+          className="mb-3 inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke daftar PO
         </Link>
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-fg">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
           <IconShoppingCart size={28} className="text-primary" />
           Buat Purchase Order
         </h1>
@@ -129,14 +129,14 @@ export default function Create({ suppliers, products }: CreateProps) {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Informasi PO</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Informasi PO</h2>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div>
-                  <label className="mb-1 block text-sm font-semibold text-fg">Supplier</label>
+                  <label className="mb-1 block font-semibold text-fg text-sm">Supplier</label>
                   <select
                     value={data.supplier_id}
                     onChange={(e) => setData("supplier_id", e.target.value)}
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                   >
                     <option value="">Pilih Supplier</option>
                     {suppliers.map((s) => (
@@ -146,29 +146,29 @@ export default function Create({ suppliers, products }: CreateProps) {
                     ))}
                   </select>
                   {errors.supplier_id && (
-                    <p className="mt-1 text-xs text-danger">{errors.supplier_id}</p>
+                    <p className="mt-1 text-danger text-xs">{errors.supplier_id}</p>
                   )}
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-semibold text-fg">Nomor Dokumen</label>
+                  <label className="mb-1 block font-semibold text-fg text-sm">Nomor Dokumen</label>
                   <input
                     type="text"
                     value={data.document_number}
                     onChange={(e) => setData("document_number", e.target.value)}
                     placeholder="Kosongkan untuk auto-generate"
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-semibold text-fg">Catatan</label>
+                  <label className="mb-1 block font-semibold text-fg text-sm">Catatan</label>
                   <input
                     type="text"
                     value={data.notes}
                     onChange={(e) => setData("notes", e.target.value)}
                     placeholder="Catatan PO"
-                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   />
-                  {errors.notes && <p className="mt-1 text-xs text-danger">{errors.notes}</p>}
+                  {errors.notes && <p className="mt-1 text-danger text-xs">{errors.notes}</p>}
                 </div>
               </div>
             </CardContent>
@@ -176,14 +176,14 @@ export default function Create({ suppliers, products }: CreateProps) {
 
           <Card>
             <CardContent className="p-5">
-              <h2 className="mb-4 text-lg font-semibold text-fg">Item Pembelian</h2>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Item Pembelian</h2>
               <div className="mb-4 flex gap-3">
                 <input
                   type="text"
                   value={searchProduct}
                   onChange={(e) => setSearchProduct(e.target.value)}
                   placeholder="Cari produk untuk ditambahkan..."
-                  className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
               {searchProduct && filteredProducts.length > 0 && (
@@ -197,11 +197,11 @@ export default function Create({ suppliers, products }: CreateProps) {
                     >
                       <div>
                         <p className="font-medium text-fg">{product.title}</p>
-                        <p className="text-xs text-muted-fg">
+                        <p className="text-muted-fg text-xs">
                           {product.sku || "-"} &bull; Stok: {product.stock}
                         </p>
                       </div>
-                      <span className="text-xs text-muted-fg">
+                      <span className="text-muted-fg text-xs">
                         {formatPrice(product.buy_price as number)}
                       </span>
                     </button>
@@ -212,7 +212,7 @@ export default function Create({ suppliers, products }: CreateProps) {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-border">
+                      <tr className="border-border border-b">
                         <th className="px-3 py-2 text-left font-semibold text-muted-fg">Produk</th>
                         <th className="px-3 py-2 text-right font-semibold text-muted-fg">Qty</th>
                         <th className="px-3 py-2 text-right font-semibold text-muted-fg">Harga</th>
@@ -224,10 +224,10 @@ export default function Create({ suppliers, products }: CreateProps) {
                     </thead>
                     <tbody>
                       {data.items.map((item, index) => (
-                        <tr key={index} className="border-b border-border">
+                        <tr key={index} className="border-border border-b">
                           <td className="px-3 py-3">
                             <p className="font-medium text-fg">{item.product_title}</p>
-                            <p className="text-xs text-muted-fg">{item.product_sku}</p>
+                            <p className="text-muted-fg text-xs">{item.product_sku}</p>
                           </td>
                           <td className="px-3 py-3 text-right">
                             <input
@@ -235,7 +235,7 @@ export default function Create({ suppliers, products }: CreateProps) {
                               min="1"
                               value={item.qty_ordered}
                               onChange={(e) => updateItem(index, "qty_ordered", e.target.value)}
-                              className="h-10 w-20 rounded-lg border border-input bg-muted px-3 text-right text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                              className="h-10 w-20 rounded-lg border border-input bg-muted px-3 text-right text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                             />
                           </td>
                           <td className="px-3 py-3 text-right">
@@ -245,7 +245,7 @@ export default function Create({ suppliers, products }: CreateProps) {
                               step="100"
                               value={item.unit_price}
                               onChange={(e) => updateItem(index, "unit_price", e.target.value)}
-                              className="h-10 w-28 rounded-lg border border-input bg-muted px-3 text-right text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                              className="h-10 w-28 rounded-lg border border-input bg-muted px-3 text-right text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                             />
                           </td>
                           <td className="px-3 py-3 text-right font-medium text-fg">
@@ -264,7 +264,7 @@ export default function Create({ suppliers, products }: CreateProps) {
                       ))}
                     </tbody>
                     <tfoot>
-                      <tr className="border-t-2 border-border">
+                      <tr className="border-border border-t-2">
                         <td colSpan={3} className="px-3 py-3 text-right font-bold text-fg">
                           Total
                         </td>
@@ -277,9 +277,9 @@ export default function Create({ suppliers, products }: CreateProps) {
                   </table>
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-border p-8 text-center">
+                <div className="rounded-xl border border-border border-dashed p-8 text-center">
                   <IconPackage size={40} className="mx-auto text-muted-fg" />
-                  <p className="mt-2 text-sm text-muted-fg">
+                  <p className="mt-2 text-muted-fg text-sm">
                     Cari produk di atas untuk ditambahkan ke PO.
                   </p>
                 </div>
@@ -290,14 +290,14 @@ export default function Create({ suppliers, products }: CreateProps) {
           <div className="flex justify-end gap-3">
             <Link
               href={purchaseOrders.index.url()}
-              className="flex h-11 items-center rounded-xl border border-border bg-bg px-6 text-sm font-semibold text-muted-fg transition hover:bg-muted"
+              className="flex h-11 items-center rounded-xl border border-border bg-bg px-6 font-semibold text-muted-fg text-sm transition hover:bg-muted"
             >
               Batal
             </Link>
             <button
               type="submit"
               disabled={processing}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-primary/30 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-semibold text-sm text-white shadow-lg shadow-primary/30 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <IconPlus size={18} />
               {processing ? "Menyimpan..." : "Simpan PO"}

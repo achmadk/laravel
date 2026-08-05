@@ -122,7 +122,7 @@ export default function Index({ orders, filters, suppliers }: IndexProps) {
         <select
           value={filters.status || ""}
           onChange={(e) => handleFilterChange("status", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Status</option>
           <option value="draft">Draft</option>
@@ -134,7 +134,7 @@ export default function Index({ orders, filters, suppliers }: IndexProps) {
         <select
           value={filters.supplier || ""}
           onChange={(e) => handleFilterChange("supplier", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Supplier</option>
           {suppliers.map((s) => (
@@ -147,11 +147,11 @@ export default function Index({ orders, filters, suppliers }: IndexProps) {
 
       <Card>
         <CardContent className="p-5">
-          <h2 className="mb-4 text-lg font-semibold text-fg">Daftar Purchase Order</h2>
+          <h2 className="mb-4 font-semibold text-fg text-lg">Daftar Purchase Order</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-border border-b">
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Dokumen</th>
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Supplier</th>
                   <th className="px-3 py-2 text-left font-semibold text-muted-fg">Status</th>
@@ -165,21 +165,21 @@ export default function Index({ orders, filters, suppliers }: IndexProps) {
                   orders.data.map((order) => (
                     <tr
                       key={order.id}
-                      className="border-b border-border transition-colors hover:bg-muted"
+                      className="border-border border-b transition-colors hover:bg-muted"
                     >
                       <td className="px-3 py-3">
                         <p className="font-semibold text-fg">{order.document_number}</p>
-                        <p className="text-xs text-muted-fg">{order.created_at?.split("T")[0]}</p>
+                        <p className="text-muted-fg text-xs">{order.created_at?.split("T")[0]}</p>
                       </td>
-                      <td className="px-3 py-3 text-sm text-fg">{order.supplier?.name || "-"}</td>
+                      <td className="px-3 py-3 text-fg text-sm">{order.supplier?.name || "-"}</td>
                       <td className="px-3 py-3">
                         <StatusBadge
                           variant={statusVariant(order.status)}
                           label={statusLabels[order.status] || order.status}
                         />
                       </td>
-                      <td className="px-3 py-3 text-sm text-fg">{order.items_count}</td>
-                      <td className="px-3 py-3 text-sm text-fg">{order.creator?.name || "-"}</td>
+                      <td className="px-3 py-3 text-fg text-sm">{order.items_count}</td>
+                      <td className="px-3 py-3 text-fg text-sm">{order.creator?.name || "-"}</td>
                       <td className="px-3 py-3 text-center">
                         <Link href={purchaseOrders.show.url({ purchaseOrder: order.id })}>
                           <Button intent="plain" size="sq-sm">

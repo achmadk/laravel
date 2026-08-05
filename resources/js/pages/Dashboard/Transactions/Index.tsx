@@ -1,7 +1,9 @@
-import { useState, useCallback, /* useRef, */ useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { router } from "@inertiajs/react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+import transactions from "@/routes/transactions";
 import POSLayout from "@/layouts/pos-layout";
 import ProductGrid from "@/components/pos/ProductGrid";
 import CartPanel from "@/components/pos/CartPanel";
@@ -11,7 +13,6 @@ import CustomerSelect from "@/components/pos/CustomerSelect";
 import NumpadModal from "@/components/pos/NumpadModal";
 import { HoldButton } from "@/components/pos/HeldTransactions";
 import HeldTransactions from "@/components/pos/HeldTransactions";
-// import { useAuthorization } from "@/lib/auth";
 
 import type {
   POSProduct,
@@ -21,49 +22,51 @@ import type {
   HeldCart,
   BankAccount,
   PaymentGateway,
+  PricingPreview,
 } from "@/types/pos";
 
-// const formatPrice = (value = 0) =>
-//   Number(value || 0).toLocaleString("id-ID", {
-//     style: "currency",
-//     currency: "IDR",
-//     minimumFractionDigits: 0,
-//   });
+interface ShiftSummary {
+  id: number;
+  status: string;
+  [key: string]: unknown;
+}
 
 interface TransactionsPageProps {
   products?: POSProduct[];
   categories?: POSCategory[];
-  cart?: POSCartItem[];
-  customer?: POSCustomer | null;
+  carts?: POSCartItem[];
+  carts_total?: number;
   heldCarts?: HeldCart[];
   bankAccounts?: BankAccount[];
   paymentGateways?: PaymentGateway[];
-  searchQuery?: string;
+  initialPricingPreview?: PricingPreview | null;
+  shiftSummary?: ShiftSummary | null;
 }
 
 export default function TransactionsIndex(props: TransactionsPageProps) {
   const {
     products: initialProducts = [],
     categories = [],
-    cart: initialCart = [],
-    customer: initialCustomer = null,
-    heldCarts = [],
+    carts = [],
     bankAccounts = [],
     paymentGateways = [],
-    searchQuery: initialSearchQuery = "",
+    initialPricingPreview = null,
+    shiftSummary = null,
   } = props;
 
-  // const { can } = useAuthorization();
+  const hasActiveShift = Boolean(shiftSummary && shiftSummary.status === "open");
 
-  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
+  const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState(initialProducts);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [cart, setCart] = useState<POSCartItem[]>(initialCart);
-  const [customer, setCustomer] = useState<POSCustomer | null>(initialCustomer);
+  const [customer, setCustomer] = useState<POSCustomer | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
   const [isHolding, setIsHolding] = useState(false);
+  const [pricingPreview, setPricingPreview] = useState<PricingPreview | null>(
+    initialPricingPreview,
+  );
 
   const [numpadOpen, setNumpadOpen] = useState(false);
   const [numpadConfig, setNumpadConfig] = useState<{
@@ -75,53 +78,92 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
     isCurrency?: boolean;
   } | null>(null);
 
-  // const searchInputRef = useRef<HTMLInputElement>(null);
-
+  // Keep the product grid in sync with server-provided products (e.g. after a
+  // stock change) while no client-side search is active.
   useEffect(() => {
-    setCart(initialCart);
-  }, [initialCart]);
-
-  useEffect(() => {
-    setCustomer(initialCustomer);
-  }, [initialCustomer]);
-
-  useEffect(() => {
-    if (!searchQuery || searchQuery.length < 2) {
+    if (!searchQuery) {
       setProducts(initialProducts);
-      return;
     }
+  }, [initialProducts, searchQuery]);
 
-    setIsSearching(true);
-    const timer = setTimeout(async () => {
-      try {
-        const response = await axios.get("/apps/products/search", {
-          params: { q: searchQuery },
-        });
-        setProducts(response.data.data || response.data || []);
-      } catch {
-        setProducts([]);
-      } finally {
-        setIsSearching(false);
+  // A stable signature of the cart contents so pricing refreshes only when the
+  // cart actually changes.
+  const cartSignature = useMemo(
+    () => carts.map((item) => `${item.id}:${item.qty}`).join("|"),
+    [carts],
+  );
+
+  const refreshPricing = useCallback(
+    async (customerId: number | null) => {
+      if (carts.length === 0) {
+        setPricingPreview(initialPricingPreview);
+        return;
       }
-    }, 300);
 
-    return () => clearTimeout(timer);
-  }, [searchQuery, initialProducts]);
+      try {
+        const response = await axios.post(transactions.pricingPreview.url(), {
+          customer_id: customerId,
+        });
+        if (response.data?.success && response.data.data) {
+          setPricingPreview(response.data.data);
+        }
+      } catch {
+        // Keep the last known preview on failure.
+      }
+    },
+    [carts.length, initialPricingPreview],
+  );
+
+  // Refresh the server pricing preview whenever the cart or selected customer
+  // changes so displayed totals match what checkout will charge.
+  useEffect(() => {
+    void refreshPricing(customer?.id ?? null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartSignature, customer?.id]);
+
+  const guardShift = useCallback((): boolean => {
+    if (!hasActiveShift) {
+      toast.error("Buka shift kasir terlebih dahulu");
+      return false;
+    }
+    return true;
+  }, [hasActiveShift]);
+
+  const handleAddToCart = useCallback(
+    async (product: POSProduct) => {
+      if (!guardShift()) return;
+
+      router.post(
+        transactions.addToCart.url(),
+        {
+          product_id: product.id,
+          sell_price: product.sell_price,
+          qty: 1,
+        },
+        {
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: () => toast.success(`${product.title} ditambahkan`),
+          onError: () => toast.error("Gagal menambahkan produk"),
+        },
+      );
+    },
+    [guardShift],
+  );
 
   const handleSearch = useCallback(async () => {
     if (!searchQuery) return;
+    if (!guardShift()) return;
+
     setIsSearching(true);
     try {
-      const response = await axios.get("/apps/products/search", {
-        params: { q: searchQuery, exact: true },
+      const response = await axios.post(transactions.searchProduct.url(), {
+        barcode: searchQuery,
       });
-      const results = response.data.data || response.data || [];
-      if (results.length === 1) {
-        await handleAddToCart(results[0]);
+      const product = response.data.success ? response.data.data : null;
+      if (product) {
+        await handleAddToCart(product);
         setSearchQuery("");
-        toast.success(`${results[0].title} ditambahkan`);
-      } else if (results.length > 1) {
-        setProducts(results);
       } else {
         toast.error("Produk tidak ditemukan");
       }
@@ -130,58 +172,56 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
     } finally {
       setIsSearching(false);
     }
-  }, [searchQuery]);
+  }, [searchQuery, guardShift, handleAddToCart]);
 
-  const handleAddToCart = useCallback(async (product: POSProduct) => {
-    try {
-      const response = await axios.post("/apps/cart/add", {
-        product_id: product.id,
-        qty: 1,
-      });
-      setCart(response.data.cart || response.data);
-      toast.success(`${product.title} ditambahkan`);
-    } catch {
-      toast.error("Gagal menambahkan produk");
-    }
+  const handleUpdateQty = useCallback((cartId: number, newQty: number) => {
+    if (newQty < 1) return;
+
+    router.patch(
+      transactions.updateCart.url(cartId),
+      { qty: newQty },
+      {
+        preserveScroll: true,
+        preserveState: true,
+        onError: (errors) =>
+          toast.error((errors as Record<string, string>)?.message || "Gagal mengubah jumlah"),
+      },
+    );
   }, []);
 
-  const handleUpdateQty = useCallback(async (cartId: number, newQty: number) => {
-    try {
-      const response = await axios.patch(`/apps/cart/${cartId}`, {
-        qty: newQty,
-      });
-      setCart(response.data.cart || response.data);
-    } catch {
-      toast.error("Gagal mengubah jumlah");
-    }
-  }, []);
-
-  const handleRemove = useCallback(async (cartId: number) => {
+  const handleRemove = useCallback((cartId: number) => {
     setRemovingItemId(cartId);
-    try {
-      const response = await axios.delete(`/apps/cart/${cartId}`);
-      setCart(response.data.cart || response.data);
-    } catch {
-      toast.error("Gagal menghapus item");
-    } finally {
-      setRemovingItemId(null);
-    }
+    router.delete(transactions.destroyCart.url(cartId), {
+      preserveScroll: true,
+      preserveState: true,
+      onSuccess: () => toast.success("Item dihapus"),
+      onError: () => toast.error("Gagal menghapus item"),
+      onFinish: () => setRemovingItemId(null),
+    });
   }, []);
 
-  const handleHold = useCallback(async (label: string | null) => {
-    setIsHolding(true);
-    try {
-      await axios.post("/apps/transactions/hold", {
-        label: label || undefined,
-      });
-      setCart([]);
-      toast.success("Transaksi ditahan");
-    } catch {
-      toast.error("Gagal menahan transaksi");
-    } finally {
-      setIsHolding(false);
-    }
-  }, []);
+  const handleHold = useCallback(
+    (label: string | null) => {
+      if (carts.length === 0) {
+        toast.error("Keranjang kosong");
+        return;
+      }
+
+      setIsHolding(true);
+      router.post(
+        transactions.hold.url(),
+        { label: label || undefined },
+        {
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: () => toast.success("Transaksi ditahan"),
+          onError: () => toast.error("Gagal menahan transaksi"),
+          onFinish: () => setIsHolding(false),
+        },
+      );
+    },
+    [carts.length],
+  );
 
   const handleOpenNumpad = useCallback(
     (config: {
@@ -198,29 +238,26 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
     [],
   );
 
-  const handleCategoryChange = useCallback(
-    async (categoryId: number | null) => {
-      setSelectedCategory(categoryId);
-      try {
-        const response = await axios.get("/apps/products", {
-          params: { category_id: categoryId },
-        });
-        setProducts(response.data.data || response.data || []);
-      } catch {
-        if (categoryId === null) {
-          setProducts(initialProducts);
-        } else {
-          setProducts(initialProducts.filter((p) => p.category_id === categoryId));
-        }
-      }
-    },
-    [initialProducts],
-  );
+  const handleCategoryChange = useCallback((categoryId: number | null) => {
+    setSelectedCategory(categoryId);
+  }, []);
+
+  // Product grid is filtered entirely on the client from the products prop; no
+  // JSON products API exists.
+  const visibleProducts = useMemo(() => {
+    if (searchQuery) {
+      return products;
+    }
+    if (selectedCategory === null) {
+      return products;
+    }
+    return products.filter((p) => Number(p.category_id) === selectedCategory);
+  }, [products, selectedCategory, searchQuery]);
 
   return (
     <POSLayout>
       <div className="flex h-full">
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex min-w-0 flex-1 flex-col">
           <div className="p-4 pb-0">
             <SearchBar
               value={searchQuery}
@@ -230,80 +267,61 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
                 await handleAddToCart(product);
                 setSearchQuery("");
               }}
-              suggestions={products.slice(0, 8)}
+              suggestions={visibleProducts.slice(0, 8)}
               isSearching={isSearching}
               autoFocus
             />
           </div>
 
-          <HeldTransactions heldCarts={heldCarts} hasActiveCart={cart.length > 0} />
+          <HeldTransactions heldCarts={props.heldCarts ?? []} hasActiveCart={carts.length > 0} />
 
           <ProductGrid
-            products={products}
+            products={visibleProducts}
             categories={categories}
             selectedCategory={selectedCategory}
             onCategoryChange={handleCategoryChange}
-            onProductClick={async (product) => {
-              await handleAddToCart(product);
-            }}
-            cartProductIds={cart.map((item) => item.product?.id).filter(Boolean) as number[]}
+            onProductClick={handleAddToCart}
+            cartProductIds={carts.map((item) => item.product?.id).filter(Boolean) as number[]}
             searchQuery={searchQuery}
           />
         </div>
 
         <div className="w-px bg-border" />
 
-        <div className="w-[400px] flex flex-col flex-shrink-0 bg-bg">
-          <CustomerSelect
-            customer={customer}
-            onSelect={async (c) => {
-              setCustomer(c);
-              if (c) {
-                await axios.post("/apps/transactions/select-customer", {
-                  customer_id: c.id,
-                });
-              } else {
-                await axios.post("/apps/transactions/select-customer", {
-                  customer_id: null,
-                });
-              }
-            }}
-          />
+        <div className="flex w-[400px] flex-shrink-0 flex-col bg-bg">
+          <CustomerSelect customer={customer} onSelect={setCustomer} />
 
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex min-h-0 flex-1 flex-col">
             <div className="flex-1 overflow-hidden">
               <CartPanel
-                items={cart}
+                items={carts}
                 onUpdateQty={handleUpdateQty}
                 onRemove={handleRemove}
                 removingItemId={removingItemId}
               />
             </div>
 
-            {cart.length > 0 && (
-              <div className="px-4 py-2 border-t border-border">
-                <HoldButton hasItems={cart.length > 0} onHold={handleHold} isHolding={isHolding} />
+            {carts.length > 0 && (
+              <div className="border-border border-t px-4 py-2">
+                <HoldButton hasItems={carts.length > 0} onHold={handleHold} isHolding={isHolding} />
               </div>
             )}
           </div>
 
-          <div className="border-t border-border" />
+          <div className="border-border border-t" />
 
           <div className="h-[420px] overflow-y-auto">
             <PaymentPanel
-              items={cart}
+              items={carts}
               customer={customer}
+              pricingPreview={pricingPreview}
               onOpenNumpad={handleOpenNumpad}
-              onRemoveCustomer={async () => {
-                setCustomer(null);
-                await axios.post("/apps/transactions/select-customer", {
-                  customer_id: null,
-                });
-              }}
+              onRemoveCustomer={() => setCustomer(null)}
               isSubmitting={isSubmitting}
               setIsSubmitting={setIsSubmitting}
               bankAccounts={bankAccounts}
               paymentGateways={paymentGateways}
+              hasActiveShift={hasActiveShift}
             />
           </div>
         </div>

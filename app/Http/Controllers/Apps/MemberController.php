@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Services\CustomerSegmentationService;
 use App\Services\LoyaltyService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Laravolt\Indonesia\Models\City;
@@ -281,7 +282,7 @@ class MemberController extends Controller
                 'invoice' => $transaction->invoice,
                 'total' => $transaction->grand_total,
                 'payment_method' => $transaction->payment_method,
-                'date' => $transaction->created_at?->toISOString(),
+                'date' => Carbon::parse($transaction->created_at)->toISOString(),
             ]);
     }
 

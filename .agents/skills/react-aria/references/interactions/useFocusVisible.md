@@ -43,10 +43,10 @@ globally, see [useFocusRing](useFocusRing.md).
 
 ### FocusVisibleProps
 
-| Name          | Type     | Description |
+| Name | Type | Description |
 | ------------- | -------- | ----------- | ----------------------------------------- |
-| `isTextInput` | `boolean | undefined`  | Whether the element is a text input.      |
-| `autoFocus`   | `boolean | undefined`  | Whether the element will be auto focused. |
+| `isTextInput` | `boolean | undefined` | Whether the element is a text input. |
+| `autoFocus` | `boolean | undefined` | Whether the element will be auto focused. |
 
 ### FocusVisibleResult
 

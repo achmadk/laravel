@@ -94,7 +94,7 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
         <select
           value={currentFilters.product_id}
           onChange={(e) => updateFilter("product_id", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Produk</option>
           {products.map((product) => (
@@ -107,7 +107,7 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
         <select
           value={currentFilters.mutation_type}
           onChange={(e) => updateFilter("mutation_type", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         >
           <option value="">Semua Tipe</option>
           <option value="in">In</option>
@@ -119,27 +119,27 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
           type="date"
           value={currentFilters.date_from}
           onChange={(e) => updateFilter("date_from", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         />
 
         <input
           type="date"
           value={currentFilters.date_to}
           onChange={(e) => updateFilter("date_to", e.target.value)}
-          className="h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg"
+          className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         />
       </div>
 
       <Card>
         <CardContent className="p-0">
-          <div className="p-4 border-b border-border">
-            <div className="flex items-center gap-2 font-semibold text-sm text-fg">
+          <div className="border-border border-b p-4">
+            <div className="flex items-center gap-2 font-semibold text-fg text-sm">
               Histori Mutasi Stok
             </div>
           </div>
           <div className="w-full overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-border bg-muted">
+              <thead className="border-border border-b bg-muted">
                 <tr>
                   <th className="h-12 px-4 text-left align-middle font-medium text-muted-fg">
                     Produk
@@ -167,17 +167,17 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
               <tbody className="divide-y divide-border">
                 {stockMutations.data.length > 0 ? (
                   stockMutations.data.map((mutation) => (
-                    <tr key={mutation.id} className="hover:bg-muted transition-colors">
+                    <tr key={mutation.id} className="transition-colors hover:bg-muted">
                       <td className="whitespace-nowrap p-4 align-middle">
                         <div>
                           <p className="font-medium text-fg">{mutation.product?.title || "-"}</p>
-                          <p className="text-xs text-muted-fg">
+                          <p className="text-muted-fg text-xs">
                             {mutation.product?.barcode || mutation.product?.sku || "-"}
                           </p>
                         </div>
                       </td>
                       <td className="whitespace-nowrap p-4 align-middle">
-                        <span className="inline-flex rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-fg">
+                        <span className="inline-flex rounded-full bg-muted px-2.5 py-1 font-semibold text-muted-fg text-xs">
                           {mutation.mutation_type}
                         </span>
                       </td>
@@ -189,10 +189,10 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
                       </td>
                       <td className="whitespace-nowrap p-4 align-middle">
                         <div>
-                          <p className="text-sm font-medium text-muted-fg">
+                          <p className="font-medium text-muted-fg text-sm">
                             {mutation.reference_type}
                           </p>
-                          <p className="text-xs text-muted-fg">{mutation.notes || "-"}</p>
+                          <p className="text-muted-fg text-xs">{mutation.notes || "-"}</p>
                         </div>
                       </td>
                       <td className="whitespace-nowrap p-4 align-middle text-muted-fg">

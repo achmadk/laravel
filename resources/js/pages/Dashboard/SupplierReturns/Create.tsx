@@ -163,7 +163,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
           description={
             <Link
               href={supplierReturns.index.url()}
-              className="inline-flex items-center gap-2 text-sm text-muted-fg hover:text-primary"
+              className="inline-flex items-center gap-2 text-muted-fg text-sm hover:text-primary"
             >
               <IconArrowLeft size={16} />
               Kembali ke daftar retur
@@ -176,10 +176,10 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
           <div className="space-y-6">
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Informasi Retur</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Informasi Retur</h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div>
-                    <label className="mb-1 block text-sm font-semibold text-fg">Supplier</label>
+                    <label className="mb-1 block font-semibold text-fg text-sm">Supplier</label>
                     <select
                       value={data.supplier_id}
                       onChange={(e) => {
@@ -191,7 +191,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                         });
                         setSelectedGrId("");
                       }}
-                      className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                     >
                       <option value="">Pilih Supplier</option>
                       {suppliers.map((s) => (
@@ -202,7 +202,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                     </select>
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-semibold text-fg">
+                    <label className="mb-1 block font-semibold text-fg text-sm">
                       Penerimaan Barang (Opsional)
                     </label>
                     <select
@@ -212,7 +212,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                         setData("goods_receiving_id", e.target.value);
                       }}
                       disabled={!data.supplier_id}
-                      className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:opacity-50"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:opacity-50"
                     >
                       <option value="">Tidak terkait GR</option>
                       {goodsReceivings.map((gr) => (
@@ -223,13 +223,13 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                     </select>
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-semibold text-fg">Catatan</label>
+                    <label className="mb-1 block font-semibold text-fg text-sm">Catatan</label>
                     <input
                       type="text"
                       value={data.notes}
                       onChange={(e) => setData("notes", e.target.value)}
                       placeholder="Catatan retur"
-                      className="w-full h-11 rounded-xl border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                      className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                     />
                   </div>
                 </div>
@@ -238,11 +238,11 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
 
             <Card>
               <CardContent className="p-5">
-                <h2 className="mb-4 text-lg font-semibold text-fg">Item Retur</h2>
+                <h2 className="mb-4 font-semibold text-fg text-lg">Item Retur</h2>
 
                 {selectedGr && (
                   <div className="mb-4">
-                    <p className="mb-2 text-sm font-medium text-muted-fg">
+                    <p className="mb-2 font-medium text-muted-fg text-sm">
                       Item dari GR {selectedGr.document_number}
                     </p>
                     <div className="max-h-48 space-y-2 overflow-y-auto rounded-xl border border-border p-3">
@@ -259,12 +259,12 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                               <p className="font-medium text-fg">
                                 {grItem.product?.title || "Produk #" + grItem.product_id}
                               </p>
-                              <p className="text-xs text-muted-fg">
+                              <p className="text-muted-fg text-xs">
                                 {grItem.product?.sku || "-"} &bull; Harga:{" "}
                                 {formatPrice(grItem.purchase_order_item?.unit_price || 0)}
                               </p>
                             </div>
-                            <span className="text-xs text-primary">+ Tambah</span>
+                            <span className="text-primary text-xs">+ Tambah</span>
                           </button>
                         ) : null;
                       })}
@@ -278,7 +278,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                     value={searchProduct}
                     onChange={(e) => setSearchProduct(e.target.value)}
                     placeholder="Cari produk untuk ditambahkan..."
-                    className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                    className="h-11 flex-1 rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 {searchProduct && filteredProducts.length > 0 && (
@@ -292,11 +292,11 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                       >
                         <div>
                           <p className="font-medium text-fg">{product.title}</p>
-                          <p className="text-xs text-muted-fg">
+                          <p className="text-muted-fg text-xs">
                             {product.sku || "-"} &bull; Stok: {product.stock}
                           </p>
                         </div>
-                        <span className="text-xs text-muted-fg">
+                        <span className="text-muted-fg text-xs">
                           {formatPrice(product.buy_price as number)}
                         </span>
                       </button>
@@ -308,7 +308,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b border-border">
+                        <tr className="border-border border-b">
                           <th className="px-3 py-2 text-left font-semibold text-muted-fg">
                             Produk
                           </th>
@@ -327,10 +327,10 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                       </thead>
                       <tbody>
                         {data.items.map((item, index) => (
-                          <tr key={index} className="border-b border-border">
+                          <tr key={index} className="border-border border-b">
                             <td className="px-3 py-3">
                               <p className="font-medium text-fg">{item.product_title}</p>
-                              <p className="text-xs text-muted-fg">{item.product_sku}</p>
+                              <p className="text-muted-fg text-xs">{item.product_sku}</p>
                             </td>
                             <td className="px-3 py-3 text-right">
                               <input
@@ -338,7 +338,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                                 min="1"
                                 value={item.qty_returned}
                                 onChange={(e) => updateItem(index, "qty_returned", e.target.value)}
-                                className="h-10 w-20 rounded-lg border border-input bg-muted px-3 text-right text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                                className="h-10 w-20 rounded-lg border border-input bg-muted px-3 text-right text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                               />
                             </td>
                             <td className="px-3 py-3 text-right">
@@ -348,7 +348,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                                 step="100"
                                 value={item.unit_price}
                                 onChange={(e) => updateItem(index, "unit_price", e.target.value)}
-                                className="h-10 w-28 rounded-lg border border-input bg-muted px-3 text-right text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
+                                className="h-10 w-28 rounded-lg border border-input bg-muted px-3 text-right text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
                               />
                             </td>
                             <td className="px-3 py-3 text-right font-semibold text-fg">
@@ -360,7 +360,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                                 value={item.reason || ""}
                                 onChange={(e) => updateItem(index, "reason", e.target.value)}
                                 placeholder="Alasan retur"
-                                className="h-10 w-full rounded-lg border border-input bg-muted px-3 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                                className="h-10 w-full rounded-lg border border-input bg-muted px-3 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                               />
                             </td>
                             <td className="px-3 py-3 text-center">
@@ -376,7 +376,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                         ))}
                       </tbody>
                       <tfoot>
-                        <tr className="border-t-2 border-border">
+                        <tr className="border-border border-t-2">
                           <td colSpan={3} className="px-3 py-3 text-right font-bold text-fg">
                             Total
                           </td>
@@ -389,8 +389,8 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
                     </table>
                   </div>
                 ) : (
-                  <div className="rounded-xl border border-dashed border-border p-8 text-center">
-                    <p className="text-sm text-muted-fg">
+                  <div className="rounded-xl border border-border border-dashed p-8 text-center">
+                    <p className="text-muted-fg text-sm">
                       Pilih supplier, lalu tambahkan item dari GR atau cari produk di atas.
                     </p>
                   </div>
@@ -401,7 +401,7 @@ export default function Create({ suppliers, goodsReceivings, products }: CreateP
             <div className="flex justify-end gap-3">
               <Link
                 href={supplierReturns.index.url()}
-                className="flex h-11 items-center rounded-xl border border-border bg-bg px-6 text-sm font-semibold text-muted-fg transition hover:bg-muted"
+                className="flex h-11 items-center rounded-xl border border-border bg-bg px-6 font-semibold text-muted-fg text-sm transition hover:bg-muted"
               >
                 Batal
               </Link>

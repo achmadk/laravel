@@ -27,6 +27,7 @@ use App\Http\Controllers\Apps\SupplierReturnController;
 use App\Http\Controllers\Apps\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -43,7 +44,7 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 
     return Inertia::render('Welcome', [
@@ -53,6 +54,10 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/home', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('home');
 
 Route::get('/dashboard/access', function () {
     return Inertia::render('Dashboard/Access');

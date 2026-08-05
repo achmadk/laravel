@@ -54,12 +54,12 @@ To handle focus events on descendants of an element, see [useFocusWithin](useFoc
 
 ### FocusProps
 
-| Name            | Type                                        | Description |
+| Name | Type | Description |
 | --------------- | ------------------------------------------- | ----------- | --------------------------------------------------------------- |
-| `isDisabled`    | `boolean                                    | undefined`  | Whether the focus events should be disabled.                    |
-| `onFocus`       | `((e: FocusEvent<Target, Element>) => void) | undefined`  | Handler that is called when the element receives focus.         |
-| `onBlur`        | `((e: FocusEvent<Target, Element>) => void) | undefined`  | Handler that is called when the element loses focus.            |
-| `onFocusChange` | `((isFocused: boolean) => void)             | undefined`  | Handler that is called when the element's focus status changes. |
+| `isDisabled` | `boolean                                    | undefined` | Whether the focus events should be disabled. |
+| `onFocus` | `((e: FocusEvent<Target, Element>) => void) | undefined` | Handler that is called when the element receives focus. |
+| `onBlur` | `((e: FocusEvent<Target, Element>) => void) | undefined` | Handler that is called when the element loses focus. |
+| `onFocusChange` | `((isFocused: boolean) => void)             | undefined` | Handler that is called when the element's focus status changes. |
 
 ### FocusResult
 

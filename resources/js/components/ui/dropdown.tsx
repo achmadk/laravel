@@ -48,7 +48,7 @@ const dropdownItemStyles = tv({
     // avatar
     "*:data-[slot=avatar]:*:me-(--me-icon) *:data-[slot=avatar]:me-(--me-icon) has-[[slot=description]]:*:data-[slot=avatar]:row-span-2 *:data-[slot=avatar]:[--avatar-size:--spacing(5)] sm:*:data-[slot=avatar]:[--avatar-size:--spacing(4)]",
     // icon
-    "*:[svg:not([data-slot='check-indicator'])]:-ms-0.5 [&_svg:not([class*='text-'])]:text-muted-fg *:[svg:not([data-slot='check-indicator'])]:col-start-1 *:[svg:not([data-slot='check-indicator'])]:row-start-1 *:[svg:not([data-slot='check-indicator'])]:me-(--me-icon) *:[svg]:shrink-0",
+    "[&_svg:not([class*='text-'])]:text-muted-fg *:[svg:not([data-slot='check-indicator'])]:col-start-1 *:[svg:not([data-slot='check-indicator'])]:row-start-1 *:[svg:not([data-slot='check-indicator'])]:-ms-0.5 *:[svg:not([data-slot='check-indicator'])]:me-(--me-icon) *:[svg]:shrink-0",
     "not-has-[[slot=description]]:*:[svg]:size-5 sm:not-has-[[slot=description]]:*:[svg]:size-4",
     "has-[[slot=description]]:[&_svg:not([class*='w-'])]:w-5 sm:has-[[slot=description]]:[&_svg:not([class*='w-'])]:w-4 has-[[slot=description]]:*:[svg]:h-lh",
     "[&>[slot=label]+svg:not([data-slot='check-indicator'])]:absolute [&>[slot=label]+svg:not([data-slot='check-indicator'])]:inset-e-0 [&>[slot=label]+svg:not([data-slot='check-indicator'])]:top-1",
@@ -118,8 +118,8 @@ const DropdownItem = ({ className, children, intent, ...props }: DropdownItemPro
             <CheckIcon
               className={twJoin(
                 "-ms-0.5 me-1.5 h-lh w-4 shrink-0",
-                "group-has-[svg:not([data-slot='check-indicator'])]:-translate-y-1/2 group-has-[svg:not([data-slot='check-indicator'])]:absolute group-has-[svg:not([data-slot='check-indicator'])]:inset-e-0.5 group-has-[svg:not([data-slot='check-indicator'])]:top-1/2",
-                "group-has-data-[slot=avatar]:-translate-y-1/2 group-has-data-[slot=avatar]:absolute group-has-data-[slot=avatar]:inset-e-0.5 group-has-data-[slot=avatar]:top-1/2",
+                "group-has-[svg:not([data-slot='check-indicator'])]:absolute group-has-[svg:not([data-slot='check-indicator'])]:inset-e-0.5 group-has-[svg:not([data-slot='check-indicator'])]:top-1/2 group-has-[svg:not([data-slot='check-indicator'])]:-translate-y-1/2",
+                "group-has-data-[slot=avatar]:absolute group-has-data-[slot=avatar]:inset-e-0.5 group-has-data-[slot=avatar]:top-1/2 group-has-data-[slot=avatar]:-translate-y-1/2",
               )}
               data-slot="check-indicator"
             />
@@ -146,7 +146,7 @@ const DropdownDescription = ({ className, ...props }: TextProps) => (
 const DropdownSeparator = ({ className, ...props }: Omit<SeparatorProps, "orientation">) => (
   <Separator
     orientation="horizontal"
-    className={twMerge("-mx-1 col-span-full h-px bg-fg/10", className)}
+    className={twMerge("col-span-full -mx-1 h-px bg-fg/10", className)}
     {...props}
   />
 );

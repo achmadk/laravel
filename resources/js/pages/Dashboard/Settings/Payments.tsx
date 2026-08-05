@@ -85,7 +85,7 @@ export default function Payment({
 
     if (source.managed_by_environment) {
       return (
-        <p className="text-xs text-warning">
+        <p className="text-warning text-xs">
           Secret dikelola oleh environment dan tidak bisa diubah dari dashboard.
         </p>
       );
@@ -93,7 +93,7 @@ export default function Payment({
 
     if (source.configured) {
       return (
-        <p className="text-xs text-muted-fg">
+        <p className="text-muted-fg text-xs">
           Tersimpan: <span className="font-medium">{source.masked}</span>. {keepMessage}
         </p>
       );
@@ -107,20 +107,20 @@ export default function Payment({
       <Head title="Pengaturan Payment" />
 
       <div className="mb-6">
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-fg">
+        <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
           <IconCreditCard size={28} className="text-primary-500" />
           Pengaturan Payment Gateway
         </h1>
-        <p className="mt-1 text-sm text-muted-fg">Konfigurasi metode pembayaran dan gateway</p>
+        <p className="mt-1 text-muted-fg text-sm">Konfigurasi metode pembayaran dan gateway</p>
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
         <div className="rounded-2xl border border-border bg-bg p-6">
-          <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-fg">
+          <h3 className="mb-4 flex items-center gap-2 font-semibold text-fg text-sm">
             <IconCash size={18} />
             Gateway Default
           </h3>
-          <p className="mb-4 text-sm text-muted-fg">
+          <p className="mb-4 text-muted-fg text-sm">
             Gateway pembayaran default yang digunakan kasir saat membuka halaman transaksi.
           </p>
           {!canUpdatePaymentSettings && (
@@ -130,12 +130,12 @@ export default function Payment({
             </div>
           )}
           <div>
-            <label className="mb-2 block text-sm font-medium text-fg">Pilih Gateway</label>
+            <label className="mb-2 block font-medium text-fg text-sm">Pilih Gateway</label>
             <select
               value={data.default_gateway}
               onChange={(e) => setData("default_gateway", e.target.value)}
               disabled={!canUpdatePaymentSettings}
-              className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg transition-all focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+              className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm transition-all placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
             >
               {supportedGateways.map((gw) => (
                 <option key={gw.value} value={gw.value} disabled={!isGatewaySelectable(gw.value)}>
@@ -145,19 +145,19 @@ export default function Payment({
               ))}
             </select>
             {errors?.default_gateway && (
-              <small className="mt-1 text-xs text-danger-500">{errors.default_gateway}</small>
+              <small className="mt-1 text-danger-500 text-xs">{errors.default_gateway}</small>
             )}
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-bg p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-fg">
+            <h3 className="flex items-center gap-2 font-semibold text-fg text-sm">
               <IconCreditCard size={18} />
               Transfer Bank
             </h3>
             <label
-              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 font-medium text-xs transition-all ${
                 data.bank_transfer_enabled ? "bg-success/15 text-success" : "bg-muted text-muted-fg"
               }`}
             >
@@ -171,13 +171,13 @@ export default function Payment({
               {data.bank_transfer_enabled ? "Aktif" : "Nonaktif"}
             </label>
           </div>
-          <p className="mb-4 text-sm text-muted-fg">
+          <p className="mb-4 text-muted-fg text-sm">
             Pembayaran manual via transfer bank. Kasir akan memasukkan transaksi dengan status
             pending, kemudian admin mengkonfirmasi setelah dana diterima.
           </p>
           <a
             href={settings.bankAccounts.index.url()}
-            className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 hover:text-primary-600"
+            className="inline-flex items-center gap-2 font-medium text-primary-500 text-sm hover:text-primary-600"
           >
             Kelola Rekening Bank &rarr;
           </a>
@@ -185,12 +185,12 @@ export default function Payment({
 
         <div className="rounded-2xl border border-border bg-bg p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-fg">
+            <h3 className="flex items-center gap-2 font-semibold text-fg text-sm">
               <IconBrandStripe size={18} />
               Midtrans Snap
             </h3>
             <label
-              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 font-medium text-xs transition-all ${
                 data.midtrans_enabled ? "bg-success/15 text-success" : "bg-muted text-muted-fg"
               }`}
             >
@@ -211,7 +211,7 @@ export default function Payment({
           >
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">Server Key</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Server Key</label>
                 <input
                   type="password"
                   value={data.midtrans_server_key}
@@ -225,24 +225,24 @@ export default function Payment({
                     !canUpdatePaymentSettings ||
                     !!paymentSettingSources?.midtrans_server_key?.managed_by_environment
                   }
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.midtrans_server_key && (
-                  <p className="mt-1 text-xs text-danger-500">{errors.midtrans_server_key}</p>
+                  <p className="mt-1 text-danger-500 text-xs">{errors.midtrans_server_key}</p>
                 )}
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">Client Key</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Client Key</label>
                 <input
                   type="text"
                   value={data.midtrans_client_key}
                   onChange={(e) => setData("midtrans_client_key", e.target.value)}
                   placeholder="SB-Mid-client-xxx"
                   disabled={!canUpdatePaymentSettings}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.midtrans_client_key && (
-                  <p className="mt-1 text-xs text-danger-500">{errors.midtrans_client_key}</p>
+                  <p className="mt-1 text-danger-500 text-xs">{errors.midtrans_client_key}</p>
                 )}
               </div>
             </div>
@@ -258,19 +258,19 @@ export default function Payment({
                 disabled={!canUpdatePaymentSettings}
                 className="rounded border-border text-primary-500"
               />
-              <span className="text-sm text-muted-fg">Mode Produksi</span>
+              <span className="text-muted-fg text-sm">Mode Produksi</span>
             </label>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-bg p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-sm font-semibold text-fg">
+            <h3 className="flex items-center gap-2 font-semibold text-fg text-sm">
               <IconCreditCard size={18} />
               Xendit Invoice
             </h3>
             <label
-              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 font-medium text-xs transition-all ${
                 data.xendit_enabled ? "bg-success/15 text-success" : "bg-muted text-muted-fg"
               }`}
             >
@@ -289,7 +289,7 @@ export default function Payment({
           >
             <div className="grid gap-4 md:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">Secret Key</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Secret Key</label>
                 <input
                   type="password"
                   value={data.xendit_secret_key}
@@ -303,30 +303,30 @@ export default function Payment({
                     !canUpdatePaymentSettings ||
                     !!paymentSettingSources?.xendit_secret_key?.managed_by_environment
                   }
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.xendit_secret_key && (
-                  <p className="mt-1 text-xs text-danger-500">{errors.xendit_secret_key}</p>
+                  <p className="mt-1 text-danger-500 text-xs">{errors.xendit_secret_key}</p>
                 )}
               </div>
               <div>
-                <label className="mb-2 block text-sm font-medium text-fg">Public Key</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Public Key</label>
                 <input
                   type="text"
                   value={data.xendit_public_key}
                   onChange={(e) => setData("xendit_public_key", e.target.value)}
                   placeholder="xnd_public_development_xxx"
                   disabled={!canUpdatePaymentSettings}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.xendit_public_key && (
-                  <p className="mt-1 text-xs text-danger-500">{errors.xendit_public_key}</p>
+                  <p className="mt-1 text-danger-500 text-xs">{errors.xendit_public_key}</p>
                 )}
               </div>
             </div>
             {renderSecretHint("xendit_secret_key", "Isi ulang hanya jika ingin mengganti secret.")}
             <div>
-              <label className="mb-2 block text-sm font-medium text-fg">Callback Token</label>
+              <label className="mb-2 block font-medium text-fg text-sm">Callback Token</label>
               <input
                 type="password"
                 value={data.xendit_callback_token}
@@ -340,10 +340,10 @@ export default function Payment({
                   !canUpdatePaymentSettings ||
                   !!paymentSettingSources?.xendit_callback_token?.managed_by_environment
                 }
-                className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
               />
               {errors?.xendit_callback_token && (
-                <p className="mt-1 text-xs text-danger-500">{errors.xendit_callback_token}</p>
+                <p className="mt-1 text-danger-500 text-xs">{errors.xendit_callback_token}</p>
               )}
             </div>
             {renderSecretHint(
@@ -358,17 +358,17 @@ export default function Payment({
                 disabled={!canUpdatePaymentSettings}
                 className="rounded border-border text-primary-500"
               />
-              <span className="text-sm text-muted-fg">Mode Produksi</span>
+              <span className="text-muted-fg text-sm">Mode Produksi</span>
             </label>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border bg-muted p-6">
-          <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-fg">
+          <h3 className="mb-4 flex items-center gap-2 font-semibold text-fg text-sm">
             <IconCreditCard size={18} />
             Webhook URLs
           </h3>
-          <p className="mb-4 text-sm text-muted-fg">
+          <p className="mb-4 text-muted-fg text-sm">
             Salin URL berikut dan paste ke dashboard Midtrans/Xendit sebagai Notification/Callback
             URL.
           </p>
@@ -386,7 +386,7 @@ export default function Payment({
           )}
           <div className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-muted-fg">
+              <label className="mb-1 block font-medium text-muted-fg text-xs">
                 Midtrans Notification URL
               </label>
               <div className="flex items-center gap-2">
@@ -394,7 +394,7 @@ export default function Payment({
                   type="text"
                   readOnly
                   value={webhookUrls.midtrans || ""}
-                  className="h-10 flex-1 rounded-lg border border-input bg-bg px-3 text-sm text-muted-fg"
+                  className="h-10 flex-1 rounded-lg border border-input bg-bg px-3 text-muted-fg text-sm"
                 />
                 <button
                   type="button"
@@ -402,14 +402,14 @@ export default function Payment({
                     await navigator.clipboard.writeText(webhookUrls.midtrans || "");
                     toast.success("URL disalin!");
                   }}
-                  className="h-10 rounded-lg border border-input px-3 text-sm font-medium text-muted-fg hover:bg-muted"
+                  className="h-10 rounded-lg border border-input px-3 font-medium text-muted-fg text-sm hover:bg-muted"
                 >
                   Salin
                 </button>
               </div>
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-muted-fg">
+              <label className="mb-1 block font-medium text-muted-fg text-xs">
                 Xendit Callback URL
               </label>
               <div className="flex items-center gap-2">
@@ -417,7 +417,7 @@ export default function Payment({
                   type="text"
                   readOnly
                   value={webhookUrls.xendit || ""}
-                  className="h-10 flex-1 rounded-lg border border-input bg-bg px-3 text-sm text-muted-fg"
+                  className="h-10 flex-1 rounded-lg border border-input bg-bg px-3 text-muted-fg text-sm"
                 />
                 <button
                   type="button"
@@ -425,7 +425,7 @@ export default function Payment({
                     await navigator.clipboard.writeText(webhookUrls.xendit || "");
                     toast.success("URL disalin!");
                   }}
-                  className="h-10 rounded-lg border border-input px-3 text-sm font-medium text-muted-fg hover:bg-muted"
+                  className="h-10 rounded-lg border border-input px-3 font-medium text-muted-fg text-sm hover:bg-muted"
                 >
                   Salin
                 </button>

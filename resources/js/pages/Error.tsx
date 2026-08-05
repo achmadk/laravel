@@ -69,12 +69,12 @@ export default function ErrorPage({ status = 500 }: ErrorPageProps | any) {
     <>
       <Head title={`${resolvedStatus} - ${content.title}`} />
       <div className="flex min-h-screen flex-col items-center justify-center px-4">
-        <div className="flex flex-col items-center text-center max-w-md">
+        <div className="flex max-w-md flex-col items-center text-center">
           <div className="mb-6 rounded-full bg-muted p-6">
             <Icon className="size-16 text-muted-fg" />
           </div>
-          <h1 className="text-6xl font-bold text-fg">{resolvedStatus}</h1>
-          <h2 className="mt-4 text-xl font-semibold text-fg">{content.title}</h2>
+          <h1 className="font-bold text-6xl text-fg">{resolvedStatus}</h1>
+          <h2 className="mt-4 font-semibold text-fg text-xl">{content.title}</h2>
           <p className="mt-2 text-muted-fg">{content.description}</p>
           <Link href={homeUrl} className="mt-8">
             <Button>{homeLabel}</Button>

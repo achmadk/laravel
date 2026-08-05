@@ -54,32 +54,32 @@ function RoleCard({
   canDelete: boolean;
 }) {
   return (
-    <div className="bg-bg rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-all">
-      <div className="p-5 border-b border-border">
+    <div className="overflow-hidden rounded-2xl border border-border bg-bg transition-all hover:shadow-lg">
+      <div className="border-border border-b p-5">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 text-white">
             <IconUserShield size={24} />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-fg capitalize">{role.name}</h3>
-            <p className="text-sm text-muted-fg">{role.permissions.length} hak akses</p>
+            <h3 className="font-semibold text-fg text-lg capitalize">{role.name}</h3>
+            <p className="text-muted-fg text-sm">{role.permissions.length} hak akses</p>
           </div>
         </div>
       </div>
 
-      <div className="p-4 bg-muted">
-        <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
+      <div className="bg-muted p-4">
+        <div className="flex max-h-24 flex-wrap gap-1.5 overflow-y-auto">
           {role.permissions.slice(0, 8).map((permission, index) => (
             <span
               key={index}
-              className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-warning/10 text-warning"
+              className="inline-flex items-center gap-1 rounded-full bg-warning/10 px-2 py-0.5 font-medium text-warning text-xs"
             >
               <IconShield size={10} />
               {permission.name}
             </span>
           ))}
           {role.permissions.length > 8 && (
-            <span className="px-2 py-0.5 text-xs font-medium text-muted-fg">
+            <span className="px-2 py-0.5 font-medium text-muted-fg text-xs">
               +{role.permissions.length - 8} lainnya
             </span>
           )}
@@ -87,11 +87,11 @@ function RoleCard({
       </div>
 
       {(canUpdate || canDelete) && (
-        <div className="flex border-t border-border">
+        <div className="flex border-border border-t">
           {canUpdate && (
             <button
               onClick={onEdit}
-              className="flex-1 flex items-center justify-center gap-1.5 py-3 text-warning hover:bg-warning/5 text-sm font-medium transition-colors"
+              className="flex flex-1 items-center justify-center gap-1.5 py-3 font-medium text-sm text-warning transition-colors hover:bg-warning/5"
             >
               <IconPencilCog size={16} />
               <span>Edit</span>
@@ -101,7 +101,7 @@ function RoleCard({
           {canDelete && (
             <button
               onClick={onDelete}
-              className="flex-1 flex items-center justify-center gap-1.5 py-3 text-danger hover:bg-danger/5 text-sm font-medium transition-colors"
+              className="flex flex-1 items-center justify-center gap-1.5 py-3 font-medium text-danger text-sm transition-colors hover:bg-danger/5"
             >
               <IconTrash size={16} />
               <span>Hapus</span>
@@ -218,20 +218,20 @@ export default function Index() {
       <Head title="Akses Group" />
 
       <div className="mb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <h1 className="text-2xl font-bold text-fg flex items-center gap-2">
+            <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
               <IconUserShield size={28} className="text-primary" />
               Akses Group
             </h1>
-            <p className="text-sm text-muted-fg">
+            <p className="text-muted-fg text-sm">
               {rolesData.total || rolesData.data?.length || 0} group terdaftar
             </p>
           </div>
           {canCreateRoles && (
             <button
               onClick={openCreate}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
             >
               <IconCirclePlus size={18} strokeWidth={1.5} />
               Tambah Group
@@ -246,7 +246,7 @@ export default function Index() {
             type="text"
             name="search"
             placeholder="Cari akses group..."
-            className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+            className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
           />
         </form>
       </div>
@@ -254,35 +254,35 @@ export default function Index() {
       {modalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/50" onClick={resetForm} />
-          <div className="relative z-10 w-full max-w-lg mx-4 rounded-2xl bg-bg p-6 shadow-xl border border-border">
-            <div className="flex items-center gap-2 mb-5">
+          <div className="relative z-10 mx-4 w-full max-w-lg rounded-2xl border border-border bg-bg p-6 shadow-xl">
+            <div className="mb-5 flex items-center gap-2">
               <IconUserShield size={20} strokeWidth={1.5} className="text-primary" />
-              <h2 className="text-lg font-semibold text-fg">
+              <h2 className="font-semibold text-fg text-lg">
                 {formIsUpdate ? "Ubah Akses Group" : "Tambah Akses Group"}
               </h2>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="mb-2 block text-sm font-medium text-fg">Nama group</label>
+                <label className="mb-2 block font-medium text-fg text-sm">Nama group</label>
                 <input
                   type="text"
                   placeholder="Masukan nama group"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-sm text-fg outline-none transition focus:border-ring focus:ring-2 focus:ring-ring placeholder:text-muted-fg"
+                  className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
                 />
-                {errors.name && <p className="mt-1 text-sm text-danger">{errors.name}</p>}
+                {errors.name && <p className="mt-1 text-danger text-sm">{errors.name}</p>}
               </div>
               <div className="mb-4">
-                <label className="mb-2 block text-sm font-medium text-fg">Pilih hak akses</label>
-                <div className="max-h-60 overflow-y-auto rounded-xl border border-border p-3 space-y-1">
+                <label className="mb-2 block font-medium text-fg text-sm">Pilih hak akses</label>
+                <div className="max-h-60 space-y-1 overflow-y-auto rounded-xl border border-border p-3">
                   {allPermissions.length === 0 ? (
-                    <p className="text-sm text-muted-fg">Tidak ada hak akses tersedia.</p>
+                    <p className="text-muted-fg text-sm">Tidak ada hak akses tersedia.</p>
                   ) : (
                     allPermissions.map((perm) => (
                       <label
                         key={perm.id}
-                        className="flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer hover:bg-muted"
+                        className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-muted"
                       >
                         <input
                           type="checkbox"
@@ -290,19 +290,19 @@ export default function Index() {
                           onChange={() => togglePermission(perm)}
                           className="rounded border-border text-primary focus:ring-ring"
                         />
-                        <span className="text-sm text-fg">{perm.name}</span>
+                        <span className="text-fg text-sm">{perm.name}</span>
                       </label>
                     ))
                   )}
                 </div>
                 {errors.selectedPermission && (
-                  <p className="mt-1 text-sm text-danger">{errors.selectedPermission}</p>
+                  <p className="mt-1 text-danger text-sm">{errors.selectedPermission}</p>
                 )}
               </div>
               <button
                 type="submit"
                 disabled={processing}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white w-full transition-colors hover:bg-primary/90 disabled:opacity-50"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
                 <IconPencilCheck size={18} />
                 Simpan
@@ -313,7 +313,7 @@ export default function Index() {
       )}
 
       {rolesData.data.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {rolesData.data.map((role) => (
             <RoleCard
               key={role.id}
@@ -334,7 +334,7 @@ export default function Index() {
             canCreateRoles ? (
               <button
                 onClick={openCreate}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white transition-colors hover:bg-primary/90"
               >
                 <IconCirclePlus size={18} />
                 Tambah Group

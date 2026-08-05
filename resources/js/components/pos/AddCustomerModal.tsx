@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { IconX, IconSearch, IconUserCircle, IconCheck } from "@tabler/icons-react";
 import axios from "axios";
+import customers from "@/routes/customers";
 import type { POSCustomer } from "@/types/pos";
 
 interface AddCustomerModalProps {
@@ -48,11 +49,13 @@ export default function AddCustomerModal({
     const timer = setTimeout(async () => {
       setIsSearching(true);
       try {
-        // This will be bound to route customers.search when implemented
-        const response = await axios.get("/apps/customers/search", {
-          params: { q: search },
+        // Reuses the JSON-capable customers index (no dedicated search
+        // endpoint). The index returns a flat JSON array for non-Inertia
+        // requests; any non-array response (HTML, redirect) yields no results.
+        const response = await axios.get(customers.index.url({ query: { search } }), {
+          headers: { Accept: "application/json" },
         });
-        setResults(response.data.data || response.data || []);
+        setResults(Array.isArray(response.data) ? response.data : []);
         setSelectedIndex(-1);
       } catch {
         setResults([]);
@@ -70,7 +73,7 @@ export default function AddCustomerModal({
     }
     setIsCreating(true);
     try {
-      const response = await axios.post("/apps/customers/store-ajax", newCustomer);
+      const response = await axios.post(customers.storeAjax.url(), newCustomer);
       const customer = response.data;
       onSelect(customer);
       setShowCreateForm(false);
@@ -113,31 +116,31 @@ export default function AddCustomerModal({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh]">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-slide-up">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="relative mx-4 w-full max-w-lg animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
+        <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <IconUserCircle size={22} className="text-primary-500" />
-            <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
+            <h3 className="font-semibold text-lg text-slate-800 dark:text-white">
               {showCreateForm ? "Pelanggan Baru" : "Cari Pelanggan"}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
           >
             <IconX size={20} />
           </button>
         </div>
 
         {selectedCustomer && !showCreateForm && (
-          <div className="mx-5 mt-4 p-3 rounded-xl bg-primary-50 dark:bg-primary-950/30 border border-primary-200 dark:border-primary-800/50">
+          <div className="mx-5 mt-4 rounded-xl border border-primary-200 bg-primary-50 p-3 dark:border-primary-800/50 dark:bg-primary-950/30">
             <div className="flex items-center gap-3">
               <IconCheck size={20} className="text-primary-600 dark:text-primary-400" />
               <div>
-                <p className="text-sm font-medium text-primary-800 dark:text-primary-200">
+                <p className="font-medium text-primary-800 text-sm dark:text-primary-200">
                   {selectedCustomer.name}
                 </p>
-                <p className="text-xs text-primary-600 dark:text-primary-400">
+                <p className="text-primary-600 text-xs dark:text-primary-400">
                   {selectedCustomer.no_telp}
                 </p>
               </div>
@@ -151,7 +154,7 @@ export default function AddCustomerModal({
               <div className="relative">
                 <IconSearch
                   size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute top-1/2 left-3 -translate-y-1/2 text-slate-400"
                 />
                 <input
                   type="text"
@@ -160,17 +163,17 @@ export default function AddCustomerModal({
                   onKeyDown={handleKeyDown}
                   placeholder="Cari nama atau nomor telepon..."
                   autoFocus
-                  className="w-full h-11 pl-10 pr-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                  className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white pr-4 pl-10 text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
                 {isSearching && (
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                    <div className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                  <div className="absolute top-1/2 right-3 -translate-y-1/2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="max-h-60 overflow-y-auto px-5 pb-4 space-y-1">
+            <div className="max-h-60 space-y-1 overflow-y-auto px-5 pb-4">
               {results.length > 0
                 ? results.map((customer, index) => (
                     <button
@@ -179,20 +182,20 @@ export default function AddCustomerModal({
                         onSelect(customer);
                         onClose();
                       }}
-                      className={`w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors ${
+                      className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-colors ${
                         index === selectedIndex
                           ? "bg-primary-50 dark:bg-primary-950/30"
                           : "hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
-                      <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 font-medium text-sm">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 font-medium text-slate-500 text-sm dark:bg-slate-700 dark:text-slate-400">
                         {customer.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        <p className="font-medium text-slate-700 text-sm dark:text-slate-300">
                           {customer.name}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                        <p className="text-slate-500 text-xs dark:text-slate-400">
                           {customer.no_telp}
                         </p>
                       </div>
@@ -200,13 +203,13 @@ export default function AddCustomerModal({
                   ))
                 : search.length >= 2 &&
                   !isSearching && (
-                    <div className="text-center py-6">
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mb-3">
+                    <div className="py-6 text-center">
+                      <p className="mb-3 text-slate-500 text-sm dark:text-slate-400">
                         Pelanggan tidak ditemukan
                       </p>
                       <button
                         onClick={() => setShowCreateForm(true)}
-                        className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline"
+                        className="font-medium text-primary-600 text-sm hover:underline dark:text-primary-400"
                       >
                         Buat pelanggan baru
                       </button>
@@ -215,52 +218,52 @@ export default function AddCustomerModal({
             </div>
           </>
         ) : (
-          <div className="p-5 space-y-4">
+          <div className="space-y-4 p-5">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
                 Nama <span className="text-danger-500">*</span>
               </label>
               <input
                 type="text"
                 value={newCustomer.name}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, name: e.target.value }))}
-                className="w-full h-11 px-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="Nama pelanggan"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
                 Telepon <span className="text-danger-500">*</span>
               </label>
               <input
                 type="text"
                 value={newCustomer.phone}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, phone: e.target.value }))}
-                className="w-full h-11 px-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="08xxxxxxxxxx"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
                 Email
               </label>
               <input
                 type="email"
                 value={newCustomer.email}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, email: e.target.value }))}
-                className="w-full h-11 px-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="email@example.com"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
                 Alamat
               </label>
               <textarea
                 value={newCustomer.address}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, address: e.target.value }))}
                 rows={2}
-                className="w-full px-4 py-2 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500"
+                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="Alamat (opsional)"
               />
             </div>
@@ -275,14 +278,14 @@ export default function AddCustomerModal({
                     address: "",
                   });
                 }}
-                className="flex-1 h-11 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                className="h-11 flex-1 rounded-xl border-2 border-slate-200 font-medium text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
               >
                 Batal
               </button>
               <button
                 onClick={handleCreateCustomer}
                 disabled={isCreating || !newCustomer.name || !newCustomer.phone}
-                className="flex-1 h-11 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium shadow-lg shadow-primary-500/30 hover:shadow-xl disabled:opacity-50 transition-all"
+                className="h-11 flex-1 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 font-medium text-white shadow-lg shadow-primary-500/30 transition-all hover:shadow-xl disabled:opacity-50"
               >
                 {isCreating ? "Menyimpan..." : "Simpan"}
               </button>
