@@ -41,13 +41,13 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             onChange={(e) => setData("email", e.target.value)}
             className={`h-11 w-full rounded-xl border bg-white px-4 text-[var(--fg)] text-sm outline-none transition-all dark:bg-[var(--overlay)] ${
               errors.email
-                ? "border-danger-500"
+                ? "border-danger"
                 : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
             }`}
             autoComplete="username"
             autoFocus
           />
-          {errors.email && <p className="mt-1 text-danger-500 text-xs">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-danger text-xs">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -61,7 +61,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
               placeholder="Minimal 8 karakter"
               className={`h-11 w-full rounded-xl border bg-white px-4 pr-11 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="new-password"
@@ -75,7 +75,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1 text-danger-500 text-xs">{errors.password}</p>}
+          {errors.password && <p className="mt-1 text-danger text-xs">{errors.password}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -91,7 +91,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
               placeholder="Ulangi password"
               className={`h-11 w-full rounded-xl border bg-white px-4 pr-11 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password_confirmation
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="new-password"
@@ -106,7 +106,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             </button>
           </div>
           {errors.password_confirmation && (
-            <p className="mt-1 text-danger-500 text-xs">{errors.password_confirmation}</p>
+            <p className="mt-1 text-danger text-xs">{errors.password_confirmation}</p>
           )}
         </div>
 

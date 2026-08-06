@@ -63,7 +63,7 @@ export default function CrmRemindersIndex({ campaigns, filters = {} }: IndexProp
       <div className="space-y-6">
         <div>
           <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-            <IconBellRinging size={26} className="text-primary-500" />
+            <IconBellRinging size={26} className="text-primary" />
             CRM Reminders
           </h1>
           <p className="text-smtext-muted-fg">
@@ -162,7 +162,7 @@ export default function CrmRemindersIndex({ campaigns, filters = {} }: IndexProp
                     <div className="space-y-1">
                       <Link
                         href={crmCampaigns.show(campaign.id).url}
-                        className="font-semibold text-fg text-sm hover:text-primary-600"
+                        className="font-semibold text-fg text-sm hover:text-primary"
                       >
                         {campaign.name}
                       </Link>

@@ -51,7 +51,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
 
       <div className="mb-6">
         <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-          <IconBuildingBank size={28} className="text-primary-500" />
+          <IconBuildingBank size={28} className="text-primary" />
           Rekening Bank
         </h1>
         <p className="mt-1 text-muted-fg text-sm">Kelola rekening bank untuk pembayaran transfer</p>
@@ -64,7 +64,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
             {canUpdatePaymentSettings && (
               <Link
                 href={settings.bankAccounts.create.url()}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-3 py-2 font-medium text-sm text-white transition-colors hover:bg-primary-600"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-3 py-2 font-medium text-sm text-primary-fg transition-colors hover:bg-primary/90"
               >
                 <IconPlus size={18} />
                 Tambah Bank
@@ -106,7 +106,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
                           onClick={() => handleToggle(bank)}
                           className={`rounded-lg px-3 py-1.5 font-medium text-xs transition-colors ${
                             bank.is_active
-                              ? "bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400"
+                              ? "bg-success-subtle text-success"
                               : "bg-muted text-muted-fg"
                           }`}
                         >
@@ -120,7 +120,7 @@ export default function BankAccounts({ bankAccounts = [] }: BankAccountsProps) {
                         </Link>
                         <button
                           onClick={() => handleDelete(bank)}
-                          className="rounded-lg p-2 text-danger-500 transition-colors hover:bg-danger/10"
+                          className="rounded-lg p-2 text-danger transition-colors hover:bg-danger/10"
                         >
                           <IconTrash size={18} />
                         </button>

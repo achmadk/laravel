@@ -54,7 +54,7 @@ export default function Register({ botGuard }: RegisterProps) {
         />
 
         {errors.human && (
-          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-subtle px-4 py-3 text-danger text-sm">
             {errors.human}
           </div>
         )}
@@ -73,14 +73,14 @@ export default function Register({ botGuard }: RegisterProps) {
               placeholder="Nama Anda"
               className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.name
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="name"
               autoFocus
             />
           </div>
-          {errors.name && <p className="mt-1 text-danger-500 text-xs">{errors.name}</p>}
+          {errors.name && <p className="mt-1 text-danger text-xs">{errors.name}</p>}
         </div>
 
         {/* Email */}
@@ -97,13 +97,13 @@ export default function Register({ botGuard }: RegisterProps) {
               placeholder="nama@email.com"
               className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.email
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="username"
             />
           </div>
-          {errors.email && <p className="mt-1 text-danger-500 text-xs">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-danger text-xs">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -120,7 +120,7 @@ export default function Register({ botGuard }: RegisterProps) {
               placeholder="Minimal 8 karakter"
               className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="new-password"
@@ -134,7 +134,7 @@ export default function Register({ botGuard }: RegisterProps) {
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1 text-danger-500 text-xs">{errors.password}</p>}
+          {errors.password && <p className="mt-1 text-danger text-xs">{errors.password}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -153,7 +153,7 @@ export default function Register({ botGuard }: RegisterProps) {
               placeholder="Ulangi password"
               className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password_confirmation
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="new-password"
@@ -168,7 +168,7 @@ export default function Register({ botGuard }: RegisterProps) {
             </button>
           </div>
           {errors.password_confirmation && (
-            <p className="mt-1 text-danger-500 text-xs">{errors.password_confirmation}</p>
+            <p className="mt-1 text-danger text-xs">{errors.password_confirmation}</p>
           )}
         </div>
 

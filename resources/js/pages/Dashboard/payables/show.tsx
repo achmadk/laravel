@@ -113,6 +113,7 @@ export default function PayableShow({ payable, bankAccounts = [] }: ShowProps) {
     });
   }
 
+  // oxlint-disable-next-line no-unused-vars
   function handlePrint() {
     window.print();
   }

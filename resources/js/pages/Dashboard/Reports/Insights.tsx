@@ -60,7 +60,7 @@ const coverageStatusConfig: Record<string, { label: string; className: string }>
   },
   healthy: {
     label: "Sehat",
-    className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
+    className: "bg-success-subtle text-success",
   },
   no_movement: {
     label: "Tidak Bergerak",
@@ -71,7 +71,7 @@ const coverageStatusConfig: Record<string, { label: string; className: string }>
 const promoStatusConfig: Record<string, { label: string; className: string }> = {
   active: {
     label: "Aktif",
-    className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
+    className: "bg-success-subtle text-success",
   },
   scheduled: {
     label: "Terjadwal",
@@ -347,7 +347,7 @@ function SummaryCard({
 }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} shadow-lg`}
     >
       <div className="relative z-10">
         <div className="mb-2 flex items-center gap-2">
@@ -442,8 +442,11 @@ export default function Insights({
     ...filters,
   });
 
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCashier, setSelectedCashier] = useState<Cashier | null>(null);
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   const salesHourChartRef = useRef<HTMLCanvasElement | null>(null);
@@ -588,7 +591,7 @@ export default function Insights({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-              <IconChartBar size={28} className="text-primary-500" />
+              <IconChartBar size={28} className="text-primary" />
               Advanced Sales Insights
             </h1>
             <p className="text-muted-fg text-sm">
@@ -615,14 +618,14 @@ export default function Insights({
             value={formatCurrency(summary?.revenue_total ?? 0)}
             description={`${summary?.orders_count ?? 0} transaksi`}
             icon={IconReceipt2}
-            gradient="from-primary-500 to-primary-700"
+            gradient="from-primary to-primary/70 text-primary-fg"
           />
           <SummaryCard
             title="Profit"
             value={formatCurrency(summary?.profit_total ?? 0)}
             description={`Rata-rata ${formatCurrency(summary?.average_order ?? 0)}`}
             icon={IconCoin}
-            gradient="from-emerald-500 to-emerald-700"
+            gradient="from-success to-success/70 text-success-fg"
           />
           <SummaryCard
             title="Item Terjual"
@@ -720,7 +723,7 @@ export default function Insights({
                 )}
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary-600"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 font-medium text-primary-fg transition-colors hover:bg-primary/90"
                 >
                   <IconSearch size={18} />
                   Terapkan

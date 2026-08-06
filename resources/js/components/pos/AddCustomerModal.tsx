@@ -119,7 +119,7 @@ export default function AddCustomerModal({
       <div className="relative mx-4 w-full max-w-lg animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
         <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <IconUserCircle size={22} className="text-primary-500" />
+            <IconUserCircle size={22} className="text-primary" />
             <h3 className="font-semibold text-lg text-slate-800 dark:text-white">
               {showCreateForm ? "Pelanggan Baru" : "Cari Pelanggan"}
             </h3>
@@ -133,16 +133,12 @@ export default function AddCustomerModal({
         </div>
 
         {selectedCustomer && !showCreateForm && (
-          <div className="mx-5 mt-4 rounded-xl border border-primary-200 bg-primary-50 p-3 dark:border-primary-800/50 dark:bg-primary-950/30">
+          <div className="mx-5 mt-4 rounded-xl border border-primary-subtle bg-primary-subtle p-3">
             <div className="flex items-center gap-3">
-              <IconCheck size={20} className="text-primary-600 dark:text-primary-400" />
+              <IconCheck size={20} className="text-primary" />
               <div>
-                <p className="font-medium text-primary-800 text-sm dark:text-primary-200">
-                  {selectedCustomer.name}
-                </p>
-                <p className="text-primary-600 text-xs dark:text-primary-400">
-                  {selectedCustomer.no_telp}
-                </p>
+                <p className="font-medium text-primary text-sm">{selectedCustomer.name}</p>
+                <p className="text-primary text-xs">{selectedCustomer.no_telp}</p>
               </div>
             </div>
           </div>
@@ -163,11 +159,11 @@ export default function AddCustomerModal({
                   onKeyDown={handleKeyDown}
                   placeholder="Cari nama atau nomor telepon..."
                   autoFocus
-                  className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white pr-4 pl-10 text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white pr-4 pl-10 text-slate-800 placeholder-slate-400 transition-all focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
                 {isSearching && (
                   <div className="absolute top-1/2 right-3 -translate-y-1/2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                   </div>
                 )}
               </div>
@@ -184,7 +180,7 @@ export default function AddCustomerModal({
                       }}
                       className={`flex w-full items-center gap-3 rounded-xl p-3 text-left transition-colors ${
                         index === selectedIndex
-                          ? "bg-primary-50 dark:bg-primary-950/30"
+                          ? "bg-primary-subtle"
                           : "hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
@@ -209,7 +205,7 @@ export default function AddCustomerModal({
                       </p>
                       <button
                         onClick={() => setShowCreateForm(true)}
-                        className="font-medium text-primary-600 text-sm hover:underline dark:text-primary-400"
+                        className="font-medium text-primary text-sm hover:underline"
                       >
                         Buat pelanggan baru
                       </button>
@@ -221,25 +217,25 @@ export default function AddCustomerModal({
           <div className="space-y-4 p-5">
             <div>
               <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
-                Nama <span className="text-danger-500">*</span>
+                Nama <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
                 value={newCustomer.name}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, name: e.target.value }))}
-                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="Nama pelanggan"
               />
             </div>
             <div>
               <label className="mb-1 block font-medium text-slate-700 text-sm dark:text-slate-300">
-                Telepon <span className="text-danger-500">*</span>
+                Telepon <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
                 value={newCustomer.phone}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, phone: e.target.value }))}
-                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="08xxxxxxxxxx"
               />
             </div>
@@ -251,7 +247,7 @@ export default function AddCustomerModal({
                 type="email"
                 value={newCustomer.email}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, email: e.target.value }))}
-                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-slate-800 focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="email@example.com"
               />
             </div>
@@ -263,7 +259,7 @@ export default function AddCustomerModal({
                 value={newCustomer.address}
                 onChange={(e) => setNewCustomer((prev) => ({ ...prev, address: e.target.value }))}
                 rows={2}
-                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-slate-800 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-slate-800 focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 placeholder="Alamat (opsional)"
               />
             </div>
@@ -285,7 +281,7 @@ export default function AddCustomerModal({
               <button
                 onClick={handleCreateCustomer}
                 disabled={isCreating || !newCustomer.name || !newCustomer.phone}
-                className="h-11 flex-1 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 font-medium text-white shadow-lg shadow-primary-500/30 transition-all hover:shadow-xl disabled:opacity-50"
+                className="h-11 flex-1 rounded-xl bg-primary font-medium text-primary-fg shadow-lg shadow-primary/30 transition-all hover:shadow-xl disabled:opacity-50"
               >
                 {isCreating ? "Menyimpan..." : "Simpan"}
               </button>

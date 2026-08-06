@@ -28,6 +28,7 @@ import { logout } from "@/routes";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const page = usePage<any>();
+  // oxlint-disable-next-line no-unused-vars
   const { auth, notifications: pageNotifications, flash } = page.props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

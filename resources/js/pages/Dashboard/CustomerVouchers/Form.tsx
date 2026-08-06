@@ -72,7 +72,7 @@ export default function CustomerVoucherForm({
         <div>
           <Link
             href={customerVouchers.index.url()}
-            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
           >
             <IconArrowLeft size={16} />
             Kembali ke voucher customer
@@ -88,7 +88,7 @@ export default function CustomerVoucherForm({
         <form onSubmit={submit} className="space-y-6">
           <section className="rounded-2xl border border-border bg-bg p-5">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-950/40 dark:text-primary-300">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-subtle text-primary">
                 <IconCreditCard size={22} />
               </div>
               <div>
@@ -234,7 +234,7 @@ export default function CustomerVoucherForm({
             <button
               type="submit"
               disabled={processing}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 font-medium text-white hover:bg-primary-600 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 font-medium text-primary-fg hover:bg-primary/90 disabled:opacity-50"
             >
               <IconDeviceFloppy size={18} />
               {processing ? "Menyimpan..." : "Simpan"}

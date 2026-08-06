@@ -42,6 +42,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
     setData,
     post,
     put,
+    // oxlint-disable-next-line no-unused-vars
     delete: destroy,
     processing,
     reset,

@@ -94,7 +94,7 @@ export default function POSLayout({ children }: PropsWithChildren) {
             </Link>
             <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
             <div className="flex items-center gap-2">
-              <IconShoppingCart size={20} className="text-primary-500" />
+              <IconShoppingCart size={20} className="text-primary" />
               <div>
                 <h1 className="font-semibold text-slate-800 text-sm leading-tight dark:text-white">
                   {storeProfile?.name || "POS"}
@@ -114,14 +114,14 @@ export default function POSLayout({ children }: PropsWithChildren) {
 
           <div className="flex items-center gap-2">
             {activeCashierShift ? (
-              <span className="flex items-center gap-1.5 rounded-full bg-success-100 px-2.5 py-1 font-medium text-success-700 text-xs dark:bg-success-900/50 dark:text-success-400">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success-500" />
+              <span className="flex items-center gap-1.5 rounded-full bg-success-subtle px-2.5 py-1 font-medium text-success text-xs">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
                 Shift Aktif
               </span>
             ) : (
               <button
                 onClick={openModal}
-                className="rounded-lg bg-warning-100 px-3 py-1.5 font-medium text-warning-700 text-xs transition-colors hover:bg-warning-200 dark:bg-warning-900/50 dark:text-warning-400 dark:hover:bg-warning-900"
+                className="rounded-lg bg-warning-subtle px-3 py-1.5 font-medium text-warning text-xs transition-colors hover:bg-warning-subtle"
               >
                 Buka Shift
               </button>
@@ -194,7 +194,7 @@ export default function POSLayout({ children }: PropsWithChildren) {
                   value={shiftNotes}
                   onChange={(e) => setShiftNotes(e.target.value)}
                   placeholder="Tambahkan catatan..."
-                  className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-800 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-800 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                 />
               </div>
 
@@ -208,7 +208,7 @@ export default function POSLayout({ children }: PropsWithChildren) {
                 <button
                   onClick={handleOpenShift}
                   disabled={isOpening}
-                  className="h-12 flex-1 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 font-semibold text-sm text-white transition-all hover:shadow-lg hover:shadow-primary-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="h-12 flex-1 rounded-xl bg-primary font-semibold text-sm text-primary-fg transition-all hover:shadow-lg hover:shadow-primary/30 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isOpening ? "Membuka..." : "Buka Shift"}
                 </button>

@@ -153,7 +153,9 @@ export default function Sales({
     [customers, filterData.customer_id],
   );
 
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCashier, setSelectedCashier] = useState<Cashier | null>(cashierFromFilters);
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(customerFromFilters);
 
   useEffect(() => setSelectedCashier(cashierFromFilters), [cashierFromFilters]);

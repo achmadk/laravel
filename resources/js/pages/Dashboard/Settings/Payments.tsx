@@ -108,7 +108,7 @@ export default function Payment({
 
       <div className="mb-6">
         <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-          <IconCreditCard size={28} className="text-primary-500" />
+          <IconCreditCard size={28} className="text-primary" />
           Pengaturan Payment Gateway
         </h1>
         <p className="mt-1 text-muted-fg text-sm">Konfigurasi metode pembayaran dan gateway</p>
@@ -145,7 +145,7 @@ export default function Payment({
               ))}
             </select>
             {errors?.default_gateway && (
-              <small className="mt-1 text-danger-500 text-xs">{errors.default_gateway}</small>
+              <small className="mt-1 text-danger text-xs">{errors.default_gateway}</small>
             )}
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function Payment({
                 checked={data.bank_transfer_enabled}
                 onChange={(e) => setData("bank_transfer_enabled", e.target.checked)}
                 disabled={!canUpdatePaymentSettings}
-                className="rounded border-border text-primary-500"
+                className="rounded border-border text-primary"
               />
               {data.bank_transfer_enabled ? "Aktif" : "Nonaktif"}
             </label>
@@ -177,7 +177,7 @@ export default function Payment({
           </p>
           <a
             href={settings.bankAccounts.index.url()}
-            className="inline-flex items-center gap-2 font-medium text-primary-500 text-sm hover:text-primary-600"
+            className="inline-flex items-center gap-2 font-medium text-primary text-sm hover:text-primary"
           >
             Kelola Rekening Bank &rarr;
           </a>
@@ -199,7 +199,7 @@ export default function Payment({
                 checked={data.midtrans_enabled}
                 onChange={(e) => setData("midtrans_enabled", e.target.checked)}
                 disabled={!canUpdatePaymentSettings}
-                className="rounded border-border text-primary-500"
+                className="rounded border-border text-primary"
               />
               {data.midtrans_enabled ? "Aktif" : "Nonaktif"}
             </label>
@@ -228,7 +228,7 @@ export default function Payment({
                   className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.midtrans_server_key && (
-                  <p className="mt-1 text-danger-500 text-xs">{errors.midtrans_server_key}</p>
+                  <p className="mt-1 text-danger text-xs">{errors.midtrans_server_key}</p>
                 )}
               </div>
               <div>
@@ -242,7 +242,7 @@ export default function Payment({
                   className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.midtrans_client_key && (
-                  <p className="mt-1 text-danger-500 text-xs">{errors.midtrans_client_key}</p>
+                  <p className="mt-1 text-danger text-xs">{errors.midtrans_client_key}</p>
                 )}
               </div>
             </div>
@@ -256,7 +256,7 @@ export default function Payment({
                 checked={data.midtrans_production}
                 onChange={(e) => setData("midtrans_production", e.target.checked)}
                 disabled={!canUpdatePaymentSettings}
-                className="rounded border-border text-primary-500"
+                className="rounded border-border text-primary"
               />
               <span className="text-muted-fg text-sm">Mode Produksi</span>
             </label>
@@ -279,7 +279,7 @@ export default function Payment({
                 checked={data.xendit_enabled}
                 onChange={(e) => setData("xendit_enabled", e.target.checked)}
                 disabled={!canUpdatePaymentSettings}
-                className="rounded border-border text-primary-500"
+                className="rounded border-border text-primary"
               />
               {data.xendit_enabled ? "Aktif" : "Nonaktif"}
             </label>
@@ -306,7 +306,7 @@ export default function Payment({
                   className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.xendit_secret_key && (
-                  <p className="mt-1 text-danger-500 text-xs">{errors.xendit_secret_key}</p>
+                  <p className="mt-1 text-danger text-xs">{errors.xendit_secret_key}</p>
                 )}
               </div>
               <div>
@@ -320,7 +320,7 @@ export default function Payment({
                   className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
                 />
                 {errors?.xendit_public_key && (
-                  <p className="mt-1 text-danger-500 text-xs">{errors.xendit_public_key}</p>
+                  <p className="mt-1 text-danger text-xs">{errors.xendit_public_key}</p>
                 )}
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function Payment({
                 className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm placeholder:text-muted-fg focus:ring-2 focus:ring-ring"
               />
               {errors?.xendit_callback_token && (
-                <p className="mt-1 text-danger-500 text-xs">{errors.xendit_callback_token}</p>
+                <p className="mt-1 text-danger text-xs">{errors.xendit_callback_token}</p>
               )}
             </div>
             {renderSecretHint(
@@ -356,7 +356,7 @@ export default function Payment({
                 checked={data.xendit_production}
                 onChange={(e) => setData("xendit_production", e.target.checked)}
                 disabled={!canUpdatePaymentSettings}
-                className="rounded border-border text-primary-500"
+                className="rounded border-border text-primary"
               />
               <span className="text-muted-fg text-sm">Mode Produksi</span>
             </label>
@@ -438,7 +438,7 @@ export default function Payment({
           <button
             type="submit"
             disabled={processing || !canUpdatePaymentSettings}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 font-medium text-primary-fg transition-colors hover:bg-primary/90 disabled:opacity-50"
           >
             <IconDeviceFloppy size={18} />
             {processing ? "Menyimpan..." : "Simpan Konfigurasi"}

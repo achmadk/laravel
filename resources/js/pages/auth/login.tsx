@@ -54,13 +54,13 @@ export default function Login({ status, canResetPassword, canRegister, botGuard 
         />
 
         {errors.human && (
-          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-danger-subtle px-4 py-3 text-danger text-sm">
             {errors.human}
           </div>
         )}
 
         {status && (
-          <div className="stagger-1 animate-fade-up rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+          <div className="stagger-1 animate-fade-up rounded-xl bg-success-subtle p-4 text-sm text-success">
             {status}
           </div>
         )}
@@ -79,14 +79,14 @@ export default function Login({ status, canResetPassword, canRegister, botGuard 
               placeholder="nama@email.com"
               className={`h-11 w-full rounded-xl border bg-white pr-4 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.email
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="username"
               autoFocus
             />
           </div>
-          {errors.email && <p className="mt-1 text-danger-500 text-xs">{errors.email}</p>}
+          {errors.email && <p className="mt-1 text-danger text-xs">{errors.email}</p>}
         </div>
 
         {/* Password */}
@@ -103,7 +103,7 @@ export default function Login({ status, canResetPassword, canRegister, botGuard 
               placeholder="••••••••"
               className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoComplete="current-password"
@@ -117,7 +117,7 @@ export default function Login({ status, canResetPassword, canRegister, botGuard 
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1 text-danger-500 text-xs">{errors.password}</p>}
+          {errors.password && <p className="mt-1 text-danger text-xs">{errors.password}</p>}
         </div>
 
         {/* Remember & Forgot */}

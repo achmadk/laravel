@@ -74,7 +74,7 @@ export default function Show({ segment, customers = [] }: ShowProps) {
         <Link
           // href={route("customer-segments.index")}
           href={customerSegments.index().url}
-          className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+          className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke segment customer
@@ -201,7 +201,7 @@ export default function Show({ segment, customers = [] }: ShowProps) {
                 <button
                   type="submit"
                   disabled={processing}
-                  className="w-full rounded-xl bg-primary-500 px-4 py-2.5 font-medium text-sm text-white hover:bg-primary-600 disabled:opacity-50"
+                  className="w-full rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-primary-fg hover:bg-primary/90 disabled:opacity-50"
                 >
                   Tambahkan ke Segment
                 </button>
@@ -211,7 +211,7 @@ export default function Show({ segment, customers = [] }: ShowProps) {
 
           <div className="rounded-2xl border border-border bg-bg p-5">
             <div className="mb-4 flex items-center gap-2">
-              <IconUsersGroup size={18} className="text-primary-500" />
+              <IconUsersGroup size={18} className="text-primary" />
               <h2 className="font-semibold text-fg text-lg">Ringkasan Rule</h2>
             </div>
             <dl className="space-y-3 text-sm">

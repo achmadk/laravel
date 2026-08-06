@@ -39,7 +39,7 @@ export default function ProductGrid({
             onClick={() => onCategoryChange(null)}
             className={`whitespace-nowrap rounded-full px-4 py-2 font-medium text-sm transition-all ${
               selectedCategory === null
-                ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30"
+                ? "bg-primary text-primary-fg shadow-lg shadow-primary/30"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
             }`}
           >
@@ -52,7 +52,7 @@ export default function ProductGrid({
               onClick={() => onCategoryChange(cat.id)}
               className={`cursor-pointer whitespace-nowrap rounded-full px-4 py-2 font-medium text-sm transition-all ${
                 selectedCategory === cat.id
-                  ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30"
+                  ? "bg-primary text-primary-fg shadow-lg shadow-primary/30"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
               }`}
             >
@@ -71,7 +71,7 @@ export default function ProductGrid({
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+            <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -85,14 +85,14 @@ export default function ProductGrid({
                   disabled={product.stock <= 0}
                   className={`group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border-2 bg-white transition-all duration-200 dark:bg-slate-900 ${
                     isInCart
-                      ? "border-primary-500 shadow-md shadow-primary-500/20 dark:border-primary-400"
+                      ? "border-primary shadow-md shadow-primary/20"
                       : product.stock <= 0
                         ? "border-slate-200 opacity-60 dark:border-slate-700"
-                        : "border-slate-200 hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-lg dark:border-slate-700 dark:hover:border-primary-600"
+                        : "border-slate-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg dark:border-slate-700"
                   }`}
                 >
                   {isInCart && (
-                    <div className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary-500 font-bold text-white text-xs shadow-lg">
+                    <div className="absolute top-2 right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-primary font-bold text-primary-fg text-xs shadow-lg">
                       ✓
                     </div>
                   )}
@@ -125,7 +125,7 @@ export default function ProductGrid({
 
                     {product.stock <= 0 && (
                       <div className="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-slate-900/60">
-                        <span className="rounded-full bg-danger-500 px-3 py-1 font-bold text-white text-xs">
+                        <span className="rounded-full bg-danger px-3 py-1 font-bold text-danger-fg text-xs">
                           HABIS
                         </span>
                       </div>
@@ -136,7 +136,7 @@ export default function ProductGrid({
                     <p className="line-clamp-2 font-medium text-slate-700 text-xs leading-snug dark:text-slate-300">
                       {product.title}
                     </p>
-                    <p className="font-bold text-primary-600 text-sm dark:text-primary-400">
+                    <p className="font-bold text-primary text-sm">
                       {formatPrice(product.sell_price)}
                     </p>
                   </div>

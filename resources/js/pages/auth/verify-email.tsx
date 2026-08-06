@@ -27,7 +27,7 @@ export default function VerifyEmail({ status, botGuard }: VerifyEmailProps) {
       <Head title="Verifikasi Email" />
 
       {status === "verification-link-sent" && (
-        <div className="stagger-1 mb-6 animate-fade-up rounded-xl bg-success-50 p-4 text-sm text-success-700 dark:bg-success-950/50 dark:text-success-400">
+        <div className="stagger-1 mb-6 animate-fade-up rounded-xl bg-success-subtle p-4 text-sm text-success">
           Link verifikasi baru sudah dikirim ke email Anda.
         </div>
       )}
@@ -39,7 +39,7 @@ export default function VerifyEmail({ status, botGuard }: VerifyEmailProps) {
         </div>
 
         {errors.human && (
-          <div className="mb-5 rounded-xl bg-danger-50 px-4 py-3 text-danger-600 text-sm dark:bg-danger-950/40 dark:text-danger-300">
+          <div className="mb-5 rounded-xl bg-danger-subtle px-4 py-3 text-danger text-sm">
             {errors.human}
           </div>
         )}

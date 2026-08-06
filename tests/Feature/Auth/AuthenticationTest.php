@@ -1,19 +1,14 @@
 <?php
 
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
 
     $response->assertStatus(200);
 });
-
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
-    // Give the user a permission so the login controller routes to a specific page
-    Permission::create(['name' => 'dashboard-access']);
-    $user->givePermissionTo('dashboard-access');
 
     $response = $this->post('/login', [
         'email' => $user->email,
@@ -21,7 +16,33 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('dashboard.access', absolute: false));
+});
+
+test('unverified users are redirected to the access page when verification is disabled', function () {
+    $user = User::factory()->unverified()->create();
+
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('dashboard.access', absolute: false));
+});
+
+test('unverified users are redirected to email verification when verification is enforced', function () {
+    config(['security.auth.verify_email' => true]);
+
+    $user = User::factory()->unverified()->create();
+
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('verification.notice', absolute: false));
 });
 
 test('users can not authenticate with invalid password', function () {

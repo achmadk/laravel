@@ -143,7 +143,7 @@ export default function CrmCampaignsIndex({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-              <IconMailForward size={26} className="text-primary-500" />
+              <IconMailForward size={26} className="text-primary" />
               CRM Campaigns
             </h1>
             <p className="text-smtext-muted-fg">
@@ -153,7 +153,7 @@ export default function CrmCampaignsIndex({
           {can("crm-campaigns-create") && (
             <Link
               href={crmCampaigns.create.url()}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-sm text-primary-fg shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
             >
               <IconCirclePlus size={18} />
               Buat Campaign
@@ -312,7 +312,7 @@ export default function CrmCampaignsIndex({
                       <div className="space-y-1">
                         <Link
                           href={crmCampaigns.show.url({ crm_campaign: campaign.id })}
-                          className="font-semibold text-fg text-sm hover:text-primary-600"
+                          className="font-semibold text-fg text-sm hover:text-primary"
                         >
                           {campaign.name}
                         </Link>

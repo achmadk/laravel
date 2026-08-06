@@ -60,7 +60,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
         <div className="flex items-center justify-between">
           <div>
             <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-              <IconBuildingBank size={28} className="text-primary-500" />
+              <IconBuildingBank size={28} className="text-primary" />
               {isEdit ? "Edit Rekening Bank" : "Tambah Rekening Bank"}
             </h1>
             <p className="mt-1 text-muted-fg text-sm">
@@ -90,9 +90,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
                 disabled={!canUpdatePaymentSettings}
                 className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
               />
-              {errors.bank_name && (
-                <p className="mt-1 text-danger-500 text-xs">{errors.bank_name}</p>
-              )}
+              {errors.bank_name && <p className="mt-1 text-danger text-xs">{errors.bank_name}</p>}
             </div>
             <div>
               <label className="mb-2 block font-medium text-fg text-sm">Nomor Rekening</label>
@@ -104,7 +102,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
                 className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
               />
               {errors.account_number && (
-                <p className="mt-1 text-danger-500 text-xs">{errors.account_number}</p>
+                <p className="mt-1 text-danger text-xs">{errors.account_number}</p>
               )}
             </div>
           </div>
@@ -118,7 +116,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
               className="h-11 w-full rounded-xl border border-input bg-muted px-4 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
             />
             {errors.account_name && (
-              <p className="mt-1 text-danger-500 text-xs">{errors.account_name}</p>
+              <p className="mt-1 text-danger text-xs">{errors.account_name}</p>
             )}
           </div>
 
@@ -132,7 +130,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
                 disabled={!canUpdatePaymentSettings}
                 className="h-11 w-full rounded-xl border border-input bg-bg px-3 text-fg text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-1.5 file:font-medium file:text-primary-fg file:text-sm hover:file:bg-primary/90"
               />
-              {errors.logo && <p className="mt-1 text-danger-500 text-xs">{errors.logo}</p>}
+              {errors.logo && <p className="mt-1 text-danger text-xs">{errors.logo}</p>}
             </div>
             <div className="flex items-end">
               <label className="flex items-center gap-2 text-fg text-sm">
@@ -141,7 +139,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
                   checked={data.is_active}
                   onChange={(e) => setData("is_active", e.target.checked)}
                   disabled={!canUpdatePaymentSettings}
-                  className="rounded border-border text-primary-600 focus:ring-primary-500"
+                  className="rounded border-border text-primary focus:ring-primary"
                 />
                 Aktif
               </label>
@@ -152,7 +150,7 @@ export default function BankAccountForm({ bankAccount = null }: BankAccountFormP
             <button
               type="submit"
               disabled={processing || !canUpdatePaymentSettings}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2 font-semibold text-sm text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-semibold text-sm text-primary-fg transition-colors hover:bg-primary/90 disabled:opacity-50"
             >
               <IconCheck size={18} />
               {isEdit ? "Update" : "Simpan"}

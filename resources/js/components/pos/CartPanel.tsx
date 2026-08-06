@@ -41,9 +41,9 @@ function CartItemComponent({
   onRemove: (cartId: number) => void;
   isRemoving: boolean;
 }) {
-  const quantity = Number(item.qty || 0);
-  const itemPrice = Number(item.price || 0);
-  const unitPrice = Number(item.product?.sell_price || 0) || itemPrice / quantity || 0;
+  const quantity = Number(item?.qty ?? 0);
+  const itemPrice = Number(item?.price ?? 0);
+  const unitPrice = Number(item?.product?.sell_price ?? 0) || itemPrice / quantity || 0;
   const subtotal = itemPrice;
 
   return (
@@ -71,16 +71,14 @@ function CartItemComponent({
         <p className="mt-0.5 text-slate-500 text-xs dark:text-slate-400">
           {formatPrice(unitPrice)} × {item.qty}
         </p>
-        <p className="mt-1 font-semibold text-primary-600 text-sm dark:text-primary-400">
-          {formatPrice(subtotal)}
-        </p>
+        <p className="mt-1 font-semibold text-primary text-sm">{formatPrice(subtotal)}</p>
       </div>
 
       <div className="flex flex-col items-end justify-between">
         <button
           onClick={() => onRemove(item.id)}
           disabled={isRemoving}
-          className="rounded-lg p-1.5 text-slate-400 opacity-0 transition-colors hover:bg-danger-50 hover:text-danger-500 group-hover:opacity-100 dark:hover:bg-danger-950/50"
+          className="cursor-pointer rounded-lg p-1.5 text-slate-400 opacity-0 transition-colors hover:bg-danger-subtle hover:text-danger group-hover:opacity-100"
         >
           <IconTrash size={16} />
         </button>
@@ -89,7 +87,7 @@ function CartItemComponent({
           <button
             onClick={() => onUpdateQty(item.id, Math.max(1, item.qty - 1))}
             disabled={item.qty <= 1}
-            className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+            className="cursor-pointer flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           >
             <IconMinus size={14} />
           </button>
@@ -98,7 +96,7 @@ function CartItemComponent({
           </span>
           <button
             onClick={() => onUpdateQty(item.id, item.qty + 1)}
-            className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+            className="cursor-pointer flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
           >
             <IconPlus size={14} />
           </button>
@@ -129,8 +127,8 @@ export default function CartPanel({
   removingItemId,
   className = "",
 }: CartPanelProps) {
-  const totalItems = items.reduce((sum, item) => sum + Number(item.qty || 0), 0);
-  const subtotal = items.reduce((sum, item) => sum + Number(item.price || 0), 0);
+  const totalItems = items.reduce((sum, item) => sum + Number(item?.qty ?? 0), 0);
+  const subtotal = items.reduce((sum, item) => sum + Number(item?.price ?? 0), 0);
 
   return (
     <div className={`flex h-full flex-col ${className}`}>
@@ -140,7 +138,7 @@ export default function CartPanel({
           <h2 className="font-semibold text-base text-slate-800 dark:text-white">Keranjang</h2>
         </div>
         {totalItems > 0 && (
-          <span className="rounded-full bg-primary-100 px-2.5 py-0.5 font-bold text-primary-700 text-xs dark:bg-primary-900/50 dark:text-primary-300">
+          <span className="rounded-full bg-primary-subtle px-2.5 py-0.5 font-bold text-primary text-xs">
             {totalItems} item
           </span>
         )}

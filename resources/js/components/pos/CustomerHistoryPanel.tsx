@@ -59,12 +59,12 @@ export default function CustomerHistoryPanel({
     switch (status) {
       case "paid":
       case "settlement":
-        return "bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400";
+        return "bg-success-subtle text-success";
       case "pending":
-        return "bg-warning-100 text-warning-700 dark:bg-warning-900/30 dark:text-warning-400";
+        return "bg-warning-subtle text-warning";
       case "failed":
       case "expire":
-        return "bg-danger-100 text-danger-700 dark:bg-danger-900/30 dark:text-danger-400";
+        return "bg-danger-subtle text-danger";
       default:
         return "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400";
     }
@@ -75,7 +75,7 @@ export default function CustomerHistoryPanel({
       return (
         <button
           onClick={handleOpen}
-          className="flex items-center gap-2 text-slate-500 text-sm transition-colors hover:text-primary-600 dark:text-slate-400 dark:hover:text-primary-400"
+          className="flex items-center gap-2 text-slate-500 text-sm transition-colors hover:text-primary dark:text-slate-400"
         >
           <IconHistory size={16} />
           Riwayat
@@ -91,7 +91,7 @@ export default function CustomerHistoryPanel({
       <div className="relative mx-4 w-full max-w-lg animate-slide-up overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
         <div className="flex items-center justify-between border-slate-100 border-b px-5 py-4 dark:border-slate-800">
           <div className="flex min-w-0 items-center gap-2">
-            <IconHistory size={20} className="flex-shrink-0 text-primary-500" />
+            <IconHistory size={20} className="flex-shrink-0 text-primary" />
             <div className="min-w-0">
               <h3 className="truncate font-semibold text-lg text-slate-800 dark:text-white">
                 {customer?.name || "Riwayat"}
@@ -103,7 +103,7 @@ export default function CustomerHistoryPanel({
             <button
               onClick={fetchHistory}
               disabled={isLoading}
-              className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950/30"
+              className="rounded-xl p-2 text-slate-400 transition-colors hover:bg-primary-subtle hover:text-primary"
             >
               <IconRefresh size={18} className={isLoading ? "animate-spin" : ""} />
             </button>
@@ -119,7 +119,7 @@ export default function CustomerHistoryPanel({
         <div className="max-h-[350px] space-y-2 overflow-y-auto p-4">
           {isLoading ? (
             <div className="flex items-center justify-center py-10">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             </div>
           ) : history.length > 0 ? (
             history.map((tx) => (

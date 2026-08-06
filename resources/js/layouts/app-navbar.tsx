@@ -44,6 +44,7 @@ const authNavigations = [
   },
 ];
 
+// oxlint-disable-next-line no-unused-vars
 export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Navbar>) {
   const page = usePage();
   const { auth } = usePage<SharedData>().props;

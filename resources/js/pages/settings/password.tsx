@@ -14,8 +14,11 @@ import { Input } from "@/components/ui/input";
 const title = "Change Password";
 
 export default function Password() {
+  // oxlint-disable-next-line no-unused-vars
   const passwordInput = useRef<HTMLInputElement>(null);
+  // oxlint-disable-next-line no-unused-vars
   const currentPasswordInput = useRef<HTMLInputElement>(null);
+  // oxlint-disable-next-line no-unused-vars
   const { data, setData, put, errors, reset, processing, recentlySuccessful } = useForm({
     current_password: "",
     password: "",

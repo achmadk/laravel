@@ -197,17 +197,15 @@ export default function PaymentPanel({
 
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {customer && (
-          <div className="rounded-xl border border-primary-200 bg-primary-50 p-3 dark:border-primary-800/50 dark:bg-primary-950/30">
+          <div className="rounded-xl border border-primary-subtle bg-primary-subtle p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-primary-600 text-xs dark:text-primary-400">Pelanggan</p>
-                <p className="font-medium text-primary-800 text-sm dark:text-primary-200">
-                  {customer.name}
-                </p>
+                <p className="text-primary text-xs">Pelanggan</p>
+                <p className="font-medium text-primary text-sm">{customer.name}</p>
               </div>
               <button
                 onClick={onRemoveCustomer}
-                className="rounded-lg p-1.5 text-primary-500 hover:bg-primary-100 dark:hover:bg-primary-900/50"
+                className="rounded-lg p-1.5 text-primary hover:bg-primary-subtle"
               >
                 <IconX size={16} />
               </button>
@@ -241,25 +239,25 @@ export default function PaymentPanel({
               {pricing.promoDiscount > 0 && (
                 <div className="flex justify-between text-slate-500 text-xs">
                   <span>Promo</span>
-                  <span className="text-success-600">-{formatPrice(pricing.promoDiscount)}</span>
+                  <span className="text-success">-{formatPrice(pricing.promoDiscount)}</span>
                 </div>
               )}
               {pricing.voucherDiscount > 0 && (
                 <div className="flex justify-between text-slate-500 text-xs">
                   <span>Voucher</span>
-                  <span className="text-success-600">-{formatPrice(pricing.voucherDiscount)}</span>
+                  <span className="text-success">-{formatPrice(pricing.voucherDiscount)}</span>
                 </div>
               )}
               {pricing.loyaltyDiscount > 0 && (
                 <div className="flex justify-between text-slate-500 text-xs">
                   <span>Loyalti</span>
-                  <span className="text-success-600">-{formatPrice(pricing.loyaltyDiscount)}</span>
+                  <span className="text-success">-{formatPrice(pricing.loyaltyDiscount)}</span>
                 </div>
               )}
               {pricing.manualDiscount > 0 && (
                 <div className="flex justify-between text-slate-500 text-xs">
                   <span>Diskon</span>
-                  <span className="text-success-600">-{formatPrice(pricing.manualDiscount)}</span>
+                  <span className="text-success">-{formatPrice(pricing.manualDiscount)}</span>
                 </div>
               )}
               {pricing.shipping > 0 && (
@@ -276,7 +274,7 @@ export default function PaymentPanel({
               <span className="font-semibold text-slate-800 text-sm dark:text-slate-200">
                 Total
               </span>
-              <span className="font-bold text-lg text-primary-600 dark:text-primary-400">
+              <span className="font-bold text-lg text-primary">
                 {formatPrice(pricing.grand_total)}
               </span>
             </div>
@@ -327,7 +325,7 @@ export default function PaymentPanel({
                   onClick={() => setSelectedBank(bank.id)}
                   className={`rounded-xl border-2 p-3 text-left transition-all ${
                     selectedBank === bank.id
-                      ? "border-primary-500 bg-primary-50 dark:bg-primary-950/30"
+                      ? "border-primary bg-primary-subtle"
                       : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
                   }`}
                 >
@@ -355,7 +353,7 @@ export default function PaymentPanel({
                   onClick={() => setSelectedGateway(gw.value)}
                   className={`rounded-xl border-2 p-3 text-left transition-all ${
                     selectedGateway === gw.value
-                      ? "border-primary-500 bg-primary-50 dark:bg-primary-950/30"
+                      ? "border-primary bg-primary-subtle"
                       : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
                   }`}
                 >
@@ -372,12 +370,10 @@ export default function PaymentPanel({
         )}
 
         {paymentMethod === "cash" && amountPaid > 0 && (
-          <div className="rounded-xl border border-success-200 bg-success-50 p-4 dark:border-success-800/50 dark:bg-success-950/30">
+          <div className="rounded-xl border border-success-subtle bg-success-subtle p-4">
             <div className="flex justify-between text-sm">
-              <span className="text-success-700 dark:text-success-300">Kembalian</span>
-              <span className="font-bold text-lg text-success-600 dark:text-success-400">
-                {formatPrice(change)}
-              </span>
+              <span className="text-success">Kembalian</span>
+              <span className="font-bold text-lg text-success">{formatPrice(change)}</span>
             </div>
           </div>
         )}
@@ -385,7 +381,7 @@ export default function PaymentPanel({
 
       <div className="border-slate-200 border-t p-4 dark:border-slate-800">
         {!hasActiveShift && (
-          <p className="mb-2 text-center text-danger-500 text-xs">
+          <p className="mb-2 text-center text-danger text-xs">
             Buka shift kasir untuk memproses pembayaran
           </p>
         )}
@@ -394,7 +390,7 @@ export default function PaymentPanel({
           disabled={!canSubmit}
           className={`flex h-14 w-full items-center justify-center gap-2 rounded-2xl font-semibold text-lg transition-all ${
             canSubmit
-              ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 hover:shadow-xl active:scale-[0.98]"
+              ? "bg-primary text-primary-fg shadow-lg shadow-primary/30 hover:shadow-xl active:scale-[0.98]"
               : "cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-700"
           }`}
         >
@@ -430,7 +426,7 @@ function PaymentMethodButton({
       onClick={onClick}
       className={`flex items-center gap-2 rounded-xl border-2 p-3 transition-all ${
         isActive
-          ? "border-primary-500 bg-primary-50 text-primary-700 dark:bg-primary-950/30 dark:text-primary-300"
+          ? "border-primary bg-primary-subtle text-primary"
           : "border-slate-200 text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:text-slate-400 dark:hover:border-slate-600"
       }`}
     >

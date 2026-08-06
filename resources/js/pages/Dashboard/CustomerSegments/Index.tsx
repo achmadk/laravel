@@ -75,7 +75,7 @@ export default function CustomerSegmentsIndex({ segments, filters = {} }: IndexP
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-              <IconUsersGroup size={26} className="text-primary-500" />
+              <IconUsersGroup size={26} className="text-primary" />
               Customer Segments
             </h1>
             <p className="text-smtext-muted-fg">
@@ -85,7 +85,7 @@ export default function CustomerSegmentsIndex({ segments, filters = {} }: IndexP
           {can("customer-segments-create") && (
             <Link
               href={customerSegments.create.url()}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-sm text-primary-fg shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
             >
               <IconCirclePlus size={18} />
               Buat Segment
@@ -206,7 +206,7 @@ export default function CustomerSegmentsIndex({ segments, filters = {} }: IndexP
                     <div className="space-y-1">
                       <Link
                         href={customerSegments.show.url({ customer_segment: segment.id })}
-                        className="font-semibold text-fg text-sm hover:text-primary-600"
+                        className="font-semibold text-fg text-sm hover:text-primary"
                       >
                         {segment.name}
                       </Link>
@@ -215,7 +215,7 @@ export default function CustomerSegmentsIndex({ segments, filters = {} }: IndexP
                     <span
                       className={`inline-flex rounded-full px-2.5 py-1 font-semibold text-xs ${
                         segment.is_active
-                          ? "bg-success-100 text-success-700"
+                          ? "bg-success-subtle text-success"
                           : "bg-muted text-muted-fg"
                       }`}
                     >

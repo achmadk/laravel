@@ -130,7 +130,9 @@ export default function Profits({
 }) {
   const [showFilters, setShowFilters] = useState(false);
   const [filterData, setFilterData] = useState<ProfitFilters>({ ...defaultFilters, ...filters });
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCashier, setSelectedCashier] = useState<Cashier | null>(null);
+  // oxlint-disable-next-line no-unused-vars
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
 
   useEffect(() => {

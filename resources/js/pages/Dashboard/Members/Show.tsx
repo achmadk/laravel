@@ -113,7 +113,7 @@ export default function Show({
         <div className="mb-6">
           <Link
             href={members.index().url}
-            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
           >
             <IconArrowLeft size={16} />
             Kembali ke Member
@@ -130,7 +130,7 @@ export default function Show({
                 <span
                   className={`inline-flex rounded-full px-3 py-1 font-semibold text-xs ${
                     member.is_loyalty_member
-                      ? "bg-success-100 text-success-700 dark:bg-success-950/30 dark:text-success-400"
+                      ? "bg-success-subtle text-success"
                       : "bg-muted text-muted-fg"
                   }`}
                 >
@@ -146,7 +146,7 @@ export default function Show({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-primary-100 px-3 py-1 font-semibold text-primary-700 text-xs dark:bg-primary-950/40 dark:text-primary-300">
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary-subtle px-3 py-1 font-semibold text-primary text-xs">
                 <IconCoins size={14} />
                 {member.loyalty_points || 0} poin
               </span>
@@ -199,7 +199,7 @@ export default function Show({
 
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
-                <IconReceipt size={18} className="text-primary-500" />
+                <IconReceipt size={18} className="text-primary" />
                 <h2 className="font-semibold text-fg text-lg">Transaksi Member</h2>
               </div>
               {hasRecentTransactions ? (
@@ -213,7 +213,7 @@ export default function Show({
                         <p className="font-semibold text-fg text-sm">{transaction.invoice}</p>
                         <p className="text-muted-fg text-xs">{formatDateTime(transaction.date)}</p>
                       </div>
-                      <p className="font-bold text-primary-600 text-sm dark:text-primary-300">
+                      <p className="font-bold text-primary text-sm">
                         {formatPrice(transaction.total)}
                       </p>
                     </div>
@@ -229,7 +229,7 @@ export default function Show({
 
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
-                <IconGift size={18} className="text-primary-500" />
+                <IconGift size={18} className="text-primary" />
                 <h2 className="font-semibold text-fg text-lg">Histori Reward</h2>
               </div>
               {hasRewardHistory ? (
@@ -296,7 +296,7 @@ export default function Show({
 
             <section className="rounded-2xl border border-border bg-bg p-5">
               <div className="mb-4 flex items-center gap-2">
-                <IconTags size={18} className="text-primary-500" />
+                <IconTags size={18} className="text-primary" />
                 <h2 className="font-semibold text-fg text-lg">Segment Terkait</h2>
               </div>
               {hasSegments ? (
@@ -306,7 +306,7 @@ export default function Show({
                       key={segment.id}
                       className={`inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold text-xs ${
                         segment.source === "manual"
-                          ? "bg-primary-100 text-primary-700 dark:bg-primary-950/40 dark:text-primary-300"
+                          ? "bg-primary-subtle text-primary"
                           : "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
                       }`}
                     >
@@ -332,7 +332,7 @@ export default function Show({
                   {frequentProducts.map((product) => (
                     <span
                       key={product.id}
-                      className="inline-flex rounded-full bg-primary-100 px-3 py-1 font-semibold text-primary-700 text-xs dark:bg-primary-950/40 dark:text-primary-300"
+                      className="inline-flex rounded-full bg-primary-subtle px-3 py-1 font-semibold text-primary text-xs"
                     >
                       {product.title} x{product.total_qty}
                     </span>
@@ -357,7 +357,7 @@ export default function Show({
                           <p className="font-semibold text-fg text-sm">{voucher.code}</p>
                           <p className="text-muted-fg text-xs">{voucher.name}</p>
                         </div>
-                        <span className="font-medium text-primary-600 text-xs dark:text-primary-300">
+                        <span className="font-medium text-primary text-xs">
                           {voucher.discount_type === "percentage"
                             ? `${voucher.discount_value}%`
                             : formatPrice(voucher.discount_value)}

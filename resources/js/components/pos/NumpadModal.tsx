@@ -136,7 +136,7 @@ export default function NumpadModal({
               <button
                 key={amount}
                 onClick={() => handleQuickAmount(amount)}
-                className="rounded-xl bg-primary-50 px-2 py-2 font-medium text-primary-700 text-xs transition-colors hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-400 dark:hover:bg-primary-900/50"
+                className="rounded-xl bg-primary-subtle px-2 py-2 font-medium text-primary text-xs transition-colors hover:bg-primary-subtle"
               >
                 +{amount / 1000}rb
               </button>
@@ -157,7 +157,7 @@ export default function NumpadModal({
 
           <button
             onClick={handleClear}
-            className="h-14 rounded-2xl bg-warning-100 font-semibold text-sm text-warning-700 transition-all hover:bg-warning-200 active:scale-95 dark:bg-warning-900/50 dark:text-warning-400 dark:hover:bg-warning-900"
+            className="h-14 rounded-2xl bg-warning-subtle font-semibold text-sm text-warning transition-all hover:bg-warning-subtle active:scale-95"
           >
             C
           </button>
@@ -183,7 +183,7 @@ export default function NumpadModal({
             disabled={!isValid}
             className={`flex h-14 w-full items-center justify-center gap-2 rounded-2xl font-semibold text-lg transition-all ${
               isValid
-                ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 hover:shadow-xl active:scale-[0.98]"
+                ? "bg-primary text-primary-fg shadow-lg shadow-primary/30 hover:shadow-xl active:scale-[0.98]"
                 : "cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-700"
             }`}
           >

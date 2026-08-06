@@ -139,7 +139,7 @@ export default function CustomerVouchersIndex({ vouchers, filters = {} }: IndexP
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="flex items-center gap-2 font-bold text-2xl text-fg">
-              <IconCreditCard size={26} className="text-primary-500" />
+              <IconCreditCard size={26} className="text-primary" />
               Voucher Customer
             </h1>
             <p className="text-smtext-muted-fg">
@@ -149,7 +149,7 @@ export default function CustomerVouchersIndex({ vouchers, filters = {} }: IndexP
           {can("customer-vouchers-create") && (
             <Link
               href={customerVouchers.create.url()}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-sm text-primary-fg shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90"
             >
               <IconCirclePlus size={18} />
               Buat Voucher

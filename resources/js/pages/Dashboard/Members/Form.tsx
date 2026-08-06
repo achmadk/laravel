@@ -177,7 +177,7 @@ export default function Form({ mode = "create", member = null }: FormProps) {
         <div className="mb-6">
           <Link
             href={index().url}
-            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
           >
             <IconArrowLeft size={16} />
             Kembali ke Member
@@ -259,7 +259,7 @@ export default function Form({ mode = "create", member = null }: FormProps) {
                     type="checkbox"
                     checked={data.is_loyalty_member}
                     onChange={(e) => setData("is_loyalty_member", e.target.checked)}
-                    className="h-4 w-4 rounded border-border text-primary-500"
+                    className="h-4 w-4 rounded border-border text-primary"
                   />
                   Aktif
                 </label>
@@ -394,7 +394,7 @@ export default function Form({ mode = "create", member = null }: FormProps) {
             <button
               type="submit"
               disabled={processing}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 font-medium text-primary-fg transition-colors hover:bg-primary/90 disabled:opacity-50"
             >
               <IconDeviceFloppy size={18} />
               {processing ? "Menyimpan..." : isEdit ? "Simpan Perubahan" : "Daftarkan Member"}

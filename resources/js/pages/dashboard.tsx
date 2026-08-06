@@ -32,7 +32,7 @@ const formatCurrency = (value = 0) =>
 function StatCard({ title, value, subtitle, icon: Icon, gradient, trend }: any) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} shadow-lg`}
     >
       <div className="absolute top-0 right-0 size-32 opacity-20">
         <Icon size={128} strokeWidth={0.5} className="translate-x-8 -translate-y-8" />
@@ -61,7 +61,7 @@ function TargetCard({ title, current, target, icon: Icon }: any) {
   const percentage = target > 0 ? Math.min((current / target) * 100, 100) : 0;
   const isAchieved = percentage >= 100;
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 p-5 text-white shadow-lg">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary/70 p-5 text-primary-fg shadow-lg">
       <div className="absolute top-0 right-0 size-32 opacity-20">
         <Icon size={128} strokeWidth={0.5} className="translate-x-8 -translate-y-8" />
       </div>
@@ -134,8 +134,11 @@ export default function Dashboard({
   totalTransactions = 0,
   totalCustomers = 0,
   revenueTrend = [],
+  // oxlint-disable-next-line no-unused-vars
   totalRevenue = 0,
+  // oxlint-disable-next-line no-unused-vars
   totalProfit = 0,
+  // oxlint-disable-next-line no-unused-vars
   averageOrder = 0,
   todayTransactions = 0,
   todaySales = 0,
@@ -146,6 +149,7 @@ export default function Dashboard({
   slowMovingProducts = [],
   recentTransactions = [],
   topCustomers = [],
+  // oxlint-disable-next-line no-unused-vars
   topLocations = [],
   lowStockProducts = [],
   activeShifts = [],
@@ -252,14 +256,14 @@ export default function Dashboard({
             value={formatCurrency(todaySales)}
             subtitle="Total penjualan hari ini"
             icon={IconCoin}
-            gradient="from-primary-500 to-primary-700"
+            gradient="from-primary to-primary/70 text-primary-fg"
           />
           <StatCard
             title="Profit Hari Ini"
             value={formatCurrency(todayProfit)}
             subtitle="Profit bersih hari ini"
             icon={IconTrendingUp}
-            gradient="from-success-500 to-success-700"
+            gradient="from-success to-success/70 text-success-fg"
             trend="up"
           />
           <TargetCard
@@ -273,7 +277,7 @@ export default function Dashboard({
             value={todayTransactions}
             subtitle="Transaksi"
             icon={IconClock}
-            gradient="from-warning-500 to-warning-600"
+            gradient="from-warning to-warning/80 text-warning-fg"
           />
         </div>
 

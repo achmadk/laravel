@@ -55,29 +55,11 @@ class AuthenticatedSessionController extends Controller
             ],
         );
 
-        if ($user && method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+        if ($user && method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail() && config('security.auth.verify_email')) {
             return redirect()->route('verification.notice');
         }
 
-        $routePriority = [
-            'transactions-access' => 'transactions.index',
-            'receivables-access' => 'receivables.index',
-            'payables-access' => 'payables.index',
-            'customers-access' => 'customers.index',
-            'suppliers-access' => 'suppliers.index',
-            'reports-access' => 'reports.sales.index',
-            'dashboard-access' => 'dashboard',
-        ];
-
-        $defaultRoute = 'dashboard.access';
-        foreach ($routePriority as $permission => $routeName) {
-            if ($user && $user->can($permission)) {
-                $defaultRoute = $routeName;
-                break;
-            }
-        }
-
-        return redirect()->intended(route($defaultRoute, absolute: false));
+        return redirect()->intended(route('dashboard.access', absolute: false));
     }
 
     /**

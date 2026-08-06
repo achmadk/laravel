@@ -75,7 +75,7 @@ export default function Show({ campaign }: ShowProps) {
       <div className="mb-6">
         <Link
           href={crmCampaigns.index().url}
-          className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+          className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
         >
           <IconArrowLeft size={16} />
           Kembali ke CRM campaigns
@@ -94,7 +94,7 @@ export default function Show({ campaign }: ShowProps) {
               <button
                 type="button"
                 onClick={processCampaign}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 font-medium text-sm text-white hover:bg-primary-600"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-primary-fg hover:bg-primary/90"
               >
                 <IconPlayerPlay size={16} />
                 Proses Audience
@@ -166,7 +166,7 @@ export default function Show({ campaign }: ShowProps) {
                                   preserveScroll: true,
                                 })
                               }
-                              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-50 text-primary-600 hover:bg-primary-100 dark:bg-primary-950/30 dark:text-primary-300"
+                              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary-subtle text-primary hover:bg-primary-subtle"
                             >
                               <IconChecks size={16} />
                             </button>

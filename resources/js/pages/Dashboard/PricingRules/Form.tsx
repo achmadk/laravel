@@ -214,7 +214,7 @@ export default function PricingRuleForm({
         <div>
           <Link
             href={pricingRules.index.url()}
-            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary-600"
+            className="mb-3 inline-flex items-center gap-2 text-smtext-muted-fg hover:text-primary"
           >
             <IconArrowLeft size={16} />
             Kembali ke promo harga
@@ -762,7 +762,7 @@ export default function PricingRuleForm({
             <button
               type="submit"
               disabled={processing}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 font-medium text-white hover:bg-primary-600 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-2.5 font-medium text-primary-fg hover:bg-primary/90 disabled:opacity-50"
             >
               <IconDeviceFloppy size={18} />
               {processing ? "Menyimpan..." : "Simpan Rule"}

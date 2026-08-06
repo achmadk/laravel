@@ -175,6 +175,7 @@ export default function Print({ transaction }: PrintProps) {
   const isNonCash = paymentMethodKey !== "cash";
   const showPaymentLink = isNonCash && !!transaction.payment_url;
 
+  // oxlint-disable-next-line no-unused-vars
   const handlePrint = () => {
     window.print();
   };

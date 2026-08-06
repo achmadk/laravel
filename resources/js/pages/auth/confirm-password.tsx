@@ -59,7 +59,7 @@ export default function ConfirmPassword({ challenge }: ConfirmPasswordProps) {
               placeholder="Masukkan password Anda"
               className={`h-11 w-full rounded-xl border bg-white pr-11 pl-10 text-[var(--fg)] text-sm placeholder-[var(--muted-fg)] outline-none transition-all dark:bg-[var(--overlay)] ${
                 errors.password
-                  ? "border-danger-500"
+                  ? "border-danger"
                   : "border-[var(--input)] focus:border-[var(--primary)] focus:ring-3 focus:ring-[var(--primary-subtle)]"
               }`}
               autoFocus
@@ -73,7 +73,7 @@ export default function ConfirmPassword({ challenge }: ConfirmPasswordProps) {
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>
           </div>
-          {errors.password && <p className="mt-1 text-danger-500 text-xs">{errors.password}</p>}
+          {errors.password && <p className="mt-1 text-danger text-xs">{errors.password}</p>}
         </div>
 
         {/* Submit */}

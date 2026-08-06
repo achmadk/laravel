@@ -21,6 +21,7 @@ function formatCurrency(value: number = 0) {
   }).format(value);
 }
 
+// oxlint-disable-next-line no-unused-vars
 function formatDate(value: string | null | undefined) {
   if (!value) return "-";
   const d = new Date(value);

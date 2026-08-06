@@ -90,7 +90,7 @@ export default function SearchBar({
       <div className="relative">
         <div className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2">
           {isSearching ? (
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           ) : (
             <IconSearch size={20} className="text-slate-400" />
           )}
@@ -106,7 +106,7 @@ export default function SearchBar({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="h-14 w-full rounded-2xl border-2 border-slate-200 bg-white pr-24 pl-12 text-lg text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
+          className="h-14 w-full rounded-2xl border-2 border-slate-200 bg-white pr-24 pl-12 text-lg text-slate-800 placeholder-slate-400 transition-all focus:border-primary focus:ring-4 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500"
         />
 
         <div className="absolute top-1/2 right-3 flex -translate-y-1/2 items-center gap-2">
@@ -142,7 +142,7 @@ export default function SearchBar({
                   }}
                   className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors ${
                     index === selectedIndex
-                      ? "bg-primary-50 dark:bg-primary-950/30"
+                      ? "bg-primary-subtle"
                       : "hover:bg-slate-50 dark:hover:bg-slate-800"
                   }`}
                 >
@@ -170,11 +170,11 @@ export default function SearchBar({
                   </div>
 
                   <div className="flex-shrink-0 text-right">
-                    <p className="font-semibold text-primary-600 text-sm dark:text-primary-400">
+                    <p className="font-semibold text-primary text-sm">
                       {formatPrice(product.sell_price)}
                     </p>
                     {product.stock <= 0 && (
-                      <span className="font-medium text-danger-500 text-xs">Habis</span>
+                      <span className="font-medium text-danger text-xs">Habis</span>
                     )}
                   </div>
                 </button>

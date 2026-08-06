@@ -50,6 +50,7 @@ interface IndexProps {
   suppliers: Supplier[];
 }
 
+// oxlint-disable-next-line no-unused-vars
 const formatPrice = (value = 0) =>
   new Intl.NumberFormat("id-ID", {
     style: "currency",
