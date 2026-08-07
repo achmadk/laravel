@@ -1,0 +1,33 @@
+- generic [ref=f1e3]:
+  - region "Notifications alt+T"
+  - generic [ref=f1e5]:
+    - link "R Nightday RTOS" [ref=f1e6] [cursor=pointer]:
+      - /url: /
+      - generic [ref=f1e7]: R
+      - generic [ref=f1e8]: Nightday RTOS
+    - heading "Masuk" [level=1] [ref=f1e9]
+    - paragraph [ref=f1e10]: Masuk ke akun Anda untuk melanjutkan
+    - generic [ref=f1e12]:
+      - generic [ref=f1e13]:
+        - generic [ref=f1e14]: Email
+        - textbox "nama@email.com" [active] [ref=f1e16]
+      - generic [ref=f1e17]:
+        - generic [ref=f1e18]: Password
+        - generic [ref=f1e19]:
+          - textbox "••••••••" [ref=f1e20]
+          - button [ref=f1e21]
+      - generic [ref=f1e25]:
+        - generic [ref=f1e26] [cursor=pointer]:
+          - checkbox "Ingat saya" [ref=f1e27]
+          - generic [ref=f1e28]: Ingat saya
+        - link "Lupa password?" [ref=f1e29] [cursor=pointer]:
+          - /url: /forgot-password
+      - button "Masuk" [ref=f1e31] [cursor=pointer]
+  - generic [ref=f1e34]:
+    - generic [ref=f1e35]: Solusi Kasir Terpercaya
+    - heading "Kelola toko Anda dengan mudah & cepat" [level=2] [ref=f1e38]: Kelola toko Andadengan mudah & cepat
+    - paragraph [ref=f1e39]: Platform POS all-in-one untuk mengelola penjualan, stok, dan laporan bisnis Anda dalam satu tempat.
+    - generic [ref=f1e40]:
+      - generic [ref=f1e41]: Manajemen stok real-time
+      - generic [ref=f1e46]: Laporan keuangan harian
+      - generic [ref=f1e52]: Multi-kasir & multi-toko

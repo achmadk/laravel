@@ -73,8 +73,8 @@ export default function GuestLayout({
             }}
           />
           {/* Glow orbs */}
-          <div className="absolute top-10 right-10 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.15),transparent_70%)] blur-[60px]" />
-          <div className="absolute bottom-20 left-20 size-[360px] rounded-full bg-[radial-gradient(circle,rgba(129,140,248,0.1),transparent_70%)] blur-[80px]" />
+<div className="pointer-events-none absolute top-10 right-10 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.15),transparent_70%)] blur-[60px]" />
+            <div className="pointer-events-none absolute bottom-20 left-20 size-[360px] rounded-full bg-[radial-gradient(circle,rgba(129,140,248,0.1),transparent_70%)] blur-[80px]" />
           {/* Content */}
           <div className="relative z-10 max-w-md">{hero}</div>
         </div>
