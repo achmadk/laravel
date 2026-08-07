@@ -73,7 +73,7 @@ function CustomerCard({
   canDelete: boolean;
 }) {
   return (
-    <div className="group rounded-2xl border border-border bg-bg p-5 transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+    <Card className="group p-5 transition-all duration-200 [--gutter:0] hover:border-muted-fg/30 hover:shadow-lg">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-3">
           {customer.avatar ? (
@@ -144,7 +144,7 @@ function CustomerCard({
           )}
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 

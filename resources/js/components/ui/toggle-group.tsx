@@ -122,7 +122,7 @@ const toggleGroupItemStyles = tv({
         "touch-target size-11 *:data-[slot=loader]:size-5 sm:size-10 sm:*:data-[slot=loader]:size-5 *:[svg]:size-5 sm:*:[svg]:size-5",
     },
     isSelected: {
-      true: "inset-ring-fg/20 bg-(--toggle-selected-bg) text-(--toggle-selected-fg) [--toggle-icon:var(--primary-fg)] hover:bg-(--toggle-selected-bg)/90",
+        true: "inset-ring-fg/20 bg-(--toggle-selected-bg) text-(--toggle-selected-fg) [--toggle-icon:var(--color-primary-fg)] hover:bg-(--toggle-selected-bg)/90",
     },
     isFocused: {
       true: "not-selected:bg-(--toggle-focused-bg) not-selected:text-(--toggle-focused-fg) not-selected:[--toggle-icon:var(--toggle-focused-fg)]",

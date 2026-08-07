@@ -5,10 +5,11 @@ const badgeStyles = tv({
   base: "inline-flex items-center rounded-full px-2.5 py-0.5 font-medium text-xs",
   variants: {
     variant: {
-      success: "bg-success-subtle text-success",
-      warning: "bg-warning-subtle text-warning",
-      danger: "bg-danger-subtle text-danger",
-      info: "bg-primary-subtle text-primary",
+      success: "bg-success text-success-fg",
+      warning: "bg-warning text-warning-fg",
+      danger: "bg-danger text-danger-fg",
+      info: "bg-info text-info-fg",
+      pending: "bg-pending text-pending-fg",
       neutral: "bg-muted text-muted-fg",
     },
   },
@@ -18,7 +19,7 @@ const badgeStyles = tv({
 });
 
 interface StatusBadgeProps {
-  variant?: "success" | "warning" | "danger" | "info" | "neutral";
+  variant?: "success" | "warning" | "danger" | "info" | "pending" | "neutral";
   label: string;
   className?: string;
 }

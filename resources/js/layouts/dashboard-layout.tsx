@@ -17,6 +17,7 @@ import {
 import { Link } from "@/components/ui/link";
 import {
   IconMenu2,
+  IconChevronLeft,
   IconBell,
   IconLayoutDashboard,
   IconUser,
@@ -28,10 +29,11 @@ import { logout } from "@/routes";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const page = usePage<any>();
-  // oxlint-disable-next-line no-unused-vars
-  const { auth, notifications: pageNotifications, flash } = page.props;
+  const { notifications: pageNotifications } = page.props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarHover, setSidebarHover] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const notificationCount = pageNotifications?.total ?? 0;
   const lowStockCount = pageNotifications?.low_stock?.length ?? 0;
@@ -40,75 +42,113 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const closeSidebar = () => setSidebarOpen(false);
   const toggleCollapse = () => setSidebarCollapsed((prev) => !prev);
 
+  const hovering = sidebarCollapsed && sidebarHover;
+
   return (
-    <div className="flex min-h-screen bg-muted">
-      <Sidebar sidebarOpen={sidebarOpen} onClose={closeSidebar} collapsed={sidebarCollapsed} />
+    <div className="rubick relative min-h-screen bg-primary dark:bg-bg">
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        onClose={closeSidebar}
+        collapsed={sidebarCollapsed}
+        hovering={hovering}
+        onMouseEnter={() => setSidebarHover(true)}
+        onMouseLeave={() => setSidebarHover(false)}
+      />
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-border border-b bg-bg px-4 md:px-6">
-          <div className="flex items-center gap-4">
-            <Button
-              onPress={toggleSidebar}
-              intent="plain"
-              size="sq-sm"
-              aria-label="Toggle sidebar"
-              className="md:hidden"
+      <div
+        className={[
+          "content relative z-10 h-screen px-7 pt-8 pb-12 transition-[margin] duration-100",
+          "before:absolute before:inset-y-4 before:right-4 before:left-4 before:rounded-4xl before:bg-fg before:opacity-[.07] xl:before:left-0",
+          "after:absolute after:inset-y-4 after:right-4 after:left-4 after:rounded-4xl after:border after:border-border after:bg-bg xl:after:left-0 dark:after:opacity-[.59]",
+          hovering ? "xl:ml-[275px]" : sidebarCollapsed ? "xl:ml-[110px]" : "xl:ml-[275px]",
+        ].join(" ")}
+      >
+        <div className="h-full overflow-x-hidden">
+          <div
+            onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}
+            className={[
+              "relative z-20 -mr-7 h-full overflow-y-auto pr-11 pb-5 pl-4 transition-[margin] duration-100 xl:pl-0",
+              hovering && !sidebarOpen && "-ml-[165px]",
+            ].join(" ")}
+          >
+            <div
+              className={[
+                "relative z-50 -mt-2",
+                scrolled && "sticky top-0 z-[999] mt-0",
+              ].join(" ")}
             >
-              <IconMenu2 className="size-5" />
-            </Button>
+              <header
+                className={[
+                  "flex h-16 items-center gap-5 border-border border-b transition-all",
+                  scrolled && "rounded-2xl border border-border bg-bg px-5 shadow-fg/5 shadow-lg",
+                ].join(" ")}
+              >
+                <Button
+                  onPress={toggleSidebar}
+                  intent="plain"
+                  size="sq-md"
+                  aria-label="Toggle sidebar"
+                  className="flex size-9 items-center justify-center rounded-xl border border-border bg-bg xl:hidden"
+                >
+                  <IconMenu2 className="size-5" />
+                </Button>
 
-            <Button
-              onPress={toggleCollapse}
-              intent="plain"
-              size="sq-sm"
-              aria-label="Collapse sidebar"
-              className="hidden md:flex"
-            >
-              <IconMenu2 className="size-5" />
-            </Button>
+                <Button
+                  onPress={toggleCollapse}
+                  intent="plain"
+                  size="sq-md"
+                  aria-label="Collapse sidebar"
+                  className="hidden size-9 items-center justify-center rounded-xl border border-border bg-bg xl:flex"
+                >
+                  <IconChevronLeft
+                    className={`size-5 transition-transform ${sidebarCollapsed ? "rotate-180" : ""}`}
+                  />
+                </Button>
 
-            <div className="hidden h-6 w-px bg-border md:block" />
-            <h1 className="hidden font-semibold text-base text-fg md:block">Point of Sales</h1>
-          </div>
+                <div className="hidden h-6 w-px bg-border md:block" />
+                <h1 className="mr-auto hidden font-semibold text-base text-fg md:block">
+                  Point of Sales
+                </h1>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:flex">
-              <ThemeSwitcher />
+                <div className="hidden items-center gap-2 sm:flex">
+                  <ThemeSwitcher />
+                </div>
+
+                <Link
+                  href="/notifications"
+                  className="relative flex rounded-xl p-2.5 text-muted-fg transition-colors hover:bg-muted hover:text-fg"
+                  aria-label="Notifications"
+                >
+                  <IconBell className="size-5" />
+                  {notificationCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-danger font-bold text-[10px] text-white">
+                      {notificationCount > 9 ? "9+" : notificationCount}
+                    </span>
+                  )}
+                </Link>
+
+                {lowStockCount > 0 && (
+                  <Link
+                    href="/products"
+                    className="hidden items-center gap-1.5 rounded-lg bg-danger/10 px-3 py-1.5 font-medium text-danger text-xs sm:flex"
+                  >
+                    <span className="size-1.5 animate-pulse rounded-full bg-danger" />
+                    {lowStockCount} stok habis
+                  </Link>
+                )}
+
+                <div className="mx-1 hidden h-8 w-px bg-border sm:block" />
+
+                <UserMenu />
+              </header>
             </div>
 
-            <Link
-              href="/notifications"
-              className="relative flex rounded-xl p-2.5 text-muted-fg transition-colors hover:bg-muted hover:text-fg"
-              aria-label="Notifications"
-            >
-              <IconBell className="size-5" />
-              {notificationCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-danger font-bold text-[10px] text-white">
-                  {notificationCount > 9 ? "9+" : notificationCount}
-                </span>
-              )}
-            </Link>
-
-            {lowStockCount > 0 && (
-              <Link
-                href="/products"
-                className="hidden items-center gap-1.5 rounded-lg bg-danger/10 px-3 py-1.5 font-medium text-danger text-xs sm:flex"
-              >
-                <span className="size-1.5 animate-pulse rounded-full bg-danger" />
-                {lowStockCount} stok habis
-              </Link>
-            )}
-
-            <div className="mx-1 h-8 w-px bg-border" />
-
-            <UserMenu />
+            <main className="pt-5">
+              <Flash />
+              <div className="space-y-6 p-4 md:p-6 lg:p-8">{children}</div>
+            </main>
           </div>
-        </header>
-
-        <main className="flex-1 overflow-y-auto">
-          <Flash />
-          <div className="space-y-6 p-4 md:p-6 lg:p-8">{children}</div>
-        </main>
+        </div>
       </div>
     </div>
   );

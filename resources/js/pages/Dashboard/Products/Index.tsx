@@ -85,7 +85,7 @@ function ProductCard({
   const outOfStock = product.stock === 0;
 
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+    <Card className="group overflow-hidden transition-all duration-200 [--gutter:0] hover:border-muted-fg/30 hover:shadow-lg">
       <div className="relative aspect-square overflow-hidden bg-muted">
         {product.image ? (
           <img
@@ -127,12 +127,13 @@ function ProductCard({
               </Link>
             )}
             {canDelete && (
-              <button
-                onClick={() => onDelete(products.destroy.url({ product: product.id }))}
-                className="rounded-xl bg-bg p-2.5 text-danger shadow-lg transition-colors hover:bg-danger-subtle"
+              <Button
+                intent="danger"
+                size="sq-sm"
+                onPress={() => onDelete(products.destroy.url({ product: product.id }))}
               >
                 <IconTrash size={18} />
-              </button>
+              </Button>
             )}
           </div>
         )}
@@ -168,7 +169,7 @@ function ProductCard({
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

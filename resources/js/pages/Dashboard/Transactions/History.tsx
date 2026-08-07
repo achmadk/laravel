@@ -144,10 +144,11 @@ export default function History(serverProps: HistoryProps) {
               <form onSubmit={applyFilters}>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                   <div>
-                    <label className="mb-2 block font-medium text-muted-fg text-sm">
+                    <label htmlFor="filter-invoice" className="mb-2 block font-medium text-muted-fg text-sm">
                       Nomor Invoice
                     </label>
                     <input
+                      id="filter-invoice"
                       type="text"
                       placeholder="TRX-..."
                       value={filterData.invoice}
@@ -156,10 +157,11 @@ export default function History(serverProps: HistoryProps) {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-medium text-muted-fg text-sm">
+                    <label htmlFor="filter-start" className="mb-2 block font-medium text-muted-fg text-sm">
                       Tanggal Mulai
                     </label>
                     <input
+                      id="filter-start"
                       type="date"
                       value={filterData.start_date}
                       onChange={(e) => handleChange("start_date", e.target.value)}
@@ -167,10 +169,11 @@ export default function History(serverProps: HistoryProps) {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-medium text-muted-fg text-sm">
+                    <label htmlFor="filter-end" className="mb-2 block font-medium text-muted-fg text-sm">
                       Tanggal Akhir
                     </label>
                     <input
+                      id="filter-end"
                       type="date"
                       value={filterData.end_date}
                       onChange={(e) => handleChange("end_date", e.target.value)}
@@ -267,17 +270,18 @@ export default function History(serverProps: HistoryProps) {
                           ) : transaction.payment_status === "paid" ? (
                             <StatusBadge variant="success" label="Lunas" />
                           ) : transaction.payment_status === "pending" && canConfirmPayment ? (
-                            <button
-                              onClick={() =>
+                            <Button
+                              intent="danger"
+                              size="xs"
+                              onPress={() =>
                                 setConfirmModal({
                                   open: true,
                                   transaction,
                                 })
                               }
-                              className="inline-flex items-center gap-1 rounded-full bg-warning/10 px-2 py-1 font-medium text-warning text-xs transition-colors hover:bg-warning/20"
                             >
                               Pending - Konfirmasi
-                            </button>
+                            </Button>
                           ) : (
                             <StatusBadge
                               variant="danger"
@@ -335,17 +339,18 @@ export default function History(serverProps: HistoryProps) {
                           ) : transaction.payment_status === "paid" ? (
                             <StatusBadge variant="success" label="Lunas" />
                           ) : transaction.payment_status === "pending" && canConfirmPayment ? (
-                            <button
-                              onClick={() =>
+                            <Button
+                              intent="danger"
+                              size="xs"
+                              onPress={() =>
                                 setConfirmModal({
                                   open: true,
                                   transaction,
                                 })
                               }
-                              className="inline-flex items-center gap-1 rounded-full bg-warning/10 px-2 py-1 font-medium text-warning text-xs"
                             >
                               Pending
-                            </button>
+                            </Button>
                           ) : (
                             <StatusBadge
                               variant="danger"
@@ -407,7 +412,7 @@ export default function History(serverProps: HistoryProps) {
             </CardContent>
           </Card>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-bg py-16">
+          <Card className="flex flex-col items-center justify-center py-16 [--gutter:0]">
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
               <IconDatabaseOff size={32} className="text-muted-fg" strokeWidth={1.5} />
             </div>
@@ -417,7 +422,7 @@ export default function History(serverProps: HistoryProps) {
                 ? "Tidak ada transaksi sesuai filter."
                 : "Transaksi akan muncul di sini."}
             </p>
-          </div>
+          </Card>
         )}
 
         {links.length > 3 && <Pagination links={links} />}

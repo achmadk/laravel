@@ -3,6 +3,7 @@ import { IconArrowLeft, IconClipboardCheck } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import stockOpnames from "@/routes/stock-opnames";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function Create() {
@@ -38,8 +39,11 @@ export default function Create() {
         <Card>
           <CardContent className="p-5">
             <div>
-              <label className="mb-2 block font-medium text-fg text-sm">Catatan Sesi</label>
+              <label htmlFor="notes" className="mb-2 block font-medium text-fg text-sm">
+                Catatan Sesi
+              </label>
               <textarea
+                id="notes"
                 placeholder="Contoh: opname bulanan gudang depan"
                 value={data.notes}
                 onChange={(e) => setData("notes", e.target.value)}
@@ -50,14 +54,10 @@ export default function Create() {
             </div>
 
             <div className="mt-5 flex justify-end">
-              <button
-                type="submit"
-                disabled={processing}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-medium text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 disabled:opacity-50"
-              >
+              <Button intent="primary" type="submit" isDisabled={processing}>
                 <IconClipboardCheck size={18} />
                 {processing ? "Menyimpan..." : "Buat Sesi"}
-              </button>
+              </Button>
             </div>
           </CardContent>
         </Card>

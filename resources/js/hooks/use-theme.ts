@@ -2,16 +2,22 @@ import { useMemo, useSyncExternalStore } from "react";
 
 export type ResolvedTheme = "light" | "dark";
 export type Theme = ResolvedTheme | "system";
+export type ColorScheme = "default" | "1" | "2" | "3" | "4" | "5";
 
 export type UseThemeReturn = {
   readonly theme: Theme;
   readonly resolvedTheme: ResolvedTheme;
   readonly updateTheme: (mode: Theme) => void;
+  readonly scheme: ColorScheme;
+  readonly updateScheme: (scheme: ColorScheme) => void;
 };
 
 const listeners = new Set<() => void>();
 let currentTheme: Theme = "system";
 let systemDark = false;
+let currentScheme: ColorScheme = "default";
+
+const SCHEMES: ColorScheme[] = ["default", "1", "2", "3", "4", "5"];
 
 const setCookie = (name: string, value: string, days = 365): void => {
   if (typeof document === "undefined") return;
@@ -24,6 +30,12 @@ const getStoredTheme = (): Theme => {
   return (localStorage.getItem("theme") as Theme) || "system";
 };
 
+const getStoredScheme = (): ColorScheme => {
+  if (typeof window === "undefined") return "default";
+  const stored = localStorage.getItem("colorScheme");
+  return SCHEMES.includes(stored as ColorScheme) ? (stored as ColorScheme) : "default";
+};
+
 const isDarkMode = (theme: Theme): boolean => {
   return theme === "dark" || (theme === "system" && systemDark);
 };
@@ -33,6 +45,15 @@ const applyTheme = (theme: Theme): void => {
   const isDark = isDarkMode(theme);
   document.documentElement.classList.toggle("dark", isDark);
   document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+};
+
+const applyScheme = (scheme: ColorScheme): void => {
+  if (typeof document === "undefined") return;
+  if (scheme === "default") {
+    document.documentElement.removeAttribute("data-theme");
+  } else {
+    document.documentElement.setAttribute("data-theme", scheme);
+  }
 };
 
 const subscribe = (callback: () => void) => {
@@ -59,6 +80,8 @@ export function initializeTheme(): void {
 
   currentTheme = getStoredTheme();
   applyTheme(currentTheme);
+  currentScheme = getStoredScheme();
+  applyScheme(currentScheme);
 
   mq.addEventListener("change", (e) => {
     systemDark = e.matches;
@@ -80,6 +103,12 @@ export function useTheme(): UseThemeReturn {
     () => false,
   );
 
+  const scheme = useSyncExternalStore(
+    subscribe,
+    () => currentScheme,
+    () => "default" as const,
+  );
+
   const resolvedTheme: ResolvedTheme = useMemo(() => {
     return theme === "dark" || (theme === "system" && isSystemDark) ? "dark" : "light";
   }, [theme, isSystemDark]);
@@ -94,9 +123,20 @@ export function useTheme(): UseThemeReturn {
     notify();
   };
 
+  const updateScheme = (scheme: ColorScheme): void => {
+    currentScheme = scheme;
+    if (typeof window !== "undefined") {
+      localStorage.setItem("colorScheme", scheme);
+    }
+    applyScheme(scheme);
+    notify();
+  };
+
   return {
     theme,
     resolvedTheme,
     updateTheme,
+    scheme,
+    updateScheme,
   } as const;
 }

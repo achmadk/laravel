@@ -316,9 +316,10 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
           </div>
         ) : (
           <>
+            <Card className="p-4 [--gutter:0]">
             <form
               onSubmit={applyFilter}
-              className="grid grid-cols-1 items-end gap-3 rounded-2xl border border-border bg-bg p-4 sm:grid-cols-2 lg:grid-cols-4"
+              className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 lg:grid-cols-4"
             >
               <div className="relative w-full">
                 <IconSearch
@@ -353,6 +354,7 @@ export default function ReceivablesIndex({ receivables: data, filters = {} }: In
                 Terapkan
               </Button>
             </form>
+            </Card>
 
             <Card>
               <CardContent className="p-0">

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import {
   IconArrowLeft,
@@ -12,7 +12,9 @@ import toast from "react-hot-toast";
 import { useAuthorization } from "@/lib/auth";
 import receivables from "@/routes/receivables";
 import pdf from "@/routes/pdf";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 
 function formatCurrency(value: number = 0) {
@@ -88,7 +90,6 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
   const { can } = useAuthorization();
   const [showForm, setShowForm] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const printRef = useRef<HTMLDivElement>(null);
   const { data, setData, post, processing, reset, errors } = useForm({
     amount: "",
     paid_at: new Date().toISOString().slice(0, 10),
@@ -184,9 +185,8 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
         </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          <div
-            ref={printRef}
-            className="space-y-4 rounded-2xl border border-border bg-bg p-4 lg:col-span-2 print:border-0 print:shadow-none"
+          <Card
+            className="space-y-4 p-4 [--gutter:0] lg:col-span-2 print:border-0 print:shadow-none"
           >
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
@@ -248,9 +248,9 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                 <div className="text-muted-fg text-sm">Belum ada pembayaran.</div>
               )}
             </div>
-          </div>
+          </Card>
 
-          <div className="space-y-4 rounded-2xl border border-border bg-bg p-4 print:hidden">
+          <Card className="space-y-4 p-4 [--gutter:0] print:hidden">
             <div>
               <p className="mb-3 font-semibold text-fg text-sm">Detail Nota</p>
               <div className="space-y-2 text-muted-fg text-sm">
@@ -278,8 +278,9 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
             </div>
 
             <form onSubmit={submitCollectionNotes} className="space-y-3">
-              <label className="font-semibold text-fg text-sm">Catatan Penagihan</label>
+              <label htmlFor="collection-notes" className="font-semibold text-fg text-sm">Catatan Penagihan</label>
               <textarea
+                id="collection-notes"
                 rows={3}
                 value={collectionNotesForm.data.collection_notes}
                 onChange={(e) => collectionNotesForm.setData("collection_notes", e.target.value)}
@@ -305,8 +306,9 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
             {showForm && canPayReceivable && (
               <form onSubmit={submitPayment} className="space-y-3">
                 <div>
-                  <label className="font-medium text-fg text-sm">Nominal</label>
+                  <label htmlFor="payment-amount" className="font-medium text-fg text-sm">Nominal</label>
                   <input
+                    id="payment-amount"
                     type="number"
                     min="1"
                     value={data.amount}
@@ -317,8 +319,9 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   {errors.amount && <p className="mt-1 text-danger text-xs">{errors.amount}</p>}
                 </div>
                 <div>
-                  <label className="font-medium text-fg text-sm">Tanggal Bayar</label>
+                  <label htmlFor="payment-date" className="font-medium text-fg text-sm">Tanggal Bayar</label>
                   <input
+                    id="payment-date"
                     type="date"
                     value={data.paid_at}
                     onChange={(e) => setData("paid_at", e.target.value)}
@@ -326,36 +329,27 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                     required
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setData("method", "cash")}
-                    className={`flex h-11 items-center justify-center gap-2 rounded-xl border-2 font-semibold text-sm ${
-                      data.method === "cash"
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-fg"
-                    }`}
-                  >
-                    <IconCash size={16} />
+                <ToggleGroup
+                  selectionMode="single"
+                  size="lg"
+                  selectedKeys={new Set([data.method])}
+                  onSelectionChange={(keys) => setData("method", String(Array.from(keys)[0]))}
+                  className="grid w-full grid-cols-2"
+                >
+                  <ToggleGroupItem id="cash">
+                    <IconCash />
                     Tunai
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setData("method", "bank_transfer")}
-                    className={`flex h-11 items-center justify-center gap-2 rounded-xl border-2 font-semibold text-sm ${
-                      data.method === "bank_transfer"
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-border text-muted-fg"
-                    }`}
-                  >
-                    <IconCreditCard size={16} />
+                  </ToggleGroupItem>
+                  <ToggleGroupItem id="bank_transfer">
+                    <IconCreditCard />
                     Transfer
-                  </button>
-                </div>
+                  </ToggleGroupItem>
+                </ToggleGroup>
                 {data.method === "bank_transfer" && (
                   <div>
-                    <label className="font-medium text-fg text-sm">Rekening</label>
+                    <label htmlFor="payment-account" className="font-medium text-fg text-sm">Rekening</label>
                     <select
+                      id="payment-account"
                       value={data.bank_account_id}
                       onChange={(e) => setData("bank_account_id", e.target.value)}
                       className="h-11 w-full rounded-xl border border-input bg-muted px-3 text-fg text-sm"
@@ -370,8 +364,9 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
                   </div>
                 )}
                 <div>
-                  <label className="font-medium text-fg text-sm">Catatan (opsional)</label>
+                  <label htmlFor="payment-note" className="font-medium text-fg text-sm">Catatan (opsional)</label>
                   <textarea
+                    id="payment-note"
                     rows={2}
                     value={data.note}
                     onChange={(e) => setData("note", e.target.value)}
@@ -394,7 +389,7 @@ export default function ReceivableShow({ receivable, bankAccounts = [] }: ShowPr
               <IconPrinter size={18} />
               Preview / PDF
             </Button>
-          </div>
+          </Card>
         </div>
       </div>
 

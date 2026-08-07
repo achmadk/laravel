@@ -13,6 +13,8 @@ import DashboardLayout from "@/layouts/dashboard-layout";
 import { useAuthorization } from "@/lib/auth";
 import stockOpnames from "@/routes/stock-opnames";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 interface Product {
   id: number;
@@ -282,15 +284,14 @@ export default function Show({
           </div>
 
           {isDraft && canFinalizeStockOpname && (
-            <button
-              type="button"
-              onClick={finalize}
-              disabled={localItems.length === 0 || summary.hasMissingReasons}
-              className="inline-flex items-center gap-2 rounded-xl bg-success px-5 py-2.5 font-medium text-sm text-white shadow-lg shadow-success/20 transition-colors hover:bg-success/90 disabled:opacity-50"
+            <Button
+              intent="success"
+              onPress={finalize}
+              isDisabled={localItems.length === 0 || summary.hasMissingReasons}
             >
               <IconCheck size={18} />
               Finalize Stock Opname
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -308,20 +309,16 @@ export default function Show({
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
+        <div className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
         <div className="space-y-6">
-          <div className="rounded-2xl border border-border bg-bg p-5">
+          <Card className="p-5 [--gutter:0] has-[table]:pb-5">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-semibold text-fg text-lg">Item Stock Opname</h2>
               {canManageDraft && (
-                <button
-                  type="button"
-                  onClick={() => setShowProductModal(true)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-primary/90"
-                >
+                <Button intent="primary" onPress={() => setShowProductModal(true)}>
                   <IconPlus size={18} />
                   Tambah Produk
-                </button>
+                </Button>
               )}
             </div>
 
@@ -398,14 +395,14 @@ export default function Show({
                           </td>
                           <td className="px-4 py-4 text-center align-middle">
                             {canManageDraft ? (
-                              <button
-                                type="button"
-                                onClick={() => persistItem(item)}
-                                disabled={savingItemId === item.id}
-                                className="inline-flex rounded-xl border border-border bg-muted p-2 text-muted-fg transition hover:border-primary hover:text-primary disabled:opacity-50"
+                              <Button
+                                intent="outline"
+                                size="sq-md"
+                                onPress={() => persistItem(item)}
+                                isDisabled={savingItemId === item.id}
                               >
                                 <IconDeviceFloppy size={18} />
-                              </button>
+                              </Button>
                             ) : (
                               "-"
                             )}
@@ -426,34 +423,33 @@ export default function Show({
                 </tbody>
               </table>
             </div>
-          </div>
+          </Card>
         </div>
 
         <div className="space-y-6">
-          <form onSubmit={saveNotes} className="rounded-2xl border border-border bg-bg p-5">
-            <h2 className="mb-4 font-semibold text-fg text-lg">Catatan Sesi</h2>
-            <textarea
-              value={notesForm.data.notes}
-              disabled={!canManageDraft}
-              onChange={(event) => notesForm.setData("notes", event.target.value)}
-              rows={4}
-              className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
-              placeholder="Catatan sesi stock opname"
-            />
-            {canManageDraft && (
-              <div className="mt-4 flex justify-end">
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-primary/90"
-                >
-                  <IconDeviceFloppy size={18} />
-                  Simpan Catatan
-                </button>
-              </div>
-            )}
-          </form>
+          <Card className="p-5 [--gutter:0]">
+            <form onSubmit={saveNotes}>
+              <h2 className="mb-4 font-semibold text-fg text-lg">Catatan Sesi</h2>
+              <textarea
+                value={notesForm.data.notes}
+                disabled={!canManageDraft}
+                onChange={(event) => notesForm.setData("notes", event.target.value)}
+                rows={4}
+                className="w-full rounded-xl border border-input bg-muted px-4 py-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                placeholder="Catatan sesi stock opname"
+              />
+              {canManageDraft && (
+                <div className="mt-4 flex justify-end">
+                  <Button type="submit" intent="primary">
+                    <IconDeviceFloppy size={18} />
+                    Simpan Catatan
+                  </Button>
+                </div>
+              )}
+            </form>
+          </Card>
 
-          <div className="rounded-2xl border border-border bg-bg p-5">
+          <Card className="p-5 [--gutter:0]">
             <h2 className="mb-4 font-semibold text-fg text-lg">Informasi Sesi</h2>
             <div className="space-y-3 text-muted-fg text-sm">
               <div className="rounded-xl border border-border bg-muted p-4">
@@ -466,13 +462,22 @@ export default function Show({
                 </ul>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
 
       {showProductModal && canManageDraft && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setShowProductModal(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            role="button"
+            tabIndex={-1}
+            aria-label="Tutup modal"
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setShowProductModal(false)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") setShowProductModal(false);
+            }}
+          />
           <div className="relative z-10 w-full max-w-2xl rounded-2xl border border-border bg-bg p-6 shadow-xl">
             <div className="mb-4 flex items-center gap-2">
               <IconClipboardCheck size={18} />
@@ -482,7 +487,6 @@ export default function Show({
               <div className="relative">
                 <input
                   type="text"
-                  autoFocus
                   value={productSearchInput}
                   onChange={(event) => setProductSearchInput(event.target.value)}
                   placeholder="Cari nama produk, barcode, atau SKU..."
@@ -501,11 +505,11 @@ export default function Show({
                 availableProducts.length > 0 ? (
                   <div className="max-h-[420px] space-y-3 overflow-y-auto pr-1">
                     {availableProducts.map((product) => (
-                      <button
+                      <Button
                         key={product.id}
-                        type="button"
-                        onClick={() => addProduct(product.id)}
+                        intent="plain"
                         className="flex w-full items-start justify-between gap-3 rounded-xl border border-border p-4 text-left transition hover:border-primary hover:bg-primary/5"
+                        onPress={() => addProduct(product.id)}
                       >
                         <div>
                           <p className="font-medium text-fg">{product.title}</p>
@@ -518,7 +522,7 @@ export default function Show({
                         <span className="inline-flex rounded-lg bg-primary px-3 py-2 font-semibold text-white text-xs">
                           Tambah
                         </span>
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 ) : (

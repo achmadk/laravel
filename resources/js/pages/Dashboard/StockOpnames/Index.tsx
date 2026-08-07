@@ -97,7 +97,7 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
           }
         />
 
-        <div className="grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-4">
+        <Card className="grid grid-cols-1 gap-3 p-4 md:grid-cols-4">
           <div className="relative md:col-span-2">
             <input
               type="text"
@@ -135,7 +135,7 @@ export default function Index({ stockOpnames: data, filters }: IndexProps) {
               className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm outline-none transition focus:border-ring focus:ring-2 focus:ring-ring"
             />
           </div>
-        </div>
+        </Card>
 
         <Card>
           <CardContent className="p-0">

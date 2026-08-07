@@ -13,6 +13,8 @@ import {
 } from "@tabler/icons-react";
 import { useAuthorization } from "@/lib/auth";
 import transactions from "@/routes/transactions";
+import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const formatPrice = (price = 0) =>
   Number(price || 0).toLocaleString("id-ID", {
@@ -175,11 +177,6 @@ export default function Print({ transaction }: PrintProps) {
   const isNonCash = paymentMethodKey !== "cash";
   const showPaymentLink = isNonCash && !!transaction.payment_url;
 
-  // oxlint-disable-next-line no-unused-vars
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
     <>
       <Head title="Invoice Penjualan" />
@@ -196,52 +193,30 @@ export default function Print({ transaction }: PrintProps) {
             </Link>
 
             <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center">
-              <div className="flex w-full rounded-xl bg-muted p-1 sm:w-auto">
-                <button
-                  onClick={() => setPrintMode("invoice")}
-                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
-                    printMode === "invoice"
-                      ? "bg-bg text-fg shadow-sm"
-                      : "text-muted-fg hover:text-fg"
-                  }`}
-                >
-                  <IconFileInvoice size={16} className="mr-1 inline" />
+              <ToggleGroup
+                size="xs"
+                selectionMode="single"
+                selectedKeys={new Set([printMode])}
+                onSelectionChange={(keys) => setPrintMode(String(Array.from(keys)[0]))}
+                className="w-full sm:w-auto"
+              >
+                <ToggleGroupItem id="invoice">
+                  <IconFileInvoice />
                   Invoice
-                </button>
-                <button
-                  onClick={() => setPrintMode("thermal80")}
-                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
-                    printMode === "thermal80"
-                      ? "bg-bg text-fg shadow-sm"
-                      : "text-muted-fg hover:text-fg"
-                  }`}
-                >
-                  <IconReceipt size={16} className="mr-1 inline" />
+                </ToggleGroupItem>
+                <ToggleGroupItem id="thermal80">
+                  <IconReceipt />
                   Struk 80mm
-                </button>
-                <button
-                  onClick={() => setPrintMode("thermal58")}
-                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
-                    printMode === "thermal58"
-                      ? "bg-bg text-fg shadow-sm"
-                      : "text-muted-fg hover:text-fg"
-                  }`}
-                >
-                  <IconReceipt size={16} className="mr-1 inline" />
+                </ToggleGroupItem>
+                <ToggleGroupItem id="thermal58">
+                  <IconReceipt />
                   Struk 58mm
-                </button>
-                <button
-                  onClick={() => setPrintMode("shipping")}
-                  className={`rounded-lg px-3 py-2 font-medium text-xs transition-all ${
-                    printMode === "shipping"
-                      ? "bg-bg text-fg shadow-sm"
-                      : "text-muted-fg hover:text-fg"
-                  }`}
-                >
-                  <IconTruck size={16} className="mr-1 inline" />
+                </ToggleGroupItem>
+                <ToggleGroupItem id="shipping">
+                  <IconTruck />
                   Resi
-                </button>
-              </div>
+                </ToggleGroupItem>
+              </ToggleGroup>
 
               {showPaymentLink && (
                 <a
@@ -258,13 +233,14 @@ export default function Print({ transaction }: PrintProps) {
               {paymentMethodKey === "bank_transfer" &&
                 paymentStatusKey === "pending" &&
                 canConfirmPayment && (
-                  <button
-                    onClick={() => setShowConfirmModal(true)}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-success px-4 py-2.5 font-semibold text-sm text-white transition-colors hover:bg-success/90 sm:w-auto"
+                  <Button
+                    intent="success"
+                    onPress={() => setShowConfirmModal(true)}
+                    className="w-full sm:w-auto"
                   >
-                    <IconCheck size={18} />
+                    <IconCheck />
                     Konfirmasi Bayar
-                  </button>
+                  </Button>
                 )}
 
               {printMode === "invoice" && (
@@ -695,8 +671,14 @@ export default function Print({ transaction }: PrintProps) {
       {showConfirmModal && canConfirmPayment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 print:hidden">
           <div
+            role="button"
+            tabIndex={-1}
+            aria-label="Tutup modal"
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => !isConfirming && setShowConfirmModal(false)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") setShowConfirmModal(false);
+            }}
           />
           <div className="relative w-full max-w-md overflow-hidden rounded-2xl bg-bg shadow-2xl">
             <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-5 text-white">
@@ -737,15 +719,17 @@ export default function Print({ transaction }: PrintProps) {
               </div>
             </div>
             <div className="flex gap-3 px-6 pb-6">
-              <button
-                onClick={() => setShowConfirmModal(false)}
-                disabled={isConfirming}
-                className="flex-1 rounded-xl border border-border px-4 py-3 font-medium text-muted-fg hover:bg-muted disabled:opacity-50"
+              <Button
+                intent="outline"
+                onPress={() => setShowConfirmModal(false)}
+                isDisabled={isConfirming}
+                className="flex-1"
               >
                 Batal
-              </button>
-              <button
-                onClick={() => {
+              </Button>
+              <Button
+                intent="success"
+                onPress={() => {
                   setIsConfirming(true);
                   router.patch(
                     transactions.confirmPayment.url(transaction.id),
@@ -761,8 +745,8 @@ export default function Print({ transaction }: PrintProps) {
                     },
                   );
                 }}
-                disabled={isConfirming}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-success px-4 py-3 font-medium text-white hover:bg-success/90 disabled:opacity-50"
+                isDisabled={isConfirming}
+                className="flex-1"
               >
                 {isConfirming ? (
                   <>
@@ -771,10 +755,10 @@ export default function Print({ transaction }: PrintProps) {
                   </>
                 ) : (
                   <>
-                    <IconCheck size={18} /> Konfirmasi Lunas
+                    <IconCheck /> Konfirmasi Lunas
                   </>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

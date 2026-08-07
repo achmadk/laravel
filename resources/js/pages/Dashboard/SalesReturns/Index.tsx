@@ -93,9 +93,10 @@ export default function Index({ salesReturns, filters }: IndexProps) {
         description="Histori retur penjualan berdasarkan transaksi asal."
       />
 
+      <Card className="p-5 [--gutter:0]">
       <form
         onSubmit={submit}
-        className="grid gap-4 rounded-2xl border border-border bg-bg p-5 md:grid-cols-2 xl:grid-cols-5"
+        className="grid gap-4 md:grid-cols-2 xl:grid-cols-5"
       >
         <input
           type="text"
@@ -138,6 +139,7 @@ export default function Index({ salesReturns, filters }: IndexProps) {
           </Button>
         </div>
       </form>
+      </Card>
 
       <Card>
         <CardContent className="p-0">

@@ -67,7 +67,7 @@ function CategoryCard({
   canDelete: boolean;
 }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-bg transition-all duration-200 hover:border-muted-fg/30 hover:shadow-lg">
+    <Card className="group overflow-hidden transition-all duration-200 [--gutter:0] hover:border-muted-fg/30 hover:shadow-lg">
       <div className="relative aspect-[3/2] overflow-hidden bg-muted">
         {category.image ? (
           <img
@@ -93,12 +93,13 @@ function CategoryCard({
               </Link>
             )}
             {canDelete && (
-              <button
-                onClick={() => onDelete(categories.destroy.url({ category: category.id }))}
-                className="rounded-xl bg-bg p-2.5 text-danger shadow-lg transition-colors hover:bg-danger-subtle"
+              <Button
+                intent="danger"
+                size="sq-sm"
+                onPress={() => onDelete(categories.destroy.url({ category: category.id }))}
               >
                 <IconTrash size={18} />
-              </button>
+              </Button>
             )}
           </div>
         )}
@@ -110,7 +111,7 @@ function CategoryCard({
           <p className="line-clamp-2 text-muted-fg text-sm">{category.description}</p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
 

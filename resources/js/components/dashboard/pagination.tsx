@@ -53,7 +53,7 @@ export function Pagination({ links, className }: PaginationProps) {
                 className={twMerge(
                   "rounded-md border px-2 py-1 text-sm",
                   link.active
-                    ? "border-border bg-bg font-semibold text-fg"
+                    ? "border-primary bg-primary font-semibold text-primary-fg"
                     : "border-border bg-bg text-muted-fg hover:bg-muted",
                 )}
                 dangerouslySetInnerHTML={{ __html: link.label }}
