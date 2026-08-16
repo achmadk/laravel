@@ -2,7 +2,7 @@ import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { IconArrowLeft, IconClipboardCheck } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import stockOpnames from "@/routes/stock-opnames";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 

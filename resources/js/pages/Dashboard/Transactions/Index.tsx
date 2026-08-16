@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { router } from "@inertiajs/react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import transactions from "@/routes/transactions";
 import POSLayout from "@/layouts/pos-layout";
@@ -13,6 +13,16 @@ import CustomerSelect from "@/components/pos/CustomerSelect";
 import NumpadModal from "@/components/pos/NumpadModal";
 import { HoldButton } from "@/components/pos/HeldTransactions";
 import HeldTransactions from "@/components/pos/HeldTransactions";
+import {
+  Modal,
+  ModalBody,
+  ModalClose,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
 
 import type {
   POSProduct,
@@ -63,6 +73,7 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
   const [customer, setCustomer] = useState<POSCustomer | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [removingItemId, setRemovingItemId] = useState<number | null>(null);
+  const [isClearOpen, setIsClearOpen] = useState(false);
   const [isHolding, setIsHolding] = useState(false);
   const [pricingPreview, setPricingPreview] = useState<PricingPreview | null>(
     initialPricingPreview,
@@ -200,6 +211,16 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
     });
   }, []);
 
+  const handleClearAll = useCallback(() => {
+    router.delete(transactions.clearCart.url(), {
+      preserveScroll: true,
+      preserveState: true,
+      onSuccess: () => toast.success("Keranjang dikosongkan"),
+      onError: () => toast.error("Gagal mengosongkan keranjang"),
+      onFinish: () => setIsClearOpen(false),
+    });
+  }, []);
+
   const handleHold = useCallback(
     (label: string | null) => {
       if (carts.length === 0) {
@@ -297,6 +318,7 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
                 items={carts}
                 onUpdateQty={handleUpdateQty}
                 onRemove={handleRemove}
+                onClearAll={() => setIsClearOpen(true)}
                 removingItemId={removingItemId}
               />
             </div>
@@ -341,6 +363,25 @@ export default function TransactionsIndex(props: TransactionsPageProps) {
           isCurrency={numpadConfig.isCurrency}
         />
       )}
+
+      <Modal isOpen={isClearOpen} onOpenChange={setIsClearOpen}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>Konfirmasi Hapus</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <p className="text-muted-fg text-sm">
+              Kosongkan semua item aktif di keranjang?
+            </p>
+          </ModalBody>
+          <ModalFooter>
+            <ModalClose>Batal</ModalClose>
+            <Button intent="danger" onPress={handleClearAll}>
+              Kosongkan
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </POSLayout>
   );
 }

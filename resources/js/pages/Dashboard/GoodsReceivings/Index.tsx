@@ -89,7 +89,7 @@ export default function Index({ receivings, filters }: IndexProps) {
           }
         />
 
-        <div className="rounded-2xl border border-border bg-bg p-4">
+        <Card className="rounded-2xl border border-border bg-bg p-4">
           <div className="relative">
             <input
               type="text"
@@ -102,7 +102,7 @@ export default function Index({ receivings, filters }: IndexProps) {
               <IconSearch size={18} />
             </div>
           </div>
-        </div>
+        </Card>
 
         <Card>
           <CardContent className="p-0">

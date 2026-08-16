@@ -8,6 +8,34 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 400;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Regular.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 500;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Medium.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 600;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-SemiBold.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 700;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Bold.ttf') }}") format('truetype')
+        }
+
         /* Ukuran 150mm x 100mm dalam Points */
         @page {
             margin: 0;
@@ -15,7 +43,7 @@
         }
 
         body {
-            font-family: 'Helvetica', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
             padding: 0;
             width: 425.2pt;

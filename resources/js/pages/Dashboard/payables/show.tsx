@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { IconArrowLeft, IconCreditCard, IconCash, IconPrinter } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useAuthorization } from "@/lib/auth";
 import payables from "@/routes/payables";
 import pdf from "@/routes/pdf";

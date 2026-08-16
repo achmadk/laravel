@@ -1,6 +1,3 @@
-@php
-    $fontFamily = "'Inter', 'Helvetica', 'Arial', sans-serif";
-@endphp
 <!DOCTYPE html>
 <html lang="id">
 
@@ -8,31 +5,31 @@
     <meta charset="UTF-8">
     <style>
         @font-face {
-            font-family: 'Inter';
+            font-family: 'Plus Jakarta Sans';
             font-style: normal;
             font-weight: 400;
-            src: url("{{ public_path('inter/Inter_24pt-Regular.ttf') }}") format('truetype')
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Regular.ttf') }}") format('truetype')
         }
 
         @font-face {
-            font-family: 'Inter';
+            font-family: 'Plus Jakarta Sans';
             font-style: normal;
             font-weight: 500;
-            src: url("{{ public_path('inter/Inter_24pt-Medium.ttf') }}") format('truetype')
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Medium.ttf') }}") format('truetype')
         }
 
         @font-face {
-            font-family: 'Inter';
+            font-family: 'Plus Jakarta Sans';
             font-style: normal;
             font-weight: 600;
-            src: url("{{ public_path('inter/Inter_24pt-SemiBold.ttf') }}") format('truetype')
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-SemiBold.ttf') }}") format('truetype')
         }
 
         @font-face {
-            font-family: 'Inter';
+            font-family: 'Plus Jakarta Sans';
             font-style: normal;
             font-weight: 700;
-            src: url("{{ public_path('inter/Inter_24pt-Bold.ttf') }}") format('truetype')
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Bold.ttf') }}") format('truetype')
         }
 
         * {
@@ -40,7 +37,7 @@
         }
 
         body {
-            font-family: {{ $fontFamily }};
+            font-family: 'Plus Jakarta Sans', 'Helvetica', 'Arial', sans-serif;
             margin: 0;
             padding: 24px;
             color: #0f172a
@@ -271,8 +268,10 @@
         $voucherDiscount = $transaction->customer_voucher_discount ?? 0;
         $loyaltyDiscount = $transaction->loyalty_discount_total ?? 0;
         $shipping = $transaction->shipping_cost ?? 0;
+        $tax = $transaction->tax_total ?? 0;
+        $taxRate = $transaction->tax_rate ?? 0;
         $grandTotal = $transaction->grand_total ?? 0;
-        $subtotal = $grandTotal + $discount - $shipping + $promoDiscount + $voucherDiscount + $loyaltyDiscount;
+        $subtotal = $grandTotal + $discount - $shipping - $tax + $promoDiscount + $voucherDiscount + $loyaltyDiscount;
     @endphp
 
     <table style="width:100%; margin-top:8px;">
@@ -320,6 +319,14 @@
                             + {{ number_format($shipping, 0, ',', '.') }}
                         </td>
                     </tr>
+                    @if ($tax > 0)
+                        <tr>
+                            <td style="color:#475569;">PPN {{ number_format((float) $taxRate, 0) }}%</td>
+                            <td class="right" style="font-weight:600;">
+                                + {{ number_format($tax, 0, ',', '.') }}
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <td style="font-weight:700; font-size:13px;">Total</td>
                         <td class="right" style="font-weight:800; font-size:13px;">

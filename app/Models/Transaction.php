@@ -23,6 +23,8 @@ class Transaction extends Model
         'loyalty_discount_total' => 'integer',
         'customer_voucher_discount' => 'integer',
         'shipping_cost' => 'integer',
+        'tax_rate' => 'float',
+        'tax_total' => 'integer',
         'grand_total' => 'integer',
         'bank_account_id' => 'integer',
     ];
@@ -47,6 +49,8 @@ class Transaction extends Model
         'customer_voucher_code',
         'customer_voucher_name',
         'shipping_cost',
+        'tax_rate',
+        'tax_total',
         'grand_total',
         'payment_method',
         'payment_status',

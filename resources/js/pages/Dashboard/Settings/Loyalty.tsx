@@ -1,7 +1,7 @@
 import { Head, useForm } from "@inertiajs/react";
 import { IconDeviceFloppy, IconGift, IconMedal } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import settings from "@/routes/settings";
 import { Card, CardContent } from "@/components/ui/card";
 

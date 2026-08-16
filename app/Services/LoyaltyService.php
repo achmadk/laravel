@@ -199,7 +199,14 @@ class LoyaltyService
 
         $afterLoyalty = max(0, $afterVoucher - $pointsDiscount);
         $manualDiscountApplied = min($manualDiscountRequested, $afterLoyalty);
-        $grandTotal = max(0, $afterLoyalty - $manualDiscountApplied + $shippingCost);
+        $baseGrandTotal = max(0, $afterLoyalty - $manualDiscountApplied + $shippingCost);
+
+        // Calculate tax (default 11% per store setting, applied to taxable base + shipping)
+        $taxService = app(TaxService::class);
+        $taxRate = $taxService->getDefaultRate();
+        $taxableBase = max(0, $afterLoyalty - $manualDiscountApplied);
+        $taxTotal = $taxRate > 0 ? (int) round(($taxableBase + $shippingCost) * $taxRate / 100) : 0;
+        $grandTotal = max(0, $baseGrandTotal + $taxTotal);
         $pointsEarnedPreview = $this->calculateEarnPoints(
             $customer,
             max(0, $grandTotal - $shippingCost),
@@ -219,6 +226,8 @@ class LoyaltyService
                 'loyalty_discount_total' => $pointsDiscount,
                 'manual_discount_total' => $manualDiscountApplied,
                 'shipping_cost' => $shippingCost,
+                'tax_rate' => $taxRate,
+                'tax_total' => $taxTotal,
                 'grand_total' => $grandTotal,
                 'available_loyalty_points' => $availablePoints,
                 'requested_redeem_points' => $requestedRedeemPoints,

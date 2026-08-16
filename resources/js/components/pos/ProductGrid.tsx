@@ -1,5 +1,18 @@
+import { useEffect, useState } from "react";
+import { IconLayoutGrid, IconList } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 import { imageUrl } from "@/lib/image-url";
 import type { POSProduct, POSCategory } from "@/types/pos";
+
+const VIEW_STORAGE_KEY = "pos:product-view";
+
+function loadViewMode(): "grid" | "table" {
+  try {
+    return localStorage.getItem(VIEW_STORAGE_KEY) === "table" ? "table" : "grid";
+  } catch {
+    return "grid";
+  }
+}
 
 const formatPrice = (value = 0) =>
   Number(value || 0).toLocaleString("id-ID", {
@@ -30,11 +43,26 @@ export default function ProductGrid({
   searchQuery = "",
 }: ProductGridProps) {
   const showSearchResultText = searchQuery.length > 0;
+  // ponytail: default grid for SSR parity, apply the stored preference after mount
+  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+
+  useEffect(() => {
+    setViewMode(loadViewMode());
+  }, []);
+
+  function switchView(mode: "grid" | "table") {
+    setViewMode(mode);
+    try {
+      localStorage.setItem(VIEW_STORAGE_KEY, mode);
+    } catch {
+      // ignore storage failures, view switch still applies for this session
+    }
+  }
 
   return (
     <div className="flex h-full flex-col">
       <div className="overflow-x-auto border-slate-200 border-b px-4 py-3 dark:border-slate-800">
-        <div className="flex min-w-max gap-2">
+        <div className="flex min-w-max items-center gap-2">
           <button
             onClick={() => onCategoryChange(null)}
             className={`whitespace-nowrap rounded-full px-4 py-2 font-medium text-sm transition-all ${
@@ -59,6 +87,25 @@ export default function ProductGrid({
               {cat.name}
             </button>
           ))}
+
+          <div className="ml-auto flex items-center gap-1">
+            <Button
+              intent={viewMode === "grid" ? "primary" : "plain"}
+              size="sq-sm"
+              onPress={() => switchView("grid")}
+              aria-label="Grid View"
+            >
+              <IconLayoutGrid size={20} />
+            </Button>
+            <Button
+              intent={viewMode === "table" ? "primary" : "plain"}
+              size="sq-sm"
+              onPress={() => switchView("table")}
+              aria-label="Table View"
+            >
+              <IconList size={20} />
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -72,6 +119,79 @@ export default function ProductGrid({
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          </div>
+        ) : viewMode === "table" ? (
+          <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                  <th className="px-4 py-3 font-semibold">Nama</th>
+                  <th className="px-4 py-3 font-semibold">Barcode</th>
+                  <th className="px-4 py-3 font-semibold">Harga</th>
+                  <th className="px-4 py-3 font-semibold">Modal</th>
+                  <th className="px-4 py-3 font-semibold">Stok</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white dark:divide-slate-700 dark:bg-slate-900">
+                {products.map((product) => {
+                  const isInCart = cartProductIds.includes(product.id);
+
+                  return (
+                    <tr
+                      key={product.id}
+                      onClick={() => {
+                        if (product.stock <= 0) return;
+                        onProductClick(product);
+                      }}
+                      className={`cursor-pointer transition-colors ${
+                        isInCart
+                          ? "bg-primary/5"
+                          : product.stock <= 0
+                            ? "bg-slate-50 opacity-60 dark:bg-slate-800"
+                            : "hover:bg-slate-50 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      <td className="max-w-[200px] px-4 py-2.5">
+                        <div className="flex items-center gap-2">
+                          {isInCart && (
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-fg text-[10px]">
+                              ✓
+                            </span>
+                          )}
+                          <span
+                            className={`truncate font-medium text-slate-700 dark:text-slate-300 ${
+                              product.stock <= 0 ? "line-through" : ""
+                            }`}
+                          >
+                            {product.title}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2.5 text-slate-500 font-mono text-xs dark:text-slate-400">
+                        {product.barcode || "-"}
+                      </td>
+                      <td className="px-4 py-2.5 font-bold text-primary">
+                        {formatPrice(product.sell_price)}
+                      </td>
+                      <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">
+                        {formatPrice(product.average_cost)}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        {product.stock <= 0 ? (
+                          <span className="rounded-full bg-danger px-2 py-0.5 font-bold text-danger-fg text-xs">
+                            HABIS
+                          </span>
+                        ) : (
+                          <span className="text-slate-600 dark:text-slate-400">
+                            {product.stock}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         ) : products.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">

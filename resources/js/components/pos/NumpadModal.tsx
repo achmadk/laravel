@@ -10,6 +10,10 @@ interface NumpadModalProps {
   minValue?: number;
   maxValue?: number;
   isCurrency?: boolean;
+  /**
+   * @default true
+   */
+  triggerCloseAfterConfirm?: boolean;
 }
 
 export default function NumpadModal({
@@ -21,6 +25,7 @@ export default function NumpadModal({
   minValue = 0,
   maxValue = 999999999,
   isCurrency = false,
+  triggerCloseAfterConfirm = true,
 }: NumpadModalProps) {
   const [value, setValue] = useState(String(initialValue || ""));
 
@@ -76,9 +81,11 @@ export default function NumpadModal({
     const numValue = parseInt(value, 10) || 0;
     if (numValue >= minValue && numValue <= maxValue) {
       onConfirm(numValue);
-      onClose();
+      if (triggerCloseAfterConfirm) {
+        onClose();
+      }
     }
-  }, [value, minValue, maxValue, onConfirm, onClose]);
+  }, [value, minValue, maxValue, onConfirm, onClose, triggerCloseAfterConfirm]);
 
   const handleQuickAmount = useCallback(
     (amount: number) => {

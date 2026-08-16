@@ -7,6 +7,7 @@ export function Toast(props: ToasterProps) {
   return (
     <ToasterPrimitive
       theme={theme as ToasterProps["theme"]}
+      position="top-center"
       className="toaster group"
       richColors
       toastOptions={{

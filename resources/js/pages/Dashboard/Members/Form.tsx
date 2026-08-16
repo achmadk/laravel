@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Head, useForm, Link, usePage } from "@inertiajs/react";
 import { IconArrowLeft, IconCrown, IconDeviceFloppy, IconInfoCircle } from "@tabler/icons-react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { index, update, store } from "@/routes/members";
 import regionsRouter from "@/routes/regions";
 

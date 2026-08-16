@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { IconTrash, IconMinus, IconPlus, IconShoppingCart } from "@tabler/icons-react";
 import { imageUrl } from "@/lib/image-url";
 
@@ -26,6 +27,7 @@ interface CartPanelProps {
   items?: CartItem[];
   onUpdateQty: (cartId: number, newQty: number) => void;
   onRemove: (cartId: number) => void;
+  onClearAll?: () => void;
   removingItemId?: number | null;
   className?: string;
 }
@@ -45,6 +47,32 @@ function CartItemComponent({
   const itemPrice = Number(item?.price ?? 0);
   const unitPrice = Number(item?.product?.sell_price ?? 0) || itemPrice / quantity || 0;
   const subtotal = itemPrice;
+
+  const [draft, setDraft] = useState(String(quantity));
+
+  useEffect(() => {
+    setDraft(String(quantity));
+  }, [quantity]);
+
+  const commit = () => {
+    const parsed = parseInt(draft, 10);
+    if (Number.isNaN(parsed) || parsed < 1) {
+      setDraft(String(quantity));
+      return;
+    }
+    if (parsed !== quantity) {
+      onUpdateQty(item.id, parsed);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      commit();
+    } else if (e.key === "Escape") {
+      setDraft(String(quantity));
+    }
+  };
 
   return (
     <div
@@ -91,9 +119,19 @@ function CartItemComponent({
           >
             <IconMinus size={14} />
           </button>
-          <span className="w-8 text-center font-medium text-slate-700 text-sm dark:text-slate-300">
-            {item.qty}
-          </span>
+          <input
+            type="text"
+            inputMode="numeric"
+            maxLength={4}
+            value={draft}
+            aria-label="Jumlah item"
+            autoComplete="off"
+            onChange={(e) => setDraft(e.target.value.replace(/\D/g, ""))}
+            onFocus={(e) => e.target.select()}
+            onBlur={commit}
+            onKeyDown={handleKeyDown}
+            className="h-7 w-10 rounded-lg text-center font-medium text-slate-700 text-sm outline-none transition-colors focus:bg-white focus:ring-2 focus:ring-primary/30 dark:text-slate-300 dark:focus:bg-slate-900"
+          />
           <button
             onClick={() => onUpdateQty(item.id, item.qty + 1)}
             className="cursor-pointer flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
@@ -124,6 +162,7 @@ export default function CartPanel({
   items = [],
   onUpdateQty,
   onRemove,
+  onClearAll,
   removingItemId,
   className = "",
 }: CartPanelProps) {
@@ -137,11 +176,22 @@ export default function CartPanel({
           <IconShoppingCart size={20} className="text-slate-600 dark:text-slate-400" />
           <h2 className="font-semibold text-base text-slate-800 dark:text-white">Keranjang</h2>
         </div>
-        {totalItems > 0 && (
-          <span className="rounded-full bg-primary-subtle px-2.5 py-0.5 font-bold text-primary text-xs">
-            {totalItems} item
-          </span>
-        )}
+        <div className="flex items-center gap-1.5">
+          {totalItems > 0 && (
+            <span className="rounded-full bg-primary-subtle px-2.5 py-0.5 font-bold text-primary text-xs">
+              {totalItems} item
+            </span>
+          )}
+          {totalItems > 0 && onClearAll && (
+            <button
+              onClick={onClearAll}
+              aria-label="Kosongkan keranjang"
+              className="cursor-pointer rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-danger-subtle hover:text-danger"
+            >
+              <IconTrash size={16} />
+            </button>
+          )}
+        </div>
       </div>
 
       {items.length > 0 ? (

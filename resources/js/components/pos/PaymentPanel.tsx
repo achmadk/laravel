@@ -11,7 +11,7 @@ import {
   IconCheck,
   IconX,
 } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import transactions from "@/routes/transactions";
 import type {
   POSCartItem,
@@ -82,6 +82,7 @@ export default function PaymentPanel({
     loyaltyDiscount: summary?.loyalty_discount_total ?? 0,
     manualDiscount: summary?.manual_discount_total ?? 0,
     shipping: summary?.shipping_cost ?? 0,
+    tax: { rate: summary?.tax_rate ?? 0, total: summary?.tax_total ?? 0 },
     grand_total: summary?.grand_total ?? fallbackSubtotal,
     total_items: totalItems,
   };
@@ -225,6 +226,17 @@ export default function PaymentPanel({
               {formatPrice(pricing.subtotal)}
             </span>
           </div>
+
+          {pricing.tax.total > 0 && (
+            <div className="flex justify-between">
+              <span className="text-slate-600 text-sm dark:text-slate-400">
+                PPN {pricing.tax.rate}%
+              </span>
+              <span className="font-semibold text-slate-700 text-sm dark:text-slate-300">
+                {formatPrice(pricing.tax.total)}
+              </span>
+            </div>
+          )}
 
           <button
             onClick={() => setShowDetails(!showDetails)}

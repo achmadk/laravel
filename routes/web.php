@@ -86,6 +86,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
         ->middlewareFor(['edit', 'update'], 'permission:users-update')
         ->middlewareFor('update', ['permission:users-update', 'step_up'])
         ->middlewareFor('destroy', ['permission:users-delete', 'step_up']);
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/low-stock/read', [NotificationController::class, 'markLowStockRead'])->name('notifications.stock.read');
     Route::post('/notifications/low-stock/read-all', [NotificationController::class, 'markAllLowStockRead'])->name('notifications.stock.readAll');
     Route::get('/regions/regencies', [RegionController::class, 'regencies'])->name('regions.regencies');
@@ -195,6 +196,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::post('/transactions/addToCart', [TransactionController::class, 'addToCart'])->middleware(['permission:transactions-access', 'active_shift'])->name('transactions.addToCart');
 
     // route transaction destroyCart
+    Route::delete('/transactions/cart', [TransactionController::class, 'clearCart'])->middleware(['permission:transactions-access', 'active_shift'])->name('transactions.clearCart');
     Route::delete('/transactions/{cart_id}/destroyCart', [TransactionController::class, 'destroyCart'])->middleware(['permission:transactions-access', 'active_shift'])->name('transactions.destroyCart');
 
     // route transaction updateCart
@@ -263,6 +265,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/documents/transactions/{invoice}/pdf/invoice', [DocumentController::class, 'invoice'])->middleware('permission:transactions-access')->name('pdf.transactions.invoice');
     Route::get('/documents/transactions/{invoice}/pdf/receipt/{size?}', [DocumentController::class, 'receipt'])->middleware('permission:transactions-access')->name('pdf.transactions.receipt');
     Route::get('/documents/transactions/{invoice}/pdf/shipping', [DocumentController::class, 'shipping'])->middleware('permission:transactions-access')->name('pdf.transactions.shipping');
+    Route::get('/documents/transactions/{invoice}/pdf/thermal', [DocumentController::class, 'thermalPrint'])->middleware('permission:transactions-access')->name('pdf.transactions.thermal');
     Route::get('/documents/receivables/{receivable}/pdf', [DocumentController::class, 'receivable'])->middleware('permission:receivables-access')->name('pdf.receivables.show');
     Route::get('/documents/payables/{payable}/pdf', [DocumentController::class, 'payable'])->middleware('permission:payables-access')->name('pdf.payables.show');
 

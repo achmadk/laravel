@@ -9,7 +9,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import receivables from "@/routes/receivables";
 import transactions from "@/routes/transactions";
 import { Button } from "@/components/ui/button";

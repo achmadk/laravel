@@ -758,8 +758,10 @@ class AdvancedSalesInsightsController extends Controller
 
     protected function hourBucketExpression(): string
     {
-        return DB::connection()->getDriverName() === 'sqlite'
-            ? "CAST(strftime('%H', created_at) AS INTEGER)"
-            : 'HOUR(created_at)';
+        return match (DB::connection()->getDriverName()) {
+            'sqlite' => "CAST(strftime('%H', created_at) AS INTEGER)",
+            'pgsql' => 'EXTRACT(HOUR FROM created_at)',
+            default => 'HOUR(created_at)',
+        };
     }
 }

@@ -8,7 +8,7 @@ import {
   IconChevronUp,
   IconX,
 } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import type { HeldCart } from "@/types/pos";
 
 const formatPrice = (value = 0) =>
@@ -222,7 +222,7 @@ export function HoldButton({ hasItems = false, onHold, isHolding = false }: Hold
   return (
     <button
       onClick={() => setShowLabelInput(true)}
-      className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-amber-400 border-dashed px-3 py-2 font-medium text-amber-600 text-xs transition-colors hover:bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-950/30"
+      className="cursor-pointer flex w-full items-center justify-center gap-1.5 rounded-lg border border-amber-400 border-dashed px-3 py-2 font-medium text-amber-600 text-xs transition-colors hover:bg-amber-50 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-950/30"
     >
       <IconClock size={14} />
       Tahan

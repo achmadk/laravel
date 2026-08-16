@@ -18,25 +18,25 @@ import { Link } from "@/components/ui/link";
 import {
   IconMenu2,
   IconChevronLeft,
-  IconBell,
   IconLayoutDashboard,
   IconUser,
   IconLock,
   IconSettings,
   IconLogout,
 } from "@tabler/icons-react";
+import { NotificationBell } from "@/components/dashboard/notification-bell";
 import { logout } from "@/routes";
+import notifications from "@/routes/notifications";
+import type { NotificationsProps } from "@/types/notifications";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const page = usePage<any>();
-  const { notifications: pageNotifications } = page.props;
+  const page = usePage<NotificationsProps>();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [sidebarHover, setSidebarHover] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const notificationCount = pageNotifications?.total ?? 0;
-  const lowStockCount = pageNotifications?.low_stock?.length ?? 0;
+  const lowStockCount = page.props.notifications?.low_stock?.length ?? 0;
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
   const closeSidebar = () => setSidebarOpen(false);
@@ -112,24 +112,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                 <div className="hidden items-center gap-2 sm:flex">
                   <ThemeSwitcher />
+                  <NotificationBell />
                 </div>
-
-                <Link
-                  href="/notifications"
-                  className="relative flex rounded-xl p-2.5 text-muted-fg transition-colors hover:bg-muted hover:text-fg"
-                  aria-label="Notifications"
-                >
-                  <IconBell className="size-5" />
-                  {notificationCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-danger font-bold text-[10px] text-white">
-                      {notificationCount > 9 ? "9+" : notificationCount}
-                    </span>
-                  )}
-                </Link>
 
                 {lowStockCount > 0 && (
                   <Link
-                    href="/products"
+                    href={notifications.index.url()}
                     className="hidden items-center gap-1.5 rounded-lg bg-danger/10 px-3 py-1.5 font-medium text-danger text-xs sm:flex"
                   >
                     <span className="size-1.5 animate-pulse rounded-full bg-danger" />

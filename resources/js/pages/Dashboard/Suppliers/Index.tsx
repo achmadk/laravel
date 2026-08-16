@@ -6,9 +6,12 @@ import { useAuthorization } from "@/lib/auth";
 import suppliers from "@/routes/suppliers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heading } from "@/components/ui/heading";
 import { Input } from "@/components/ui/input";
 import { EmptyState } from "@/components/dashboard/empty-state";
+import { PageHeader } from "@/components/dashboard/page-header";
+import { FilterBar } from "@/components/dashboard/filter-bar";
+import { SearchField } from "@/components/dashboard/search-field";
+import { Pagination } from "@/components/dashboard/pagination";
 import {
   Modal,
   ModalBody,
@@ -27,18 +30,36 @@ interface Supplier {
   address: string | null;
 }
 
-interface SuppliersIndexProps {
-  suppliers: Supplier[];
+interface PaginationLink {
+  url: string | null;
+  label: string;
+  active: boolean;
 }
 
-export default function Index({ suppliers: supplierData }: SuppliersIndexProps) {
+interface SuppliersResponse {
+  data: Supplier[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+  links: PaginationLink[];
+}
+
+interface SuppliersIndexProps {
+  suppliers: SuppliersResponse;
+  filters: { search?: string };
+}
+
+export default function Index({ suppliers: data, filters }: SuppliersIndexProps) {
   const { can } = useAuthorization();
+  const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<number | null>(null);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [search, setSearch] = useState(filters.search ?? "");
   const canManageSuppliers = can("suppliers-access");
   const {
-    data,
+    data: form,
     setData,
     post,
     put,
@@ -53,8 +74,15 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
     address: "",
   });
 
+  const openAddForm = () => {
+    setEditing(null);
+    setShowForm(true);
+    reset();
+  };
+
   const startEdit = (supplier: Supplier) => {
     setEditing(supplier.id);
+    setShowForm(true);
     setData({
       name: supplier.name || "",
       phone: supplier.phone || "",
@@ -65,6 +93,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
 
   const cancel = () => {
     setEditing(null);
+    setShowForm(false);
     reset();
   };
 
@@ -76,9 +105,14 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
       });
     } else {
       post(suppliers.store.url(), {
-        onSuccess: () => reset(),
+        onSuccess: () => cancel(),
       });
     }
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.get(suppliers.index.url(), { search }, { preserveState: true, preserveScroll: true });
   };
 
   const handleDeleteClick = (id: number) => {
@@ -94,19 +128,33 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
     setDeletingId(null);
   };
 
+  const searching = search.trim().length > 0;
+
   return (
     <>
       <Head title="Supplier" />
 
-      <div className="mb-6">
-        <Heading level={1} className="flex items-center gap-2">
-          <IconBuildingStore size={26} className="text-primary" />
-          Supplier
-        </Heading>
-        <p className="mt-0.5 text-muted-fg text-sm">Data pemasok untuk pencatatan hutang.</p>
-      </div>
+      <PageHeader
+        title="Supplier"
+        description={`${data.total} supplier terdaftar`}
+        icon={<IconBuildingStore size={20} />}
+        actions={
+          canManageSuppliers && !showForm && (
+            <Button intent="primary" onPress={openAddForm}>
+              <IconPlus size={18} />
+              Tambah Supplier
+            </Button>
+          )
+        }
+      />
 
-      {canManageSuppliers && (
+      <FilterBar onSubmit={handleSearchSubmit}>
+        <div className="w-full sm:w-80">
+          <SearchField placeholder="Cari nama, telepon, email..." value={search} onChange={setSearch} />
+        </div>
+      </FilterBar>
+
+      {canManageSuppliers && showForm && (
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-sm">
@@ -119,7 +167,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
               <div className="md:col-span-1">
                 <label className="mb-1 block font-semibold text-muted-fg text-sm">Nama</label>
                 <Input
-                  value={data.name}
+                  value={form.name}
                   onChange={(e) => setData("name", e.target.value)}
                   required
                   placeholder="Nama supplier"
@@ -128,7 +176,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
               <div>
                 <label className="mb-1 block font-semibold text-muted-fg text-sm">Telepon</label>
                 <Input
-                  value={data.phone}
+                  value={form.phone}
                   onChange={(e) => setData("phone", e.target.value)}
                   placeholder="No. telepon"
                 />
@@ -136,7 +184,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
               <div>
                 <label className="mb-1 block font-semibold text-muted-fg text-sm">Email</label>
                 <Input
-                  value={data.email}
+                  value={form.email}
                   onChange={(e) => setData("email", e.target.value)}
                   type="email"
                   placeholder="email@example.com"
@@ -147,7 +195,7 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
                 <textarea
                   rows={3}
                   className="dark:scheme-dark relative block w-full appearance-none rounded-lg border border-input bg-(--control-bg,transparent) in-disabled:bg-muted px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 text-fg outline-hidden placeholder:text-muted-fg focus:border-ring/70 focus:ring-3 focus:ring-ring/20 enabled:hover:border-muted-fg/30 focus:enabled:hover:border-ring/80 sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6"
-                  value={data.address}
+                  value={form.address}
                   onChange={(e) => setData("address", e.target.value)}
                   placeholder="Alamat"
                 />
@@ -156,11 +204,9 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
                 <Button type="submit" isDisabled={processing} intent="primary">
                   {editing ? "Update" : "Simpan"}
                 </Button>
-                {editing && (
-                  <Button type="button" intent="outline" onPress={cancel}>
-                    Batal
-                  </Button>
-                )}
+                <Button type="button" intent="outline" onPress={cancel}>
+                  Batal
+                </Button>
               </div>
             </form>
           </CardContent>
@@ -169,8 +215,8 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
 
       <Card>
         <CardContent className="divide-y divide-border p-0">
-          {supplierData.length ? (
-            supplierData.map((sup) => (
+          {data.data.length ? (
+            data.data.map((sup) => (
               <div key={sup.id} className="flex items-center justify-between p-4">
                 <div>
                   <p className="font-semibold text-fg text-sm">{sup.name}</p>
@@ -194,10 +240,19 @@ export default function Index({ suppliers: supplierData }: SuppliersIndexProps) 
               </div>
             ))
           ) : (
-            <EmptyState title="Belum Ada Supplier" description="Tambahkan supplier pertama Anda." />
+            <EmptyState
+              title={searching ? "Tidak Ditemukan" : "Belum Ada Supplier"}
+              description={
+                searching
+                  ? "Tidak ada supplier yang cocok dengan pencarian Anda."
+                  : "Tambahkan supplier pertama Anda."
+              }
+            />
           )}
         </CardContent>
       </Card>
+
+      {data.last_page > 1 && <Pagination links={data.links} />}
 
       <Modal isOpen={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <ModalContent>
