@@ -7,7 +7,7 @@ import {
   IconPlayerPlay,
   IconPlayerStop,
 } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import crmCampaigns from "@/routes/crm-campaigns";
 import crmCampaignLogs from "@/routes/crm-campaign-logs";
 import customers from "@/routes/customers";

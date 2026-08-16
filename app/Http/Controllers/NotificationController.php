@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductNotificationRead;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
+    /**
+     * Show the notifications page (low stock, receivables, payables).
+     */
+    public function index()
+    {
+        return Inertia::render('Dashboard/Notifications/Index');
+    }
+
     /**
      * Mark a single low-stock notification as read for the current user.
      */

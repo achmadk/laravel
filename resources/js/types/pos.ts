@@ -6,6 +6,7 @@ export interface POSProduct {
   image: string | null;
   buy_price: number;
   sell_price: number;
+  average_cost: number;
   stock: number;
   category_id: number | null;
   category?: { id: number; name: string } | null;
@@ -86,6 +87,8 @@ export interface PricingSummary {
   loyalty_discount_total: number;
   manual_discount_total: number;
   shipping_cost: number;
+  tax_rate: number;
+  tax_total: number;
   grand_total: number;
   available_loyalty_points: number;
   applied_redeem_points: number;

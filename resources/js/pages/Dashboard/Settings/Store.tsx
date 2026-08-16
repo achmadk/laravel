@@ -2,7 +2,7 @@ import { Head, useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { IconBuildingStore, IconDeviceFloppy, IconPhoto } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import settings from "@/routes/settings";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -14,6 +14,7 @@ interface StoreSettings {
   store_email?: string | null;
   store_website?: string | null;
   store_city?: string | null;
+  tax_default_rate?: string | number;
 }
 
 interface StoreProps {
@@ -29,6 +30,7 @@ export default function Store({ settings: storeSettings }: StoreProps) {
     store_email: storeSettings.store_email || "",
     store_website: storeSettings.store_website || "",
     store_city: storeSettings.store_city || "",
+    tax_default_rate: storeSettings.tax_default_rate ?? "11.00",
   });
 
   const [logoPreview, setLogoPreview] = useState<string | null>(storeSettings.store_logo || null);
@@ -189,6 +191,27 @@ export default function Store({ settings: storeSettings }: StoreProps) {
                         <p className="mt-1 text-danger text-xs">{errors.store_website}</p>
                       )}
                     </div>
+                  </div>
+                  <div>
+                    <label className="mb-2 block font-medium text-fg text-sm">Pajak PPN</label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="100"
+                        value={data.tax_default_rate}
+                        onChange={(e) => setData("tax_default_rate", e.target.value)}
+                        placeholder="11.00"
+                        className="h-11 w-full rounded-xl border border-input bg-muted px-4 pr-8 text-fg text-sm outline-none transition placeholder:text-muted-fg focus:border-ring focus:ring-2 focus:ring-ring"
+                      />
+                      <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted-fg text-sm">
+                        %
+                      </span>
+                    </div>
+                    {errors.tax_default_rate && (
+                      <p className="mt-1 text-danger text-xs">{errors.tax_default_rate}</p>
+                    )}
                   </div>
                 </div>
               </div>

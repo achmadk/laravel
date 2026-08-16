@@ -8,7 +8,7 @@ import {
   IconTrash,
   IconGripVertical,
 } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useAuthorization } from "@/lib/auth";
 import settings from "@/routes/settings";
 

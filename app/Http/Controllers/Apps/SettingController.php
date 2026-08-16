@@ -62,6 +62,7 @@ class SettingController extends Controller
             'store_email' => Setting::get('store_email', ''),
             'store_website' => Setting::get('store_website', ''),
             'store_city' => Setting::get('store_city', ''),
+            'tax_default_rate' => Setting::get('tax_default_rate', '11.00'),
         ];
 
         return Inertia::render('Dashboard/Settings/Store', [
@@ -82,6 +83,7 @@ class SettingController extends Controller
             'store_website' => 'nullable|string|max:255',
             'store_city' => 'nullable|string|max:255',
             'store_logo' => 'nullable|image|max:2048',
+            'tax_default_rate' => 'required|numeric|between:0,100',
         ]);
 
         $before = [
@@ -111,6 +113,7 @@ class SettingController extends Controller
         Setting::set('store_email', $request->store_email, 'Email toko');
         Setting::set('store_website', $request->store_website, 'Website toko');
         Setting::set('store_city', $request->store_city, 'Kota/Kabupaten toko');
+        Setting::set('tax_default_rate', $request->tax_default_rate, 'Tarif PPN default');
         Setting::set('store_logo', $logoPath, 'Logo toko');
 
         $this->auditLogService->log(

@@ -3,8 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 400;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Regular.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 500;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Medium.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 600;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-SemiBold.ttf') }}") format('truetype')
+        }
+
+        @font-face {
+            font-family: 'Plus Jakarta Sans';
+            font-style: normal;
+            font-weight: 700;
+            src: url("{{ public_path('plus-jakarta-sans/PlusJakartaSans-Bold.ttf') }}") format('truetype')
+        }
+
         @page { margin: 10mm; }
-        body { font-family: 'Inter', 'Helvetica', 'Arial', sans-serif; margin:0; background:#f8fafc; color:#0f172a; }
+        body { font-family: 'Plus Jakarta Sans', 'Helvetica', 'Arial', sans-serif; margin:0; background:#f8fafc; color:#0f172a; }
         .sheet { max-width: 900px; margin: 0 auto; background:white; border:1px solid #e2e8f0; border-radius:14px; padding:18px 20px; }
         .header { display:flex; justify-content: space-between; align-items: flex-start; gap:16px; border-bottom:1px solid #e2e8f0; padding-bottom:12px; }
         .store { display:flex; gap:12px; align-items:center; flex:1; min-width:0; }

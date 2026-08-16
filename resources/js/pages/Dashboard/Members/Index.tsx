@@ -9,7 +9,7 @@ import {
   IconAlertCircle,
 } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   edit as editMember,
   create as createMember,

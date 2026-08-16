@@ -13,6 +13,9 @@ import {
 } from "@tabler/icons-react";
 import { useAuthorization } from "@/lib/auth";
 import transactions from "@/routes/transactions";
+import { Button } from "@/components/ui/button";
+import ThermalReceipt80mm from "@/components/Receipt/ThermalReceipt80mm";
+import ThermalReceipt58mm from "@/components/Receipt/ThermalReceipt58mm";
 
 const formatPrice = (price = 0) =>
   Number(price || 0).toLocaleString("id-ID", {
@@ -52,6 +55,8 @@ interface Transaction {
   grand_total: number;
   discount: number;
   shipping_cost: number;
+  tax_rate: number;
+  tax_total: number;
   cash: number;
   change: number;
   payment_method: string;
@@ -175,9 +180,25 @@ export default function Print({ transaction }: PrintProps) {
   const isNonCash = paymentMethodKey !== "cash";
   const showPaymentLink = isNonCash && !!transaction.payment_url;
 
-  // oxlint-disable-next-line no-unused-vars
-  const handlePrint = () => {
-    window.print();
+  const openThermalPopup = async (invoice: string) => {
+    try {
+      const response = await fetch(
+        `/dashboard/documents/transactions/${invoice}/pdf/thermal`,
+        {
+          headers: { Accept: "text/html" },
+        },
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const html = await response.text();
+      const blob = new Blob([html], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank", "width=400,height=600");
+    } catch (error) {
+      console.error("Gagal membuka struk thermal:", error);
+      alert("Gagal membuka struk thermal. Silakan coba lagi.");
+    }
   };
 
   return (
@@ -269,7 +290,7 @@ export default function Print({ transaction }: PrintProps) {
 
               {printMode === "invoice" && (
                 <a
-                  href={`/pdf/transactions/invoice/${transaction.invoice}`}
+                  href={`/dashboard/documents/transactions/${transaction.invoice}/pdf/invoice`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-semibold text-sm text-white shadow-lg shadow-primary/30 transition-colors hover:bg-primary/90 sm:w-auto"
@@ -280,20 +301,30 @@ export default function Print({ transaction }: PrintProps) {
               )}
 
               {(printMode === "thermal80" || printMode === "thermal58") && (
-                <a
-                  href={`/pdf/transactions/receipt/${transaction.invoice}?size=${printMode === "thermal58" ? "58" : "80"}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-fg px-4 py-2.5 font-semibold text-bg text-sm transition-colors hover:bg-fg/90 sm:w-auto"
-                >
-                  <IconPrinter size={18} />
-                  PDF Struk {printMode === "thermal58" ? "58mm" : "80mm"}
-                </a>
+                <>
+                  <a
+                    href={`/dashboard/documents/transactions/${transaction.invoice}/pdf/receipt/${printMode === "thermal58" ? "58" : "80"}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-fg px-4 py-2.5 font-semibold text-bg text-sm transition-colors hover:bg-fg/90 sm:w-auto"
+                  >
+                    <IconPrinter size={18} />
+                    PDF Struk {printMode === "thermal58" ? "58mm" : "80mm"}
+                  </a>
+                  <Button
+                    intent="outline"
+                    onPress={() => void openThermalPopup(transaction.invoice)}
+                    className="w-full sm:w-auto"
+                  >
+                    <IconExternalLink size={18} />
+                    Thermal
+                  </Button>
+                </>
               )}
 
               {printMode === "shipping" && (
                 <a
-                  href={`/pdf/transactions/shipping/${transaction.invoice}`}
+                  href={`/dashboard/documents/transactions/${transaction.invoice}/pdf/shipping`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-success px-4 py-2.5 font-semibold text-sm text-white transition-colors hover:bg-success/90 sm:w-auto"
@@ -522,53 +553,14 @@ export default function Print({ transaction }: PrintProps) {
           {printMode === "thermal80" && (
             <div className="flex justify-center print:block">
               <div className="rounded-2xl border border-border bg-bg p-4 shadow-xl print:rounded-none print:border-0 print:p-0 print:shadow-none">
-                <div className="mx-auto max-w-[80mm] space-y-2 p-2 font-mono text-sm">
-                  <div className="mb-3 border-border border-b border-dashed pb-3 text-center">
-                    <p className="font-bold text-base text-fg">{store.name}</p>
-                    {store.address && <p className="text-muted-fg text-xs">{store.address}</p>}
-                    {store.phone && <p className="text-muted-fg text-xs">Telp: {store.phone}</p>}
-                  </div>
-                  <div className="flex justify-between text-muted-fg text-xs">
-                    <span>{transaction.invoice}</span>
-                    <span>{formatDateTime(transaction.created_at)}</span>
-                  </div>
-                  <div className="mt-2 border-border border-t border-dashed pt-2" />
-                  {items.map((item: TransactionDetail) => (
-                    <div key={item.id} className="text-fg text-xs">
-                      <p className="font-medium">{item.product?.title}</p>
-                      <div className="flex justify-between">
-                        <span>
-                          {item.qty} x{" "}
-                          {formatPrice(
-                            Number(item.unit_price || 0) ||
-                              Number(item.price || 0) / Number(item.qty || 1),
-                          )}
-                        </span>
-                        <span>{formatPrice(Number(item.price || 0))}</span>
-                      </div>
-                    </div>
-                  ))}
-                  <div className="mt-2 border-border border-t border-dashed pt-2" />
-                  <div className="flex justify-between font-bold text-fg text-sm">
-                    <span>Total</span>
-                    <span>{formatPrice(transaction.grand_total)}</span>
-                  </div>
-                  {Number(transaction.cash) > 0 && (
-                    <>
-                      <div className="flex justify-between text-muted-fg text-xs">
-                        <span>Tunai</span>
-                        <span>{formatPrice(transaction.cash)}</span>
-                      </div>
-                      <div className="flex justify-between text-success text-xs">
-                        <span>Kembali</span>
-                        <span>{formatPrice(transaction.change)}</span>
-                      </div>
-                    </>
-                  )}
-                  <div className="mt-4 border-border border-t border-dashed pt-3 text-center text-muted-fg text-xs">
-                    <p>Terima kasih telah berbelanja</p>
-                  </div>
-                </div>
+                <ThermalReceipt80mm
+                  transaction={transaction}
+                  storeName={store.name}
+                  storeAddress={store.address}
+                  storePhone={store.phone}
+                  storeEmail={store.email}
+                  storeWebsite={store.website}
+                />
               </div>
             </div>
           )}
@@ -576,55 +568,12 @@ export default function Print({ transaction }: PrintProps) {
           {printMode === "thermal58" && (
             <div className="flex justify-center print:block">
               <div className="rounded-2xl border border-border bg-bg p-4 shadow-xl print:rounded-none print:border-0 print:p-0 print:shadow-none">
-                <div className="mx-auto max-w-[58mm] space-y-1.5 p-1 font-mono text-xs">
-                  <div className="mb-2 border-border border-b border-dashed pb-2 text-center">
-                    <p className="font-bold text-fg text-sm">{store.name}</p>
-                    {store.address && <p className="text-[10px] text-muted-fg">{store.address}</p>}
-                    {store.phone && (
-                      <p className="text-[10px] text-muted-fg">Telp: {store.phone}</p>
-                    )}
-                  </div>
-                  <div className="flex justify-between text-[10px] text-muted-fg">
-                    <span>{transaction.invoice}</span>
-                    <span>{formatDateTime(transaction.created_at)}</span>
-                  </div>
-                  <div className="mt-1.5 border-border border-t border-dashed pt-1.5" />
-                  {items.map((item: TransactionDetail) => (
-                    <div key={item.id} className="text-[10px] text-fg">
-                      <p className="font-medium">{item.product?.title}</p>
-                      <div className="flex justify-between">
-                        <span>
-                          {item.qty} x{" "}
-                          {formatPrice(
-                            Number(item.unit_price || 0) ||
-                              Number(item.price || 0) / Number(item.qty || 1),
-                          )}
-                        </span>
-                        <span>{formatPrice(Number(item.price || 0))}</span>
-                      </div>
-                    </div>
-                  ))}
-                  <div className="mt-1.5 border-border border-t border-dashed pt-1.5" />
-                  <div className="flex justify-between font-bold text-fg text-xs">
-                    <span>Total</span>
-                    <span>{formatPrice(transaction.grand_total)}</span>
-                  </div>
-                  {Number(transaction.cash) > 0 && (
-                    <>
-                      <div className="flex justify-between text-[10px] text-muted-fg">
-                        <span>Tunai</span>
-                        <span>{formatPrice(transaction.cash)}</span>
-                      </div>
-                      <div className="flex justify-between text-[10px] text-success">
-                        <span>Kembali</span>
-                        <span>{formatPrice(transaction.change)}</span>
-                      </div>
-                    </>
-                  )}
-                  <div className="mt-3 border-border border-t border-dashed pt-2 text-center text-[10px] text-muted-fg">
-                    <p>Terima kasih</p>
-                  </div>
-                </div>
+                <ThermalReceipt58mm
+                  transaction={transaction}
+                  storeName={store.name}
+                  storeAddress={store.address}
+                  storePhone={store.phone}
+                />
               </div>
             </div>
           )}

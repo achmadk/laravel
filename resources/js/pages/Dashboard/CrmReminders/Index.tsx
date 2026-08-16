@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Head, Link, usePage } from "@inertiajs/react";
 import { IconBellRinging, IconBrandWhatsapp, IconAlertCircle } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 // import crmReminders from "@/routes/crm-reminders";
 import crmCampaigns from "@/routes/crm-campaigns";
 

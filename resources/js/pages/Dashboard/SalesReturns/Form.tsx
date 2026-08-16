@@ -4,7 +4,7 @@ import { IconArrowLeft, IconCheck, IconDeviceFloppy } from "@tabler/icons-react"
 import DashboardLayout from "@/layouts/dashboard-layout";
 import transactions from "@/routes/transactions";
 import salesReturns from "@/routes/sales-returns";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 // import { PageHeader } from "@/components/dashboard/page-header";

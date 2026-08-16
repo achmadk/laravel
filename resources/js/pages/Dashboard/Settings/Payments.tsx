@@ -3,7 +3,7 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { useAuthorization } from "@/lib/auth";
 import { IconCreditCard, IconDeviceFloppy, IconBrandStripe, IconCash } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import settings from "@/routes/settings";
 
 interface PaymentSettingSource {

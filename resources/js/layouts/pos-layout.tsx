@@ -1,8 +1,9 @@
 import { type PropsWithChildren, useState } from "react";
 import { Head, Link, usePage, router } from "@inertiajs/react";
 import { IconArrowLeft, IconShoppingCart, IconX } from "@tabler/icons-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import NumpadModal from "@/components/pos/NumpadModal";
+import { Toast } from "@/components/ui/toast";
 
 type OpenShiftStep = "numpad" | "confirm";
 
@@ -22,7 +23,6 @@ export default function POSLayout({ children }: PropsWithChildren) {
     opened_at: string;
     opening_balance: number | null;
   } | null;
-  console.log("POS layout children", props);
 
   const [showOpenShiftModal, setShowOpenShiftModal] = useState(false);
   const [step, setStep] = useState<OpenShiftStep>("numpad");
@@ -121,7 +121,7 @@ export default function POSLayout({ children }: PropsWithChildren) {
             ) : (
               <button
                 onClick={openModal}
-                className="rounded-lg bg-warning-subtle px-3 py-1.5 font-medium text-warning text-xs transition-colors hover:bg-warning-subtle"
+                className="cursor-pointer rounded-lg bg-warning-subtle px-3 py-1.5 font-medium text-warning text-xs transition-colors hover:bg-warning-subtle"
               >
                 Buka Shift
               </button>
@@ -139,6 +139,8 @@ export default function POSLayout({ children }: PropsWithChildren) {
         <main className="flex-1 overflow-hidden">{children}</main>
       </div>
 
+      <Toast />
+
       <NumpadModal
         isOpen={showOpenShiftModal && step === "numpad"}
         onClose={closeModal}
@@ -147,6 +149,7 @@ export default function POSLayout({ children }: PropsWithChildren) {
         initialValue={0}
         minValue={0}
         isCurrency={true}
+        triggerCloseAfterConfirm={false}
       />
 
       {showOpenShiftModal && step === "confirm" && (

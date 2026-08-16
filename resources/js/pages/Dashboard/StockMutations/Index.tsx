@@ -90,7 +90,7 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
         icon={<IconHistory size={20} />}
       />
 
-      <div className="mb-4 grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-4">
+      <Card className="mb-4 grid grid-cols-1 gap-3 rounded-2xl border border-border bg-bg p-4 md:grid-cols-4">
         <select
           value={currentFilters.product_id}
           onChange={(e) => updateFilter("product_id", e.target.value)}
@@ -128,7 +128,7 @@ export default function Index({ stockMutations, products, filters }: IndexProps)
           onChange={(e) => updateFilter("date_to", e.target.value)}
           className="h-11 rounded-xl border border-input bg-muted px-3 text-fg text-sm"
         />
-      </div>
+      </Card>
 
       <Card>
         <CardContent className="p-0">

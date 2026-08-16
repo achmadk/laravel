@@ -8,7 +8,7 @@ import {
   IconPrinter,
 } from "@tabler/icons-react";
 import DashboardLayout from "@/layouts/dashboard-layout";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useAuthorization } from "@/lib/auth";
 import receivables from "@/routes/receivables";
 import pdf from "@/routes/pdf";

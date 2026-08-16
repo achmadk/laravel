@@ -12,7 +12,7 @@ import {
 import DashboardLayout from "@/layouts/dashboard-layout";
 import { useAuthorization } from "@/lib/auth";
 import stockOpnames from "@/routes/stock-opnames";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface Product {
   id: number;

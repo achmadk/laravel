@@ -21,27 +21,35 @@ export function Pagination({ links, className }: PaginationProps) {
   return (
     <ul className={twMerge("mt-2 flex items-center justify-end gap-1 lg:mt-5", className)}>
       {links.map((link, i) => {
-        if (link.url == null) {
+        const isEdge = i === 0 || i === links.length - 1;
+
+        if (link.url === null) {
           return (
             <li
               key={i}
-              className="px-2 py-1 text-muted-fg text-sm opacity-50"
-              dangerouslySetInnerHTML={{ __html: link.label }}
-            />
+              className="flex items-center justify-center rounded-md border border-border bg-bg px-2 py-1 text-muted-fg text-sm opacity-50"
+            >
+              {isEdge ? (
+                i === 0 ? (
+                  <IconChevronLeft size={20} strokeWidth={1.5} />
+                ) : (
+                  <IconChevronRight size={20} strokeWidth={1.5} />
+                )
+              ) : (
+                <span dangerouslySetInnerHTML={{ __html: link.label }} />
+              )}
+            </li>
           );
         }
 
-        const isPrevious = link.label.includes("Previous");
-        const isNext = link.label.includes("Next");
-
         return (
-          <li key={i}>
-            {isPrevious || isNext ? (
+          <li key={i} {...(isEdge ? { className: "flex items-center justify-center" } : {})}>
+            {isEdge ? (
               <Link
                 href={link.url}
-                className="rounded-md border border-border bg-bg p-1 text-muted-fg text-sm hover:bg-muted"
+                className="rounded-md border px-2 py-1 text-muted-fg text-sm hover:bg-muted"
               >
-                {isPrevious ? (
+                {i === 0 ? (
                   <IconChevronLeft size={20} strokeWidth={1.5} />
                 ) : (
                   <IconChevronRight size={20} strokeWidth={1.5} />

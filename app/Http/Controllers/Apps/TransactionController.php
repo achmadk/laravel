@@ -82,6 +82,7 @@ class TransactionController extends Controller
         // get all products with categories for product grid
         $products = Product::with('category:id,name')
             ->select('id', 'barcode', 'title', 'description', 'image', 'buy_price', 'sell_price', 'stock', 'category_id')
+            ->selectRaw('(SELECT COALESCE(ROUND(SUM(poi.unit_price * poi.qty_received) / NULLIF(SUM(poi.qty_received), 0)), 0) FROM purchase_order_items poi WHERE poi.product_id = products.id AND poi.qty_received > 0) AS average_cost')
             ->where('stock', '>', 0)
             ->orderBy('title')
             ->get();
@@ -247,6 +248,16 @@ class TransactionController extends Controller
         }
 
         return redirect()->route('transactions.index')->with('success', 'Product Added Successfully!.');
+    }
+
+    /**
+     * Clear all active (non-held) cart items for the current cashier.
+     */
+    public function clearCart()
+    {
+        Cart::where('cashier_id', auth()->id())->active()->delete();
+
+        return back();
     }
 
     /**
@@ -575,6 +586,8 @@ class TransactionController extends Controller
                 'customer_voucher_code' => data_get($checkoutPreview, 'voucher.code'),
                 'customer_voucher_name' => data_get($checkoutPreview, 'voucher.name'),
                 'shipping_cost' => $shippingCost,
+                'tax_rate' => data_get($checkoutPreview, 'summary.tax_rate', 0),
+                'tax_total' => data_get($checkoutPreview, 'summary.tax_total', 0),
                 'grand_total' => $grandTotal,
                 'payment_method' => $isPayLater ? 'pay_later' : ($paymentGateway ?: 'cash'),
                 'payment_status' => $isCashPayment ? 'paid' : ($isPayLater ? 'unpaid' : 'pending'),
